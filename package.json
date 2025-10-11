@@ -4,11 +4,16 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "astro build && bunx wrangler dev",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "deploy": "bun run build && bunx wrangler deploy"
   },
   "dependencies": {
+    "@astrojs/cloudflare": "^12.6.10",
     "astro": "^5.14.4"
+  },
+  "devDependencies": {
+    "wrangler": "^4.42.2"
   }
 }
