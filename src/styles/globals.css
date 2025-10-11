@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+  --font-serif: var(--font-serif);
+}
+
+:root {
+  --font-sans: "Inter Variable";
+  --font-mono: "JetBrains Mono Variable";
+  --font-serif: "Chubbo-Variable";
+}
+
+/**
+* @license
+*
+* Font Family: Chubbo
+* Designed by: Rafał Buchner
+* URL: https://www.fontshare.com/fonts/chubbo
+* © 2025 Indian Type Foundry
+*
+* Chubbo Variable (Variable font)
+* Chubbo VariableItalic (Variable font)
+*
+*/
+
+/**
+* This is a variable font
+* You can control variable axes as shown below:
+* font-variation-settings: wght 400.0wght 700.0;
+*
+* available axes:
+'wght' (range from 200.0 to 700.0'wght' (range from 200.0 to 700.0
+*/
+@font-face {
+  font-family: "Chubbo-Variable";
+  src: url("/fonts/Chubbo-Variable.woff2") format("woff2"),
+    url("/fonts/Chubbo-Variable.woff") format("woff"),
+    url("/fonts/Chubbo-Variable.ttf") format("truetype");
+  font-weight: 200 700;
+  font-display: swap;
+  font-style: normal;
+}
+/**
+* This is a variable font
+* You can control variable axes as shown below:
+* font-variation-settings: wght 400.0wght 700.0;
+*
+* available axes:
+'wght' (range from 200.0 to 700.0'wght' (range from 200.0 to 700.0
+*/
+@font-face {
+  font-family: "Chubbo-VariableItalic";
+  src: url("/fonts/Chubbo-VariableItalic.woff2") format("woff2"),
+    url("/fonts/Chubbo-VariableItalic.woff") format("woff"),
+    url("/fonts/Chubbo-VariableItalic.ttf") format("truetype");
+  font-weight: 200 700;
+  font-display: swap;
+  font-style: italic;
+}

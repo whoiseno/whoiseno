@@ -1,16 +1,38 @@
 ---
-
+import "@fontsource-variable/inter";
+import "@fontsource-variable/jetbrains-mono";
+import "../styles/globals.css";
 ---
 
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
+  <head>
+    <meta charset="utf-8" />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="/favicon.svg"
+    />
+    <meta
+      name="viewport"
+      content="width=device-width"
+    />
+    <meta
+      name="generator"
+      content={Astro.generator}
+    />
+    <title>Astro</title>
+  </head>
+  <body>
+    <hgroup class="text-center space-y-4 p-12">
+      <h1 class="font-serif text-2xl font-bold leading-none">Welcome to My Portfolio</h1>
+      <p>The portfolio of Enoabasi Essien</p>
+    </hgroup>
+    <div class="mt-6">
+      <div class="flex items-center justify-center">
+        <code class="bg-neutral-200 text-neutral-600 p-4 border-neutral-400 border rounded-md">
+          console.log("hello world!");
+        </code>
+      </div>
+    </div>
+  </body>
 </html>
