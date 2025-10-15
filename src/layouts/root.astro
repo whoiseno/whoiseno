@@ -1,0 +1,35 @@
+---
+import "../styles/globals.css";
+
+import "@fontsource-variable/inter";
+import "@fontsource-variable/jetbrains-mono";
+
+interface Props {
+  title?: string | undefined
+}
+
+const { title = "Astro Site" } = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="/favicon.svg"
+    />
+    <meta
+      name="viewport"
+      content="width=device-width"
+    />
+    <meta
+      name="generator"
+      content={Astro.generator}
+    />
+    <title>{title}</title>
+  </head>
+  <body class="relative antialiased flex flex-col min-h-svh">
+    <slot />
+  </body>
+</html>

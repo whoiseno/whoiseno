@@ -1,38 +1,16 @@
 ---
-import "@fontsource-variable/inter";
-import "@fontsource-variable/jetbrains-mono";
-import "../styles/globals.css";
+import RootLayout from "../layouts/root.astro";
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link
-      rel="icon"
-      type="image/svg+xml"
-      href="/favicon.svg"
-    />
-    <meta
-      name="viewport"
-      content="width=device-width"
-    />
-    <meta
-      name="generator"
-      content={Astro.generator}
-    />
-    <title>Astro</title>
-  </head>
-  <body>
-    <hgroup class="text-center space-y-4 p-12">
+<RootLayout title="Home | whoiseno?">
+  <div
+    class="absolute inset-0 -z-10 h-full w-full bg-white bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]"
+  >
+  </div>
+  <div class="flex-1 flex items-center justify-center">
+    <hgroup class="text-center space-y-4 pt-0 p-12">
       <h1 class="font-serif text-2xl font-bold leading-none">Welcome to My Portfolio</h1>
-      <p>The portfolio of Enoabasi Essien</p>
+      <p class="uppercase">The portfolio of Enoabasi Essien &mdash; Coming soon</p>
     </hgroup>
-    <div class="mt-6">
-      <div class="flex items-center justify-center">
-        <code class="bg-neutral-200 text-neutral-600 p-4 border-neutral-400 border rounded-md">
-          console.log("hello world!");
-        </code>
-      </div>
-    </div>
-  </body>
-</html>
+  </div>
+</RootLayout>
