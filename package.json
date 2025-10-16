@@ -1,16 +1,7 @@
 {
   "name": "whoiseno",
-  "type": "module",
   "version": "0.0.1",
-  "scripts": {
-    "dev": "astro dev",
-    "build": "astro build && bunx wrangler dev",
-    "preview": "astro preview",
-    "astro": "astro",
-    "deploy": "astro build && bunx wrangler deploy"
-  },
   "dependencies": {
-    "@astrojs/cloudflare": "^12.6.10",
     "@astrojs/react": "^4.4.0",
     "@fontsource-variable/inter": "^5.2.8",
     "@fontsource-variable/jetbrains-mono": "^5.2.8",
@@ -22,7 +13,15 @@
     "react-dom": "^19.2.0",
     "tailwindcss": "^4.1.14"
   },
-  "devDependencies": {
-    "wrangler": "^4.42.2"
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "type": "module",
+  "author": {
+    "name": "Enoabasi Essien",
+    "url": "https://github.com/whoiseno/whoiseno"
   }
 }
