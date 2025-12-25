@@ -7,12 +7,15 @@
 		"build": "astro check && astro build",
 		"preview": "astro preview",
 		"astro": "astro",
-		"lint": "biome lint --write .",
+		"lint": "biome lint .",
 		"lint:fix": "biome check --write ."
 	},
 	"dependencies": {
+		"@astrojs/markdoc": "^0.15.10",
 		"@astrojs/react": "^4.4.2",
 		"@fontsource-variable/recursive": "^5.2.8",
+		"@keystatic/astro": "^5.0.6",
+		"@keystatic/core": "^0.5.48",
 		"@tailwindcss/vite": "^4.1.18",
 		"@types/react": "^19.2.7",
 		"@types/react-dom": "^19.2.3",
