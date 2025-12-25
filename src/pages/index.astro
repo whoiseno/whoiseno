@@ -1,5 +1,10 @@
 ---
 import "../styles/globals.css";
+
+import '@fontsource-variable/recursive/full.css'
+
+import React from "@/components/react"
+import Hello from "@/components/hello.astro"
 ---
 
 <html lang="en">
@@ -11,6 +16,8 @@ import "../styles/globals.css";
 		<title>Astro</title>
 	</head>
 	<body>
-		<h1 class="font-bold text-3xl text-blue-500 underline">Astro</h1>
+		<h1 class="font-bold text-3xl text-gray-950">Welcome to Astro</h1>
+    <React />
+    <Hello />
 	</body>
 </html>

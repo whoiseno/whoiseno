@@ -6,7 +6,8 @@
 		"useIgnoreFile": true
 	},
 	"files": {
-		"ignoreUnknown": false
+		"ignoreUnknown": false,
+    "includes": ["**", "!**/*.css"]
 	},
 	"formatter": {
 		"enabled": true,
@@ -25,6 +26,7 @@
 	},
 	"assist": {
 		"enabled": true,
+    "includes": ["!**/*.astro"],
 		"actions": {
 			"source": {
 				"organizeImports": "on"
