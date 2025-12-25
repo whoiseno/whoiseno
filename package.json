@@ -1,0 +1,19 @@
+{
+	"name": "whoiseno",
+	"type": "module",
+	"version": "0.0.1",
+	"scripts": {
+		"dev": "bunx --bun astro dev",
+		"build": "astro check && astro build",
+		"preview": "astro preview",
+		"astro": "astro",
+    "lint": "biome lint --write .",
+    "lint:fix": "biome check --write ."
+	},
+	"dependencies": {
+		"astro": "^5.16.6"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.3.10"
+	}
+}
