@@ -1,13 +1,19 @@
 ---
+import { Button, Input } from '@heroui/react';
+
 import { HelloReact } from "@/components/hello-react";
 import RootLayout from "@/layouts/RootLayout.astro";
 ---
 
 <RootLayout>
-  <main>
+  <main class="bg-background">
     <hgroup>
       <h1>Enoabasi Essien</h1>
     </hgroup>
     <HelloReact />
+    <Input />
+    <Button>
+      My Button
+    </Button>
   </main>
 </RootLayout>
