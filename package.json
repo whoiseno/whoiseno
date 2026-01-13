@@ -21,6 +21,7 @@
 		"tailwindcss": "^4.1.18"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "2.3.11"
+		"@biomejs/biome": "2.3.11",
+		"vite-tsconfig-paths": "^6.0.4"
 	}
 }
