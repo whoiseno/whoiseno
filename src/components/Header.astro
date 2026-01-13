@@ -1,0 +1,58 @@
+---
+const pathname = new URL(Astro.request.url).pathname
+
+interface Page {
+	label: string
+	path: `/${string}`
+}
+
+const pages: Array<Page> = [
+	{
+		label: "Works",
+		path: "/works",
+	},
+	{
+		label: "Blog",
+		path: "/blog",
+	},
+	{
+		label: "About",
+		path: "/about",
+	},
+	{
+		label: "Contact",
+		path: "/contact",
+	},
+]
+---
+
+<header class="fixed top-0 z-20 inset-x-0 bg-background border-b border-neutral-300">
+  <nav class="max-w-200 mx-auto px-4 py-2 flex items-center justify-between">
+    <a
+      href="/"
+      class="text-lg lg:text-2xl font-semibold button button--ghost outline-none focus-visible:ring-2 focus-visible:ring-focus"
+    >
+      enoabasi &mdash; essien
+    </a>
+    <div class="flex items-center gap-x-4">
+      {
+        pages.map((page) => {
+          const isActive = page.path === pathname;
+          return (
+            <a
+              href={page.path}
+              class:list={[
+                "button button--ghost font-medium outline-none focus-visible:ring-2 focus-visible:ring-focus",
+                {
+                  "bg-accent-soft text-accent-soft-foreground": isActive,
+                },
+              ]}
+            >
+              {page.label}
+            </a>
+          );
+        })
+      }
+    </div>
+  </nav>
+</header>

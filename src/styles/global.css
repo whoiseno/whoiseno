@@ -1,8 +1,12 @@
 @import "tailwindcss";
 @import "@heroui/styles";
 
+@theme inline {
+  --radius: 0.25rem;
+}
+
 @layer base {
 	body {
-		font-family: "Inter Variable", sans-serif;
+		font-family: "IBM Plex Sans Variable", sans-serif;
 	}
 }
