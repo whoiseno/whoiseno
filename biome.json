@@ -32,6 +32,10 @@
   },
   "assist": {
     "enabled": true,
+    "includes": [
+      "**",
+      "!**/*.astro"
+    ],
     "actions": {
       "source": {
         "organizeImports": "on"
