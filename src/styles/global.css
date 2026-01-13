@@ -2,7 +2,7 @@
 @import "@heroui/styles";
 
 @theme inline {
-  --radius: 0.25rem;
+  --radius: 0.12rem;
 }
 
 @layer base {
