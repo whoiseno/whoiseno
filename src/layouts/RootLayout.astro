@@ -4,6 +4,7 @@ import "../styles/global.css"
 import "@fontsource-variable/ibm-plex-sans"
 
 import Header from "@/components/Header.astro"
+import Footer from "@/components/Footer.astro"
 ---
 
 <html lang="en">
@@ -26,6 +27,9 @@ import Header from "@/components/Header.astro"
   </head>
   <body class="bg-background text-foreground antialiased">
     <Header />
-    <slot />
+    <main class="mt-24">
+      <slot />
+    </main>
+    <Footer />
   </body>
 </html>

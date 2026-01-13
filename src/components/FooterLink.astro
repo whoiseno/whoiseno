@@ -1,0 +1,17 @@
+---
+import type { HTMLAttributes } from "astro/types"
+
+type Props = HTMLAttributes<"a">
+
+const { href, ...props } = Astro.props
+---
+
+<a
+  href={href}
+  class:list={[
+    "button button--ghost button--sm text-muted hover:text-accent outline-none focus-visible:ring-2 focus-visible:ring-focus",
+    props.class,
+  ]}
+  {...props}
+  ><slot /></a
+>

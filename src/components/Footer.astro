@@ -1,0 +1,97 @@
+---
+import {
+	MailboxIcon,
+	LinkedinLogoIcon,
+	GithubLogoIcon,
+	XLogoIcon,
+	PersonSimpleIcon,
+	PencilCircleIcon,
+	BlueprintIcon,
+} from "@phosphor-icons/react"
+
+import FooterLink from "@/components/FooterLink.astro"
+---
+
+<footer class="max-w-200 mx-auto px-4 py-15">
+  <div class="grid gap-8 lg:grid-cols-[3fr_4fr] lg:gap-16">
+    <div class="grid gap-y-6 [&>p]:pl-4 [&>p]:text-sm [&>p]:text-muted">
+      <a
+        href="/"
+        class="text-lg lg:text-2xl font-semibold button button--ghost outline-none focus-visible:ring-2 focus-visible:ring-focus"
+      >
+        enoabasi &mdash; essien
+      </a>
+      <p>I'm Enoabasi Essien and I'm a product designer, and software developer.</p>
+      <p>This website is a collection of my thoughts and experiences.</p>
+      <p class="[&>span]:text-accent">
+        &copy; 2002 - 2026 Enoabasi Essien - Powered by <span>Astro</span>, <span>Tailwind CSS</span
+        >, <span>HeroUI</span>, <span>Phosphor Icons</span>, <span>Keystatic</span> and <span
+          >Netlify</span
+        >.
+      </p>
+    </div>
+    <div class="flex flex-col items-start gap-y-8 md:flex-row md:justify-between md:gap-y-0">
+      <div>
+        <p class="text-lg font-semibold pt-1 ps-3">Pages</p>
+        <div class="pt-7 flex flex-col items-start gap-4">
+          <FooterLink href="/works">
+            <BlueprintIcon
+              className="size-6"
+              weight="fill"
+            />Works
+          </FooterLink>
+          <FooterLink href="/blog">
+            <PencilCircleIcon
+              className="size-6"
+              weight="fill"
+            />Blog</FooterLink
+          >
+          <FooterLink href="/about">
+            <PersonSimpleIcon
+              className="size-6"
+              weight="fill"
+            />About</FooterLink
+          >
+        </div>
+      </div>
+      <div>
+        <p class="text-lg font-semibold pt-1 ps-3">Contact</p>
+        <div class="pt-7 flex flex-col items-start gap-4">
+          <FooterLink
+            href="https://x.com/enoiscooked"
+            target={"_blank"}
+          >
+            <XLogoIcon
+              className="size-6"
+              weight="fill"
+            />Twitter (enoiscooked)
+          </FooterLink>
+          <FooterLink
+            href="https://github.com/whoiseno"
+            target={"_blank"}
+          >
+            <GithubLogoIcon
+              className="size-6"
+              weight="fill"
+            />GitHub (whoiseno)
+          </FooterLink>
+          <FooterLink
+            href="https://www.linkedin.com/in/enoabasi-essien/"
+            target={"_blank"}
+          >
+            <LinkedinLogoIcon
+              className="size-6"
+              weight="fill"
+            />LinkedIn (enoabasi-essien)
+          </FooterLink>
+          <FooterLink href="#">
+            <MailboxIcon
+              className="size-6"
+              weight="fill"
+            />Email
+          </FooterLink>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
