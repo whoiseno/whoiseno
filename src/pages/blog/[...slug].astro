@@ -1,0 +1,31 @@
+---
+import RootLayout from "@/layouts/RootLayout.astro";
+import { render } from "astro:content";
+import { getCollection } from "astro:content";
+import Section from "@/components/Section.astro";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog");
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<RootLayout>
+  <Section>
+    <div>
+      <div class="flex flex-col items-center gap-y-8">
+        <h1>{post.data.title}</h1>
+        <p>{post.data.summary}</p>
+      </div>
+    </div>
+  </Section>
+  <Section>
+    <Content />
+  </Section>
+</RootLayout>
