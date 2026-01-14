@@ -1,0 +1,12 @@
+[
+	{
+		"id": "whoiseno",
+		"path": "src/content",
+		"schema": {
+			"path": "markdoc.config.mjs",
+			"type": "esm",
+			"property": "default",
+			"watch": true
+		}
+	}
+]
