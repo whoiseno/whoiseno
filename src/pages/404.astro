@@ -1,0 +1,23 @@
+---
+import Root from "@/layouts/Root.astro";
+import Section from "@/components/Section.astro";
+import { Surface } from "@heroui/react";
+
+const title = "Home - Whoiseno?";
+const description = "Discover the bits and pieces about myself, what makes me tick, and more.";
+---
+
+<Root
+  title={title}
+  description={description}
+>
+  <Section>
+    <Surface
+      className="flex flex-col items-center justify-center p-32"
+      variant="secondary"
+    >
+      <h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight text-balance">404</h1>
+      <p class="text-lg font-semibold text-muted">The resource you seek could not be found</p>
+    </Surface>
+  </Section>
+</Root>

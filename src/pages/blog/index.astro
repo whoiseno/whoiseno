@@ -1,19 +1,23 @@
 ---
 import Section from "@/components/Section.astro";
-import RootLayout from "@/layouts/RootLayout.astro";
+import Root from "@/layouts/Root.astro";
 
 import { getCollection } from "astro:content";
 
-// Get all blog posts from the content directory
-// Sort the blog post by their date
 const blog = (
   await getCollection("blog", ({ data }) => {
     return import.meta.env.PROD ? data.isPublished !== false : true;
   })
 ).sort((a, b) => b.data.createdAt.valueOf() - a.data.createdAt.valueOf());
+
+const title = "Blog - Whoiseno?";
+const description = "Articles, journals, and think pieces of my journey.";
 ---
 
-<RootLayout>
+<Root
+  title={title}
+  description={description}
+>
   <Section>
     <h1 class="font-semibold text-3xl">enoabasi &mdash; essien</h1>
     <p class="pt-7 text-lg">Currently rebuilding my portfolio &mdash; Blog page.</p>
@@ -29,4 +33,4 @@ const blog = (
       }
     </ul>
   </Section>
-</RootLayout>
+</Root>

@@ -1,11 +1,17 @@
 ---
-import Section from "@/components/Section.astro"
-import RootLayout from "@/layouts/RootLayout.astro"
+import Section from "@/components/Section.astro";
+import Root from "@/layouts/Root.astro";
+
+const title = "Contact - Whoiseno?";
+const description = "Have some work? React out to me on any of my contacts.";
 ---
 
-<RootLayout>
+<Root
+  title={title}
+  description={description}
+>
   <Section>
     <h1 class="font-semibold text-3xl">enoabasi &mdash; essien</h1>
     <p class="pt-7 text-lg">Currently rebuilding my portfolio &mdash; Contact page.</p>
   </Section>
-</RootLayout>
+</Root>

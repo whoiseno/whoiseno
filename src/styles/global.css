@@ -2,11 +2,32 @@
 @import "@heroui/styles";
 
 @theme inline {
-  --radius: 0.12rem;
+  /* --radius: 0.12rem; */
+  --font-serif: var(--font-serif);
+  --font-sans: var(--font-sans);
+  --color-background: var(--background)
 }
 
 @layer base {
-	body {
-		font-family: "IBM Plex Sans Variable", sans-serif;
-	}
+  :root {
+    --font-serif: "IBM Plex Sans Variable", serif;
+    --font-sans: "Inter Variable", sans-serif;
+    --background: var(--color-stone-50)
+  }
+
+  h1,h2,h3,h4,h5,h6 {
+    @apply font-serif
+  }
+
+  .ds-content {
+    @apply max-w-200 mx-auto px-8
+  }
+
+  .ds-breakout {
+    @apply max-w-250 mx-auto px-8
+  }
+
+  .ds-full {
+    @apply px-8 lg:px-10
+  }
 }
