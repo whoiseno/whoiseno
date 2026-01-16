@@ -1,5 +1,5 @@
 ---
-import Section from "@/components/Section.astro";
+import BlogList from "@/components/blog/BlogList.astro";
 import Root from "@/layouts/Root.astro";
 
 const title = "Home - Whoiseno?";
@@ -24,7 +24,7 @@ const description = "Discover the bits and pieces about myself, what makes me ti
       >, Nigeria. On my free time, I'm building <span class="font-semibold">✱✱✱✱✱✱✱✱</span>
     </p>
   </section>
-  <section>
+  <!-- <section>
     <div class="ds-content">
       <h2 class="scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0">
         Selected Works
@@ -33,13 +33,10 @@ const description = "Discover the bits and pieces about myself, what makes me ti
         Here are some of my projects, side projects, and experiments across the years.
       </p>
     </div>
-  </section>
-  <section>
-    <div class="ds-content">
-      <h2 class="scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0">Blog</h2>
-      <p class="leading-7 not-first:mt-6">
-        Here are some of my projects, side projects, and experiments across the years.
-      </p>
-    </div>
+  </section> -->
+  <section class="ds-content">
+    <h2 class="scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0">Blog</h2>
+    <p class="leading-7 not-first:mt-6">Articles, journals, and think pieces of my journey.</p>
+    <BlogList />
   </section>
 </Root>

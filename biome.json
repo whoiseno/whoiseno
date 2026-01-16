@@ -24,7 +24,8 @@
 		"formatter": {
 			"quoteStyle": "double",
 			"semicolons": "asNeeded",
-			"trailingCommas": "es5"
+			"trailingCommas": "es5",
+			"bracketSameLine": true
 		}
 	},
 	"assist": {

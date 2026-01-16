@@ -1,17 +1,17 @@
 ---
-import Section from "@/components/Section.astro";
-import Root from "@/layouts/Root.astro";
+import Section from "@/components/Section.astro"
+import Root from "@/layouts/Root.astro"
 
-import { getCollection } from "astro:content";
+import { getCollection } from "astro:content"
 
 const blog = (
-  await getCollection("blog", ({ data }) => {
-    return import.meta.env.PROD ? data.isPublished !== false : true;
-  })
-).sort((a, b) => b.data.createdAt.valueOf() - a.data.createdAt.valueOf());
+	await getCollection("blog", ({ data }) => {
+		return import.meta.env.PROD ? data.isPublished !== false : true
+	})
+).sort((a, b) => b.data.createdAt.valueOf() - a.data.createdAt.valueOf())
 
-const title = "Blog - Whoiseno?";
-const description = "Articles, journals, and think pieces of my journey.";
+const title = "Blog - Whoiseno?"
+const description = "Articles, journals, and think pieces of my journey."
 ---
 
 <Root
