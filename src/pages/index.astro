@@ -1,11 +1,42 @@
 ---
-import Section from "@/components/Section.astro"
-import RootLayout from "@/layouts/RootLayout.astro"
+import BlogList from "@/components/blog/BlogList.astro";
+import Root from "@/layouts/Root.astro";
+
+const title = "Home - Whoiseno?";
+const description = "Discover the bits and pieces about myself, what makes me tick, and more.";
 ---
 
-<RootLayout>
-  <Section>
-    <h1 class="font-semibold text-3xl">enoabasi &mdash; essien</h1>
-    <p class="pt-7 text-lg">Currently rebuilding my portfolio &mdash; Home page.</p>
-  </Section>
-</RootLayout>
+<Root
+  title={title}
+  description={description}
+  class="space-y-24"
+>
+  <section class="ds-content">
+    <h2 class="scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0">Introduction</h2>
+    <p class="leading-7 not-first:mt-6">
+      Hey I'm Enoabasi, known as the pseudonym <span class="font-semibold">whoiseno?</span> &mdash; a
+      software developer, and self-taught product designer who loves crafting thoughtful, user-centered,
+      and visually appealing interfaces. I am currently based in <a
+        class="link link--underline-hover text-base outline-none focus-visible:ring-2 focus-visible:ring-focus rounded-lg"
+        href="https://w.wiki/FsTX"
+        target="_blank"
+        >Abuja</a
+      >, Nigeria. On my free time, I'm building <span class="font-semibold">✱✱✱✱✱✱✱✱</span>
+    </p>
+  </section>
+  <!-- <section>
+    <div class="ds-content">
+      <h2 class="scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0">
+        Selected Works
+      </h2>
+      <p class="leading-7 not-first:mt-6">
+        Here are some of my projects, side projects, and experiments across the years.
+      </p>
+    </div>
+  </section> -->
+  <section class="ds-content">
+    <h2 class="scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0">Blog</h2>
+    <p class="leading-7 not-first:mt-6">Articles, journals, and think pieces of my journey.</p>
+    <BlogList />
+  </section>
+</Root>

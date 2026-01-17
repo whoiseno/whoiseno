@@ -1,0 +1,48 @@
+---
+import { ArrowRightIcon } from "@phosphor-icons/react";
+import BlogPostCard from "./BlogPostCard.astro";
+import Divider from "@/components/Divider.astro";
+import { getCollection } from "astro:content";
+import { formatDate } from "@/utils/formats.ts";
+
+const blog = (
+  await getCollection("blog", ({ data }) => {
+    return import.meta.env.PROD ? data.isPublished !== false : true;
+  })
+)
+  .sort((a, b) => b.data.createdAt.valueOf() - a.data.createdAt.valueOf())
+  .slice(0, 3);
+---
+
+<div class="mt-6 space-y-6">
+  {
+    blog.length >= 1 ? (
+      <ul class="space-y-8">
+    {
+      blog.map((post) => (
+        <li>
+          <BlogPostCard
+            date={formatDate(post.data.createdAt)}
+            title={post.data.title}
+            href={`/blog/${post.id}`}
+          />
+        </li>
+      ))
+    }
+  </ul>
+  <Divider>
+    <a
+      href="/blog"
+      class="button button--tertiary shadow-sm shadow-black/5 outline-none focus-visible:ring-2 focus-visible:ring-focus"
+      >Read more<ArrowRightIcon
+        className="size-4"
+        weight="fill"
+      /></a
+    >
+  </Divider>
+    ) : (
+      <p class="text-accent font-medium">No blog has been published</p>
+    )
+  }
+
+</div>

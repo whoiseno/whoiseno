@@ -1,22 +1,25 @@
 ---
-import RootLayout from "@/layouts/RootLayout.astro";
-import { render } from "astro:content";
-import { getCollection } from "astro:content";
-import Section from "@/components/Section.astro";
+import Root from "@/layouts/Root.astro"
+import { render } from "astro:content"
+import { getCollection } from "astro:content"
+import Section from "@/components/Section.astro"
 
 export async function getStaticPaths() {
-  const posts = await getCollection("blog");
-  return posts.map((post) => ({
-    params: { slug: post.id },
-    props: { post },
-  }));
+	const posts = await getCollection("blog")
+	return posts.map((post) => ({
+		params: { slug: post.id },
+		props: { post },
+	}))
 }
 
-const { post } = Astro.props;
-const { Content } = await render(post);
+const { post } = Astro.props
+const { Content } = await render(post)
 ---
 
-<RootLayout>
+<Root
+  title={post.data.title}
+  description={post.data.summary}
+>
   <Section>
     <div>
       <div class="flex flex-col items-center gap-y-8">
@@ -28,4 +31,4 @@ const { Content } = await render(post);
   <Section>
     <Content />
   </Section>
-</RootLayout>
+</Root>

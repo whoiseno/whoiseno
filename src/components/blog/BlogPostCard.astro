@@ -1,0 +1,23 @@
+---
+interface Props {
+  date?: string;
+  title?: string;
+  href?: string;
+}
+
+const { date, title, href } = Astro.props;
+---
+
+<article class="grid md:grid-cols-[100px_auto] gap-2 md:gap-4 items-baseline">
+  <div class="order-2 md:order-1">
+    <date class="text-muted shrink-0">{date}</date>
+  </div>
+  <div class="order-1 md:order-2">
+    <a
+      href={href}
+      class="focus-visible:outline-2 rounded-lg focus-visible:outline-focus hover:text-accent hover:underline hover:underline-offset-2 block w-fit"
+    >
+      <h3 class="scroll-m-20 text-xl font-semibold tracking-tight line-clamp-1">{title}</h3>
+    </a>
+  </div>
+</article>
