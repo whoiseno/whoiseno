@@ -12,10 +12,10 @@
 	"dependencies": {
 		"@astrojs/markdoc": "^0.15.10",
 		"@astrojs/react": "^4.4.2",
+		"@base-ui/react": "^1.1.0",
 		"@fontsource-variable/ibm-plex-sans": "^5.2.8",
 		"@fontsource-variable/inter": "^5.2.8",
 		"@phosphor-icons/react": "^2.1.10",
-		"@radix-ui/react-slot": "^1.2.4",
 		"@tailwindcss/vite": "^4.1.18",
 		"@types/react": "^19.2.8",
 		"@types/react-dom": "^19.2.3",
