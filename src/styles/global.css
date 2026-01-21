@@ -1,33 +1,163 @@
 @import "tailwindcss";
-@import "@heroui/styles";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@plugin "@tailwindcss/typography";
 
 @theme inline {
-  /* --radius: 0.12rem; */
-  --font-serif: var(--font-serif);
-  --font-sans: var(--font-sans);
-  --color-background: var(--background)
+  --font-serif: "IBM Plex Sans Variable", serif;
+  --font-sans: "Inter Variable", sans-serif;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+}
+
+:root {
+  --radius: 0.625rem;
+  --background:  oklch(0.98 0 0);
+  /* --background:  var(--color-stone-50); */
+  --foreground:  oklch(0.141 0.005 285.823);
+  --card:  var(--color-stone-50);
+  --card-foreground:  oklch(0.141 0.005 285.823);
+  --popover:  var(--color-stone-50);
+  --popover-foreground:  oklch(0.141 0.005 285.823);
+  --primary:  oklch(0.488 0.243 264.376);
+  --primary-foreground:  oklch(0.97 0.014 254.604);
+  --secondary:  oklch(0.967 0.001 286.375);
+  --secondary-foreground:  oklch(0.21 0.006 285.885);
+  --muted:  oklch(0.967 0.001 286.375);
+  --muted-foreground:  oklch(0.552 0.016 285.938);
+  --accent:  oklch(0.967 0.001 286.375);
+  --accent-foreground:  oklch(0.21 0.006 285.885);
+  --destructive:  oklch(0.577 0.245 27.325);
+  --border:  oklch(0.92 0.004 286.32);
+  --input:  oklch(0.92 0.004 286.32);
+  --ring:  oklch(0.708 0 0);
+  --chart-1:  oklch(0.809 0.105 251.813);
+  --chart-2:  oklch(0.623 0.214 259.815);
+  --chart-3:  oklch(0.546 0.245 262.881);
+  --chart-4:  oklch(0.488 0.243 264.376);
+  --chart-5:  oklch(0.424 0.199 265.638);
+  --sidebar:  oklch(0.985 0 0);
+  --sidebar-foreground:  oklch(0.141 0.005 285.823);
+  --sidebar-primary:  oklch(0.546 0.245 262.881);
+  --sidebar-primary-foreground:  oklch(0.97 0.014 254.604);
+  --sidebar-accent:  oklch(0.967 0.001 286.375);
+  --sidebar-accent-foreground:  oklch(0.21 0.006 285.885);
+  --sidebar-border:  oklch(0.92 0.004 286.32);
+  --sidebar-ring:  oklch(0.708 0 0);
+}
+
+.dark {
+  --background: oklch(0.147 0.004 49.25);
+  --foreground: oklch(0.985 0.001 106.423);
+  --card: oklch(0.216 0.006 56.043);
+  --card-foreground: oklch(0.985 0.001 106.423);
+  --popover: oklch(0.216 0.006 56.043);
+  --popover-foreground: oklch(0.985 0.001 106.423);
+  --primary: oklch(0.923 0.003 48.717);
+  --primary-foreground: oklch(0.216 0.006 56.043);
+  --secondary: oklch(0.268 0.007 34.298);
+  --secondary-foreground: oklch(0.985 0.001 106.423);
+  --muted: oklch(0.268 0.007 34.298);
+  --muted-foreground: oklch(0.709 0.01 56.259);
+  --accent: oklch(0.268 0.007 34.298);
+  --accent-foreground: oklch(0.985 0.001 106.423);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.553 0.013 58.071);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.216 0.006 56.043);
+  --sidebar-foreground: oklch(0.985 0.001 106.423);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0.001 106.423);
+  --sidebar-accent: oklch(0.268 0.007 34.298);
+  --sidebar-accent-foreground: oklch(0.985 0.001 106.423);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.553 0.013 58.071);
 }
 
 @layer base {
-  :root {
-    --font-serif: "IBM Plex Sans Variable", serif;
-    --font-sans: "Inter Variable", sans-serif;
-    --background: var(--color-stone-50)
+  * {
+    @apply border-border outline-ring/50;
   }
-
   h1,h2,h3,h4,h5,h6 {
     @apply font-serif
   }
+  body {
+    @apply bg-background text-foreground font-sans antialiased [text-size-adjust:100%];
+  }
+}
 
-  .ds-content {
-    @apply max-w-200 mx-auto px-8
+@layer components {
+  .link {
+    @apply inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive px-2 py-1 gap-0.5 has-[>svg]:px-2.5;
+
+    &.link--underline {
+      @apply decoration-transparent hover:underline hover:underline-offset-2 hover:decoration-2 hover:decoration-primary;
+    }
+
+    &.link--hover {
+      @apply hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50;
+    }
+
+    &.link--text {
+      @apply  hover:text-primary has-[>svg]:hover:text-primary;
+    }
   }
 
-  .ds-breakout {
-    @apply max-w-250 mx-auto px-8
+  main {
+    --padding-x: --spacing(4);
+    padding-top: --spacing(32);
+    display: grid;
+    grid-template-columns: 1fr min(var(--container-4xl), 100% - var(--padding-x) * 2) 1fr;
+    column-gap: var(--padding-x);
   }
 
-  .ds-full {
-    @apply px-8 lg:px-10
+  main > * {
+    grid-column: 2;
   }
 }

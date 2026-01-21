@@ -11,8 +11,24 @@ updatedAt: 01-14-2026 14:52
 
 ## Introduction
 
+```ts
+const _title = "Introduction to Astro";
+
+function displayTitleMetadata() {
+  if (typeof title === string) {
+    return `Title: ${_title}`
+  }
+}
+
+console.log(displayTitleMetadata())
+```
+
 ## What is draft mode?
 
 ## Setup
+
+```bash
+pnpm i astro
+```
 
 ## Conclusion

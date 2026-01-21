@@ -5,27 +5,29 @@ import {
 	GithubLogoIcon,
 	XLogoIcon,
 	PersonSimpleIcon,
-	PencilCircleIcon,
-	BlueprintIcon,
-} from "@phosphor-icons/react"
+	PersonSimpleSnowboardIcon,
+	PersonSimpleTaiChiIcon,
+} from "@phosphor-icons/react";
 
-import FooterLink from "@/components/FooterLink.astro"
+import Link from "@/components/Link.astro";
 ---
 
 <footer class="max-w-200 mx-auto px-4 py-15">
   <div class="grid gap-8 lg:grid-cols-[3fr_4fr] lg:gap-16">
-    <div class="grid gap-y-6 [&>p]:pl-4 [&>p]:text-sm [&>p]:text-muted">
-      <a
-        href="/"
-        class="text-lg lg:text-2xl font-semibold button button--ghost outline-none focus-visible:ring-2 focus-visible:ring-focus"
-      >
-        enoabasi &mdash; essien
-      </a>
+    <div class="grid gap-y-6 [&>p]:text-sm [&>p]:text-muted-foreground">
+      <div>
+        <Link
+          href="/"
+          class="text-lg lg:text-2xl font-semibold -ms-4"
+        >
+          enoabasi &mdash; essien
+        </Link>
+      </div>
       <p>I'm Enoabasi Essien and I'm a product designer, and software developer.</p>
       <p>This website is a collection of my thoughts and experiences.</p>
-      <p class="[&>span]:text-accent">
+      <p class="[&>span]:text-primary [&>span]:font-medium">
         &copy; 2002 - 2026 Enoabasi Essien - Powered by <span>Astro</span>, <span>Tailwind CSS</span
-        >, <span>HeroUI</span>, <span>Phosphor Icons</span>, <span>Keystatic</span> and <span
+        >, <span>Shadcn UI</span>, <span>Phosphor Icons</span>, <span>Keystatic</span> and <span
           >Netlify</span
         >.
       </p>
@@ -34,62 +36,77 @@ import FooterLink from "@/components/FooterLink.astro"
       <div>
         <p class="text-lg font-semibold pt-1 ps-3">Pages</p>
         <div class="pt-7 flex flex-col items-start gap-4">
-          <FooterLink href="/works">
-            <BlueprintIcon
+          <Link
+            href="/works"
+            variant={"ghost"}
+          >
+            <PersonSimpleSnowboardIcon
               className="size-6"
               weight="fill"
             />Works
-          </FooterLink>
-          <FooterLink href="/blog">
-            <PencilCircleIcon
+          </Link>
+          <Link
+            href="/blog"
+            variant={"ghost"}
+          >
+            <PersonSimpleTaiChiIcon
               className="size-6"
               weight="fill"
-            />Blog</FooterLink
+            />Blog</Link
           >
-          <FooterLink href="/about">
+          <Link
+            href="/about"
+            variant={"ghost"}
+          >
             <PersonSimpleIcon
               className="size-6"
               weight="fill"
-            />About</FooterLink
+            />About</Link
           >
         </div>
       </div>
       <div>
         <p class="text-lg font-semibold pt-1 ps-3">Contact</p>
         <div class="pt-7 flex flex-col items-start gap-4">
-          <FooterLink
+          <Link
             href="https://x.com/enoiscooked"
             target={"_blank"}
+            variant={"ghost"}
           >
             <XLogoIcon
               className="size-6"
               weight="fill"
             />Twitter
-          </FooterLink>
-          <FooterLink
+          </Link>
+          <Link
             href="https://github.com/whoiseno"
             target={"_blank"}
+            variant={"ghost"}
           >
             <GithubLogoIcon
               className="size-6"
               weight="fill"
             />GitHub
-          </FooterLink>
-          <FooterLink
+          </Link>
+          <Link
             href="https://www.linkedin.com/in/enoabasi-essien/"
             target={"_blank"}
+            variant={"ghost"}
           >
             <LinkedinLogoIcon
               className="size-6"
               weight="fill"
             />LinkedIn
-          </FooterLink>
-          <FooterLink href="mailto:humanwhodreams@gmail.com">
+          </Link>
+          <Link
+            href="mailto:humanwhodreams@gmail.com"
+            variant={"ghost"}
+          >
             <MailboxIcon
               className="size-6"
               weight="fill"
             />Email
-          </FooterLink>
+          </Link>
         </div>
       </div>
     </div>

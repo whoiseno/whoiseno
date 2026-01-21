@@ -1,7 +1,7 @@
 ---
-import { cn } from "@/utils/cn"
-import type { HTMLAttributes } from "astro/types"
-import { cva, type VariantProps } from "class-variance-authority"
+import { cn } from "@/utils/cn";
+import type { HTMLAttributes } from "astro/types";
+import { cva, type VariantProps } from "class-variance-authority";
 
 const sectionVariants = cva("", {
 	variants: {
@@ -21,11 +21,11 @@ const sectionVariants = cva("", {
 		variant: "default",
 		size: "default",
 	},
-})
+});
 
 export interface Props extends Omit<HTMLAttributes<"section">, "class:list">, VariantProps<typeof sectionVariants> {}
 
-const { variant, size, class: className, ...props } = Astro.props
+const { variant, size, class: className, ...props } = Astro.props;
 ---
 
 <section

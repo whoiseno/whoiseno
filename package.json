@@ -14,15 +14,15 @@
 		"@astrojs/react": "^4.4.2",
 		"@fontsource-variable/ibm-plex-sans": "^5.2.8",
 		"@fontsource-variable/inter": "^5.2.8",
-		"@heroui/react": "3.0.0-beta.3",
-		"@heroui/styles": "3.0.0-beta.3",
 		"@phosphor-icons/react": "^2.1.10",
+		"@radix-ui/react-slot": "^1.2.4",
 		"@tailwindcss/vite": "^4.1.18",
 		"@types/react": "^19.2.8",
 		"@types/react-dom": "^19.2.3",
 		"astro": "^5.16.9",
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
+		"lucide-react": "^0.562.0",
 		"react": "^19.2.3",
 		"react-dom": "^19.2.3",
 		"tailwind-merge": "^3.4.0",
@@ -30,6 +30,8 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.3.11",
+		"@tailwindcss/typography": "^0.5.19",
+		"tw-animate-css": "^1.4.0",
 		"vite-tsconfig-paths": "^6.0.4"
 	}
 }

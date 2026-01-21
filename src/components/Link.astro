@@ -1,0 +1,25 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import type { VariantProps } from "class-variance-authority";
+
+// biome-ignore lint/style/useImportType: Usuage of value as both
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/utils/cn";
+
+type AProps = HTMLAttributes<"a">;
+
+interface Props extends AProps {
+	variant?: VariantProps<typeof buttonVariants>["variant"];
+	size?: VariantProps<typeof buttonVariants>["size"];
+}
+
+const { href, variant = "ghost", size, ...props } = Astro.props;
+---
+
+<a
+  href={href}
+  class={cn(buttonVariants({ variant, size, class: props.class }))}
+  {...props}
+>
+  <slot />
+</a>

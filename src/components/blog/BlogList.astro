@@ -4,14 +4,15 @@ import BlogPostCard from "./BlogPostCard.astro";
 import Divider from "@/components/Divider.astro";
 import { getCollection } from "astro:content";
 import { formatDate } from "@/utils/formats.ts";
+import Link from "@/components/Link.astro";
 
 const blog = (
-  await getCollection("blog", ({ data }) => {
-    return import.meta.env.PROD ? data.isPublished !== false : true;
-  })
+	await getCollection("blog", ({ data }) => {
+		return import.meta.env.PROD ? data.isPublished !== false : true;
+	})
 )
-  .sort((a, b) => b.data.createdAt.valueOf() - a.data.createdAt.valueOf())
-  .slice(0, 3);
+	.sort((a, b) => b.data.createdAt.valueOf() - a.data.createdAt.valueOf())
+	.slice(0, 3);
 ---
 
 <div class="mt-6 space-y-6">
@@ -31,18 +32,16 @@ const blog = (
     }
   </ul>
   <Divider>
-    <a
+    <Link
       href="/blog"
-      class="button button--tertiary shadow-sm shadow-black/5 outline-none focus-visible:ring-2 focus-visible:ring-focus"
       >Read more<ArrowRightIcon
         className="size-4"
         weight="fill"
-      /></a
-    >
+      />
+      </Link>
   </Divider>
     ) : (
       <p class="text-accent font-medium">No blog has been published</p>
     )
   }
-
 </div>

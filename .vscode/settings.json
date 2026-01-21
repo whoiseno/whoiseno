@@ -10,11 +10,5 @@
 	"[css]": { "editor.defaultFormatter": "biomejs.biome" },
 	"[graphql]": { "editor.defaultFormatter": "biomejs.biome" },
 	"typescript.tsdk": "node_modules/typescript/lib",
-	"editor.formatOnSave": true,
-	"editor.formatOnPaste": true,
-	"editor.codeActionsOnSave": {
-		"source.fixAll.biome": "explicit",
-		"source.organizeImports.biome": "explicit"
-	},
 	"prettier.enable": false
 }

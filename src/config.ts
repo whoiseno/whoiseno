@@ -11,4 +11,4 @@ export const config = {
 		twitter: { url: "https://x.com/enoiscooked", handle: "@enoiscooked" },
 		linkedin: { url: "https://linkedin.com/enoabasi-essien", handle: "@enoabasi-essien" },
 	},
-}
+};
