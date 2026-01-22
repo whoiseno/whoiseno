@@ -11,7 +11,7 @@ type AProps = HTMLAttributes<"a">;
 interface Props extends AProps {
 	variant?: VariantProps<typeof buttonVariants>["variant"];
 	size?: VariantProps<typeof buttonVariants>["size"];
-  href: string | URL
+	href: string | URL;
 }
 
 const { href, variant = "ghost", size, ...props } = Astro.props;

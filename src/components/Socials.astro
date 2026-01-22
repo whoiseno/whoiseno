@@ -1,36 +1,30 @@
 ---
-import {
-  MailboxIcon,
-  LinkedinLogoIcon,
-  GithubLogoIcon,
-  XLogoIcon,
-  type Icon,
-} from "@phosphor-icons/react";
+import { MailboxIcon, LinkedinLogoIcon, GithubLogoIcon, XLogoIcon, type Icon } from "@phosphor-icons/react";
 
 import Link from "./Link.astro";
 
 interface SocialProps {
-  label: string;
-  href: string | URL;
-  icon: Icon;
+	label: string;
+	href: string | URL;
+	icon: Icon;
 }
 
 const socials: Array<SocialProps> = [
-  {
-    label: "Twitter",
-    href: "https://twitter.com/enoiscooked",
-    icon: XLogoIcon,
-  },
-  {
-    label: "GitHub",
-    href: "https://github.com/whoiseno",
-    icon: GithubLogoIcon,
-  },
-  {
-    label: "LinkedIn",
-    href: "https://linkedin.com/enoabasi-essein",
-    icon: LinkedinLogoIcon,
-  },
+	{
+		label: "Twitter",
+		href: "https://twitter.com/enoiscooked",
+		icon: XLogoIcon,
+	},
+	{
+		label: "GitHub",
+		href: "https://github.com/whoiseno",
+		icon: GithubLogoIcon,
+	},
+	{
+		label: "LinkedIn",
+		href: "https://linkedin.com/enoabasi-essein",
+		icon: LinkedinLogoIcon,
+	},
 ];
 ---
 

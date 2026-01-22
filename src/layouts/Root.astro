@@ -13,8 +13,8 @@ import Seo from "@/components/Seo.astro";
 import { cn } from "@/utils/cn";
 
 export interface Props extends HTMLAttributes<"main"> {
-  title?: string | undefined;
-  description?: string | undefined;
+	title?: string | undefined;
+	description?: string | undefined;
 }
 
 const { title, description, class: className } = Astro.props;
