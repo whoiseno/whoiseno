@@ -13,8 +13,8 @@ import Seo from "@/components/Seo.astro";
 import { cn } from "@/utils/cn";
 
 export interface Props extends HTMLAttributes<"main"> {
-	title?: string | undefined;
-	description?: string | undefined;
+  title?: string | undefined;
+  description?: string | undefined;
 }
 
 const { title, description, class: className } = Astro.props;
@@ -28,11 +28,13 @@ const { title, description, class: className } = Astro.props;
     />
   </head>
   <body>
-    <Header />
-    <main class={cn(className)}>
-      <slot />
-    </main>
-    <Footer />
+    <div class="max-w-173 mx-auto flex flex-col items-center px-4 sm:px-6 py-24 gap-y-24 [&>nav,main,footer]:w-full">
+      <Header />
+      <main class={cn("flex-1", className)}>
+        <slot />
+      </main>
+      <Footer />
+    </div>
   </body>
 </html>
 
