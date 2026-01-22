@@ -1,0 +1,70 @@
+---
+import {
+  MailboxIcon,
+  LinkedinLogoIcon,
+  GithubLogoIcon,
+  XLogoIcon,
+  type Icon,
+} from "@phosphor-icons/react";
+
+import Link from "./Link.astro";
+
+interface SocialProps {
+  label: string;
+  href: string | URL;
+  icon: Icon;
+}
+
+const socials: Array<SocialProps> = [
+  {
+    label: "Twitter",
+    href: "https://twitter.com/enoiscooked",
+    icon: XLogoIcon,
+  },
+  {
+    label: "GitHub",
+    href: "https://github.com/whoiseno",
+    icon: GithubLogoIcon,
+  },
+  {
+    label: "LinkedIn",
+    href: "https://linkedin.com/enoabasi-essein",
+    icon: LinkedinLogoIcon,
+  },
+];
+---
+
+<ul class="mt-4 flex gap-x-2 items-center">
+  {
+    socials.map((social) => (
+      <li>
+        <Link
+          href={social.href}
+          target={"_blank"}
+          variant={"secondary"}
+          size={"lg"}
+          class={"text-base rounded-full"}
+        >
+          <social.icon
+            className="size-5"
+            weight="fill"
+          />
+          {social.label}
+        </Link>
+      </li>
+    ))
+  }
+  <li>
+    <Link
+      href="mailto:humanwhodreams@gmail.com"
+      variant={"secondary"}
+      size={"lg"}
+      class={"text-base rounded-full"}
+    >
+      <MailboxIcon
+        className="size-5"
+        weight="fill"
+      />humanwhodreams@gmail.com
+    </Link>
+  </li>
+</ul>

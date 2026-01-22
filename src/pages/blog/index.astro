@@ -1,9 +1,7 @@
 ---
 import BlogPostCard from "@/components/blog/BlogPostCard.astro";
-import Divider from "@/components/Divider.astro";
 import Root from "@/layouts/Root.astro";
 import { formatDate } from "@/utils/formats";
-import { ArrowRightIcon } from "@phosphor-icons/react";
 
 import { getCollection } from "astro:content";
 
@@ -13,7 +11,7 @@ const blog = (
 	})
 ).sort((a, b) => b.data.createdAt.valueOf() - a.data.createdAt.valueOf());
 
-const title = "Blog - Whoiseno?";
+const title = "Blog";
 const description = "Articles, journals, and think pieces of my journey.";
 ---
 

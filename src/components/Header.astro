@@ -10,6 +10,10 @@ interface LinkProps {
 }
 
 const links: Array<LinkProps> = [
+  	{
+	  label: "Home",
+	  href: "/",
+	},
 	{
 	  label: "Works",
 	  href: "/works",
@@ -21,10 +25,6 @@ const links: Array<LinkProps> = [
 	{
 	  label: "About",
 	  href: "/about",
-	},
-	{
-	  label: "Contact",
-	  href: "/contact",
 	},
 ];
 ---
@@ -45,7 +45,7 @@ const links: Array<LinkProps> = [
             <Link
               href={link.href}
               class:list={{
-                "underline underline-offset-2 decoration-4 decoration-blue-500": isActive,
+                "underline underline-offset-10 decoration-4 decoration-blue-500": isActive,
               }}
             >
               {link.label}

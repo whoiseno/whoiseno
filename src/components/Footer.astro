@@ -1,120 +1,14 @@
 ---
-import {
-	MailboxIcon,
-	LinkedinLogoIcon,
-	GithubLogoIcon,
-	XLogoIcon,
-	PersonSimpleIcon,
-	PersonSimpleSnowboardIcon,
-	PersonSimpleTaiChiIcon,
-} from "@phosphor-icons/react";
 
-import Link from "@/components/Link.astro";
 ---
 
 <footer class="py-15">
-  <div class="grid gap-8 lg:grid-cols-[3fr_4fr] lg:gap-16">
-    <div class="flex flex-col gap-y-6 [&>p]:text-sm [&>p]:text-muted-foreground">
-      <div>
-        <Link
-          href="/"
-          class="text-lg font-semibold px-0"
-        >
-          enoabasi &mdash; essien
-        </Link>
-      </div>
-      <p>I'm Enoabasi Essien and I'm a product designer, and software developer.</p>
-      <p>This website is a collection of my thoughts and experiences.</p>
-      <div>
-        <span class="px-4 py-1 rounded-md font-medium text-sm bg-secondary text-secondary-foreground">
-          v1.0
-        </span>
-      </div>
-    </div>
-    <div class="flex flex-col items-start gap-y-8 md:flex-row md:justify-between md:gap-y-0">
-      <div>
-        <p class="text-lg font-semibold pt-1 ps-3">Pages</p>
-        <div class="pt-7 flex flex-col items-start gap-4">
-          <Link
-            href="/works"
-            variant={"ghost"}
-            class={"text-muted-foreground"}
-          >
-            <PersonSimpleSnowboardIcon
-              className="size-6"
-              weight="fill"
-            />Works
-          </Link>
-          <Link
-            href="/blog"
-            variant={"ghost"}
-            class={"text-muted-foreground"}
-          >
-            <PersonSimpleTaiChiIcon
-              className="size-6"
-              weight="fill"
-            />Blog</Link
-          >
-          <Link
-            href="/about"
-            variant={"ghost"}
-            class={"text-muted-foreground"}
-          >
-            <PersonSimpleIcon
-              className="size-6"
-              weight="fill"
-            />About</Link
-          >
-        </div>
-      </div>
-      <div>
-        <p class="text-lg font-semibold pt-1 ps-3">Contact</p>
-        <div class="pt-7 flex flex-col items-start gap-4">
-          <Link
-            href="https://x.com/enoiscooked"
-            target={"_blank"}
-            variant={"ghost"}
-            class={"text-muted-foreground"}
-          >
-            <XLogoIcon
-              className="size-6"
-              weight="fill"
-            />Twitter
-          </Link>
-          <Link
-            href="https://github.com/whoiseno"
-            target={"_blank"}
-            variant={"ghost"}
-            class={"text-muted-foreground"}
-          >
-            <GithubLogoIcon
-              className="size-6"
-              weight="fill"
-            />GitHub
-          </Link>
-          <Link
-            href="https://www.linkedin.com/in/enoabasi-essien/"
-            target={"_blank"}
-            variant={"ghost"}
-            class={"text-muted-foreground"}
-          >
-            <LinkedinLogoIcon
-              className="size-6"
-              weight="fill"
-            />LinkedIn
-          </Link>
-          <Link
-            href="mailto:humanwhodreams@gmail.com"
-            variant={"ghost"}
-            class={"text-muted-foreground"}
-          >
-            <MailboxIcon
-              className="size-6"
-              weight="fill"
-            />Email
-          </Link>
-        </div>
-      </div>
+  <div class="flex flex-col items-center text-center gap-y-6 [&>p]:text-muted-foreground">
+    <p>This website is a collection of my thoughts and experiences.</p>
+    <div
+      class="px-4 py-2 rounded-full font-semibold text-sm bg-secondary text-secondary-foreground"
+    >
+      <span class="text-muted-foreground">v</span> 1.0
     </div>
   </div>
 </footer>
