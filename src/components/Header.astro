@@ -10,30 +10,30 @@ interface LinkProps {
 }
 
 const links: Array<LinkProps> = [
-	// {
-	//   label: "Works",
-	//   href: "/works",
-	// },
+	{
+	  label: "Works",
+	  href: "/works",
+	},
 	{
 		label: "Blog",
 		href: "/blog",
 	},
-	// {
-	//   label: "About",
-	//   href: "/about",
-	// },
-	// {
-	//   label: "Contact",
-	//   href: "/contact",
-	// },
+	{
+	  label: "About",
+	  href: "/about",
+	},
+	{
+	  label: "Contact",
+	  href: "/contact",
+	},
 ];
 ---
 
-<nav class="fixed top-0 z-20 inset-x-0">
-  <div class="max-w-4xl mx-auto px-4 py-2 flex items-center justify-between">
+<nav class="sticky top-0 z-6">
+  <div class="flex items-center justify-between">
     <Link
       href="/"
-      class="text-lg lg:text-2xl font-semibold"
+      class="text-lg font-semibold px-0"
     >
       enoabasi &mdash; essien
     </Link>
