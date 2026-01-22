@@ -49,118 +49,87 @@
   --radius-3xl: calc(var(--radius) + 12px);
   --radius-4xl: calc(var(--radius) + 16px);
 }
+
 :root {
-  --radius: 0.625rem;
-
-  --background: oklch(0.98 0.002 264);
-  --foreground: oklch(0.18 0.005 264);
-
-  --card: oklch(0.967 0.002 264);
-  --card-foreground: oklch(0.18 0.005 264);
-
-  --popover: oklch(0.94 0.002 264);
-  --popover-foreground: oklch(0.18 0.005 264);
-
-  --primary: oklch(0.55 0.16 250);
-  --primary-foreground: oklch(0.94 0.002 264);
-
-  --secondary: oklch(0.94 0.002 264);
-  --secondary-foreground: oklch(0.18 0.005 264);
-
-  --muted: oklch(0.94 0.002 264);
-  --muted-foreground: oklch(0.71 0.008 264);
-
-  --accent: oklch(0.94 0.002 264);
-  --accent-foreground: oklch(0.18 0.005 264);
-
-  --destructive: oklch(0.44 0.21 12);
-  --destructive-foreground: oklch(0.94 0.002 264);
-
-  --warning: oklch(0.55 0.13 70);
-  --warning-foreground: oklch(0.94 0.002 264);
-
-  --success: oklch(0.45 0.10 165);
-  --success-foreground: oklch(0.94 0.002 264);
-
-  --border: oklch(0.81 0.006 264);
-  --input: oklch(0.81 0.006 264);
-  --ring: oklch(0.55 0.16 250);
+  --radius: 0.55rem;
+  --background: oklch(96.7% 0.001 286.375);
+  --foreground: oklch(0.141 0.005 285.823);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.141 0.005 285.823);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.141 0.005 285.823);
+  --primary: oklch(0.488 0.243 264.376);
+  --primary-foreground: oklch(0.97 0.014 254.604);
+  --secondary: oklch(92% 0.004 286.32);
+  --secondary-foreground: oklch(0.21 0.006 285.885);
+  --muted: oklch(92% 0.004 286.32);
+  --muted-foreground: oklch(0.552 0.016 285.938);
+  --accent: oklch(92% 0.004 286.32);
+  --accent-foreground: oklch(0.21 0.006 285.885);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(87.1% 0.006 286.286);
+  --input: oklch(87.1% 0.006 286.286);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.809 0.105 251.813);
+  --chart-2: oklch(0.623 0.214 259.815);
+  --chart-3: oklch(0.546 0.245 262.881);
+  --chart-4: oklch(0.488 0.243 264.376);
+  --chart-5: oklch(0.424 0.199 265.638);
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.141 0.005 285.823);
+  --sidebar-primary: oklch(0.546 0.245 262.881);
+  --sidebar-primary-foreground: oklch(0.97 0.014 254.604);
+  --sidebar-accent: oklch(0.967 0.001 286.375);
+  --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
+  --sidebar-border: oklch(0.92 0.004 286.32);
+  --sidebar-ring: oklch(0.708 0 0);
 }
 
 .dark {
-  --background: oklch(0.18 0.005 264);
-  --foreground: oklch(0.94 0.002 264);
-
-  --card: oklch(0.20 0.008 264);
-  --card-foreground: oklch(0.94 0.002 264);
-
-  --popover: oklch(0.20 0.008 264);
-  --popover-foreground: oklch(0.94 0.002 264);
-
-  --primary: oklch(0.55 0.16 250);
-  --primary-foreground: oklch(0.94 0.002 264);
-
-  --secondary: oklch(0.251 0.008 264);
-  --secondary-foreground: oklch(0.94 0.002 264);
-
-  --muted: oklch(0.20 0.008 264);
-  --muted-foreground: oklch(0.60 0.010 264);
-
-  --accent: oklch(0.251 0.008 264);
-  --accent-foreground: oklch(0.94 0.002 264);
-
-  --destructive: oklch(0.65 0.20 12);
-  --destructive-foreground: oklch(0.94 0.002 264);
-
-  --warning: oklch(0.55 0.13 70);
-  --warning-foreground: oklch(0.18 0.005 264);
-
-  --success: oklch(0.55 0.12 165);
-  --success-foreground: oklch(0.94 0.002 264);
-
-  --border: oklch(0.26 0.010 264);
-  --input: oklch(0.26 0.010 264);
-  --ring: oklch(0.65 0.17 250);
+  --background: var(--color-neutral-900);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.21 0.006 285.885);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.21 0.006 285.885);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.488 0.243 264.376);
+  --primary-foreground: oklch(0.97 0.014 254.604);
+  --secondary: oklch(0.274 0.006 286.033);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.274 0.006 286.033);
+  --muted-foreground: oklch(0.705 0.015 286.067);
+  --accent: oklch(0.274 0.006 286.033);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.809 0.105 251.813);
+  --chart-2: oklch(0.623 0.214 259.815);
+  --chart-3: oklch(0.546 0.245 262.881);
+  --chart-4: oklch(0.488 0.243 264.376);
+  --chart-5: oklch(0.424 0.199 265.638);
+  --sidebar: oklch(0.21 0.006 285.885);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.623 0.214 259.815);
+  --sidebar-primary-foreground: oklch(0.97 0.014 254.604);
+  --sidebar-accent: oklch(0.274 0.006 286.033);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.439 0 0);
 }
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border;
   }
   h1,h2,h3,h4,h5,h6 {
     @apply font-serif
   }
   body {
-    @apply bg-background text-foreground font-sans antialiased [text-size-adjust:100%];
+    @apply bg-background text-foreground font-sans antialiased [text-size-adjust:100%] relative;
   }
-}
-
-@layer components {
-  .link {
-    @apply inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive px-2 py-1 gap-0.5 has-[>svg]:px-2.5;
-
-    &.link--underline {
-      @apply decoration-transparent hover:underline hover:underline-offset-2 hover:decoration-2 hover:decoration-primary;
-    }
-
-    &.link--hover {
-      @apply hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50;
-    }
-
-    &.link--text {
-      @apply  hover:text-primary has-[>svg]:hover:text-primary;
-    }
-  }
-
-  main {
-    --padding-x: --spacing(4);
-    padding-top: --spacing(32);
-    display: grid;
-    grid-template-columns: 1fr min(var(--container-4xl), 100% - var(--padding-x) * 2) 1fr;
-    column-gap: var(--padding-x);
-  }
-
-  main > * {
-    grid-column: 2;
+  .root {
+    isolation: isolate;
   }
 }
