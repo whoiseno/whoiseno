@@ -1,6 +1,7 @@
 // @ts-check
 
 import markdoc from "@astrojs/markdoc";
+import netlify from "@astrojs/netlify";
 import react from "@astrojs/react";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
@@ -9,9 +10,9 @@ import { config } from "./src/config";
 
 export default defineConfig({
 	site: config.site,
-	output: "static",
 	vite: {
 		plugins: [tsconfigPaths(), tailwindcss()],
 	},
 	integrations: [react(), markdoc()],
+	adapter: netlify(),
 });

@@ -1,22 +1,22 @@
 ---
+export const prerender = false;
+
 import { render } from "astro:content";
-import { getCollection } from "astro:content";
 
 import Root from "@/layouts/Root.astro";
 import Prose from "@/components/Prose.astro";
+import { getBlogById } from "@/data/blog";
 
-export async function getStaticPaths() {
-	const posts = await getCollection("blog");
-	return posts.map((post) => ({
-		params: { slug: post.id },
-		props: { post },
-	}));
+const { slug } = Astro.params;
+
+if (slug === undefined) {
+	return Astro.redirect("/404");
 }
 
-const { post } = Astro.props;
+const post = await getBlogById(slug);
 
-if (!post) {
-	throw new Error("Post could not be found");
+if (post === undefined) {
+	return Astro.redirect("/404");
 }
 
 const { Content } = await render(post);

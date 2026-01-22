@@ -107,3 +107,7 @@
     isolation: isolate;
   }
 }
+
+@utility max-section-gap {
+  @apply space-y-16
+}

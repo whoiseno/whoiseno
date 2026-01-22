@@ -1,15 +1,12 @@
 ---
-import BlogPostCard from "@/components/blog/BlogPostCard.astro";
 import Root from "@/layouts/Root.astro";
 import { formatDate } from "@/utils/formats";
+import { getAllBlogs } from "@/data/blog";
+import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { cn } from "@/utils/cn";
+import { buttonVariants } from "@/components/ui/button";
 
-import { getCollection } from "astro:content";
-
-const blog = (
-	await getCollection("blog", ({ data }) => {
-		return import.meta.env.PROD ? data.isPublished !== false : true;
-	})
-).sort((a, b) => b.data.createdAt.valueOf() - a.data.createdAt.valueOf());
+const blogs = await getAllBlogs();
 
 const title = "Blog";
 const description = "Articles, journals, and think pieces of my journey.";
@@ -18,27 +15,56 @@ const description = "Articles, journals, and think pieces of my journey.";
 <Root
   title={title}
   description={description}
+  class="max-section-gap"
 >
-  <section class="ds-content">
+  <hgroup>
+    <h1 class="font-semibold text-3xl">Blog</h1>
+    <p class="leading-7 not-first:mt-6">Articles, journals, and think pieces of my journey.</p>
+  </hgroup>
+  <section>
     <div>
-      <h1 class="font-semibold text-3xl">Blog</h1>
-      <p class="leading-7 not-first:mt-6">Articles, journals, and think pieces of my journey.</p>
-    </div>
-    <div class="mt-6 space-y-6">
       {
-        blog.length >= 1 ?
-          <ul class="space-y-8">
-            {blog.map((post) => (
-              <li>
-                <BlogPostCard
-                  date={formatDate(post.data.createdAt)}
-                  title={post.data.title}
-                  href={`/blog/${post.id}`}
-                />
-              </li>
-            ))}
-          </ul>
-        : <p class="text-accent font-medium">No blog has been published</p>
+        blogs.length > 0 ?
+          <div class="space-y-10">
+            <ul class="space-y-4">
+              {blogs.map(async (blog) => {
+                return (
+                  <li>
+                    <Card className="dark:hover:ring-2 dark:hover:ring-primary/70 ease-out duration-150 transition-shadow">
+                      <CardHeader>
+                        <CardTitle>
+                          <a
+                            href={`blog/${blog.id}`}
+                            class={cn(
+                              buttonVariants({
+                                variant: "ghost",
+                                size: "sm",
+                                class: "text-base -ms-2.5",
+                              })
+                            )}
+                          >
+                            {blog.data.title}
+                          </a>
+                        </CardTitle>
+                        <CardDescription className="line-clamp-1">
+                          {blog.data.summary}
+                        </CardDescription>
+                      </CardHeader>
+                      <CardFooter>
+                        <p class="text-muted-foreground font-medium">
+                          {formatDate(blog.data.createdAt)}
+                        </p>
+                      </CardFooter>
+                    </Card>
+                  </li>
+                );
+              })}
+            </ul>
+            <blockquote class="text-sm text-muted-foreground text-center">
+              "The only true wisdom is in knowing you know nothing." - Socrates
+            </blockquote>
+          </div>
+        : <p class="font-medium">No blog posts has been published</p>
       }
     </div>
   </section>

@@ -11,6 +11,7 @@
 	},
 	"dependencies": {
 		"@astrojs/markdoc": "^0.15.10",
+		"@astrojs/netlify": "^6.6.4",
 		"@astrojs/react": "^4.4.2",
 		"@base-ui/react": "^1.1.0",
 		"@fontsource-variable/ibm-plex-sans": "^5.2.8",
@@ -22,6 +23,7 @@
 		"astro": "^5.16.9",
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
+		"cmdk": "^1.1.1",
 		"lucide-react": "^0.562.0",
 		"react": "^19.2.3",
 		"react-dom": "^19.2.3",
