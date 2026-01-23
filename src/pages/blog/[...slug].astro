@@ -6,17 +6,21 @@ import { render } from "astro:content";
 import Root from "@/layouts/Root.astro";
 import Prose from "@/components/Prose.astro";
 import { getBlogById } from "@/data/blog";
+import Link from "@/components/Link.astro";
+import { ArrowLeftIcon, ShareNetworkIcon } from "@phosphor-icons/react";
+import { Button } from "@/components/ui/button";
+import ScrollToTop from "@/components/widgets/ScrollToTop.astro"
 
 const { slug } = Astro.params;
 
 if (slug === undefined) {
-	return Astro.redirect("/404");
+  return Astro.redirect("/404");
 }
 
 const post = await getBlogById(slug);
 
 if (post === undefined) {
-	return Astro.redirect("/404");
+  return Astro.redirect("/404");
 }
 
 const { Content } = await render(post);
@@ -26,11 +30,26 @@ const { Content } = await render(post);
   title={post.data.title}
   description={post.data.summary}
 >
-  <h1>
-    {post.data.title}
-  </h1>
-  <p>{post.data.summary}</p>
+  <header class="flex items-center justify-between mb-12">
+    <Link
+      href="/blog"
+      variant="secondary"
+    >
+      <ArrowLeftIcon weight="fill" />Back
+    </Link>
+    <Button variant={"secondary"}>
+      <ShareNetworkIcon weight="fill" />Share
+    </Button>
+  </header>
   <Prose>
+    <hgroup class="text-center">
+      <h1>
+        {post.data.title}
+      </h1>
+      <p>{post.data.summary}</p>
+      <div class="text-lg text-muted-foreground my-6">•••</div>
+    </hgroup>
     <Content class="prose prose-stone" />
   </Prose>
+  <ScrollToTop />
 </Root>
