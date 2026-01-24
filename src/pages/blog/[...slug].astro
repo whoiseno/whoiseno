@@ -1,16 +1,15 @@
 ---
 import { render } from "astro:content";
-
 import Root from "@/layouts/Root.astro";
 import Prose from "@/components/Prose.astro";
-import { getAllBlogs } from "@/data/blog";
 import Link from "@/components/Link.astro";
 import { ArrowLeftIcon } from "@phosphor-icons/react";
 import ScrollToTop from "@/components/widgets/ScrollToTop.astro";
 import Copy from "@/components/widgets/Copy.astro";
+import { getAllPosts } from "@/data/posts";
 
 export async function getStaticPaths() {
-	const posts = await getAllBlogs();
+	const posts = await getAllPosts();
 	return posts.map((post) => ({
 		params: { slug: post.id },
 		props: { post },

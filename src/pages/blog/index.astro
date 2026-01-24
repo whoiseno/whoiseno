@@ -1,12 +1,12 @@
 ---
 import Root from "@/layouts/Root.astro";
 import { formatDate } from "@/utils/formats";
-import { getAllBlogs } from "@/data/blog";
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/utils/cn";
 import { buttonVariants } from "@/components/ui/button";
+import { getAllPosts } from "@/data/posts";
 
-const blogs = await getAllBlogs();
+const posts = await getAllPosts();
 
 const title = "Blog";
 const description = "Articles, journals, and think pieces of my journey.";
@@ -24,17 +24,17 @@ const description = "Articles, journals, and think pieces of my journey.";
   <section>
     <div>
       {
-        blogs.length > 0 ?
+        posts.length > 0 ?
           <div class="space-y-10">
             <ul class="space-y-4">
-              {blogs.map(async (blog) => {
+              {posts.map(async (post) => {
                 return (
                   <li>
                     <Card>
                       <CardHeader>
                         <CardTitle>
                           <a
-                            href={`/blog/${blog.id}`}
+                            href={`/blog/${post.id}`}
                             class={cn(
                               buttonVariants({
                                 variant: "secondary-ghost",
@@ -42,18 +42,18 @@ const description = "Articles, journals, and think pieces of my journey.";
                                 class: "hover:text-primary text-base -ms-3",
                               })
                             )}
-                            transition:name={`title_${blog.data.title}`}
+                            transition:name={`title_${post.data.title}`}
                           >
-                            {blog.data.title}
+                            {post.data.title}
                           </a>
                         </CardTitle>
                         <CardDescription className="line-clamp-1">
-                          {blog.data.summary}
+                          {post.data.summary}
                         </CardDescription>
                       </CardHeader>
                       <CardFooter>
                         <p class="text-muted-foreground font-medium">
-                          {formatDate(blog.data.createdAt)}
+                          {formatDate(post.data.createdAt)}
                         </p>
                       </CardFooter>
                     </Card>
