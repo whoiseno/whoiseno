@@ -43,6 +43,9 @@ export default config({
 							publicPath: "/content/posts",
 						},
 					},
+					components: {
+						/* TODO: Add custom components */
+					},
 				}),
 			},
 			slugField: "title",

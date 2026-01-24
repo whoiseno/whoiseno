@@ -5,10 +5,10 @@ import { CheckIcon, CopyIcon } from "@phosphor-icons/react";
 import type { VariantProps } from "class-variance-authority";
 
 interface Props {
-  textToCopy: string;
-  className?: string;
-  variant?: VariantProps<typeof buttonVariants>["variant"];
-  size?: Exclude<VariantProps<typeof buttonVariants>["size"], "default" | "xs" | "sm" | "lg">;
+	textToCopy: string;
+	className?: string;
+	variant?: VariantProps<typeof buttonVariants>["variant"];
+	size?: Exclude<VariantProps<typeof buttonVariants>["size"], "default" | "xs" | "sm" | "lg">;
 }
 
 const { textToCopy, size, className, variant = "secondary" } = Astro.props;
