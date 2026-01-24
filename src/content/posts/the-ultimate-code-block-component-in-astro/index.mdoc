@@ -1,0 +1,37 @@
+---
+title: The Ultimate Code Block Component in Astro
+summary: >-
+  Code blocks are hard to get right in Astro. In this article, you will learn
+  how to build a custom code block component for your Astro content.
+draft: true
+createdAt: 2026-01-24T23:28:00.000Z
+updatedAt: 2026-01-24T23:28:00.000Z
+---
+## What is a code block?
+
+## The syntax
+
+```src/data/posts.ts
+import { getCollection } from "astro:content";
+
+export async function getAllPosts() {
+	const res = await getCollection("posts", ({ data }) => {
+		return import.meta.env.PROD ? data.draft !== true : true;
+	});
+
+	if (!res) {
+		throw Error("[api/v1/posts]: Internal Server Error");
+	}
+
+	const posts = res.sort((a, b) => b.data.createdAt.valueOf() - a.data.createdAt.valueOf());
+
+	return posts;
+}
+
+```
+
+## The features and design
+
+## Conclusion
+
+## Acknowledgements

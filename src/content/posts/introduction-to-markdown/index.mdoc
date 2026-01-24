@@ -3,12 +3,100 @@ title: Introduction to Markdown
 summary: An introduction to markdown and it's use cases.
 draft: false
 createdAt: 2026-01-24T22:46:00.000Z
-updatedAt: 2026-01-24T22:46:00.000Z
+updatedAt: 2026-01-24T23:57:00.000Z
 ---
-## What is Markdown?
+# Heading 01
 
-## Why Markdown?
+## Heading 02
 
-## Markdown Syntax
+### Heading 03
 
-## Conclusion
+#### Heading 04
+
+##### Heading 05
+
+###### Heading 06
+
+---
+
+Paragraph, there also modifiers available for styling paragraphs such as **bold**, *italic*, and ~~strike-through~~. You can insert links, [watch this video](https://youtu.be/dQw4w9WgXcQ?si=KyfJF71DiL1faYyT).
+
+---
+
+This is a code element `console.log("hello world");`
+
+---
+
+This is a code block. The code below fetches content from a blog and returns the sorted array of posts.
+
+```ts
+import { getCollection } from "astro:content";
+
+export async function getAllPosts() {
+	const res = await getCollection("posts", ({ data }) => {
+		return import.meta.env.PROD ? data.draft !== true : true;
+	});
+
+	if (!res) {
+		throw Error("[api/v1/posts]: Internal Server Error");
+	}
+
+	const posts = res.sort((a, b) => b.data.createdAt.valueOf() - a.data.createdAt.valueOf());
+
+	return posts;
+}
+```
+
+---
+
+This is an image element.
+
+![A code sample of a button component.](/content/posts/introduction-to-markdown/screenshot.png)
+
+---
+
+This is an unordered list
+
+- unordered item 01
+
+  - Child unordered item 01
+    - Grand child unordered item 01
+
+- unordered item 02
+
+  ---
+
+This is an ordered list
+
+1. unordered item 01
+
+   1. Child unordered item 01
+      1. Grand child unordered item 01
+
+1. unordered item 02
+
+   ---
+
+> This is a blockquote
+> 
+> You can also multiline in the blockquote element.
+
+---
+
+This is a table element.
+
+{% table %}
+- Token
+- Desktop
+- Mobile
+---
+- space
+- 8px
+- 4px
+---
+- space-large
+- 16px
+- 8px
+{% /table %}
+
+A table showing some rows and columns.
