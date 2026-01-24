@@ -1,6 +1,5 @@
 ---
 import Link from "@/components/Link.astro";
-import { Theme } from "@/components/ui/theme.tsx";
 
 const pathname = new URL(Astro.request.url).pathname;
 
@@ -57,7 +56,6 @@ const links: Array<LinkProps> = [
           );
         })
       }
-      <Theme client:load />
     </div>
   </div>
 </nav>
