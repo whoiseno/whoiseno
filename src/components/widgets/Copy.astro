@@ -39,7 +39,8 @@ const {
 </Button>
 
 <script>
-  document.addEventListener("astro:page-load", () => {
+  function initCopyToClipboard() {
+
     const buttons = document.querySelectorAll("#copy-to-clipboard-btn");
 
     buttons.forEach((button) => {
@@ -83,5 +84,7 @@ const {
         }
       });
     });
-  });
+
+  }
+  document.addEventListener("astro:page-load", initCopyToClipboard);
 </script>
