@@ -1,30 +1,25 @@
 ---
-export const prerender = false;
-
 import { render } from "astro:content";
 
 import Root from "@/layouts/Root.astro";
 import Prose from "@/components/Prose.astro";
-import { getBlogById } from "@/data/blog";
+import { getAllBlogs, getBlogById } from "@/data/blog";
 import Link from "@/components/Link.astro";
 import { ArrowLeftIcon } from "@phosphor-icons/react";
 import ScrollToTop from "@/components/widgets/ScrollToTop.astro";
 import Copy from "@/components/widgets/Copy.astro";
 
-const { slug } = Astro.params;
-
-if (slug === undefined) {
-	return Astro.redirect("/404");
-}
-
-const post = await getBlogById(slug);
-
-if (post === undefined) {
-	return Astro.redirect("/404");
+export async function getStaticPaths() {
+	const posts = await getAllBlogs();
+	return posts.map((post) => ({
+		params: { slug: post.id },
+		props: { post },
+	}));
 }
 
 const permalink = new URL(Astro.url.pathname, Astro.url.origin).href.replace(/\/+$/, "");
 
+const { post } = Astro.props;
 const { Content } = await render(post);
 ---
 
