@@ -10,6 +10,8 @@ const blogs = await getAllBlogs();
 
 const title = "Blog";
 const description = "Articles, journals, and think pieces of my journey.";
+
+console.log(blogs)
 ---
 
 <Root
@@ -34,7 +36,7 @@ const description = "Articles, journals, and think pieces of my journey.";
                       <CardHeader>
                         <CardTitle>
                           <a
-                            href={`blog/${blog.id}`}
+                            href={`/blog/${blog.id}`}
                             class={cn(
                               buttonVariants({
                                 variant: "secondary-ghost",

@@ -14,13 +14,13 @@ import Copy from "@/components/widgets/Copy.astro";
 const { slug } = Astro.params;
 
 if (slug === undefined) {
-  return Astro.redirect("/404");
+	return Astro.redirect("/404");
 }
 
 const post = await getBlogById(slug);
 
 if (post === undefined) {
-  return Astro.redirect("/404");
+	return Astro.redirect("/404");
 }
 
 const permalink = new URL(Astro.url.pathname, Astro.url.origin).href.replace(/\/+$/, "");
