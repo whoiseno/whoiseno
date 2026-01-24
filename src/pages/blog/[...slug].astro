@@ -50,7 +50,7 @@ const { Content } = await render(post);
   </header>
   <Prose>
     <hgroup class="text-center">
-      <h1>
+      <h1 transition:name={`title_${post.data.title}`}>
         {post.data.title}
       </h1>
       <p>{post.data.summary}</p>
