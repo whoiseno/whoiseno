@@ -30,16 +30,16 @@ const description = "Articles, journals, and think pieces of my journey.";
               {blogs.map(async (blog) => {
                 return (
                   <li>
-                    <Card className="dark:hover:ring-2 dark:hover:ring-primary/70 ease-out duration-150 transition-shadow">
+                    <Card>
                       <CardHeader>
                         <CardTitle>
                           <a
                             href={`blog/${blog.id}`}
                             class={cn(
                               buttonVariants({
-                                variant: "ghost",
+                                variant: "secondary-ghost",
                                 size: "sm",
-                                class: "text-base -ms-2.5",
+                                class: "hover:text-primary text-base -ms-3",
                               })
                             )}
                           >
