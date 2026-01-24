@@ -2,6 +2,15 @@
 
 ---
 
-<div class="prose prose-stone dark:prose-invert">
+<div
+  class:list={[
+    /* base styles */
+    "prose prose-zinc dark:prose-invert",
+    /* image styles */
+    "prose-img:rounded-xl prose-img:ring-6 prose-img:ring-muted/50",
+    /* link styles */
+    "prose-a:underline-offset-2 prose-a:hover:decoration-2 prose-a:hover:decoration-primary",
+  ]}
+>
   <slot />
 </div>

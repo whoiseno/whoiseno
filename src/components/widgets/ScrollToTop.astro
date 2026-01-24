@@ -1,0 +1,141 @@
+---
+// ScrollToTopButton.astro
+---
+
+<button
+  id="scroll-to-top-btn"
+  class="fixed bottom-8 right-8 z-50 grid place-items-center h-14 w-14 rounded-full bg-secondary text-secondary-foreground shadow-lg transition-all duration-300 opacity-0 invisible group"
+  aria-label="Scroll to top"
+>
+  <!-- Circular Progress with Percentage -->
+  <div
+    class="col-start-1 row-start-1 transition-opacity duration-200 group-hover:opacity-0 group-hover:invisible"
+  >
+    <svg
+      class="w-12 h-12 -rotate-90"
+      viewBox="0 0 48 48"
+    >
+      <!-- Background circle -->
+      <circle
+        cx="24"
+        cy="24"
+        r="20"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="3"
+        opacity="0.2"
+      ></circle>
+      <!-- Progress circle -->
+      <circle
+        id="progress-circle"
+        cx="24"
+        cy="24"
+        r="20"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="3"
+        stroke-linecap="round"
+        stroke-dasharray="125.6"
+        stroke-dashoffset="125.6"
+        class="transition-all duration-300"
+      ></circle>
+    </svg>
+    <!-- Percentage text -->
+    <span
+      id="scroll-percentage-text"
+      class="absolute inset-0 flex items-center justify-center text-xs font-semibold tabular-nums"
+    >
+      0
+    </span>
+  </div>
+
+  <!-- Up Arrow -->
+  <svg
+    class="col-start-1 row-start-1 w-6 h-6 opacity-0 invisible transition-opacity duration-200 group-hover:opacity-100 group-hover:visible"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path d="M12 19V5M5 12l7-7 7 7"></path>
+  </svg>
+</button>
+
+<script>
+  document.addEventListener("astro:after-swap", () => {
+    const scrollToTopButton = document.getElementById("scroll-to-top-btn");
+    const scrollPercentageText = document.getElementById("scroll-percentage-text");
+    const progressCircle = document.getElementById("progress-circle");
+
+    function getScrollToTopButton() {
+      if (!scrollToTopButton) return;
+    }
+
+    getScrollToTopButton();
+
+    let ticking = false;
+    const circumference = 125.6; // 2 * PI * radius (20)
+
+    const getScrollPercentage = () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      return Math.round((scrollTop / docHeight) * 100);
+    };
+
+    const updateButton = () => {
+      const percent = getScrollPercentage();
+      const isVisible = window.scrollY > 300;
+
+      // Toggle visibility
+      scrollToTopButton?.classList.toggle("opacity-0", !isVisible);
+      scrollToTopButton?.classList.toggle("invisible", !isVisible);
+      scrollToTopButton?.classList.toggle("opacity-100", isVisible);
+      scrollToTopButton?.classList.toggle("visible", isVisible);
+
+      // Update percentage text and progress circle
+      if (scrollPercentageText && progressCircle) {
+        scrollPercentageText.innerText = `${percent}`;
+
+        // Update circular progress (0% = full offset, 100% = no offset)
+        const offset = circumference - (percent / 100) * circumference;
+        progressCircle.style.strokeDashoffset = offset.toString();
+      }
+
+      // Toggle color based on scroll percentage
+      const isPrimaryColor = percent >= 90;
+      scrollToTopButton?.classList.toggle("bg-secondary", !isPrimaryColor);
+      scrollToTopButton?.classList.toggle("text-secondary-foreground", !isPrimaryColor);
+      scrollToTopButton?.classList.toggle("bg-primary", isPrimaryColor);
+      scrollToTopButton?.classList.toggle("text-primary-foreground", isPrimaryColor);
+      progressCircle?.classList.toggle("text-primary", !isPrimaryColor);
+
+      ticking = false;
+    };
+
+    const handleScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(updateButton);
+        ticking = true;
+      }
+    };
+
+    // Scroll event listener with RAF optimization
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    // Click handler
+    scrollToTopButton?.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    // Initial update
+    updateButton();
+  });
+</script>
+
+<style>
+  #scroll-to-top-btn {
+    cursor: pointer;
+  }
+</style>

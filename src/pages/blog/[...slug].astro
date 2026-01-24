@@ -1,23 +1,29 @@
 ---
+export const prerender = false;
+
 import { render } from "astro:content";
-import { getCollection } from "astro:content";
 
 import Root from "@/layouts/Root.astro";
 import Prose from "@/components/Prose.astro";
+import { getBlogById } from "@/data/blog";
+import Link from "@/components/Link.astro";
+import { ArrowLeftIcon } from "@phosphor-icons/react";
+import ScrollToTop from "@/components/widgets/ScrollToTop.astro";
+import Copy from "@/components/widgets/Copy.astro";
 
-export async function getStaticPaths() {
-	const posts = await getCollection("blog");
-	return posts.map((post) => ({
-		params: { slug: post.id },
-		props: { post },
-	}));
+const { slug } = Astro.params;
+
+if (slug === undefined) {
+  return Astro.redirect("/404");
 }
 
-const { post } = Astro.props;
+const post = await getBlogById(slug);
 
-if (!post) {
-	throw new Error("Post could not be found");
+if (post === undefined) {
+  return Astro.redirect("/404");
 }
+
+const permalink = new URL(Astro.url.pathname, Astro.url.origin).href.replace(/\/+$/, "");
 
 const { Content } = await render(post);
 ---
@@ -26,11 +32,31 @@ const { Content } = await render(post);
   title={post.data.title}
   description={post.data.summary}
 >
-  <h1>
-    {post.data.title}
-  </h1>
-  <p>{post.data.summary}</p>
+  <header class="flex items-center justify-between mb-12">
+    <Link
+      href="/blog"
+      variant="secondary"
+      size="icon-lg"
+      class="rounded-full"
+    >
+      <ArrowLeftIcon />
+      <span class="sr-only">blog</span>
+    </Link>
+    <Copy
+      textToCopy={permalink}
+      size="icon-lg"
+      className="rounded-full"
+    />
+  </header>
   <Prose>
+    <hgroup class="text-center">
+      <h1 transition:name={`title_${post.data.title}`}>
+        {post.data.title}
+      </h1>
+      <p>{post.data.summary}</p>
+      <div class="text-lg text-muted-foreground my-6">•••</div>
+    </hgroup>
     <Content class="prose prose-stone" />
   </Prose>
+  <ScrollToTop />
 </Root>
