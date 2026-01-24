@@ -101,7 +101,7 @@
     @apply font-serif
   }
   body {
-    @apply bg-background text-foreground font-sans antialiased [text-size-adjust:100%] relative isolate;
+    @apply bg-background text-foreground font-sans antialiased [text-size-adjust:100%] relative isolate scroll-smooth;
   }
 }
 
