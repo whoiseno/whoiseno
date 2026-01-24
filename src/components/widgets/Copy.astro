@@ -1,0 +1,86 @@
+---
+import { cn } from "@/utils/cn";
+import { Button, type buttonVariants } from "@/components/ui/button";
+import { CheckIcon, CopyIcon } from "@phosphor-icons/react";
+import type { VariantProps } from "class-variance-authority";
+
+interface Props {
+  textToCopy: string;
+  className?: string;
+  variant?: VariantProps<typeof buttonVariants>["variant"];
+  size?: Exclude<VariantProps<typeof buttonVariants>["size"], "default" | "xs" | "sm" | "lg">;
+};
+
+const {
+  textToCopy,
+  size,
+  className,
+  variant = "secondary",
+} = Astro.props;
+---
+
+<Button
+  id="copy-to-clipboard-btn"
+  className={cn("grid place-items-center transition-colors duration-300" ,className)}
+  data-text={textToCopy}
+  size={size ?? "icon"}
+  variant={variant}
+  aria-label="Copy to clipboard"
+>
+  <CopyIcon
+    weight="fill"
+    className="copy-icon size-5 transition-all duration-300 col-start-1 row-start-1"
+  />
+  <CheckIcon
+    weight="bold"
+    className="check-icon size-5 transition-all duration-300 col-start-1 row-start-1 opacity-0 scale-0"
+  />
+</Button>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const buttons = document.querySelectorAll("#copy-to-clipboard-btn");
+
+    buttons.forEach((button) => {
+      button.addEventListener("click", async () => {
+        const textToCopy = button.getAttribute("data-text");
+        if (!textToCopy) return;
+
+        try {
+          if (!navigator.clipboard) {
+            throw new Error("Clipboard API not supported");
+          }
+
+          const permissionStatus = await navigator.permissions.query({
+            name: "clipboard-write" as PermissionName,
+          });
+
+          if (permissionStatus.state === "denied") {
+            alert("Clipboard access denied. Please enable it in your browser settings.");
+            return;
+          }
+
+          await navigator.clipboard.writeText(textToCopy);
+
+          const copyIcon = button.querySelector(".copy-icon");
+          const checkIcon = button.querySelector(".check-icon");
+
+          if (copyIcon && checkIcon) {
+            copyIcon.classList.add("opacity-0", "scale-0");
+            checkIcon.classList.remove("opacity-0", "scale-0");
+            checkIcon.classList.add("opacity-100", "scale-100");
+
+            setTimeout(() => {
+              copyIcon.classList.remove("opacity-0", "scale-0");
+              checkIcon.classList.add("opacity-0", "scale-0");
+              checkIcon.classList.remove("opacity-100", "scale-100");
+            }, 2000);
+          }
+        } catch (error) {
+          console.error("Failed to copy:", error);
+          alert("Failed to copy to clipboard. Please try again.");
+        }
+      });
+    });
+  });
+</script>
