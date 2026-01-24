@@ -7,9 +7,9 @@ import Root from "@/layouts/Root.astro";
 import Prose from "@/components/Prose.astro";
 import { getBlogById } from "@/data/blog";
 import Link from "@/components/Link.astro";
-import { ArrowLeftIcon, ShareNetworkIcon } from "@phosphor-icons/react";
-import { Button } from "@/components/ui/button";
-import ScrollToTop from "@/components/widgets/ScrollToTop.astro"
+import { ArrowLeftIcon } from "@phosphor-icons/react";
+import ScrollToTop from "@/components/widgets/ScrollToTop.astro";
+import Copy from "@/components/widgets/Copy.astro";
 
 const { slug } = Astro.params;
 
@@ -23,6 +23,8 @@ if (post === undefined) {
   return Astro.redirect("/404");
 }
 
+const permalink = new URL(Astro.url.pathname, Astro.url.origin).href.replace(/\/+$/, "");
+
 const { Content } = await render(post);
 ---
 
@@ -34,12 +36,17 @@ const { Content } = await render(post);
     <Link
       href="/blog"
       variant="secondary"
+      size="icon-lg"
+      class="rounded-full"
     >
-      <ArrowLeftIcon weight="fill" />Back
+      <ArrowLeftIcon />
+      <span class="sr-only">blog</span>
     </Link>
-    <Button variant={"secondary"}>
-      <ShareNetworkIcon weight="fill" />Share
-    </Button>
+    <Copy
+      textToCopy={permalink}
+      size="icon-lg"
+      className="rounded-full"
+    />
   </header>
   <Prose>
     <hgroup class="text-center">
