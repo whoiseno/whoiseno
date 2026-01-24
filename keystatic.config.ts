@@ -34,7 +34,16 @@ export default config({
 						kind: "now",
 					},
 				}),
-				content: fields.markdoc({ label: "Content", extension: "mdoc" }),
+				content: fields.markdoc({
+					label: "Content",
+					extension: "mdoc",
+					options: {
+						image: {
+							directory: "public/content/posts",
+							publicPath: "/content/posts",
+						},
+					},
+				}),
 			},
 			slugField: "title",
 		}),
