@@ -1,30 +1,38 @@
 ---
-import { MailboxIcon, LinkedinLogoIcon, GithubLogoIcon, XLogoIcon, type Icon } from "@phosphor-icons/react";
+import {
+  MailboxIcon,
+  LinkedinLogoIcon,
+  GithubLogoIcon,
+  XLogoIcon,
+  type Icon,
+} from "@phosphor-icons/react";
 
-import Link from "./Link.astro";
+import Link from "@/components/Link.astro";
+import { ButtonGroup, ButtonGroupSeparator } from "@/components/ui/button-group";
+import Copy from "@/components/widgets/Copy.astro";
 
 interface SocialProps {
-	label: string;
-	href: string | URL;
-	icon: Icon;
+  label: string;
+  href: string | URL;
+  icon: Icon;
 }
 
 const socials: Array<SocialProps> = [
-	{
-		label: "Twitter",
-		href: "https://twitter.com/enoiscooked",
-		icon: XLogoIcon,
-	},
-	{
-		label: "GitHub",
-		href: "https://github.com/whoiseno",
-		icon: GithubLogoIcon,
-	},
-	{
-		label: "LinkedIn",
-		href: "https://linkedin.com/enoabasi-essein",
-		icon: LinkedinLogoIcon,
-	},
+  {
+    label: "Twitter",
+    href: "https://twitter.com/enoiscooked",
+    icon: XLogoIcon,
+  },
+  {
+    label: "GitHub",
+    href: "https://github.com/whoiseno",
+    icon: GithubLogoIcon,
+  },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/enoabasi-essien/",
+    icon: LinkedinLogoIcon,
+  },
 ];
 ---
 
@@ -37,7 +45,7 @@ const socials: Array<SocialProps> = [
           target={"_blank"}
           variant={"secondary"}
           size={"lg"}
-          class={"text-base rounded-full"}
+          class={"text-base"}
         >
           <social.icon
             className="size-5"
@@ -49,16 +57,23 @@ const socials: Array<SocialProps> = [
     ))
   }
   <li>
-    <Link
-      href="mailto:humanwhodreams@gmail.com"
-      variant={"secondary"}
-      size={"lg"}
-      class={"text-base rounded-full"}
-    >
-      <MailboxIcon
-        className="size-5"
-        weight="fill"
-      />humanwhodreams@gmail.com
-    </Link>
+    <ButtonGroup>
+      <Link
+        href={"mailto:humanwhodreams@gmail.com"}
+        variant={"secondary"}
+        size={"lg"}
+      >
+        <MailboxIcon
+          className="size-5"
+          weight="fill"
+        />
+        humanwhodreams@gmail.com</Link
+      >
+      <ButtonGroupSeparator />
+      <Copy
+        textToCopy="humanwhodreams@gmail.com"
+        size={"icon-lg"}
+      />
+    </ButtonGroup>
   </li>
 </ul>
