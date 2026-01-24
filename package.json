@@ -10,7 +10,6 @@
 		"lint": "pnpm exec biome check --write"
 	},
 	"dependencies": {
-		"@astrojs/markdoc": "^0.15.10",
 		"@astrojs/netlify": "^6.6.4",
 		"@astrojs/react": "^4.4.2",
 		"@base-ui/react": "^1.1.0",

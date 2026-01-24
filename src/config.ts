@@ -9,6 +9,6 @@ export const config = {
 	socials: {
 		github: { url: "https://github.com/whoiseno", handle: "@whoiseno" },
 		twitter: { url: "https://x.com/enoiscooked", handle: "@enoiscooked" },
-		linkedin: { url: "https://linkedin.com/enoabasi-essien", handle: "@enoabasi-essien" },
+		linkedin: { url: "https://linkedin.com/in/enoabasi-essien", handle: "@enoabasi-essien" },
 	},
 };

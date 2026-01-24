@@ -1,6 +1,5 @@
 // @ts-check
 
-import markdoc from "@astrojs/markdoc";
 import netlify from "@astrojs/netlify";
 import react from "@astrojs/react";
 import tailwindcss from "@tailwindcss/vite";
@@ -13,6 +12,6 @@ export default defineConfig({
 	vite: {
 		plugins: [tsconfigPaths(), tailwindcss()],
 	},
-	integrations: [react(), markdoc()],
+	integrations: [react()],
 	adapter: netlify(),
 });
