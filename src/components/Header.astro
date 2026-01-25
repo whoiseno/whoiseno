@@ -4,31 +4,31 @@ import Link from "@/components/Link.astro";
 const pathname = new URL(Astro.request.url).pathname;
 
 interface LinkProps {
-	label: string;
-	href: `/${string}`;
+  label: string;
+  href: `/${string}`;
 }
 
 const links: Array<LinkProps> = [
-	{
-		label: "Home",
-		href: "/",
-	},
-	{
-		label: "Works",
-		href: "/works",
-	},
-	{
-		label: "Blog",
-		href: "/blog",
-	},
-	{
-		label: "About",
-		href: "/about",
-	},
-	{
-		label: "Contact",
-		href: "/#contact-me",
-	},
+  {
+    label: "Home",
+    href: "/",
+  },
+  {
+    label: "Works",
+    href: "/works",
+  },
+  {
+    label: "Blog",
+    href: "/blog",
+  },
+  {
+    label: "About",
+    href: "/about",
+  },
+  {
+    label: "Contact",
+    href: "/#contact-me",
+  },
 ];
 ---
 
@@ -40,22 +40,32 @@ const links: Array<LinkProps> = [
     >
       enoabasi &mdash; essien
     </Link>
-    <div class="flex items-center gap-x-px">
+    <ul class="flex items-center gap-x-px">
       {
         links.map((link) => {
           const isActive = link.href === pathname;
           return (
-            <Link
-              href={link.href}
-              class:list={{
-                "underline underline-offset-10 decoration-4 decoration-primary": isActive,
-              }}
-            >
-              {link.label}
-            </Link>
+            <li>
+              <Link
+                href={link.href}
+                class:list={{
+                  "underline underline-offset-10 decoration-4 decoration-primary": isActive,
+                }}
+              >
+                {link.label}
+              </Link>
+            </li>
           );
         })
       }
-    </div>
+      <li>
+        <Link
+          href={"/keystatic"}
+          class={"bg-foreground text-background hover:bg-foreground/80"}
+        >
+          Keystatic
+        </Link>
+      </li>
+    </ul>
   </div>
 </nav>
