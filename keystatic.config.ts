@@ -1,4 +1,5 @@
 import { collection, config, fields } from "@keystatic/core";
+import { wrapper } from "@keystatic/core/content-components";
 
 export default config({
 	storage: {
@@ -44,6 +45,33 @@ export default config({
 						},
 					},
 					components: {
+						// ----------------------------------------
+						// Callout
+						// ----------------------------------------
+						callout: wrapper({
+							label: "Callout",
+							schema: {
+								title: fields.text({ label: "Title" }),
+								variant: fields.select({
+									label: "Variant",
+									options: [
+										{ label: "Note", value: "note" },
+										{ label: "Tip", value: "tip" },
+										{ label: "Warning", value: "warning" },
+										{ label: "Danger", value: "danger" },
+										{ label: "Important", value: "important" },
+									],
+									defaultValue: "note",
+								}),
+								defaultOpen: fields.checkbox({
+									label: "Default open",
+									description: "Should the callout be open by default",
+									defaultValue: true,
+								}),
+							},
+							description:
+								"A short string of text connected by a line, arrow, or similar graphic to a feature of an illustration or technical drawing and giving information about that feature.",
+						}),
 						/* TODO: Add custom components */
 					},
 				}),

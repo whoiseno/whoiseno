@@ -6,3 +6,7 @@ export function formatDate(date: Date) {
 		year: "numeric",
 	}).format(date);
 }
+
+export function capitalize(text: string) {
+	return text.charAt(0).toUpperCase() + text.slice(1);
+}
