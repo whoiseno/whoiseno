@@ -7,13 +7,15 @@ import { ArrowLeftIcon } from "@phosphor-icons/react";
 import ScrollToTop from "@/components/widgets/ScrollToTop.astro";
 import Copy from "@/components/widgets/Copy.astro";
 import { getAllPosts } from "@/data/posts";
+import Callout from "@/components/content/Callout.astro";
+import Fence from "@/components/content/Fence.astro";
 
 export async function getStaticPaths() {
-	const posts = await getAllPosts();
-	return posts.map((post) => ({
-		params: { slug: post.id },
-		props: { post },
-	}));
+  const posts = await getAllPosts();
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
 }
 
 const permalink = new URL(Astro.url.pathname, Astro.url.origin).href.replace(/\/+$/, "");
@@ -50,7 +52,13 @@ const { Content } = await render(post);
       <p>{post.data.summary}</p>
       <div class="text-lg text-muted-foreground my-6">•••</div>
     </hgroup>
-    <Content class="prose prose-stone" />
+    <Content
+      components={{
+        Callout: Callout,
+        Fence: Fence,
+        /* TODO: Insert custom components here  */
+      }}
+    />
   </Prose>
   <ScrollToTop />
 </Root>

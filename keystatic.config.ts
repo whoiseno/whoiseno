@@ -48,7 +48,7 @@ export default config({
 						// ----------------------------------------
 						// Callout
 						// ----------------------------------------
-						callout: wrapper({
+						Callout: wrapper({
 							label: "Callout",
 							schema: {
 								title: fields.text({ label: "Title" }),
@@ -74,7 +74,7 @@ export default config({
 						// ----------------------------------------
 						// Code block
 						// ----------------------------------------
-						fence: block({
+						Fence: block({
 							label: "Code Block",
 							schema: {
 								content: fields.text({ label: "Content", multiline: true }),
@@ -93,7 +93,6 @@ export default config({
 							},
 							description: "A code block is a section that displays programming code in a monospaced font.",
 						}),
-						/* TODO: Add custom components */
 					},
 				}),
 			},
