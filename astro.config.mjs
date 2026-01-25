@@ -23,11 +23,12 @@ export default defineConfig({
 				ph: ["info-fill", "lightbulb-fill", "warning-fill", "x-circle-fill", "trophy-fill", "caret-down-fill"],
 			},
 		}),
+		expressiveCode(),
 		markdoc(),
 		keystatic(),
-		expressiveCode({
-			themes: ["poimandres"],
-		}),
 	],
+	markdown: {
+		syntaxHighlight: false,
+	},
 	adapter: netlify(),
 });

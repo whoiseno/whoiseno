@@ -11,24 +11,15 @@ updatedAt: 2026-01-24T23:28:00.000Z
 
 ## The syntax
 
-```src/data/posts.ts
-import { getCollection } from "astro:content";
+This is an inline code block, `console.log('hello world')`.
 
-export async function getAllPosts() {
-	const res = await getCollection("posts", ({ data }) => {
-		return import.meta.env.PROD ? data.draft !== true : true;
-	});
+This is a code block.
 
-	if (!res) {
-		throw Error("[api/v1/posts]: Internal Server Error");
-	}
-
-	const posts = res.sort((a, b) => b.data.createdAt.valueOf() - a.data.createdAt.valueOf());
-
-	return posts;
-}
-
-```
+{% fence
+   content="import { getCollection } from \"astro:content\";\n\nexport async function getAllPosts() {\n\tconst res = await getCollection(\"posts\", ({ data }) => {\n\t\treturn import.meta.env.PROD ? data.draft !== true : true;\n\t});\n\n\tif (!res) {\n\t\tthrow Error(\"[api/v1/posts]: Internal Server Error\");\n\t}\n\n\tconst posts = res.sort((a, b) => b.data.createdAt.valueOf() - a.data.createdAt.valueOf());\n\n\treturn posts;\n}"
+   language="ts"
+   title="Posts.ts"
+   frame="auto" /%}
 
 ## The features and design
 

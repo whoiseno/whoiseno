@@ -8,6 +8,7 @@
 @theme inline {
   --font-serif: "IBM Plex Sans Variable", serif;
   --font-sans: "Inter Variable", sans-serif;
+  --font-mono: "JetBrains Mono Variable", monospace;
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
