@@ -6,6 +6,7 @@ import react from "@astrojs/react";
 import keystatic from "@keystatic/astro";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
+import expressiveCode from "astro-expressive-code";
 import icon from "astro-icon";
 import tsconfigPaths from "vite-tsconfig-paths";
 import { config } from "./src/config";
@@ -24,6 +25,9 @@ export default defineConfig({
 		}),
 		markdoc(),
 		keystatic(),
+		expressiveCode({
+			themes: ["poimandres"],
+		}),
 	],
 	adapter: netlify(),
 });
