@@ -8,7 +8,6 @@ import ScrollToTop from "@/components/widgets/ScrollToTop.astro";
 import Copy from "@/components/widgets/Copy.astro";
 import { getAllPosts } from "@/data/posts";
 import Callout from "@/components/content/Callout.astro";
-import Fence from "@/components/content/Fence.astro";
 
 export async function getStaticPaths() {
   const posts = await getAllPosts();
@@ -55,7 +54,6 @@ const { Content } = await render(post);
     <Content
       components={{
         Callout: Callout,
-        Fence: Fence,
         /* TODO: Insert custom components here  */
       }}
     />
