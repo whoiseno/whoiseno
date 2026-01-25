@@ -1,12 +1,11 @@
 // @ts-check
 
-import markdoc from "@astrojs/markdoc";
+import mdx from "@astrojs/mdx";
 import netlify from "@astrojs/netlify";
 import react from "@astrojs/react";
 import keystatic from "@keystatic/astro";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
-import expressiveCode from "astro-expressive-code";
 import icon from "astro-icon";
 import tsconfigPaths from "vite-tsconfig-paths";
 import { config } from "./src/config";
@@ -23,12 +22,8 @@ export default defineConfig({
 				ph: ["info-fill", "lightbulb-fill", "warning-fill", "x-circle-fill", "trophy-fill", "caret-down-fill"],
 			},
 		}),
-		expressiveCode(),
-		markdoc(),
+		mdx(),
 		keystatic(),
 	],
-	markdown: {
-		syntaxHighlight: false,
-	},
 	adapter: netlify(),
 });

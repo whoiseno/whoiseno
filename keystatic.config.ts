@@ -35,9 +35,9 @@ export default config({
 						kind: "now",
 					},
 				}),
-				content: fields.markdoc({
+				content: fields.mdx({
 					label: "Content",
-					extension: "mdoc",
+					extension: "mdx",
 					options: {
 						image: {
 							directory: "public/content/posts",
@@ -69,8 +69,7 @@ export default config({
 									defaultValue: true,
 								}),
 							},
-							description:
-								"A callout is a highlighted box or section that draws attention to important information or tips.",
+							description: "A callout is a highlighted box that draws attention to important information.",
 						}),
 						// ----------------------------------------
 						// Code block
@@ -92,8 +91,7 @@ export default config({
 									defaultValue: "auto",
 								}),
 							},
-							description:
-								"A code block is a formatted section that displays programming code or technical text in a monospaced font, usually with a distinct background.",
+							description: "A code block is a section that displays programming code in a monospaced font.",
 						}),
 						/* TODO: Add custom components */
 					},
