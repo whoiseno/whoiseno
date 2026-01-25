@@ -77,6 +77,9 @@ importers:
       react-dom:
         specifier: ^19.2.3
         version: 19.2.3(react@19.2.3)
+      rehype-expressive-code:
+        specifier: ^0.41.6
+        version: 0.41.6
       tailwind-merge:
         specifier: ^3.4.0
         version: 3.4.0

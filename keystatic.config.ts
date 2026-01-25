@@ -71,28 +71,6 @@ export default config({
 							},
 							description: "A callout is a highlighted box that draws attention to important information.",
 						}),
-						// ----------------------------------------
-						// Code block
-						// ----------------------------------------
-						Fence: block({
-							label: "Code Block",
-							schema: {
-								content: fields.text({ label: "Content", multiline: true }),
-								language: fields.text({ label: "Language" }),
-								title: fields.text({ label: "Title" }),
-								frame: fields.select({
-									label: "Frame Type",
-									options: [
-										{ label: "Auto", value: "auto" },
-										{ label: "None", value: "none" },
-										{ label: "Code", value: "code" },
-										{ label: "Terminal", value: "terminal" },
-									],
-									defaultValue: "auto",
-								}),
-							},
-							description: "A code block is a section that displays programming code in a monospaced font.",
-						}),
 					},
 				}),
 			},
