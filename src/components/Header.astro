@@ -4,31 +4,31 @@ import Link from "@/components/Link.astro";
 const pathname = new URL(Astro.request.url).pathname;
 
 interface LinkProps {
-  label: string;
-  href: `/${string}`;
+	label: string;
+	href: `/${string}`;
 }
 
 const links: Array<LinkProps> = [
-  {
-    label: "Home",
-    href: "/",
-  },
-  {
-    label: "Works",
-    href: "/works",
-  },
-  {
-    label: "Blog",
-    href: "/blog",
-  },
-  {
-    label: "About",
-    href: "/about",
-  },
-  {
-    label: "Contact",
-    href: "/#contact-me",
-  },
+	{
+		label: "Home",
+		href: "/",
+	},
+	{
+		label: "Works",
+		href: "/works",
+	},
+	{
+		label: "Blog",
+		href: "/blog",
+	},
+	{
+		label: "About",
+		href: "/about",
+	},
+	{
+		label: "Contact",
+		href: "/#contact-me",
+	},
 ];
 ---
 

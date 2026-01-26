@@ -10,11 +10,11 @@ import { getAllPosts } from "@/data/posts";
 import Callout from "@/components/content/Callout.astro";
 
 export async function getStaticPaths() {
-  const posts = await getAllPosts();
-  return posts.map((post) => ({
-    params: { slug: post.id },
-    props: { post },
-  }));
+	const posts = await getAllPosts();
+	return posts.map((post) => ({
+		params: { slug: post.id },
+		props: { post },
+	}));
 }
 
 const permalink = new URL(Astro.url.pathname, Astro.url.origin).href.replace(/\/+$/, "");

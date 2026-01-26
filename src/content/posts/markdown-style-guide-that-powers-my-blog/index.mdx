@@ -1,0 +1,39 @@
+---
+title: Markdown Style Guide That Powers My Blog
+summary: >-
+  This is a collection of markdown syntax & components I use to write content on
+  my blog.
+draft: false
+createdAt: 2026-01-26T01:15:00.000Z
+updatedAt: 2026-01-26T04:26:00.000Z
+---
+This is a collection of markdown syntax & components I use to write content on my blog. If you want to create a blog like this, check out my article [here](/blog/how-to-create-a-simple-blog-from-scratch-with-astro).
+
+## Inline-code & Code blocks
+
+<Callout title="Info" variant="note" defaultOpen>
+  The code examples are for demonstration purposes only.
+</Callout>
+
+The hardest component to get right is the inline-code and code blocks component. The component comes with decent default styles but can be further improved to get syntax highlight and some other aesthetic features.
+
+* Below is an example of a code block.
+
+```ts
+// File name: example.ts
+const fullName = "Enoabasi Essien";
+
+function displayGreeting(name: string) {
+  return `Hello! ${name}`;
+}
+
+console.log(displayGreeting(fullName));
+```
+
+* Below is an example of an inline code.
+
+An inline code element `console.log(displayGreeting(fullName)){:ts}`. It is handy for subtle documentation of a variable or function. Styling the element is possible with any css framework of choice. Target the `p > span.shiki{:css}` selector, this will alow you to add style to the inline code element.
+
+
+## Conclusion
+

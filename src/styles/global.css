@@ -106,6 +106,16 @@
   }
 }
 
+@layer components {
+  p > span.shiki {
+    border-radius: calc(0.3rem + 1px);
+    font-size: 0.75rem;
+    padding: 0.156rem 0rem;
+  }
+}
+
 @utility max-section-gap {
   @apply space-y-16
 }
+
+

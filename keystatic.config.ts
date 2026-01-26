@@ -1,5 +1,5 @@
 import { collection, config, fields } from "@keystatic/core";
-import { block, wrapper } from "@keystatic/core/content-components";
+import { wrapper } from "@keystatic/core/content-components";
 
 export default config({
 	storage: {
