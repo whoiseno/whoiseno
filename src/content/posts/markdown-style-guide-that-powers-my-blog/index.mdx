@@ -9,9 +9,21 @@ updatedAt: 2026-01-26T04:26:00.000Z
 ---
 This is a collection of markdown syntax & components I use to write content on my blog. If you want to create a blog like this, check out my article [here](/blog/how-to-create-a-simple-blog-from-scratch-with-astro).
 
+## Callouts
+
+A callout is a highlighted box that draws the attention to a piece of information.
+
+<Callout variant="note" defaultOpen>
+  I can add information in here to provide context for a discussion.
+
+  <Callout variant="important" defaultOpen={false}>
+    I can also next callouts to provide in-depth context of a discussion.
+  </Callout>
+</Callout>
+
 ## Inline-code & Code blocks
 
-<Callout title="Info" variant="note" defaultOpen>
+<Callout variant="note" defaultOpen>
   The code examples are for demonstration purposes only.
 </Callout>
 
@@ -34,6 +46,4 @@ console.log(displayGreeting(fullName));
 
 An inline code element `console.log(displayGreeting(fullName)){:ts}`. It is handy for subtle documentation of a variable or function. Styling the element is possible with any css framework of choice. Target the `p > span.shiki{:css}` selector, this will alow you to add style to the inline code element.
 
-
 ## Conclusion
-

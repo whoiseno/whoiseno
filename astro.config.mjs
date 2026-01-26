@@ -28,6 +28,10 @@ const rehypeExpressiveCodeOptions = {
 	styleOverrides: {
 		codeFontSize: "0.75rem",
 		codeFontFamily: "var(--font-mono)",
+		frames: {
+			editorActiveTabIndicatorBottomColor: "transparent",
+			editorActiveTabIndicatorTopColor: "transparent",
+		},
 		uiFontFamily: "var(--font-sans)",
 	},
 };
