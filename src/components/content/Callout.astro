@@ -32,7 +32,7 @@ const calloutConfig = {
   },
 } as const;
 
-const calloutVariants = cva("relative px-4 py-3 my-6 border-s-4 text-sm bg-card", {
+const calloutVariants = cva("relative my-6 border-s-4 rounded-e-lg text-sm bg-card text-card-foreground", {
   variants: {
     variant: Object.fromEntries(
       Object.entries(calloutConfig).map(([key, config]) => [key, config.style])
@@ -60,7 +60,7 @@ const { title, variant = "note", defaultOpen = true, ...props } = Astro.props;
   {...props}
   open={defaultOpen}
 >
-  <summary class="flex cursor-pointer items-center font-medium [&::-webkit-details-marker]:hidden">
+  <summary class="px-4 py-3 flex cursor-pointer items-center font-medium [&::-webkit-details-marker]:hidden hover:bg-muted/80">
     <Icon
       name={calloutConfig[variant].icon}
       class={cn("me-2 size-4 shrink-0", calloutConfig[variant].textColor)}
@@ -77,7 +77,7 @@ const { title, variant = "note", defaultOpen = true, ...props } = Astro.props;
       )}
     />
   </summary>
-  <div>
+  <div class="px-4 py-3">
     <slot />
   </div>
 </details>
