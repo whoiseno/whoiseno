@@ -15,10 +15,10 @@ import { config } from "./src/config";
 
 /** @type {import('rehype-expressive-code').RehypeExpressiveCodeOptions} */
 const rehypeExpressiveCodeOptions = {
-	themes: ["catppuccin-mocha"],
+	themes: ["catppuccin-latte"],
 	plugins: [pluginLineNumbers()],
 	defaultProps: {
-		wrap: true,
+		wrap: false,
 		overridesByLang: {
 			"ansi,bat,bash,batch,cmd,console,powershell,ps,ps1,psd1,psm1,sh,shell,shellscript,shellsession,text,zsh": {
 				showLineNumbers: false,
@@ -26,9 +26,12 @@ const rehypeExpressiveCodeOptions = {
 		},
 	},
 	styleOverrides: {
-		codeFontSize: "0.75rem",
+    borderColor: 'var(--border)',
 		codeFontFamily: "var(--font-mono)",
 		frames: {
+      editorActiveTabForeground: 'var(--muted-foreground)',
+      editorActiveTabBackground:
+                'color-mix(in oklab, var(--muted) 25%, transparent)',
 			editorActiveTabIndicatorBottomColor: "transparent",
 			editorActiveTabIndicatorTopColor: "transparent",
 		},
@@ -38,7 +41,7 @@ const rehypeExpressiveCodeOptions = {
 
 /** @type {import('@shikijs/rehype').RehypeShikiOptions} */
 const rehypeShikiOptions = {
-	theme: "material-theme-darker",
+	theme: "catppuccin-latte",
 	inline: "tailing-curly-colon",
 };
 
@@ -61,7 +64,7 @@ export default defineConfig({
 		syntaxHighlight: false,
 		rehypePlugins: [
 			[rehypeExpressiveCode, rehypeExpressiveCodeOptions],
-			[rehypeShiki, rehypeShikiOptions],
+      [rehypeShiki, rehypeShikiOptions]
 		],
 	},
 	adapter: netlify(),
