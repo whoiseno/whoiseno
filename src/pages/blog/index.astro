@@ -1,9 +1,13 @@
 ---
 import Root from "@/layouts/Root.astro";
 import { formatDate } from "@/utils/formats";
-import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { cn } from "@/utils/cn";
-import { buttonVariants } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { getAllPosts } from "@/data/posts";
 
 const posts = await getAllPosts();
@@ -26,46 +30,46 @@ const description = "Articles, journals, and think pieces of my journey.";
       {
         posts.length > 0 ?
           <div class="space-y-10">
-            <ul class="space-y-4">
+            <ul class="space-y-8">
               {posts.map(async (post) => {
                 return (
                   <li>
-                    <Card>
-                      <CardHeader>
-                        <CardTitle>
-                          <a
-                            href={`/blog/${post.id}`}
-                            class={cn(
-                              buttonVariants({
-                                variant: "secondary-ghost",
-                                size: "sm",
-                                class: "hover:text-primary text-base -ms-3",
-                              })
-                            )}
-                            transition:name={`title_${post.data.title}`}
-                          >
+                    <a
+                      href={`/blog/${post.id}`}
+                      class="group"
+                    >
+                      <Card>
+                        <CardHeader>
+                          <CardTitle className="group-hover:text-primary">
                             {post.data.title}
-                          </a>
-                        </CardTitle>
-                        <CardDescription className="line-clamp-1">
-                          {post.data.summary}
-                        </CardDescription>
-                      </CardHeader>
-                      <CardFooter>
-                        <p class="text-muted-foreground font-medium">
-                          {formatDate(post.data.createdAt)}
-                        </p>
-                      </CardFooter>
-                    </Card>
+                          </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <p class="line-clamp-2 text-muted-foreground">{post.data.summary}</p>
+                        </CardContent>
+                        <CardFooter>
+                          <p class="text-muted-foreground">
+                            Published on{" "}
+                            <span class="font-semibold">{formatDate(post.data.createdAt)}</span>
+                          </p>
+                          <p class="text-muted-foreground ms-auto">
+                            Last updated on{" "}
+                            <span class="font-semibold">{formatDate(post.data.updatedAt)}</span>
+                          </p>
+                        </CardFooter>
+                      </Card>
+                    </a>
                   </li>
                 );
               })}
             </ul>
-            <blockquote class="text-sm text-muted-foreground text-center">
+            <blockquote class="text-sm text-muted-foreground text-center font-medium">
               "The only true wisdom is in knowing you know nothing." - Socrates
             </blockquote>
           </div>
-        : <p class="font-medium">No blog posts has been published</p>
+        : <div class="flex items-center justify-center px-10 py-20">
+            <p class="font-medium">No blog posts has been published</p>
+          </div>
       }
     </div>
   </section>
