@@ -5,46 +5,46 @@ import { Icon } from "astro-icon/components";
 import { cva, type VariantProps } from "class-variance-authority";
 
 const calloutConfig = {
-	note: {
-		style: "ring-blue-100 hover:ring-blue-300",
-		textColor: "text-blue-600",
-		icon: "ph:info-fill",
-	},
-	tip: {
-		style: "ring-green-100 hover:ring-green-300",
-		textColor: "text-green-600",
-		icon: "ph:lightbulb-fill",
-	},
-	warning: {
-		style: "ring-amber-100 hover:ring-amber-300",
-		textColor: "text-amber-600",
-		icon: "ph:warning-fill",
-	},
-	danger: {
-		style: "ring-red-100 hover:ring-red-300",
-		textColor: "text-red-600",
-		icon: "ph:x-circle-fill",
-	},
-	important: {
-		style: "ring-purple-100 hover:ring-purple-300",
-		textColor: "text-purple-600",
-		icon: "ph:trophy-fill",
-	},
+  note: {
+    style: "ring-blue-100 hover:ring-blue-300",
+    textColor: "text-blue-600",
+    icon: "ph:info-fill",
+  },
+  tip: {
+    style: "ring-green-100 hover:ring-green-300",
+    textColor: "text-green-600",
+    icon: "ph:lightbulb-fill",
+  },
+  warning: {
+    style: "ring-amber-100 hover:ring-amber-300",
+    textColor: "text-amber-600",
+    icon: "ph:warning-fill",
+  },
+  danger: {
+    style: "ring-red-100 hover:ring-red-300",
+    textColor: "text-red-600",
+    icon: "ph:x-circle-fill",
+  },
+  important: {
+    style: "ring-purple-100 hover:ring-purple-300",
+    textColor: "text-purple-600",
+    icon: "ph:trophy-fill",
+  },
 } as const;
 
 const calloutVariants = cva("relative my-6 rounded-md text-sm ring-2 bg-card text-card-foreground", {
-	variants: {
-		variant: Object.fromEntries(Object.entries(calloutConfig).map(([key, config]) => [key, config.style])),
-	},
-	defaultVariants: {
-		variant: "note",
-	},
+  variants: {
+    variant: Object.fromEntries(Object.entries(calloutConfig).map(([key, config]) => [key, config.style])),
+  },
+  defaultVariants: {
+    variant: "note",
+  },
 });
 
 interface Props extends VariantProps<typeof calloutVariants> {
-	title?: string;
-	variant: keyof typeof calloutConfig;
-	defaultOpen: boolean;
+  title?: string;
+  variant: keyof typeof calloutConfig;
+  defaultOpen: boolean;
 }
 
 const { title, variant = "note", defaultOpen = true, ...props } = Astro.props;

@@ -4,23 +4,23 @@ import type { HTMLAttributes } from "astro/types";
 import { cva, type VariantProps } from "class-variance-authority";
 
 const sectionVariants = cva("", {
-	variants: {
-		variant: {
-			none: "",
-			default: "max-w-200 mx-auto",
-			large: "max-w-250 mx-auto",
-			xlarge: "max-w-300 mx-auto",
-		},
-		size: {
-			none: "",
-			default: "px-8 md:px-8 lg:px-10",
-			large: "px-6 md:px-10 lg:px-12",
-		},
-	},
-	defaultVariants: {
-		variant: "default",
-		size: "default",
-	},
+  variants: {
+    variant: {
+      none: "",
+      default: "max-w-200 mx-auto",
+      large: "max-w-250 mx-auto",
+      xlarge: "max-w-300 mx-auto",
+    },
+    size: {
+      none: "",
+      default: "px-8 md:px-8 lg:px-10",
+      large: "px-6 md:px-10 lg:px-12",
+    },
+  },
+  defaultVariants: {
+    variant: "default",
+    size: "default",
+  },
 });
 
 export interface Props extends Omit<HTMLAttributes<"section">, "class:list">, VariantProps<typeof sectionVariants> {}

@@ -1,60 +1,60 @@
 {
-	"$schema": "https://biomejs.dev/schemas/2.3.11/schema.json",
-	"vcs": {
-		"enabled": true,
-		"clientKind": "git",
-		"useIgnoreFile": true
-	},
-	"files": {
-		"ignoreUnknown": false,
-		"includes": ["**", "!**/styles/*.css"]
-	},
-	"formatter": {
-		"enabled": true,
-		"indentStyle": "space",
+  "$schema": "https://biomejs.dev/schemas/2.3.11/schema.json",
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true
+  },
+  "files": {
+    "ignoreUnknown": false,
+    "includes": ["**", "!**/styles/*.css"]
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
     "indentWidth": 2,
-		"lineWidth": 120
-	},
-	"linter": {
-		"enabled": true,
-		"rules": {
-			"recommended": true,
-			"a11y": {
-				"noSvgWithoutTitle": "off"
-			}
-		}
-	},
-	"javascript": {
-		"formatter": {
-			"quoteStyle": "double",
-			"semicolons": "always",
-			"trailingCommas": "es5",
-			"bracketSameLine": true
-		}
-	},
-	"assist": {
-		"enabled": true,
-		"includes": ["**", "!**/*.astro"],
-		"actions": {
-			"source": {
-				"organizeImports": "on"
-			}
-		}
-	},
-	"overrides": [
-		{
-			"includes": ["**/*.astro"],
-			"linter": {
-				"rules": {
-					"style": {
-						"useConst": "off"
-					},
-					"correctness": {
-						"noUnusedVariables": "off",
-						"noUnusedImports": "off"
-					}
-				}
-			}
-		}
-	]
+    "lineWidth": 120
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "a11y": {
+        "noSvgWithoutTitle": "off"
+      }
+    }
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "double",
+      "semicolons": "always",
+      "trailingCommas": "es5",
+      "bracketSameLine": true
+    }
+  },
+  "assist": {
+    "enabled": true,
+    "includes": ["**", "!**/*.astro"],
+    "actions": {
+      "source": {
+        "organizeImports": "on"
+      }
+    }
+  },
+  "overrides": [
+    {
+      "includes": ["**/*.astro"],
+      "linter": {
+        "rules": {
+          "style": {
+            "useConst": "off"
+          },
+          "correctness": {
+            "noUnusedVariables": "off",
+            "noUnusedImports": "off"
+          }
+        }
+      }
+    }
+  ]
 }
