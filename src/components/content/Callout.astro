@@ -5,48 +5,46 @@ import { Icon } from "astro-icon/components";
 import { cva, type VariantProps } from "class-variance-authority";
 
 const calloutConfig = {
-  note: {
-    style: "border-blue-500 dark:bg-blue-950/5",
-    textColor: "text-blue-700 dark:text-blue-300",
-    icon: "ph:info-fill",
-  },
-  tip: {
-    style: "border-green-500 dark:bg-green-950/5",
-    textColor: "text-green-700 dark:text-green-300",
-    icon: "ph:lightbulb-fill",
-  },
-  warning: {
-    style: "border-amber-500 dark:bg-amber-950/5",
-    textColor: "text-amber-700 dark:text-amber-300",
-    icon: "ph:warning-fill",
-  },
-  danger: {
-    style: "border-red-500 dark:bg-red-950/5",
-    textColor: "text-red-700 dark:text-red-300",
-    icon: "ph:x-circle-fill",
-  },
-  important: {
-    style: "border-purple-500 dark:bg-purple-950/5",
-    textColor: "text-purple-700 dark:text-purple-300",
-    icon: "ph:trophy-fill",
-  },
+	note: {
+		style: "border-blue-500 dark:bg-blue-950/5",
+		textColor: "text-blue-700 dark:text-blue-300",
+		icon: "ph:info-fill",
+	},
+	tip: {
+		style: "border-green-500 dark:bg-green-950/5",
+		textColor: "text-green-700 dark:text-green-300",
+		icon: "ph:lightbulb-fill",
+	},
+	warning: {
+		style: "border-amber-500 dark:bg-amber-950/5",
+		textColor: "text-amber-700 dark:text-amber-300",
+		icon: "ph:warning-fill",
+	},
+	danger: {
+		style: "border-red-500 dark:bg-red-950/5",
+		textColor: "text-red-700 dark:text-red-300",
+		icon: "ph:x-circle-fill",
+	},
+	important: {
+		style: "border-purple-500 dark:bg-purple-950/5",
+		textColor: "text-purple-700 dark:text-purple-300",
+		icon: "ph:trophy-fill",
+	},
 } as const;
 
 const calloutVariants = cva("relative my-6 border-s-4 rounded-e-lg text-sm bg-card text-card-foreground", {
-  variants: {
-    variant: Object.fromEntries(
-      Object.entries(calloutConfig).map(([key, config]) => [key, config.style])
-    ),
-  },
-  defaultVariants: {
-    variant: "note",
-  },
+	variants: {
+		variant: Object.fromEntries(Object.entries(calloutConfig).map(([key, config]) => [key, config.style])),
+	},
+	defaultVariants: {
+		variant: "note",
+	},
 });
 
 interface Props extends VariantProps<typeof calloutVariants> {
-  title?: string;
-  variant: keyof typeof calloutConfig;
-  defaultOpen: boolean;
+	title?: string;
+	variant: keyof typeof calloutConfig;
+	defaultOpen: boolean;
 }
 
 const { title, variant = "note", defaultOpen = true, ...props } = Astro.props;

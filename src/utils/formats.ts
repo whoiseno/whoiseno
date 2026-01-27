@@ -1,7 +1,7 @@
 export function formatDate(date: Date | undefined) {
-  if(date === undefined) {
-    return 0;
-  }
+	if (date === undefined) {
+		return 0;
+	}
 	return new Intl.DateTimeFormat("en-GB", {
 		timeZone: "UTC",
 		day: "numeric",

@@ -39,19 +39,19 @@ Headers create hierarchical document structure and improve readability. Use 1-6 
 
 Bold text emphasizes important words or phrases, making them stand out visually. It's commonly used for key terms, warnings, or critical information. Use double asterisks or double underscores before and after text. Both methods produce identical results, so choose based on preference or consistency with your team's style guide.
 
-**\*\*bold text with asterisks\*\***
+**bold text with asterisks**
 
 ### Bold + Italic
 
 Combine bold and italic for maximum emphasis on exceptionally important text. Use triple asterisks or underscores, or mix both formatting styles. This is rarely used but effective for critical warnings or highlighting key concepts that need both strong emphasis and distinction from surrounding text.
 
-**\*\**\*bold and italic\**\*\***
+***bold and italic***
 
 ### Italic
 
 Italic text provides subtle emphasis, often used for titles, foreign words, technical terms, or gentle emphasis. It's less visually prominent than bold but still draws attention. Use single asterisks or single underscores. Italics are commonly used in academic writing, book titles, and to convey tone or stress in written communication.
 
-*\*italic text with asterisks\**
+*italic text with asterisks*
 
 ### Strikethrough
 
@@ -62,10 +62,6 @@ Strikethrough indicates deleted, outdated, or incorrect content. It's part of Gi
 ### Links
 
 Links connect to other web pages, documents, or sections within the same page. Format is `[link text](URL)`. The text in brackets becomes clickable, and the URL in parentheses is the destination. You can also add optional titles that appear on hover by adding text in quotes after the URL.
-
-1. \[Google]\([https://google.com](https://google.com))
-2. \[Google]\([https://google.com](https://google.com) "Search Engine")
-3. \[Jump to Headers]\(#headers)
 
 ### Unordered Lists
 
@@ -96,26 +92,14 @@ These type of lists can be unordered or ordered.
 
 Task lists create interactive checkboxes for tracking to-dos and progress. Part of GitHub Flavored Markdown. Use `- [ ]` for unchecked items and `- [x]` for checked items. Space between brackets is required. Perfect for project management, feature tracking, or any checklist-style content. On GitHub, these render as clickable checkboxes.
 
-* \[x] Completed task
-* \[ ] Incomplete task
+* [x] Completed task
+* [ ] Incomplete task
 
 ### Blockquotes
 
 Blockquotes highlight quotations, important notes, or content from other sources. Use `>` at the start of lines. You can nest blockquotes with multiple `>` symbols and combine them with other Markdown syntax. They're commonly used for citations, testimonials, callouts, or distinguishing referenced material from original content.
 
-> This is a simple quote.&#x20;
->
-> Multi-line quotes&#x20;
->
-> span multiple lines&#x20;
->
-> like this.&#x20;
-
-* An example of a nested quote.
-
-> Nested quotes:
->
-> \>> A nested quote.
+> The future belongs to those who believe in the beauty of their dreams. - Eleanor Roosevelt
 
 ### Horizontal Rule
 
@@ -127,10 +111,11 @@ Horizontal rules create visual separators between content sections. Use three or
 
 Tables organize data in rows and columns for easy comparison and readability. Use pipes `|` to separate columns and hyphens `-` for the header row. Tables are essential for presenting structured data, comparisons, or specifications.
 
-| Header 1 | Header 2 | Header 3 |
-| -------- | -------- | -------- |
-| Cell 1   | Cell 2   | Cell 3   |
-| Cell 4   | Cell 5   | Cell 6   |
+| Header 1 | Header 2 | Header 3  | Header 4 |
+| -------- | -------- | --------  | -------- |
+| Cell 1   | Cell 2   | Cell 3    | Cell 4   |
+| Cell 5   | Cell 6   | Cell 7    | Cell 8   |
+| Cell 9   | Cell 10  | Cell 11   | Cell 12  |
 
 ### Inline Code
 
@@ -138,9 +123,9 @@ Inline code displays short code snippets, commands, or technical terms within re
 
 Example
 
-* Use the \`print()\` function in Python.
-* Navigate to \`/home/user/documents\` directory.
-* Set the \`background-color\` property to \`#fff\`.
+* Use the `print()` function in Python.
+* Navigate to `/home/user/documents` directory.
+* Set the `background-color` property to `#fff`.
 
 ### Code Blocks
 
@@ -166,16 +151,6 @@ Syntax highlighting colorizes code based on programming language rules, improvin
 ### Images
 
 Images display visual content inline. Format is `![alt text](image URL)`. The alt text describes the image for accessibility and appears if the image fails to load. You can also add optional titles in quotes. For better control, you can use HTML `<img>` tags with width/height attributes in most Markdown processors.
-
-!\[Mountain view from Pexels]\([https://images.pexels.com/photos/346529/pexels-photo-346529.jpeg](https://images.pexels.com/photos/346529/pexels-photo-346529.jpeg))
-
-### Footnotes
-
-Footnotes add references, citations, or supplementary information without cluttering main content. Use `[^1]` in text and define it anywhere with `[^1]: footnote text`. Numbers can be any identifier. Footnotes automatically appear at the document bottom with return links. Great for academic writing, detailed explanations, or source citations.
-
-Here's a statement with a footnote.\[^1]
-
-Another reference to different note.\[^note]
 
 ## UI Components
 
@@ -218,7 +193,3 @@ Tabs organize related content into separate views accessible through horizontal 
 ## Conclusion
 
 Mastering Markdown syntax and understanding UI components are foundational skills for anyone creating digital content. With Markdown's simple yet powerful processors, and formatting capabilities coupled with the strategic use of UI components, you can create content that's both visually engaging and highly functional. Whether you're writing documentation, building interfaces, or crafting web content, these tools empower you to communicate more effectively and create better user experiences.
-
-\[^1]: This is the footnote content.&#x20;
-
-\[^note]: Named footnotes work too.
