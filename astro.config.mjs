@@ -5,7 +5,6 @@ import netlify from "@astrojs/netlify";
 import react from "@astrojs/react";
 import { pluginLineNumbers } from "@expressive-code/plugin-line-numbers";
 import keystatic from "@keystatic/astro";
-import rehypeShiki from "@shikijs/rehype";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
 import icon from "astro-icon";
@@ -26,23 +25,16 @@ const rehypeExpressiveCodeOptions = {
 		},
 	},
 	styleOverrides: {
-    borderColor: 'var(--border)',
+		borderColor: "var(--border)",
 		codeFontFamily: "var(--font-mono)",
 		frames: {
-      editorActiveTabForeground: 'var(--muted-foreground)',
-      editorActiveTabBackground:
-                'color-mix(in oklab, var(--muted) 25%, transparent)',
+			editorActiveTabForeground: "var(--muted-foreground)",
+			editorActiveTabBackground: "color-mix(in oklab, var(--muted) 25%, transparent)",
 			editorActiveTabIndicatorBottomColor: "transparent",
 			editorActiveTabIndicatorTopColor: "transparent",
 		},
 		uiFontFamily: "var(--font-sans)",
 	},
-};
-
-/** @type {import('@shikijs/rehype').RehypeShikiOptions} */
-const rehypeShikiOptions = {
-	theme: "catppuccin-latte",
-	inline: "tailing-curly-colon",
 };
 
 export default defineConfig({
@@ -62,10 +54,7 @@ export default defineConfig({
 	],
 	markdown: {
 		syntaxHighlight: false,
-		rehypePlugins: [
-			[rehypeExpressiveCode, rehypeExpressiveCodeOptions],
-      [rehypeShiki, rehypeShikiOptions]
-		],
+		rehypePlugins: [[rehypeExpressiveCode, rehypeExpressiveCodeOptions]],
 	},
 	adapter: netlify(),
 });
