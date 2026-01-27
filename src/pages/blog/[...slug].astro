@@ -8,6 +8,7 @@ import ScrollToTop from "@/components/widgets/ScrollToTop.astro";
 import Copy from "@/components/widgets/Copy.astro";
 import { getAllPosts } from "@/data/posts";
 import Callout from "@/components/content/Callout.astro";
+import Mark from "@/components/content/Mark.astro";
 import ImageViewer from "@/components/widgets/ImageViewer.astro";
 import { formatDate } from "@/utils/formats";
 
@@ -56,7 +57,7 @@ const { Content } = await render(post);
     <Content
       components={{
         Callout: Callout,
-        /* TODO: Insert custom components here  */
+        Mark: Mark
       }}
     />
     <div class="mt-12">
