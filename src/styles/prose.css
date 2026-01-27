@@ -1,11 +1,12 @@
 /* Inline code */
 .prose code:not(.expressive-code code) {
   background-color: var(--color-blue-50);
-  border-radius: 5px;
+  border-radius: var(--radius-md);
   border: 0.5px solid var(--color-blue-300);
   color: var(--color-blue-950);
   font-family: var(--font-mono);
-  font-size: 0.5em;
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
   padding: 2.5px 3.5px;
   font-feature-settings:
     'liga' 0,
@@ -37,6 +38,7 @@
   line-height: 1.75;
 }
 
+/* Callouts */
 details p {
   margin: 0;
 }
@@ -161,80 +163,6 @@ details p {
   text-align: center;
 }
 
-/* Footnotes */
-.prose .footnotes {
-  margin-top: 4rem;
-  padding-top: 1.75rem;
-  position: relative;
-}
-
-.prose .footnotes::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 4rem;
-  height: 1px;
-  background-color: var(--color-border);
-}
-
-.prose cite {
-  font-style: normal;
-}
-
-/* Footnote references */
-.prose [data-footnote-backref] {
-  position: relative;
-  font-family: var(--mono);
-  font-size: var(--font-size-l);
-  top: -0.05em;
-}
-
-.prose [data-footnote-ref] {
-  font-size: 1em;
-  font-variant-numeric: tabular-nums;
-  font-feature-settings:
-    'tnum' 1,
-    'zero' 0,
-    'cv01' 1,
-    'cv02' 1,
-    'calt' 1,
-    'ss03' 1,
-    'liga' 1,
-    'ordn' 1;
-}
-
-.prose [data-footnote-ref],
-.prose [data-footnote-backref] {
-  color: var(--text-secondary);
-  opacity: 0.875;
-  text-decoration: none;
-  transition: color 0.2s ease-out;
-  padding-right: 0.125em;
-}
-
-.prose [data-footnote-ref]:hover,
-.prose [data-footnote-backref]:hover {
-  color: var(--text-primary);
-}
-
-/* Footnote highlight animation */
-.prose .footnotes li.footnote-highlight,
-.prose sup.footnote-highlight,
-.prose cite.footnote-highlight {
-  animation: footnote-highlight 1.35s ease-out;
-}
-
-@keyframes footnote-highlight {
-  0%,
-  87% {
-    background-color: var(--color-blue-500);
-  }
-  100% {
-    background-color: transparent;
-  }
-}
-
 /* Video */
 .prose iframe {
   width: 100%;
@@ -242,4 +170,12 @@ details p {
   border: none;
   border-radius: 6px;
   margin: 0.25em 0 0 0;
+}
+
+/* Marks */
+.prose mark {
+  background-color: var(--color-indigo-100);
+  color: var(--color-indigo-950);
+  padding: 3px 2px;
+  border-radius: var(--radius-sm);
 }
