@@ -43,14 +43,14 @@ const { Content } = await render(post);
       className="rounded-full"
     />
   </header>
+  <hgroup class="text-center">
+    <h1 class="scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0">
+      {post.data.title}
+    </h1>
+    <p class="leading-7 not-first:mt-6 text-muted-foreground text-xl">{post.data.summary}</p>
+    <div class="text-lg text-muted-foreground my-6">•••</div>
+  </hgroup>
   <Prose>
-    <hgroup class="text-center">
-      <h1 transition:name={`title_${post.data.title}`}>
-        {post.data.title}
-      </h1>
-      <p>{post.data.summary}</p>
-      <div class="text-lg text-muted-foreground my-6">•••</div>
-    </hgroup>
     <Content
       components={{
         Callout: Callout,
