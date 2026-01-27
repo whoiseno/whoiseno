@@ -41,6 +41,9 @@ const rehypeExpressiveCodeOptions = {
 
 export default defineConfig({
   site: config.site,
+  redirects: {
+    "/admin": "/keystatic"
+  },
   vite: {
     plugins: [tsconfigPaths(), tailwindcss()],
   },

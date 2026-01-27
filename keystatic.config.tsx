@@ -1,5 +1,6 @@
 import { collection, config, fields } from "@keystatic/core";
-import { wrapper } from "@keystatic/core/content-components";
+import { mark, wrapper } from "@keystatic/core/content-components";
+import { HighlighterIcon } from "@phosphor-icons/react";
 
 export default config({
   storage: {
@@ -70,6 +71,14 @@ export default config({
                 }),
               },
               description: "A callout is a highlighted box that draws attention to important information.",
+            }),
+            // ----------------------------------------
+            // Mark
+            // ----------------------------------------
+            Mark: mark({
+              label: "Mark",
+              icon: <HighlighterIcon />,
+              schema: {},
             }),
           },
         }),
