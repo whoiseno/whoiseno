@@ -1,4 +1,4 @@
-export function formatDate(date: Date) {
+export function formatDate(date: Date | undefined) {
 	return new Intl.DateTimeFormat("en-GB", {
 		timeZone: "UTC",
 		day: "numeric",
