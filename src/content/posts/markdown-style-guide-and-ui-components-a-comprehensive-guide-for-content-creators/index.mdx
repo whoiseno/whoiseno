@@ -23,17 +23,17 @@ Let's dive into the essential syntax and components that will elevate your conte
 
 Headers create hierarchical document structure and improve readability. Use 1-6 `#` symbols for different heading levels, with one `#` being the largest. Headers help organize content into sections and are crucial for SEO and accessibility. Always add a space after the `#` symbol.
 
-\# Header 1 (Largest)
+# Header 1 (Largest)
 
-\## Header 2
+## Header 2
 
-\### Header 3
+### Header 3
 
-\#### Header 4
+#### Header 4
 
-\##### Header 5
+##### Header 5
 
-\###### Header 6 (Smallest)
+###### Header 6 (Smallest)
 
 ### Bold
 
@@ -88,13 +88,6 @@ These type of lists can be unordered or ordered.
   * Another sub item
 * Another main item
 
-### Task Lists
-
-Task lists create interactive checkboxes for tracking to-dos and progress. Part of GitHub Flavored Markdown. Use `- [ ]` for unchecked items and `- [x]` for checked items. Space between brackets is required. Perfect for project management, feature tracking, or any checklist-style content. On GitHub, these render as clickable checkboxes.
-
-* [x] Completed task
-* [ ] Incomplete task
-
 ### Blockquotes
 
 Blockquotes highlight quotations, important notes, or content from other sources. Use `>` at the start of lines. You can nest blockquotes with multiple `>` symbols and combine them with other Markdown syntax. They're commonly used for citations, testimonials, callouts, or distinguishing referenced material from original content.
@@ -111,11 +104,11 @@ Horizontal rules create visual separators between content sections. Use three or
 
 Tables organize data in rows and columns for easy comparison and readability. Use pipes `|` to separate columns and hyphens `-` for the header row. Tables are essential for presenting structured data, comparisons, or specifications.
 
-| Header 1 | Header 2 | Header 3  | Header 4 |
-| -------- | -------- | --------  | -------- |
-| Cell 1   | Cell 2   | Cell 3    | Cell 4   |
-| Cell 5   | Cell 6   | Cell 7    | Cell 8   |
-| Cell 9   | Cell 10  | Cell 11   | Cell 12  |
+| Header 1 | Header 2 | Header 3 | Header 4 |
+| -------- | -------- | -------- | -------- |
+| Cell 1   | Cell 2   | Cell 3   | Cell 4   |
+| Cell 5   | Cell 6   | Cell 7   | Cell 8   |
+| Cell 9   | Cell 10  | Cell 11  | Cell 12  |
 
 ### Inline Code
 
@@ -152,6 +145,8 @@ Syntax highlighting colorizes code based on programming language rules, improvin
 
 Images display visual content inline. Format is `![alt text](image URL)`. The alt text describes the image for accessibility and appears if the image fails to load. You can also add optional titles in quotes. For better control, you can use HTML `<img>` tags with width/height attributes in most Markdown processors.
 
+![Using Keystatic with Astro](/content/posts/markdown-style-guide-and-ui-components-a-comprehensive-guide-for-content-creators/keystatic_with_astro.png)
+
 ## UI Components
 
 ### Callouts
@@ -159,7 +154,23 @@ Images display visual content inline. Format is `![alt text](image URL)`. The al
 Callouts are prominent boxes that draw attention to important information, tips, warnings, or notes within content. They typically use distinct background colors, borders, and icons to indicate their purpose (info, warning, error, success). Callouts break up text monotony and ensure critical information doesn't get overlooked. Common types include informational (blue), warning (yellow/orange), error (red), and success (green). They're widely used in documentation, tutorials, and educational content to highlight key points, best practices, or potential pitfalls.
 
 <Callout variant="note" defaultOpen>
-  A callout
+  A note callout
+</Callout>
+
+<Callout variant="tip" defaultOpen>
+  A tip callout
+</Callout>
+
+<Callout variant="warning" defaultOpen>
+  A warning callout
+</Callout>
+
+<Callout variant="danger" defaultOpen>
+  A danger callout
+</Callout>
+
+<Callout variant="important" defaultOpen>
+  A important callout
 </Callout>
 
 <Callout variant="note" defaultOpen>
@@ -170,25 +181,13 @@ Callouts are prominent boxes that draw attention to important information, tips,
   </Callout>
 </Callout>
 
-### Card
-
-Cards are versatile container components that group related information and actions into a visually distinct, self-contained unit. They typically feature rounded corners, shadows, and padding to create depth and separation from surrounding content. Cards can include images, titles, descriptions, buttons, tags, and other elements. They're perfect for displaying collections of content like products, blog posts, user profiles, or features. Cards make content scannable, modular, and responsive, often arranged in grids that adapt to different screen sizes.
-
 ### Highlight
 
 Highlights emphasize specific text portions by applying visual treatments like background colors, borders, or text styling. They draw readers' eyes to key terms, definitions, code snippets, search results, or important phrases within larger text blocks. Highlights can be subtle (light background) or bold (bright colors) depending on emphasis needs. Common uses include marking search query matches, indicating new or updated content, showing active selections, or differentiating technical terms from regular text in documentation and educational materials.
 
-### Zoomable Image
-
-Zoomable images allow users to enlarge pictures for detailed inspection without navigating away from the current page. Users typically click or tap images to open full-screen views with zoom controls, panning capabilities, and optional thumbnails for navigation. This component is essential for product galleries, diagrams, infographics, or any visual content where detail matters. Features often include pinch-to-zoom on mobile, mouse wheel zooming on desktop, lightbox overlays, image galleries with next/previous navigation, and captions or metadata display.
-
 ### Steps
 
 Steps components guide users through sequential processes by breaking complex tasks into ordered, manageable stages. They visually indicate progress, show current position, and display completed versus remaining steps. Common in onboarding flows, checkout processes, form wizards, and tutorials. Steps typically include numbered indicators, connecting lines, step titles, and optional descriptions. They may allow backward navigation to previous steps or lock future steps until current ones complete. This pattern reduces cognitive load and increases task completion rates.
-
-### Tabs
-
-Tabs organize related content into separate views accessible through horizontal or vertical navigation labels, displaying one section at a time while keeping others hidden. This saves vertical space and reduces scrolling while maintaining content accessibility. Users click tab labels to switch between panels containing different information. Tabs work well for settings panels, dashboard sections, product details (description, specifications, reviews), or any scenario with distinct but related content categories. They include active state indicators and may support keyboard navigation.
 
 ## Conclusion
 
