@@ -11,6 +11,8 @@ import icon from "astro-icon";
 import rehypeExpressiveCode from "rehype-expressive-code";
 import tsconfigPaths from "vite-tsconfig-paths";
 import { config } from "./src/config";
+import rehypeCleanup from "./src/plugins/rehype-cleanup.mjs";
+import rehypeImageProcessor from "./src/plugins/rehype-image-processor.mjs";
 
 /** @type {import('rehype-expressive-code').RehypeExpressiveCodeOptions} */
 const rehypeExpressiveCodeOptions = {
@@ -57,4 +59,5 @@ export default defineConfig({
 		rehypePlugins: [[rehypeExpressiveCode, rehypeExpressiveCodeOptions]],
 	},
 	adapter: netlify(),
+    rehypePlugins: [rehypeCleanup, rehypeImageProcessor, [rehypeExpressiveCode, rehypeExpressiveCodeOptions]],
 });

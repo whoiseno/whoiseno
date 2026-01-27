@@ -8,13 +8,15 @@ import ScrollToTop from "@/components/widgets/ScrollToTop.astro";
 import Copy from "@/components/widgets/Copy.astro";
 import { getAllPosts } from "@/data/posts";
 import Callout from "@/components/content/Callout.astro";
+import ImageViewer from "@/components/widgets/ImageViewer.astro";
+import { formatDate } from "@/utils/formats";
 
 export async function getStaticPaths() {
-	const posts = await getAllPosts();
-	return posts.map((post) => ({
-		params: { slug: post.id },
-		props: { post },
-	}));
+  const posts = await getAllPosts();
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
 }
 
 const permalink = new URL(Astro.url.pathname, Astro.url.origin).href.replace(/\/+$/, "");
@@ -57,6 +59,10 @@ const { Content } = await render(post);
         /* TODO: Insert custom components here  */
       }}
     />
+    <div class="mt-12">
+      <p class="text-sm font-medium"><i>Published on {formatDate(post.data.createdAt)}</i>.</p>
+    </div>
   </Prose>
   <ScrollToTop />
+  <ImageViewer />
 </Root>
