@@ -9,6 +9,7 @@ import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
 import icon from "astro-icon";
 import rehypeExpressiveCode from "rehype-expressive-code";
+import rehypeExternalLinks from "rehype-external-links";
 import tsconfigPaths from "vite-tsconfig-paths";
 import { config } from "./src/config";
 import rehypeCleanup from "./src/plugins/rehype-cleanup.mjs";
@@ -39,6 +40,12 @@ const rehypeExpressiveCodeOptions = {
   },
 };
 
+/** @type {import('rehype-external-links').Options} */
+const rehypeExternalLinksOptions = {
+  target: "_blank",
+  rel: ["nofollow", "noreferrer", "noopener"],
+};
+
 export default defineConfig({
   site: config.site,
   redirects: {
@@ -59,7 +66,12 @@ export default defineConfig({
   ],
   markdown: {
     syntaxHighlight: false,
-    rehypePlugins: [rehypeCleanup, rehypeImageProcessor, [rehypeExpressiveCode, rehypeExpressiveCodeOptions]],
+    rehypePlugins: [
+      rehypeCleanup,
+      [rehypeExternalLinks, rehypeExternalLinksOptions],
+      rehypeImageProcessor,
+      [rehypeExpressiveCode, rehypeExpressiveCodeOptions],
+    ],
   },
   adapter: netlify(),
 });
