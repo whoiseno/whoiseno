@@ -83,7 +83,7 @@ export default config({
                 "background-color": "oklch(93% 0.034 272.788)",
                 color: "oklch(25.7% 0.09 281.288)",
                 padding: "3px",
-                "border-radius": "calc(0.55rem - 4px)"
+                "border-radius": "calc(0.55rem - 4px)",
               },
             }),
           },
