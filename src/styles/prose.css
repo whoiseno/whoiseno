@@ -1,5 +1,6 @@
 /* Inline code */
 .prose code:not(.expressive-code code) {
+  display: inline-block;
   background-color: var(--color-blue-50);
   border-radius: var(--radius-md);
   border: 0.5px solid var(--color-blue-300);
@@ -22,15 +23,44 @@
 }
 
 /* Links */
-.prose a {
+.prose a:not(:is(h1, h2, h3, h4, h5, h6) a) {
   text-decoration: underline;
   text-decoration-color: var(--color-muted);
   text-decoration-thickness: 3px;
   transition: text-decoration-color 150ms ease-out;
 }
 
-.prose a:hover {
+.prose a:not(:is(h1, h2, h3, h4, h5, h6) a):hover {
   text-decoration-color: var(--color-primary);
+}
+
+/* Heading Links */
+.prose :is(h1, h2, h3, h4, h5, h6) {
+  position: relative;
+}
+
+.prose :is(h1, h2, h3, h4, h5, h6) a {
+  color: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  text-decoration: none;
+  font-family: inherit;
+}
+
+.prose :is(h1, h2, h3, h4, h5, h6) a::before {
+  content: "§";
+  position: absolute;
+  font-size: 1em;
+  text-decoration: none;
+  left: -1em;
+  opacity: 0;
+  transition: opacity 150ms ease-out;
+  color: var(--color-indigo-400);
+}
+
+.prose :is(h1, h2, h3, h4, h5, h6):hover a::before {
+  opacity: 1;
 }
 
 .prose a[href^="https"]::after {

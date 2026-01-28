@@ -8,10 +8,13 @@ import keystatic from "@keystatic/astro";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
 import icon from "astro-icon";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeExpressiveCode from "rehype-expressive-code";
 import rehypeExternalLinks from "rehype-external-links";
+import rehypeSlug from 'rehype-slug'
 import tsconfigPaths from "vite-tsconfig-paths";
 import { config } from "./src/config";
+import { rehypeAutolinkHeadingsOptions } from "./src/plugins/options/rehype-autolink-headings.mjs";
 import rehypeCleanup from "./src/plugins/rehype-cleanup.mjs";
 import rehypeImageProcessor from "./src/plugins/rehype-image-processor.mjs";
 
@@ -64,6 +67,8 @@ export default defineConfig({
   markdown: {
     syntaxHighlight: false,
     rehypePlugins: [
+      rehypeSlug,
+      [rehypeAutolinkHeadings, rehypeAutolinkHeadingsOptions],
       rehypeCleanup,
       [rehypeExternalLinks, rehypeExternalLinksOptions],
       rehypeImageProcessor,
