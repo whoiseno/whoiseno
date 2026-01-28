@@ -1,5 +1,6 @@
 ---
 import Link from "@/components/Link.astro";
+import { buttonVariants } from "./ui/button";
 
 const pathname = new URL(Astro.request.url).pathname;
 
@@ -59,12 +60,13 @@ const links: Array<LinkProps> = [
         })
       }
       <li>
-        <Link
+        <a
           href={"/admin"}
-          class={"bg-foreground text-background hover:bg-foreground/80 hover:text-background"}
+          target="_blank"
+          class={buttonVariants({ variant: "secondary", size: "sm" })}
         >
           Keystatic
-        </Link>
+        </a>
       </li>
     </ul>
   </div>
