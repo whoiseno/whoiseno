@@ -6,35 +6,40 @@ import { cva, type VariantProps } from "class-variance-authority";
 
 const calloutConfig = {
   note: {
-    style: "ring-blue-100 hover:ring-blue-300",
-    textColor: "text-blue-600",
+    base: "ring-blue-100",
+    text: "text-blue-600",
+    summary: "hover:bg-blue-600/5",
     icon: "ph:info-fill",
   },
   tip: {
-    style: "ring-green-100 hover:ring-green-300",
-    textColor: "text-green-600",
+    base: "ring-green-100",
+    text: "text-green-600",
+    summary: "hover:bg-green-600/5",
     icon: "ph:lightbulb-fill",
   },
   warning: {
-    style: "ring-amber-100 hover:ring-amber-300",
-    textColor: "text-amber-600",
+    base: "ring-amber-100",
+    text: "text-amber-600",
+    summary: "hover:bg-amber-600/5",
     icon: "ph:warning-fill",
   },
   danger: {
-    style: "ring-red-100 hover:ring-red-300",
-    textColor: "text-red-600",
+    base: "ring-red-100",
+    text: "text-red-600",
+    summary: "hover:bg-red-600/5",
     icon: "ph:x-circle-fill",
   },
   important: {
-    style: "ring-purple-100 hover:ring-purple-300",
-    textColor: "text-purple-600",
+    base: "ring-purple-100",
+    text: "text-purple-600",
+    summary: "hover:bg-purple-600/5",
     icon: "ph:trophy-fill",
   },
 } as const;
 
-const calloutVariants = cva("relative my-6 rounded-md text-sm ring-2 bg-card text-card-foreground", {
+const calloutVariants = cva("relative my-6 rounded-md text-base ring-2 bg-card text-card-foreground", {
   variants: {
-    variant: Object.fromEntries(Object.entries(calloutConfig).map(([key, config]) => [key, config.style])),
+    variant: Object.fromEntries(Object.entries(calloutConfig).map(([key, config]) => [key, config.base])),
   },
   defaultVariants: {
     variant: "note",
@@ -58,12 +63,12 @@ const { title, variant = "note", defaultOpen = true, ...props } = Astro.props;
   {...props}
   open={defaultOpen}
 >
-  <summary class="px-4 py-3 flex cursor-pointer items-center font-medium [&::-webkit-details-marker]:hidden">
+  <summary class={cn("px-4 py-3 flex cursor-pointer items-center font-medium rounded-t-md [&::-webkit-details-marker]:hidden", calloutConfig[variant].summary)}>
     <Icon
       name={calloutConfig[variant].icon}
-      class={cn("me-2 size-5 shrink-0", calloutConfig[variant].textColor)}
+      class={cn("me-2 size-5 shrink-0", calloutConfig[variant].text)}
     />
-    <span class={cn("font-medium me-2", calloutConfig[variant].textColor)}>
+    <span class={cn("font-medium me-2", calloutConfig[variant].text)}>
       {capitalize(variant)}
       {title && <span class="font-normal opacity-70"> ({title})</span>}
     </span>
@@ -71,11 +76,11 @@ const { title, variant = "note", defaultOpen = true, ...props } = Astro.props;
       name="ph:caret-down-fill"
       class={cn(
         "ms-auto size-4 shrink-0 transition-transform duration-250",
-        calloutConfig[variant].textColor
+        calloutConfig[variant].text
       )}
     />
   </summary>
-  <div class="px-4 pb-4">
+  <div class="ps-11 pe-4 pb-3">
     <slot />
   </div>
 </details>
@@ -86,7 +91,7 @@ const { title, variant = "note", defaultOpen = true, ...props } = Astro.props;
     block-size: 0;
     overflow: hidden;
     transition-property: block-size, content-visibility;
-    transition-duration: 250ms;
+    transition-duration: 170ms;
     transition-behavior: allow-discrete;
     transition-timing-function: ease-out;
   }

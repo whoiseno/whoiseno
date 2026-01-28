@@ -158,31 +158,35 @@ Images display visual content inline. Format is `![alt text](image URL)`. The al
 
 Callouts are prominent boxes that draw attention to important information, tips, warnings, or notes within content. They typically use distinct background colors, borders, and icons to indicate their purpose (info, warning, error, success). Callouts break up text monotony and ensure critical information doesn't get overlooked. Common types include informational (blue), warning (yellow/orange), error (red), and success (green). They're widely used in documentation, tutorials, and educational content to highlight key points, best practices, or potential pitfalls.
 
-<Callout variant="note" defaultOpen>
+<Callout title="Note callout" variant="note" defaultOpen>
   A note callout
 </Callout>
 
-<Callout variant="tip" defaultOpen>
+<Callout title="Tip callout" variant="tip" defaultOpen>
   A tip callout
 </Callout>
 
-<Callout variant="warning" defaultOpen>
+<Callout title="Warning callout" variant="warning" defaultOpen>
   A warning callout
 </Callout>
 
-<Callout variant="danger" defaultOpen>
+<Callout title="Danger callout" variant="danger" defaultOpen>
   A danger callout
 </Callout>
 
-<Callout variant="important" defaultOpen>
+<Callout title="Important callout" variant="important" defaultOpen>
   A important callout
 </Callout>
 
-<Callout variant="note" defaultOpen>
+<Callout title="Nested callout" variant="note" defaultOpen>
   A callout
 
-  <Callout variant="note" defaultOpen>
+  <Callout title="Child of nested callout" variant="note" defaultOpen={false}>
     A nested callout
+
+    <Callout title="Grandchild of nested callout" variant="note" defaultOpen>
+      A nested nested callout
+    </Callout>
   </Callout>
 </Callout>
 
