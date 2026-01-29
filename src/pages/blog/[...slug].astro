@@ -2,15 +2,14 @@
 import { render } from "astro:content";
 import Root from "@/layouts/Root.astro";
 import Prose from "@/components/Prose.astro";
-import Link from "@/components/Link.astro";
-import { ArrowLeftIcon } from "@phosphor-icons/react";
 import ScrollToTop from "@/components/widgets/ScrollToTop.astro";
-import Copy from "@/components/widgets/Copy.astro";
 import { getAllPosts } from "@/data/posts";
 import Callout from "@/components/content/Callout.astro";
 import Mark from "@/components/content/Mark.astro";
 import ImageViewer from "@/components/widgets/ImageViewer.astro";
-import { formatDate } from "@/utils/formats";
+import Header from "./_components/Header.astro";
+import Headline from "./_components/Headline.astro";
+import Footer from "./_components/Footer.astro";
 
 export async function getStaticPaths() {
   const posts = await getAllPosts();
@@ -23,47 +22,30 @@ export async function getStaticPaths() {
 const permalink = new URL(Astro.url.pathname, Astro.url.origin).href.replace(/\/+$/, "");
 
 const { post } = Astro.props;
-const { Content } = await render(post);
+const { Content, headings } = await render(post);
 ---
 
 <Root
   title={post.data.title}
   description={post.data.summary}
 >
-  <header class="flex items-center justify-between mb-12">
-    <Link
-      href="/blog"
-      variant="secondary"
-      size="icon-lg"
-      class="rounded-full"
-    >
-      <ArrowLeftIcon />
-      <span class="sr-only">blog</span>
-    </Link>
-    <Copy
-      textToCopy={permalink}
-      size="icon-lg"
-      className="rounded-full"
+  <main>
+    <Header permalink={permalink} />
+    <Headline
+      title={post.data.title}
+      summary={post.data.summary}
     />
-  </header>
-  <hgroup class="text-center">
-    <h1 class="scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0">
-      {post.data.title}
-    </h1>
-    <p class="leading-7 not-first:mt-6 text-muted-foreground text-xl">{post.data.summary}</p>
-    <div class="text-lg text-muted-foreground my-6">•••</div>
-  </hgroup>
-  <Prose>
-    <Content
-      components={{
-        Callout: Callout,
-        Mark: Mark
-      }}
-    />
-    <div class="mt-12">
-      <p class="text-sm font-medium"><i>Published on {formatDate(post.data.createdAt)}</i>.</p>
-    </div>
-  </Prose>
-  <ScrollToTop />
-  <ImageViewer />
+    <Prose>
+      <Content
+        components={{
+          Callout: Callout,
+          Mark: Mark,
+        }}
+      />
+      <Footer date={post.data.createdAt} />
+    </Prose>
+    <ScrollToTop />
+    <ImageViewer />
+  </main>
 </Root>
+</style>
