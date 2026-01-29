@@ -68,13 +68,13 @@
     scrollbar-gutter: stable;
   }
   h1,h2,h3,h4,h5,h6 {
-    @apply font-serif
+    @apply font-serif;
   }
   body {
     @apply bg-background text-foreground font-sans antialiased [text-size-adjust:100%] relative isolate scroll-smooth;
   }
   main {
-    @apply flex-1
+    @apply flex-1;
   }
   span.shiki {
     @apply border border-border;
@@ -87,7 +87,10 @@
 }
 
 @utility max-section-gap {
-  @apply space-y-16
+  @apply space-y-16;
 }
 
+@utility max-wrapper {
+  @apply max-w-180 mx-auto px-4;
+}
 

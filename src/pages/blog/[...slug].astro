@@ -41,11 +41,25 @@ const { Content, headings } = await render(post);
           Callout: Callout,
           Mark: Mark,
         }}
+  <main class="wrapper flex-1">
+    <div>
+      <Header permalink={permalink} />
+      <Headline
+        title={post.data.title}
+        summary={post.data.summary}
       />
-      <Footer date={post.data.createdAt} />
-    </Prose>
-    <ScrollToTop />
-    <ImageViewer />
+      <Prose>
+        <Content
+          components={{
+            Callout: Callout,
+            Mark: Mark,
+          }}
+        />
+        <Footer date={post.data.createdAt} />
+      </Prose>
+      <ScrollToTop />
+      <ImageViewer />
+    </div>
   </main>
 </Root>
 </style>
