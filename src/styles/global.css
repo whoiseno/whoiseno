@@ -73,6 +73,9 @@
   body {
     @apply bg-background text-foreground font-sans antialiased [text-size-adjust:100%] relative isolate scroll-smooth;
   }
+  main {
+    @apply flex-1
+  }
   span.shiki {
     @apply border border-border;
   }

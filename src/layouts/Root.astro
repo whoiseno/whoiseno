@@ -5,8 +5,6 @@ import "@fontsource-variable/ibm-plex-sans";
 import "@fontsource-variable/inter";
 import "@fontsource-variable/jetbrains-mono";
 
-import type { HTMLAttributes } from "astro/types";
-
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
 import Seo from "@/components/Seo.astro";
@@ -14,12 +12,12 @@ import Seo from "@/components/Seo.astro";
 import { cn } from "@/utils/cn";
 import Mask from "@/components/Mask.astro";
 
-export interface Props extends HTMLAttributes<"main"> {
+interface Props {
   title?: string | undefined;
   description?: string | undefined;
 }
 
-const { title, description, class: className } = Astro.props;
+const { title, description } = Astro.props;
 ---
 
 <html lang="en">
@@ -36,9 +34,7 @@ const { title, description, class: className } = Astro.props;
   >
     <Mask />
     <Header />
-    <main class={cn("flex-1", className)}>
-      <slot />
-    </main>
+    <slot />
     <Footer />
   </body>
 </html>

@@ -13,58 +13,59 @@ const description = "Articles, journals, and think pieces of my journey.";
 <Root
   title={title}
   description={description}
-  class="max-section-gap"
 >
-  <hgroup>
-    <h1 class="font-semibold text-3xl">Blog</h1>
-    <p class="leading-7 not-first:mt-6">Articles, journals, and think pieces of my journey.</p>
-  </hgroup>
-  <section>
-    <div>
-      {
-        posts.length > 0 ?
-          <div class="space-y-10">
-            <ul class="space-y-8">
-              {posts.map(async (post) => {
-                return (
-                  <li>
-                    <a
-                      href={`/blog/${post.id}`}
-                      class="group"
-                    >
-                      <Card>
-                        <CardHeader>
-                          <CardTitle className="group-hover:text-primary">
-                            {post.data.title}
-                          </CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                          <p class="line-clamp-2 text-muted-foreground">{post.data.summary}</p>
-                        </CardContent>
-                        <CardFooter>
-                          <p class="text-muted-foreground">
-                            Published on{" "}
-                            <span class="font-semibold">{formatDate(post.data.createdAt)}</span>
-                          </p>
-                          <p class="text-muted-foreground ms-auto">
-                            Last updated on{" "}
-                            <span class="font-semibold">{formatDate(post.data.updatedAt)}</span>
-                          </p>
-                        </CardFooter>
-                      </Card>
-                    </a>
-                  </li>
-                );
-              })}
-            </ul>
-            <blockquote class="text-sm text-muted-foreground text-center font-medium">
-              "The only true wisdom is in knowing you know nothing." - Socrates
-            </blockquote>
-          </div>
-        : <div class="flex items-center justify-center px-10 py-20">
-            <p class="font-medium">No blog posts has been published</p>
-          </div>
-      }
-    </div>
-  </section>
+  <main class="max-section-gap">
+    <hgroup>
+      <h1 class="font-semibold text-3xl">Blog</h1>
+      <p class="leading-7 not-first:mt-6">Articles, journals, and think pieces of my journey.</p>
+    </hgroup>
+    <section>
+      <div>
+        {
+          posts.length > 0 ?
+            <div class="space-y-10">
+              <ul class="space-y-8">
+                {posts.map(async (post) => {
+                  return (
+                    <li>
+                      <a
+                        href={`/blog/${post.id}`}
+                        class="group"
+                      >
+                        <Card>
+                          <CardHeader>
+                            <CardTitle className="group-hover:text-primary">
+                              {post.data.title}
+                            </CardTitle>
+                          </CardHeader>
+                          <CardContent>
+                            <p class="line-clamp-2 text-muted-foreground">{post.data.summary}</p>
+                          </CardContent>
+                          <CardFooter>
+                            <p class="text-muted-foreground">
+                              Published on{" "}
+                              <span class="font-semibold">{formatDate(post.data.createdAt)}</span>
+                            </p>
+                            <p class="text-muted-foreground ms-auto">
+                              Last updated on{" "}
+                              <span class="font-semibold">{formatDate(post.data.updatedAt)}</span>
+                            </p>
+                          </CardFooter>
+                        </Card>
+                      </a>
+                    </li>
+                  );
+                })}
+              </ul>
+              <blockquote class="text-sm text-muted-foreground text-center font-medium">
+                "The only true wisdom is in knowing you know nothing." - Socrates
+              </blockquote>
+            </div>
+          : <div class="flex items-center justify-center px-10 py-20">
+              <p class="font-medium">No blog posts has been published</p>
+            </div>
+        }
+      </div>
+    </section>
+  </main>
 </Root>
