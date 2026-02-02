@@ -97,6 +97,10 @@
     @apply font-serif;
   }
 
+  main {
+    @apply mt-24 space-y-12;
+  }
+
   span.shiki {
     @apply border border-border;
   }
@@ -105,13 +109,5 @@
     border-radius: calc(0.3rem + 1px);
     font-size: 0.75rem;
     padding: 0.156rem 0rem;
-  }
-
-  main {
-    @apply space-y-24;
-  }
-
-  main > section:first-of-type {
-    margin-top: calc(var(--spacing) * 24);
   }
 }
