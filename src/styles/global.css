@@ -98,7 +98,7 @@
   }
 
   main {
-    @apply mt-24 space-y-12;
+    @apply mt-24;
   }
 
   span.shiki {
