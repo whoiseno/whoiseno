@@ -8,8 +8,6 @@ import "@fontsource-variable/jetbrains-mono";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
 import Seo from "@/components/Seo.astro";
-
-import { cn } from "@/utils/cn";
 import Mask from "@/components/Mask.astro";
 
 interface Props {
@@ -28,9 +26,14 @@ const { title, description } = Astro.props;
     />
   </head>
   <body
-    class={cn(
-      "flex flex-col items-center gap-y-24 [&>nav,main,footer]:w-full"
-    )}
+    class:list={[
+      // base
+      "relative bg-background text-foreground isolate",
+      // fonts
+      "font-sans antialiased [text-size-adjust:100%]",
+      // layout
+      "flex flex-col items-start min-h-svh px-4 md:px-8",
+    ]}
   >
     <Mask />
     <Header />
