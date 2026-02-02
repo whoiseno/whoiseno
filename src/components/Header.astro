@@ -1,73 +1,40 @@
 ---
 import Link from "@/components/Link.astro";
-import { buttonVariants } from "./ui/button";
+import { buttonVariants } from "@/components/ui/button";
+import Logo from "@/components/Logo.astro";
+import { HEADER_NAVIGATIONS } from "@/utils/navigations";
 
 const pathname = new URL(Astro.request.url).pathname;
-
-interface LinkProps {
-  label: string;
-  href: `/${string}`;
-}
-
-const links: Array<LinkProps> = [
-  {
-    label: "Home",
-    href: "/",
-  },
-  {
-    label: "Works",
-    href: "/works",
-  },
-  {
-    label: "Blog",
-    href: "/blog",
-  },
-  {
-    label: "About",
-    href: "/about",
-  },
-  {
-    label: "Contact",
-    href: "/#contact-me",
-  },
-];
 ---
 
-<nav class="sticky top-4 z-40">
-  <div class="max-wrapper flex items-center justify-between">
-    <Link
-      href="/"
-      class="text-lg font-semibold px-0"
-    >
-      enoabasi &mdash; essien
-    </Link>
-    <ul class="flex items-center gap-x-px">
-      {
-        links.map((link) => {
-          const isActive = link.href === pathname;
-          return (
-            <li>
-              <Link
-                href={link.href}
-                class:list={{
-                  "underline underline-offset-10 decoration-4 decoration-primary": isActive,
-                }}
-              >
-                {link.label}
-              </Link>
-            </li>
-          );
-        })
-      }
-      <li>
-        <a
+<nav class="sticky top-4 z-40 flex items-center justify-between w-full h-11">
+  <Logo />
+  <menu class="hidden ms-12 md:flex items-center gap-x-px">
+    {
+      HEADER_NAVIGATIONS.map((link) => {
+        const isActive = link.href === pathname;
+        return (
+          <Link
+            href={link.href}
+            class:list={{
+              "underline underline-offset-10 decoration-4 decoration-primary": isActive,
+            }}
+          >
+            {link.label}
+          </Link>
+        );
+      })
+    }
+    {
+      import.meta.env.PROD ?
+        null
+      : <a
           href={"/admin"}
           target="_blank"
           class={buttonVariants({ variant: "secondary", size: "sm" })}
         >
           Keystatic
         </a>
-      </li>
-    </ul>
-  </div>
+    }
+  </menu>
 </nav>
