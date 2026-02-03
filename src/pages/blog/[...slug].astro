@@ -1,15 +1,18 @@
 ---
 import { render } from "astro:content";
+
+import { getAllPosts } from "@/data/posts";
+
 import Root from "@/layouts/Root.astro";
+
 import Prose from "@/components/Prose.astro";
 import ScrollToTop from "@/components/widgets/ScrollToTop.astro";
-import { getAllPosts } from "@/data/posts";
 import Callout from "@/components/content/Callout.astro";
 import Mark from "@/components/content/Mark.astro";
-import ImageViewer from "@/components/widgets/ImageViewer.astro";
+
 import Header from "./_components/Header.astro";
-import Headline from "./_components/Headline.astro";
 import Footer from "./_components/Footer.astro";
+import ASide from "./_components/ASide.astro";
 
 export async function getStaticPaths() {
   const posts = await getAllPosts();
@@ -29,25 +32,13 @@ const { Content, headings } = await render(post);
   title={post.data.title}
   description={post.data.summary}
 >
-  <main>
-    <Header permalink={permalink} />
-    <Headline
-      title={post.data.title}
-      summary={post.data.summary}
-    />
-    <Prose>
-      <Content
-        components={{
-          Callout: Callout,
-          Mark: Mark,
-        }}
-  <main class="wrapper flex-1">
-    <div>
-      <Header permalink={permalink} />
-      <Headline
-        title={post.data.title}
-        summary={post.data.summary}
-      />
+  <Header
+    permalink={permalink}
+    title={post.data.title}
+    summary={post.data.summary}
+  />
+  <main class="blog__wrapper">
+    <div class="blog__content">
       <Prose>
         <Content
           components={{
@@ -58,8 +49,35 @@ const { Content, headings } = await render(post);
         <Footer date={post.data.createdAt} />
       </Prose>
       <ScrollToTop />
-      <ImageViewer />
     </div>
+    <aside>
+      <nav class="blog__aside">
+        <ASide headings={headings} />
+      </nav>
+    </aside>
   </main>
 </Root>
+
+<style>
+  @references "../../styles/global.css";
+
+  .blog__wrapper {
+    max-width: var(--container-5xl);
+    margin: 0rem auto;
+
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    column-gap: calc(var(--spacing) * 6);
+  }
+
+  .blog__content {
+    display: grid;
+    row-gap: calc(var(--spacing) * 8);
+  }
+
+  .blog__aside {
+    position: sticky;
+    top: calc((var(--spacing) * 12) + 2rem);
+    padding: 0rem 0.5rem;
+  }
 </style>
