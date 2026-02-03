@@ -11,6 +11,10 @@ const { headings } = Astro.props;
 
 const toc = generateToc(headings);
 ---
+
+<div class="mb-4 ms-4 px-2">
+  <p class="text-sm font-semibold">On this page</p>
+</div>
 <ul>
   {toc.map((heading) => <TableOfContents heading={heading} />)}
 </ul>

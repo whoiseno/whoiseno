@@ -9,10 +9,10 @@ interface Props {
 const { heading } = Astro.props;
 ---
 
-<li class="ms-7">
+<li class="ms-4">
   <a
     href={"#" + heading.slug}
-    class={buttonVariants({ variant: "ghost", size: "xs" })}
+    class={buttonVariants({ variant: "ghost", size: "xs", class: "text-muted-foreground" })}
     >{heading.text}</a
   >
   {
