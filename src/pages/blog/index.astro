@@ -17,40 +17,23 @@ const description = "Articles, journals, and think pieces of my journey.";
   <main class="max-w-5xl mx-auto space-y-10">
     <hgroup>
       <h1 class="scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0">Blog</h1>
-      <p class="leading-7 not-first:mt-4 text-muted-foreground text-lg">Articles, journals, and think pieces of my journey.</p>
+      <p class="leading-7 not-first:mt-4 text-muted-foreground text-lg">
+        Articles, journals, and think pieces of my journey.
+      </p>
     </hgroup>
     <section>
       {
         posts.length > 0 ?
           <div class="grid grid-cols-1 gap-y-8">
-            <ul class="grid md:grid-cols-2 gap-8">
+            <ul class="grid gap-y-4 list-disc">
               {posts.map(async (post) => {
                 return (
                   <li>
                     <a
                       href={`/blog/${post.id}`}
-                      class="group"
+                      class="text-base leading-snug font-semibold underline underline-offset-2 decoration-2 decoration-muted-foreground/50 hover:decoration-primary"
                     >
-                      <Card>
-                        <CardHeader>
-                          <CardTitle className="group-hover:text-primary underline-offset-2 group-hover:underline decoration-primary">
-                            {post.data.title}
-                          </CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                          <p class="line-clamp-2 text-muted-foreground">{post.data.summary}</p>
-                        </CardContent>
-                        <CardFooter>
-                          <p class="text-muted-foreground">
-                            Published on{" "}
-                            <span class="font-semibold">{formatDate(post.data.createdAt)}</span>
-                          </p>
-                          <p class="text-muted-foreground ms-auto">
-                            Last updated on{" "}
-                            <span class="font-semibold">{formatDate(post.data.updatedAt)}</span>
-                          </p>
-                        </CardFooter>
-                      </Card>
+                      {post.data.title}.
                     </a>
                   </li>
                 );
