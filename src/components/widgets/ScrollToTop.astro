@@ -1,10 +1,10 @@
 ---
-// ScrollToTopButton.astro
+
 ---
 
 <button
   id="scroll-to-top-btn"
-  class="fixed bottom-8 right-8 z-50 grid place-items-center h-14 w-14 rounded-full bg-secondary text-secondary-foreground shadow-lg transition-all duration-300 opacity-0 invisible group"
+  class="fixed bottom-8 right-4 z-50 grid place-items-center h-14 w-14 rounded-full bg-secondary text-secondary-foreground shadow-lg transition-all duration-300 opacity-0 invisible group"
   aria-label="Scroll to top"
 >
   <!-- Circular Progress with Percentage -->
@@ -64,74 +64,72 @@
 </button>
 
 <script>
-  document.addEventListener("astro:after-swap", () => {
-    const scrollToTopButton = document.getElementById("scroll-to-top-btn");
-    const scrollPercentageText = document.getElementById("scroll-percentage-text");
-    const progressCircle = document.getElementById("progress-circle");
+  const scrollToTopButton = document.getElementById("scroll-to-top-btn");
+  const scrollPercentageText = document.getElementById("scroll-percentage-text");
+  const progressCircle = document.getElementById("progress-circle");
 
-    function getScrollToTopButton() {
-      if (!scrollToTopButton) return;
+  function getScrollToTopButton() {
+    if (!scrollToTopButton) return;
+  }
+
+  getScrollToTopButton();
+
+  let ticking = false;
+  const circumference = 125.6; // 2 * PI * radius (20)
+
+  const getScrollPercentage = () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    return Math.round((scrollTop / docHeight) * 100);
+  };
+
+  const updateButton = () => {
+    const percent = getScrollPercentage();
+    const isVisible = window.scrollY > 300;
+
+    // Toggle visibility
+    scrollToTopButton?.classList.toggle("opacity-0", !isVisible);
+    scrollToTopButton?.classList.toggle("invisible", !isVisible);
+    scrollToTopButton?.classList.toggle("opacity-100", isVisible);
+    scrollToTopButton?.classList.toggle("visible", isVisible);
+
+    // Update percentage text and progress circle
+    if (scrollPercentageText && progressCircle) {
+      scrollPercentageText.innerText = `${percent}`;
+
+      // Update circular progress (0% = full offset, 100% = no offset)
+      const offset = circumference - (percent / 100) * circumference;
+      progressCircle.style.strokeDashoffset = offset.toString();
     }
 
-    getScrollToTopButton();
+    // Toggle color based on scroll percentage
+    const isPrimaryColor = percent >= 90;
+    scrollToTopButton?.classList.toggle("bg-secondary", !isPrimaryColor);
+    scrollToTopButton?.classList.toggle("text-secondary-foreground", !isPrimaryColor);
+    scrollToTopButton?.classList.toggle("bg-primary", isPrimaryColor);
+    scrollToTopButton?.classList.toggle("text-primary-foreground", isPrimaryColor);
+    progressCircle?.classList.toggle("text-primary", !isPrimaryColor);
 
-    let ticking = false;
-    const circumference = 125.6; // 2 * PI * radius (20)
+    ticking = false;
+  };
 
-    const getScrollPercentage = () => {
-      const scrollTop = window.scrollY;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      return Math.round((scrollTop / docHeight) * 100);
-    };
+  const handleScroll = () => {
+    if (!ticking) {
+      requestAnimationFrame(updateButton);
+      ticking = true;
+    }
+  };
 
-    const updateButton = () => {
-      const percent = getScrollPercentage();
-      const isVisible = window.scrollY > 300;
+  // Scroll event listener with RAF optimization
+  window.addEventListener("scroll", handleScroll, { passive: true });
 
-      // Toggle visibility
-      scrollToTopButton?.classList.toggle("opacity-0", !isVisible);
-      scrollToTopButton?.classList.toggle("invisible", !isVisible);
-      scrollToTopButton?.classList.toggle("opacity-100", isVisible);
-      scrollToTopButton?.classList.toggle("visible", isVisible);
-
-      // Update percentage text and progress circle
-      if (scrollPercentageText && progressCircle) {
-        scrollPercentageText.innerText = `${percent}`;
-
-        // Update circular progress (0% = full offset, 100% = no offset)
-        const offset = circumference - (percent / 100) * circumference;
-        progressCircle.style.strokeDashoffset = offset.toString();
-      }
-
-      // Toggle color based on scroll percentage
-      const isPrimaryColor = percent >= 90;
-      scrollToTopButton?.classList.toggle("bg-secondary", !isPrimaryColor);
-      scrollToTopButton?.classList.toggle("text-secondary-foreground", !isPrimaryColor);
-      scrollToTopButton?.classList.toggle("bg-primary", isPrimaryColor);
-      scrollToTopButton?.classList.toggle("text-primary-foreground", isPrimaryColor);
-      progressCircle?.classList.toggle("text-primary", !isPrimaryColor);
-
-      ticking = false;
-    };
-
-    const handleScroll = () => {
-      if (!ticking) {
-        requestAnimationFrame(updateButton);
-        ticking = true;
-      }
-    };
-
-    // Scroll event listener with RAF optimization
-    window.addEventListener("scroll", handleScroll, { passive: true });
-
-    // Click handler
-    scrollToTopButton?.addEventListener("click", () => {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    });
-
-    // Initial update
-    updateButton();
+  // Click handler
+  scrollToTopButton?.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
   });
+
+  // Initial update
+  updateButton();
 </script>
 
 <style>

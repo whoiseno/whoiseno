@@ -1,0 +1,37 @@
+---
+import Link from "@/components/Link.astro";
+import Copy from "@/components/widgets/Copy.astro";
+import { ArrowLeftIcon } from "@phosphor-icons/react";
+import Headline from "./Headline.astro";
+
+interface Props {
+  permalink: string;
+  title: string;
+  summary: string;
+}
+
+const { permalink, title, summary } = Astro.props;
+---
+
+<header class="grid grid-cols-1 gap-y-6 mt-24 max-w-5xl mx-auto">
+  <div class="flex items-center gap-x-8">
+    <Link
+      href="/blog"
+      variant="secondary"
+      size="lg"
+      class="rounded-full"
+    >
+      <ArrowLeftIcon />
+      Back to blogs
+    </Link>
+    <Copy
+      textToCopy={permalink}
+      size="icon-lg"
+      className="rounded-full"
+    />
+  </div>
+  <Headline
+    title={title}
+    summary={summary}
+  />
+</header>

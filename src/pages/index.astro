@@ -1,43 +1,21 @@
 ---
 import Root from "@/layouts/Root.astro";
-import { buttonVariants } from "@/components/ui/button";
-import { cn } from "@/utils/cn";
-import Socials from "@/components/Socials.astro";
+import Socials from "./_components/landing/Socials.astro";
+import Intro from "./_components/landing/Intro.astro";
+import Footer from "@/components/Footer.astro";
 
 const title = "enoabasi essien";
 const description =
-	"A software developer, and product designer who loves crafting thoughtful, user-centered, and visually appealing interfaces.";
+  "A software developer, and product designer who loves crafting thoughtful, user-centered, and visually appealing interfaces.";
 ---
 
 <Root
   title={title}
   description={description}
-  class="max-section-gap"
 >
-  <section>
-    <p class="leading-7 not-first:mt-6">
-      Hey I'm <span class="font-semibold">Enoabasi Essien</span>.
-    </p>
-    <p class="leading-7 not-first:mt-6">
-      A software developer, and product designer who loves crafting thoughtful, <br />user-centered,
-      and visually appealing interfaces.
-    </p>
-    <p class="leading-7 not-first:mt-6">
-      I am currently based in <a
-        class={cn(buttonVariants({ variant: "link", class: "text-base px-0" }))}
-        href="https://w.wiki/FsTX"
-        target="_blank"
-        >Abuja
-      </a>.
-    </p>
-  </section>
-  <section id="contact-me">
-    <h2 class="scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0">
-      Reach out to me on
-    </h2>
-    <p class="leading-7 not-first:mt-6">
-      Hey I'm active on these channels incase you wanna reach out to me.
-    </p>
+  <main class="space-y-10">
+    <Intro />
     <Socials />
-  </section>
+  </main>
+  <Footer />
 </Root>

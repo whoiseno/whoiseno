@@ -7,9 +7,9 @@ import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/utils/cn";
 
 interface Props extends HTMLAttributes<"a"> {
-	variant?: VariantProps<typeof buttonVariants>["variant"];
-	size?: VariantProps<typeof buttonVariants>["size"];
-	href: string | URL;
+  variant?: VariantProps<typeof buttonVariants>["variant"];
+  size?: VariantProps<typeof buttonVariants>["size"];
+  href: string | URL;
 }
 
 const { href, variant = "ghost", size, ...props } = Astro.props;

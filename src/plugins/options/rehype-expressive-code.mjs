@@ -1,0 +1,25 @@
+import { pluginLineNumbers } from "@expressive-code/plugin-line-numbers";
+
+/** @type {import('rehype-expressive-code').RehypeExpressiveCodeOptions} */
+export const rehypeExpressiveCodeOptions = {
+  themes: ["rose-pine"],
+  plugins: [pluginLineNumbers()],
+  defaultProps: {
+    wrap: false,
+    overridesByLang: {
+      "ansi,bat,bash,batch,cmd,console,powershell,ps,ps1,psd1,psm1,sh,shell,shellscript,shellsession,text,zsh": {
+        showLineNumbers: false,
+      },
+    },
+  },
+  styleOverrides: {
+    borderColor: "var(--border)",
+    codeFontFamily: "var(--font-mono)",
+    frames: {
+      editorActiveTabForeground: "var(--muted-foreground)",
+      editorActiveTabIndicatorBottomColor: "transparent",
+      editorActiveTabIndicatorTopColor: "transparent",
+    },
+    uiFontFamily: "var(--font-sans)",
+  },
+};

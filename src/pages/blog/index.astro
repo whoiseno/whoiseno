@@ -1,74 +1,52 @@
 ---
-import Root from "@/layouts/Root.astro";
-import { formatDate } from "@/utils/formats";
-import { getAllBlogs } from "@/data/blog";
-import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { cn } from "@/utils/cn";
-import { buttonVariants } from "@/components/ui/button";
+export const prerender = true;
 
-const blogs = await getAllBlogs();
+import Root from "@/layouts/Root.astro";
+import { getAllPosts } from "@/data/posts";
+
+const posts = await getAllPosts();
 
 const title = "Blog";
 const description = "Articles, journals, and think pieces of my journey.";
-
-console.log(blogs)
 ---
 
 <Root
   title={title}
   description={description}
-  class="max-section-gap"
 >
-  <hgroup>
-    <h1 class="font-semibold text-3xl">Blog</h1>
-    <p class="leading-7 not-first:mt-6">Articles, journals, and think pieces of my journey.</p>
-  </hgroup>
-  <section>
-    <div>
+  <main class="max-w-5xl mx-auto space-y-10">
+    <hgroup>
+      <h1 class="scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0">Blog</h1>
+      <p class="leading-7 not-first:mt-4 text-muted-foreground text-lg">
+        Articles, journals, and think pieces of my journey.
+      </p>
+    </hgroup>
+    <section>
       {
-        blogs.length > 0 ?
-          <div class="space-y-10">
-            <ul class="space-y-4">
-              {blogs.map(async (blog) => {
+        posts.length > 0 ?
+          <div class="grid grid-cols-1 gap-y-8">
+            <ul class="grid gap-y-4 list-disc">
+              {posts.map(async (post) => {
                 return (
                   <li>
-                    <Card>
-                      <CardHeader>
-                        <CardTitle>
-                          <a
-                            href={`/blog/${blog.id}`}
-                            class={cn(
-                              buttonVariants({
-                                variant: "secondary-ghost",
-                                size: "sm",
-                                class: "hover:text-primary text-base -ms-3",
-                              })
-                            )}
-                            transition:name={`title_${blog.data.title}`}
-                          >
-                            {blog.data.title}
-                          </a>
-                        </CardTitle>
-                        <CardDescription className="line-clamp-1">
-                          {blog.data.summary}
-                        </CardDescription>
-                      </CardHeader>
-                      <CardFooter>
-                        <p class="text-muted-foreground font-medium">
-                          {formatDate(blog.data.createdAt)}
-                        </p>
-                      </CardFooter>
-                    </Card>
+                    <a
+                      href={`/blog/${post.id}`}
+                      class="text-base leading-snug font-semibold underline underline-offset-2 decoration-2 decoration-muted-foreground/50 hover:decoration-primary"
+                    >
+                      {post.data.title}.
+                    </a>
                   </li>
                 );
               })}
             </ul>
-            <blockquote class="text-sm text-muted-foreground text-center">
+            <blockquote class="text-sm text-muted-foreground text-center font-medium">
               "The only true wisdom is in knowing you know nothing." - Socrates
             </blockquote>
           </div>
-        : <p class="font-medium">No blog posts has been published</p>
+        : <div class="flex items-center justify-center px-10 py-20">
+            <p class="font-medium">No blog posts has been published</p>
+          </div>
       }
-    </div>
-  </section>
+    </section>
+  </main>
 </Root>

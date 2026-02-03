@@ -3,8 +3,8 @@ import type { HTMLAttributes } from "astro/types";
 import { config } from "@/config";
 
 export interface Props extends HTMLAttributes<"main"> {
-	title?: string | undefined;
-	description?: string | undefined;
+  title?: string | undefined;
+  description?: string | undefined;
 }
 
 const { title, description } = Astro.props;
