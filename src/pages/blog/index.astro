@@ -14,16 +14,16 @@ const description = "Articles, journals, and think pieces of my journey.";
   title={title}
   description={description}
 >
-  <main>
+  <main class="max-w-5xl mx-auto space-y-10">
     <hgroup>
-      <h1 class="font-semibold text-3xl">Blog</h1>
-      <p class="leading-7 not-first:mt-6">Articles, journals, and think pieces of my journey.</p>
+      <h1 class="scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0">Blog</h1>
+      <p class="leading-7 not-first:mt-4 text-muted-foreground text-lg">Articles, journals, and think pieces of my journey.</p>
     </hgroup>
     <section>
       {
         posts.length > 0 ?
           <div class="grid grid-cols-1 gap-y-8">
-            <ul class="space-y-8 max-w-2xl">
+            <ul class="grid md:grid-cols-2 gap-8">
               {posts.map(async (post) => {
                 return (
                   <li>
