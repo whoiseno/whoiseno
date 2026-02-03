@@ -1,7 +1,7 @@
 ---
+export const prerender = true;
+
 import Root from "@/layouts/Root.astro";
-import { formatDate } from "@/utils/formats";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { getAllPosts } from "@/data/posts";
 
 const posts = await getAllPosts();

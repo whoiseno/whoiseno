@@ -7,7 +7,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "lint": "pnpm exec biome check --write"
+    "lint": "pnpm exec biome check --write",
+    "clean": "rm -rf node_modules .astro .netlify dist && pnpm install"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.13",

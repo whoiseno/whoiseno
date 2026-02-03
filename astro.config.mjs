@@ -10,7 +10,7 @@ import icon from "astro-icon";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeExpressiveCode from "rehype-expressive-code";
 import rehypeExternalLinks from "rehype-external-links";
-import rehypeSlug from 'rehype-slug'
+import rehypeSlug from "rehype-slug";
 import tsconfigPaths from "vite-tsconfig-paths";
 import { config } from "./src/config";
 import { rehypeAutolinkHeadingsOptions } from "./src/plugins/options/rehype-autolink-headings.mjs";
@@ -24,6 +24,7 @@ export default defineConfig({
   vite: {
     plugins: [tsconfigPaths(), tailwindcss()],
   },
+  output: "server",
   integrations: [
     react(),
     icon({
@@ -45,5 +46,7 @@ export default defineConfig({
       [rehypeExpressiveCode, rehypeExpressiveCodeOptions],
     ],
   },
-  adapter: netlify(),
+  adapter: netlify({
+    imageCDN: false,
+  }),
 });
