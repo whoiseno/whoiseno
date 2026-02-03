@@ -2,7 +2,7 @@ import { pluginLineNumbers } from "@expressive-code/plugin-line-numbers";
 
 /** @type {import('rehype-expressive-code').RehypeExpressiveCodeOptions} */
 export const rehypeExpressiveCodeOptions = {
-  themes: ["catppuccin-latte"],
+  themes: ["rose-pine"],
   plugins: [pluginLineNumbers()],
   defaultProps: {
     wrap: false,
@@ -17,7 +17,6 @@ export const rehypeExpressiveCodeOptions = {
     codeFontFamily: "var(--font-mono)",
     frames: {
       editorActiveTabForeground: "var(--muted-foreground)",
-      editorActiveTabBackground: "color-mix(in oklab, var(--muted) 25%, transparent)",
       editorActiveTabIndicatorBottomColor: "transparent",
       editorActiveTabIndicatorTopColor: "transparent",
     },
