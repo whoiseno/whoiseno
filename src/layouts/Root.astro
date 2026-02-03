@@ -6,7 +6,6 @@ import "@fontsource-variable/inter";
 import "@fontsource-variable/jetbrains-mono";
 
 import Header from "@/components/Header.astro";
-import Footer from "@/components/Footer.astro";
 import Seo from "@/components/Seo.astro";
 import Mask from "@/components/Mask.astro";
 
@@ -38,6 +37,5 @@ const { title, description } = Astro.props;
     <Mask />
     <Header />
     <slot />
-    <Footer />
   </body>
 </html>

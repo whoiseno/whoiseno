@@ -2,6 +2,7 @@
 import Root from "@/layouts/Root.astro";
 import Socials from "./_components/landing/Socials.astro";
 import Intro from "./_components/landing/Intro.astro";
+import Footer from "@/components/Footer.astro";
 
 const title = "enoabasi essien";
 const description =
@@ -12,8 +13,9 @@ const description =
   title={title}
   description={description}
 >
-  <main>
+  <main class="space-y-10">
     <Intro />
     <Socials />
   </main>
+  <Footer />
 </Root>
