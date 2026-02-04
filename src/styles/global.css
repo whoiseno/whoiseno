@@ -1,8 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@import "./prose.css";
-
 @plugin "@tailwindcss/typography";
 
 @theme inline {

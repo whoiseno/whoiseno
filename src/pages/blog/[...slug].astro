@@ -1,4 +1,6 @@
 ---
+import "../../styles/prose.css";
+
 export const prerender = true;
 
 import { render } from "astro:content";
@@ -7,7 +9,6 @@ import { getAllPosts } from "@/data/posts";
 
 import Root from "@/layouts/Root.astro";
 
-import Prose from "@/components/Prose.astro";
 import ScrollToTop from "@/components/widgets/ScrollToTop.astro";
 import Callout from "@/components/content/Callout.astro";
 import Mark from "@/components/content/Mark.astro";
@@ -41,7 +42,11 @@ const { Content, headings } = await render(post);
   />
   <main class="blog__wrapper">
     <div class="blog__content">
-      <Prose>
+      <article
+        class:list={[
+          "prose prose-gray prose-base max-w-none",
+        ]}
+      >
         <Content
           components={{
             Callout: Callout,
@@ -49,7 +54,7 @@ const { Content, headings } = await render(post);
           }}
         />
         <Footer date={post.data.createdAt} />
-      </Prose>
+      </article>
       <ScrollToTop />
     </div>
     <aside>
