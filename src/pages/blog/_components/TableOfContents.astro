@@ -7,9 +7,14 @@ interface Props {
 }
 
 const { heading } = Astro.props;
+
+const url = Astro.url.href
 ---
 
-<li class="ms-4">
+<li
+  data-depth={heading.depth}
+  class="data-[depth=3]:pl-6 data-[depth=4]:pl-8"
+>
   <a
     href={"#" + heading.slug}
     class={buttonVariants({ variant: "ghost", size: "xs", class: "text-muted-foreground" })}
