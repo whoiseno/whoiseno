@@ -14,7 +14,7 @@ const description = "Articles, journals, and think pieces of my journey.";
   title={title}
   description={description}
 >
-  <main class="max-w-5xl mx-auto space-y-10">
+  <main class="space-y-10">
     <hgroup>
       <h1 class="scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0">Blog</h1>
       <p class="leading-7 not-first:mt-4 text-muted-foreground text-lg">
@@ -25,13 +25,13 @@ const description = "Articles, journals, and think pieces of my journey.";
       {
         posts.length > 0 ?
           <div class="grid grid-cols-1 gap-y-8">
-            <ul class="grid gap-y-4 list-disc">
+            <ul class="grid gap-y-4">
               {posts.map(async (post) => {
                 return (
                   <li>
                     <a
                       href={`/blog/${post.id}`}
-                      class="text-base leading-snug font-semibold underline underline-offset-2 decoration-2 decoration-muted-foreground/50 hover:decoration-primary"
+                      class="text-lg leading-snug font-semibold underline underline-offset-2 decoration-2 decoration-muted-foreground/50 hover:decoration-primary"
                     >
                       {post.data.title}.
                     </a>
@@ -39,8 +39,8 @@ const description = "Articles, journals, and think pieces of my journey.";
                 );
               })}
             </ul>
-            <blockquote class="text-sm text-muted-foreground text-center font-medium">
-              "The only true wisdom is in knowing you know nothing." - Socrates
+            <blockquote class="text-sm text-muted-foreground font-medium">
+              &quot;The only true wisdom is in knowing you know nothing.&quot; &mdash; Socrates
             </blockquote>
           </div>
         : <div class="flex items-center justify-center px-10 py-20">
