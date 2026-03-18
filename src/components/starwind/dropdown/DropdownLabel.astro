@@ -1,0 +1,29 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { tv } from "tailwind-variants";
+
+type Props = HTMLAttributes<"div"> & {
+  /**
+   * Whether the label is inset (has left padding)
+   */
+  inset?: boolean;
+};
+
+export const dropdownLabel = tv({
+  base: ["text-muted-foreground px-2 py-1.5 text-sm font-medium"],
+  variants: {
+    inset: {
+      true: "pl-8",
+    },
+  },
+  defaultVariants: {
+    inset: false,
+  },
+});
+
+const { class: className, inset = false, ...rest } = Astro.props;
+---
+
+<div class={dropdownLabel({ inset, class: className })} {...rest} data-slot="dropdown-label">
+  <slot />
+</div>
