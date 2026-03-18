@@ -8,7 +8,7 @@ Welcome to my portfolio. This is my space for sharing ideas, thoughts, and proje
 
 ## Built with
 
-- Astro
+- Astro + Starwind UI
 - Tailwind CSS
 
 ## Setup the project
