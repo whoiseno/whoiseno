@@ -25,6 +25,9 @@
     "lint-staged": "^16.4.0"
   },
   "lint-staged": {
-    "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc,vue}": "pnpm run lint"
+    "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc,vue}": [
+      "pnpm run format",
+      "pnpm run lint:fix"
+    ]
   }
 }
