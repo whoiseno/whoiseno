@@ -15,6 +15,9 @@ importers:
       '@biomejs/biome':
         specifier: 2.4.8
         version: 2.4.8
+      commitizen:
+        specifier: ^4.3.1
+        version: 4.3.1(@types/node@25.5.0)(typescript@5.9.3)
       cz-conventional-changelog:
         specifier: ^3.3.0
         version: 3.3.0(@types/node@25.5.0)(typescript@5.9.3)
