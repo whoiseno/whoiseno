@@ -21,6 +21,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.4.8",
+    "cz-conventional-changelog": "^3.3.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.4.0"
   },
@@ -29,5 +30,10 @@
       "pnpm run format",
       "pnpm run lint:fix"
     ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
