@@ -13,12 +13,18 @@
     "lint": "pnpx @biomejs/biome lint",
     "lint:fix": "pnpx @biomejs/biome lint --write",
     "format": "pnpx @biomejs/biome format --write",
-    "check": "pnpx @biomejs/biome check --write"
+    "check": "pnpx @biomejs/biome check --write",
+    "prepare": "husky"
   },
   "dependencies": {
     "astro": "^6.0.5"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.4.8"
+    "@biomejs/biome": "2.4.8",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0"
+  },
+  "lint-staged": {
+    "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc,vue}": "pnpm run lint"
   }
 }
