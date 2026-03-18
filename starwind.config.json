@@ -1,0 +1,16 @@
+{
+  "$schema": "https://starwind.dev/config-schema.json",
+  "tailwind": {
+    "css": "src/styles/main.css",
+    "baseColor": "zinc",
+    "cssVariables": true
+  },
+  "componentDir": "src/components",
+  "utilsDir": "src/lib/utils",
+  "components": [
+    {
+      "name": "button",
+      "version": "2.3.2"
+    }
+  ]
+}
