@@ -4,6 +4,8 @@
 
 [![Linted with Biome](https://img.shields.io/badge/Linted_with-Biome-60a5fa?style=flat&logo=biome)](https://biomejs.dev)
 
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+
 Welcome to my portfolio. This is my space for sharing ideas, thoughts, and projects.
 
 ## Built with
