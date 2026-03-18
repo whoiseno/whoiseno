@@ -29,6 +29,9 @@
 }
 
 @theme inline {
+  --font-sans: 'IBM Plex Sans Variable', sans-serif;
+  --font-mono: 'JetBrains Mono Variable', monospace;
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -166,7 +169,7 @@
   }
 
   body {
-    @apply bg-background text-foreground antialiased scheme-light dark:scheme-dark;
+    @apply bg-background text-foreground font-sans antialiased scheme-light dark:scheme-dark;
   }
 
   button {
