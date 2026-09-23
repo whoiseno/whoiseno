@@ -11,12 +11,13 @@
     "preview": "astro preview",
     "astro": "astro",
     "format": "pnpm exec prettier . --write",
-    "lint": "pnpm exec eslint \"src/**/*.{ts,astro}\"",
+    "lint": "eslint \"src/**/*.{ts,astro}\"",
     "prepare": "husky"
   },
   "dependencies": {
     "@alpinejs/intersect": "^3.17.4",
     "@astrojs/alpinejs": "^1.0.0",
+    "@astrojs/check": "^0.9.10",
     "@astrojs/partytown": "^2.1.8",
     "@tailwindcss/vite": "^4.3.3",
     "@types/alpinejs": "^3.13.11",

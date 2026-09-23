@@ -1,7 +1,26 @@
 ---
 import Root from "@/shared/ui/layouts/Root.astro";
+import Page from "@/shared/ui/page/Page.astro";
+import PageContainer from "@/shared/ui/page/PageContainer.astro";
+import PageDescription from "@/shared/ui/page/PageDescription.astro";
+import PageFooter from "@/shared/ui/page/PageFooter.astro";
+import PageHeader from "@/shared/ui/page/PageHeader.astro";
+import PageTitle from "@/shared/ui/page/PageTitle.astro";
 ---
 
 <Root>
-  <h1>Astro</h1>
+  <Page>
+    <PageContainer>
+      <PageHeader>
+        <PageTitle>Enoabasi Essien</PageTitle>
+        <PageDescription>
+          <h2 class="text-3xl font-medium text-gray-400">Frontend and Backend Developer.</h2>
+        </PageDescription>
+      </PageHeader>
+
+      <PageFooter>
+        <p class="text-gray-500">&copy; Enoabasi 2026</p>
+      </PageFooter>
+    </PageContainer>
+  </Page>
 </Root>

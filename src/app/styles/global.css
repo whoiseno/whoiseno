@@ -1,6 +1,28 @@
 @import "tailwindcss";
 
 @theme inline {
-  --font-sans: var(--font-supreme-variable);
-  --font-mono: var(--font-geist-mono);
+  --font-serif: var(--font-heading);
+  --font-sans: var(--font-content);
+  --font-mono: var(--font-code);
+
+  --breakpoint-*: initial;
+  --breakpoint-xs: 0px;
+  --breakpoint-sm: 600px;
+  --breakpoint-md: 960px;
+  --breakpoint-lg: 1280px;
+  --breakpoint-xl: 1920px;
+  --breakpoint-xxl: 2560px;
+}
+
+@layer base {
+  :root {
+    --radius: 0.625rem;
+
+    --font-heading: var(--font-general-sans-variable);
+    --font-content: var(--font-supreme-variable);
+    --font-code: var(--font-geist-mono);
+
+    --black: #000000;
+    --white: #ffffff;
+  }
 }

@@ -29,14 +29,14 @@ export default defineConfig({
   },
   {
     provider: fontProviders.local(),
-    name: "Chubbo",
-    cssVariable: "--font-chubbo-variable",
+    name: "General Sans",
+    cssVariable: "--font-general-sans-variable",
     options: {
       variants: [
         {
           weight: "100 900",
           style: "normal",
-          src: ["./src/app/fonts/Chubbo-Variable.woff2"]
+          src: ["./src/app/fonts/GeneralSans-Variable.woff2"]
         }
       ]
     }

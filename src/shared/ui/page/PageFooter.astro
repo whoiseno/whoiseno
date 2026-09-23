@@ -1,0 +1,16 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+interface Props {
+  class?: HTMLAttributes<"div">["class"];
+}
+
+const { class: className } = Astro.props;
+---
+
+<div
+  data-slot="page-footer"
+  class:list={["flex items-start [.border-t]:pt-6 md:[.border-t]:pt-10 gap-6 mt-auto pb-2", className]}
+>
+  <slot />
+</div>

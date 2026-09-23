@@ -7,16 +7,29 @@ import "../../../app/styles/global.css";
 <html>
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="/favicon.svg"
+    />
+    <link
+      rel="icon"
+      href="/favicon.ico"
+    />
+    <meta
+      name="viewport"
+      content="width=device-width"
+    />
+    <meta
+      name="generator"
+      content={Astro.generator}
+    />
     <title>EnoEno Computer</title>
-    <Font cssVariable="--font-chubbo-variable" />
+    <Font cssVariable="--font-general-sans-variable" />
     <Font cssVariable="--font-supreme-variable" />
     <Font cssVariable="--font-geist-mono" />
   </head>
-  <body class="flex flex-col min-h-svh w-full *:w-full font-sans">
+  <body class="flex flex-col min-h-svh w-full *:w-full font-sans antialiased text-sm bg-gray-50 text-gray-950">
     <slot />
   </body>
 </html>
