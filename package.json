@@ -18,9 +18,11 @@
     "@alpinejs/intersect": "^3.17.4",
     "@astrojs/alpinejs": "^1.0.0",
     "@astrojs/partytown": "^2.1.8",
+    "@tailwindcss/vite": "^4.3.3",
     "@types/alpinejs": "^3.13.11",
     "alpinejs": "^3.17.4",
-    "astro": "^7.3.4"
+    "astro": "^7.3.4",
+    "tailwindcss": "^4.3.3"
   },
   "allowScripts": {
     "esbuild": true
@@ -36,6 +38,7 @@
     "lint-staged": "^17.5.1",
     "prettier": "3.9.8",
     "prettier-plugin-astro": "1.0.1",
+    "prettier-plugin-tailwindcss": "^0.8.1",
     "typescript-eslint": "^8.70.1"
   },
   "lint-staged": {

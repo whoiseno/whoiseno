@@ -5,14 +5,13 @@
   "plugins": [
     "prettier-plugin-astro",
     "@ianvs/prettier-plugin-sort-imports",
-    "@xeonlink/prettier-plugin-organize-attributes"
+    "@xeonlink/prettier-plugin-organize-attributes",
+    "prettier-plugin-tailwindcss"
   ],
   "importOrder": [
     "^@app/(.*)$",
     "",
     "^@pages/(.*)$",
-    "",
-    "^@widgets/(.*)$",
     "",
     "^@features/(.*)$",
     "",
@@ -29,6 +28,8 @@
   "importOrderParserPlugins": ["typescript", "jsx", "decorators-legacy"],
   "importOrderTypeScriptVersion": "6.0.3",
   "importOrderCaseSensitive": false,
+  "tailwindStylesheet": "./src/app/styles/global.css",
+  "tailwindFunctions": ["clsx", "tw", "tv"],
   "attributeGroups": ["$DEFAULT", "^data-"],
   "attributeSort": "ASC",
   "overrides": [
@@ -36,6 +37,12 @@
       "files": "*.astro",
       "options": {
         "parser": "astro"
+      }
+    },
+    {
+      "files": ["*.config.mjs", "*.config.cjs", "*.config.js", "*.config.ts"],
+      "options": {
+        "plugins": ["@ianvs/prettier-plugin-sort-imports"]
       }
     },
     {

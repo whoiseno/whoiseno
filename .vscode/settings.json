@@ -1,4 +1,6 @@
 {
+  "oxc.enable": false,
+  "biome.enabled": false,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.codeActionsOnSave": {
     "source.fixAll.prettier": "explicit"
