@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@alpinejs/intersect':
+        specifier: ^3.17.4
+        version: 3.17.4
       '@astrojs/alpinejs':
         specifier: ^1.0.0
         version: 1.0.0(@types/alpinejs@3.13.11)(alpinejs@3.17.4)
@@ -20,8 +23,15 @@ importers:
       astro:
         specifier: ^7.3.4
         version: 7.3.4(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)
+    devDependencies:
+      '@types/alpinejs__intersect':
+        specifier: ^3.13.4
+        version: 3.13.4
 
 packages:
+
+  '@alpinejs/intersect@3.17.4':
+    resolution: {integrity: sha512-soIfavWRHh1dEs05z6wkKtYf8i/ohIG1EDo51urbURj8HifVLV8hd4oCVEGlKwEwt6NXBZDhWMhKk9SM//JHtQ==}
 
   '@astrojs/alpinejs@1.0.0':
     resolution: {integrity: sha512-xmLFD8MBunXCG39nS3dmINQfdhqlDNbHAYyw8n6jfLGL/AFeyYOtz6p1EtXX8NEbGLHk7mUOHoaC3j1WudUYoQ==}
@@ -673,6 +683,9 @@ packages:
 
   '@types/alpinejs@3.13.11':
     resolution: {integrity: sha512-3KhGkDixCPiLdL3Z/ok1GxHwLxEWqQOKJccgaQL01wc0EVM2tCTaqlC3NIedmxAXkVzt/V6VTM8qPgnOHKJ1MA==}
+
+  '@types/alpinejs__intersect@3.13.4':
+    resolution: {integrity: sha512-yoX6WO7AleeULOQvPz7rrx7FJmu6l033bM7QiGcWyvZjqF2KIut99ByUZO6OWUQuYmbRjxsKthGiUYNaAywHiA==}
 
   '@types/estree-jsx@1.0.5':
     resolution: {integrity: sha512-52CcUVNFyfb1A2ALocQw/Dd1BQFNmSdkuC3BkZ6iqhdMfQz7JWOFRuJFloOzjk+6WijU56m9oKXFAXc7o3Towg==}
@@ -1412,6 +1425,8 @@ packages:
 
 snapshots:
 
+  '@alpinejs/intersect@3.17.4': {}
+
   '@astrojs/alpinejs@1.0.0(@types/alpinejs@3.13.11)(alpinejs@3.17.4)':
     dependencies:
       '@types/alpinejs': 3.13.11
@@ -1883,6 +1898,10 @@ snapshots:
     optional: true
 
   '@types/alpinejs@3.13.11': {}
+
+  '@types/alpinejs__intersect@3.13.4':
+    dependencies:
+      '@types/alpinejs': 3.13.11
 
   '@types/estree-jsx@1.0.5':
     dependencies:
