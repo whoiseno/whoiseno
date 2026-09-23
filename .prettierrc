@@ -1,0 +1,42 @@
+{
+  "printWidth": 120,
+  "quoteProps": "consistent",
+  "vueIndentScriptAndStyle": true,
+  "plugins": ["prettier-plugin-astro", "@ianvs/prettier-plugin-sort-imports"],
+  "importOrder": [
+    "^@app/(.*)$",
+    "",
+    "^@pages/(.*)$",
+    "",
+    "^@widgets/(.*)$",
+    "",
+    "^@features/(.*)$",
+    "",
+    "^@entities/(.*)$",
+    "",
+    "^@shared/(.*)$",
+    "",
+    "<THIRD_PARTY_MODULES>",
+    "",
+    "^(?!.*[.]css$)[./].*$",
+    "",
+    ".css$"
+  ],
+  "importOrderParserPlugins": ["typescript", "jsx", "decorators-legacy"],
+  "importOrderTypeScriptVersion": "6.0.3",
+  "importOrderCaseSensitive": false,
+  "overrides": [
+    {
+      "files": "*.astro",
+      "options": {
+        "parser": "astro"
+      }
+    },
+    {
+      "files": "**/*.test.ts",
+      "options": {
+        "importOrder": ["^vitest", "<THIRD_PARTY_MODULES>", "^[.]"]
+      }
+    }
+  ]
+}
