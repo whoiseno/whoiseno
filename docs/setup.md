@@ -1,0 +1,69 @@
+# Setup & Tooling
+
+## Requirements
+
+- Node.js `>=22.12.0` (see `engines` in [`package.json`](../package.json))
+- [pnpm](https://pnpm.io) (see [`pnpm-workspace.yaml`](../pnpm-workspace.yaml)) — this repo uses pnpm's build-approval and minimum-release-age features, so use pnpm rather than npm/yarn
+
+## Install
+
+```bash
+pnpm install
+```
+
+`pnpm install` also runs the `prepare` script (`husky`), which installs the git hooks in [`.husky/`](../.husky).
+
+## Scripts
+
+Defined in [`package.json`](../package.json):
+
+| Script         | Command                        | Purpose                                                                                                                                                                        |
+| -------------- | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `pnpm dev`     | `astro dev`                    | Start the local dev server. In an AI-agent session, prefer `astro dev --background` (see [`CLAUDE.md`](../CLAUDE.md)) and manage it with `astro dev stop` / `status` / `logs`. |
+| `pnpm build`   | `astro build`                  | Production build to `dist/`.                                                                                                                                                   |
+| `pnpm preview` | `astro preview`                | Serve the production build locally.                                                                                                                                            |
+| `pnpm astro`   | `astro`                        | Raw Astro CLI passthrough (e.g. `pnpm astro check`).                                                                                                                           |
+| `pnpm format`  | `prettier . --write`           | Format the whole repo.                                                                                                                                                         |
+| `pnpm lint`    | `eslint "src/**/*.{ts,astro}"` | Lint TS and Astro files under `src/`.                                                                                                                                          |
+| `pnpm prepare` | `husky`                        | Installs git hooks (runs automatically after install).                                                                                                                         |
+
+## Git hooks
+
+[`.husky/pre-commit`](../.husky/pre-commit) runs `pnpm exec lint-staged`, which (per the `lint-staged` config in `package.json`) on staged files:
+
+- `*.{js,cjs,mjs,ts,astro}` → `eslint --fix`
+- `*.{js,cjs,mjs,ts,astro,css,json,md}` → `prettier --write --ignore-unknown`
+
+So most formatting/lint-autofix issues are caught automatically at commit time — a failing pre-commit hook usually means an error `--fix` couldn't resolve.
+
+## Linting
+
+[`eslint.config.mjs`](../eslint.config.mjs) is a flat config combining:
+
+- `eslint-config-prettier` (disables stylistic rules that conflict with Prettier)
+- `eslint-plugin-astro`'s recommended rules (for `.astro` files)
+- One project-specific rule: `astro/no-set-html-directive: error` — disallows `set:html` (raw HTML injection), an XSS guardrail worth keeping in mind since content can come from the CMS.
+
+`eslint-plugin-jsx-a11y` is installed as a devDependency but not yet wired into the flat config — relevant if/when JSX-based components are introduced.
+
+## Formatting
+
+[`.prettierrc`](../.prettierrc) highlights:
+
+- `printWidth: 120`, one attribute per line (`singleAttributePerLine`), attributes sorted ascending with `data-*` grouped separately.
+- Plugins: `prettier-plugin-astro` (formats `.astro` files), `@ianvs/prettier-plugin-sort-imports` (enforces the FSD-layer import order described in [`architecture.md`](./architecture.md)), `@xeonlink/prettier-plugin-organize-attributes`, `prettier-plugin-tailwindcss` (sorts Tailwind classes, pointed at `src/app/styles/global.css` as the stylesheet source of truth for custom utilities).
+- [`.prettierignore`](../.prettierignore) currently excludes only `astro.config.mjs` (its formatting is handled separately via the `*.config.mjs` override, which restricts plugins to import-sorting).
+
+## TypeScript
+
+[`tsconfig.json`](../tsconfig.json) extends Astro's `strict` preset and adds `verbatimModuleSyntax` plus the `@/*` layer aliases (see [`architecture.md`](./architecture.md)). Run type/template checking with:
+
+```bash
+pnpm astro check
+```
+
+(`@astrojs/check` is installed as a devDependency for this.)
+
+## Editor
+
+[`.vscode/`](../.vscode) ships recommended extensions and workspace settings — open the folder in VS Code to pick these up automatically.
