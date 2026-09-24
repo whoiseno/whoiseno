@@ -22,6 +22,7 @@
     "@tailwindcss/vite": "^4.3.3",
     "@types/alpinejs": "^3.13.11",
     "alpinejs": "^3.17.4",
+    "animejs": "^4.5.0",
     "astro": "^7.3.4",
     "tailwindcss": "^4.3.3"
   },

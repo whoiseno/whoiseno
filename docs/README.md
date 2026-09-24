@@ -13,8 +13,10 @@ Start here, then jump into the file that covers the part you're touching.
 | [layers/features.md](./layers/features.md) | `src/features` — user-facing feature slices (currently empty)                         |
 | [layers/entities.md](./layers/entities.md) | `src/entities` — domain/business objects (currently empty)                            |
 | [layers/shared.md](./layers/shared.md)     | `src/shared` — reusable UI primitives and config                                      |
+| [components/](./components/README.md)      | Detailed docs + usage examples for every `shared/ui/page` component                   |
 | [content.md](./content.md)                 | Content collections and the Pages CMS integration                                     |
 | [styling.md](./styling.md)                 | Tailwind v4 theme, fonts, design tokens                                               |
+| [animations.md](./animations.md)           | anime.js setup and usage patterns                                                     |
 
 ## Quick facts
 
@@ -22,6 +24,7 @@ Start here, then jump into the file that covers the part you're touching.
 - **Styling:** Tailwind CSS v4 via `@tailwindcss/vite`, configured through CSS `@theme` rather than a JS config file.
 - **Architecture pattern:** [Feature-Sliced Design](https://feature-sliced.design/) (`app` → `pages` → `features` → `entities` → `shared`), enforced only by convention and TS path aliases — the project is early-stage, so `features` and `entities` are scaffolded but empty.
 - **Content:** Managed through [Pages CMS](https://pagescms.org/) (`.pages.yml`), writing into Astro content collections under `src/content`.
+- **Animation:** [anime.js](https://animejs.com) v4 for anything beyond CSS transitions, wired up via [`src/shared/lib/motion.ts`](../src/shared/lib/motion.ts) — see [`animations.md`](./animations.md).
 - **Package manager:** pnpm (see `pnpm-workspace.yaml`).
 
 ## Repo-level files worth knowing about

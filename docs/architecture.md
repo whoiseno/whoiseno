@@ -58,6 +58,8 @@ Configured in [`astro.config.mjs`](../astro.config.mjs):
 - **`@tailwindcss/vite`** — Tailwind v4's Vite plugin (no `tailwind.config.js`; theme lives in CSS, see [`styling.md`](./styling.md)).
 - **Fonts** — two local variable fonts (Supreme, General Sans) served via `fontProviders.local()`, plus Geist Mono via `fontProviders.fontsource()` (Astro's built-in Fontsource integration, fetched at build time).
 
+Not an Astro integration, but part of the same client-side stack: **anime.js** (`animejs`), a general-purpose animation library used for anything beyond what Tailwind's `transition-*` utilities cover (staggered/sequenced/scroll-driven animation). Imported directly in component `<script>` tags rather than through a config-level entrypoint like Alpine — see [`animations.md`](./animations.md).
+
 ## Content
 
 Content (blog posts, site settings) is intended to live in Astro content collections under `src/content`, authored through Pages CMS. See [`content.md`](./content.md) for the schema and how it maps to the codebase.

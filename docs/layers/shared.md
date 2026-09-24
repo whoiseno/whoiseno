@@ -5,6 +5,8 @@ The bottom layer: reusable, domain-agnostic building blocks with no dependency o
 ```
 src/shared/
 ├── config/            # currently empty — see note below
+├── lib/
+│   └── motion.ts      # anime.js scope helper — see below
 └── ui/
     ├── layouts/
     │   └── Root.astro          # HTML document shell
@@ -36,7 +38,18 @@ A set of slot-based layout primitives, each a thin `<div>`/`<main>` wrapper with
 | `PageContent.astro`     | `<div data-slot="page-content">`     | Generic body-content wrapper (not yet used by `index.astro`, available for pages with a body section).       |
 | `PageFooter.astro`      | `<div data-slot="page-footer">`      | Bottom section (e.g. copyright); accepts an optional `class` prop for variants like a `border-t` top border. |
 
-These compose via `<slot />` — see [`layers/pages.md`](./pages.md) for how `index.astro` assembles them.
+These compose via `<slot />` — see [`layers/pages.md`](./pages.md) for how `index.astro` assembles them. Full per-component docs with usage examples live in [`docs/components/`](../components/README.md).
+
+## `lib/`
+
+```
+src/shared/lib/
+└── motion.ts   # createMotionScope — reduced-motion-aware anime.js scope helper
+```
+
+`motion.ts` wraps anime.js's `createScope` so every animation in the app checks `prefers-reduced-motion` consistently, instead of each caller re-declaring the media query. See [`docs/animations.md`](../animations.md) for usage.
+
+This is the first `lib` segment in `shared` — the natural place for future domain-agnostic utility code (formatting helpers, small wrappers around third-party libraries, etc.), parallel to the existing `ui` segment.
 
 ## `config/`
 
