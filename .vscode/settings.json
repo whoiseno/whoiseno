@@ -5,5 +5,8 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.prettier": "explicit"
   },
-  "eslint.validate": ["javascript", "astro", "typescript"]
+  "eslint.validate": ["javascript", "astro", "typescript"],
+  "files.associations": {
+    "*.css": "tailwindcss"
+  }
 }

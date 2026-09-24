@@ -33,6 +33,7 @@
     "@types/alpinejs__intersect": "^3.13.4",
     "@xeonlink/prettier-plugin-organize-attributes": "^1.1.0",
     "eslint": "^10.11.0",
+    "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-astro": "^3.2.1",
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "husky": "^9.1.7",
