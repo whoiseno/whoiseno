@@ -1,17 +1,26 @@
 ---
-import Root from "@/shared/ui/layouts/Root.astro";
-import Page from "@/shared/ui/page/Page.astro";
-import PageContainer from "@/shared/ui/page/PageContainer.astro";
-import PageHeader from "@/shared/ui/page/PageHeader.astro";
-import PageTitle from "@/shared/ui/page/PageTitle.astro";
+import Site from "@/app/layouts/Site.astro";
+import ProfileHero from "@/entities/profile/ProfileHero.astro";
+import ProjectList from "@/features/projects/ProjectList.astro";
+import WorkList from "@/features/works/WorkList.astro";
+import Section from "@/shared/ui/section/Section.astro";
 ---
 
-<Root>
-  <Page>
-    <PageContainer>
-      <PageHeader>
-        <PageTitle>Enoabasi Essien</PageTitle>
-      </PageHeader>
-    </PageContainer>
-  </Page>
-</Root>
+<Site>
+  <ProfileHero />
+  <Section
+    href="/works"
+    title="Works"
+  >
+    <WorkList limit={3} />
+  </Section>
+  <Section
+    href="/projects"
+    title="Projects"
+  >
+    <ProjectList
+      limit={3}
+      featured
+    />
+  </Section>
+</Site>

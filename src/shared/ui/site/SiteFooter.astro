@@ -1,0 +1,64 @@
+---
+import type { TypeNavItem, TypeSocialLink } from "@/shared/config/site";
+import { Icon } from "astro-icon/components";
+
+interface Props {
+  name: string;
+  items: TypeNavItem[];
+  socials: TypeSocialLink[];
+}
+
+const { name, items, socials } = Astro.props;
+const year = new Date().getFullYear();
+---
+
+<footer
+  data-slot="site-footer"
+  class="border-t bg-muted/30 py-12"
+>
+  <div class="mx-auto max-w-2xl space-y-10 px-4">
+    <div class="grid grid-cols-2 gap-8">
+      <div class="space-y-3">
+        <h2 class="text-xs tracking-wider text-muted-foreground uppercase">Navigate</h2>
+        <ul class="space-y-2">
+          {items.map((item) => (
+            <li>
+              <a
+                class="transition-colors hover:text-muted-foreground"
+                href={item.href}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+      {socials.length > 0 && (
+        <div class="space-y-3">
+          <h2 class="text-xs tracking-wider text-muted-foreground uppercase">Connect</h2>
+          <ul class="grid grid-cols-4 gap-2">
+            {socials.map((social) => (
+              <li>
+                <a
+                  class="flex size-9 items-center justify-center rounded-lg border transition-colors hover:bg-muted"
+                  aria-label={social.label}
+                  href={social.href}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  <Icon
+                    class="size-4"
+                    name={social.icon}
+                  />
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+    <p class="text-xs text-muted-foreground">
+      &copy; {year} {name}
+    </p>
+  </div>
+</footer>

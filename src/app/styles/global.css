@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme inline {
   --font-serif: var(--font-heading);
   --font-sans: var(--font-content);
@@ -12,6 +14,11 @@
   --breakpoint-lg: 1280px;
   --breakpoint-xl: 1920px;
   --breakpoint-xxl: 2560px;
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
 
   --color-*: initial;
   --color-black: var(--black);
@@ -55,7 +62,7 @@
 
 @layer base {
   :root {
-    --radius: 0.625rem;
+    --radius: 0.45rem;
 
     --font-heading: var(--font-general-sans-variable);
     --font-content: var(--font-supreme-variable);
@@ -66,92 +73,209 @@
     --white: #ffffff;
 
     /* Overlay background color, dialogs & panels */
-    --scrim: #fff;
+    --scrim: #100f0f66;
 
     /* Base background and text colors */
-    --background: #fff;
-    --foreground: #fff;
+    --background: #f9f9f9;
+    --foreground: #100f0f;
     /* Foreground dimmed, one level below the foreground color */
-    --toned: #fff;
+    --toned: #737373;
     /*
       Foreground dimmed, one level below the toned color,
       two level below the foreground color
     */
-    --dimmed: #fff;
+    --dimmed: #909092;
 
     /* Surface color, one level below the background color */
-    --surface: #fff;
+    --surface: #f5f5f5;
 
     /* Card background and foreground, one level above the background */
-    --card: #fff;
-    --card-foreground: #fff;
+    --card: #f9f9f9;
+    --card-foreground: #100f0f;
 
     /*
       Popover background and foreground, dropdowns, hover cards, popovers, &
       context menus
     */
-    --popover: #fff;
-    --popover-foreground: #fff;
+    --popover: #f9f9f9;
+    --popover-foreground: #100f0f;
 
     /* Input background and foreground, inputs, and text areas */
-    --input: #fff;
-    --input-foreground: #fff;
+    --input: #e5e5e5;
+    --input-foreground: #100f0f;
 
     /*
       Accent background and foreground, checkboxes, radio buttons, & peer
       elements
     */
-    --accent: #fff;
-    --accent-foreground: #fff;
+    --accent: #f5f5f5;
+    --accent-foreground: #171717;
 
     /*
       Muted background and foreground, disabled, low priority &
       non-interactive
     */
-    --muted: #fff;
-    --muted-foreground: #fff;
+    --muted: #f5f5f5;
+    --muted-foreground: #737373;
 
     /*
       Brand background and foreground. Main portfolio color, 70% usage
       on portfolio
     */
-    --brand: #fff;
-    --brand-foreground: #fff;
+    --brand: #171717;
+    --brand-foreground: #fafafa;
 
     /* Primary background and foreground. 20% usage on portfolio */
-    --primary: #fff;
-    --primary-foreground: #fff;
+    --primary: #171717;
+    --primary-foreground: #fafafa;
 
     /* Secondary background and foreground. 10% usage on portfolio */
-    --secondary: #fff;
-    --secondary-foreground: #fff;
+    --secondary: #f5f5f5;
+    --secondary-foreground: #171717;
 
     /* Neutral background and foreground */
-    --neutral: #fff;
-    --neutral-foreground: #fff;
+    --neutral: #e5e5e5;
+    --neutral-foreground: #171717;
 
     /* Info background color. Info messages & context */
-    --info: #fff;
-    --info-foreground: #fff;
+    --info: #3b82f6;
+    --info-foreground: #fafafa;
 
     /* Warning background color. Warning messages & context */
-    --warning: #fff;
-    --warning-foreground: #fff;
+    --warning: #f59e0b;
+    --warning-foreground: #171717;
 
     /* Success background color. Success messages & context */
-    --success: #fff;
-    --success-foreground: #fff;
+    --success: #00c758;
+    --success-foreground: #052e16;
 
     /* Error background color. Error messages & context */
-    --error: #fff;
-    --error-foreground: #fff;
+    --error: #df2225;
+    --error-foreground: #fafafa;
 
     /* Ring color. Focus states and outlines */
-    --ring: #fff;
+    --ring: #a1a1a1;
 
     /* Border color. (all) */
-    --border: #fff;
-    --border-soft: #fff;
-    --border-hard: #fff;
+    --border: #e5e5e5;
+    --border-soft: #efefef;
+    --border-hard: #d4d4d4;
+  }
+
+  .dark {
+    color-scheme: dark;
+
+    --scrim: #100f0fb3;
+
+    --background: #100f0f;
+    --foreground: #fafafa;
+    --toned: #a1a1a1;
+    --dimmed: #909092;
+
+    --surface: #171717;
+
+    --card: #171717;
+    --card-foreground: #fafafa;
+
+    --popover: #171717;
+    --popover-foreground: #fafafa;
+
+    --input: #ffffff26;
+    --input-foreground: #fafafa;
+
+    --accent: #404040;
+    --accent-foreground: #fafafa;
+
+    --muted: #262626;
+    --muted-foreground: #a1a1a1;
+
+    --brand: #d4d4d4;
+    --brand-foreground: #171717;
+
+    --primary: #d4d4d4;
+    --primary-foreground: #171717;
+
+    --secondary: #262626;
+    --secondary-foreground: #fafafa;
+
+    --neutral: #404040;
+    --neutral-foreground: #fafafa;
+
+    --info: #60a5fa;
+    --info-foreground: #171717;
+
+    --warning: #fbbf24;
+    --warning-foreground: #171717;
+
+    --success: #00c758;
+    --success-foreground: #052e16;
+
+    --error: #ff6568;
+    --error-foreground: #171717;
+
+    --ring: #737373;
+
+    --border: #ffffff1a;
+    --border-soft: #ffffff0d;
+    --border-hard: #ffffff33;
+  }
+
+  *,
+  ::before,
+  ::after {
+    border-color: var(--border);
+  }
+
+  [x-cloak] {
+    display: none !important;
+  }
+}
+
+@layer components {
+  [data-slot="prose"] {
+    @apply space-y-3 text-sm leading-relaxed;
+
+    h2 {
+      @apply pt-4 font-serif text-lg font-semibold;
+    }
+    h3 {
+      @apply pt-2 font-serif text-base font-semibold;
+    }
+    a {
+      @apply underline underline-offset-4 hover:text-muted-foreground;
+    }
+    ul {
+      @apply list-disc space-y-1 pl-5;
+    }
+    ol {
+      @apply list-decimal space-y-1 pl-5;
+    }
+    code {
+      @apply rounded-sm bg-muted px-1 py-0.5 font-mono text-xs;
+    }
+    pre {
+      @apply overflow-x-auto rounded-lg border bg-muted p-3;
+    }
+    pre code {
+      @apply bg-transparent p-0;
+    }
+    blockquote {
+      @apply border-l-2 pl-4 text-muted-foreground;
+    }
+  }
+}
+
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  [data-reveal] {
+    opacity: 0;
+    transform: translateY(20px);
+    transition:
+      opacity 0.6s ease-out,
+      transform 0.6s ease-out;
+  }
+
+  [data-reveal].in-view {
+    opacity: 1;
+    transform: none;
   }
 }

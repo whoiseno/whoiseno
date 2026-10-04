@@ -20,12 +20,16 @@ Defined in [`package.json`](../package.json):
 | Script         | Command                        | Purpose                                                                                                                                                                        |
 | -------------- | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `pnpm dev`     | `astro dev`                    | Start the local dev server. In an AI-agent session, prefer `astro dev --background` (see [`CLAUDE.md`](../CLAUDE.md)) and manage it with `astro dev stop` / `status` / `logs`. |
-| `pnpm build`   | `astro build`                  | Production build to `dist/`.                                                                                                                                                   |
+| `pnpm build`   | `astro build`                  | Production build with the Vercel adapter (output in `.vercel/output`). On Windows the function-bundling step needs permission to create symlinks (see below).                  |
 | `pnpm preview` | `astro preview`                | Serve the production build locally.                                                                                                                                            |
 | `pnpm astro`   | `astro`                        | Raw Astro CLI passthrough (e.g. `pnpm astro check`).                                                                                                                           |
 | `pnpm format`  | `prettier . --write`           | Format the whole repo.                                                                                                                                                         |
 | `pnpm lint`    | `eslint "src/**/*.{ts,astro}"` | Lint TS and Astro files under `src/`.                                                                                                                                          |
 | `pnpm prepare` | `husky`                        | Installs git hooks (runs automatically after install).                                                                                                                         |
+
+### Building on Windows
+
+`pnpm build` compiles and prerenders every page, then `@astrojs/vercel` bundles the server function by creating symlinks into `.vercel/output`. Windows blocks symlink creation for normal users, so that last step fails with `EPERM: operation not permitted, symlink` unless Developer Mode is enabled (or the shell is elevated). The failure is environmental, not a code error; Vercel builds on Linux. Everything before it (including the static routes) completes.
 
 ## Git hooks
 

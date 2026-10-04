@@ -4,58 +4,62 @@ The bottom layer: reusable, domain-agnostic building blocks with no dependency o
 
 ```
 src/shared/
-├── config/            # currently empty — see note below
+├── config/
+│   └── site.ts            # siteName, navItems, TypeNavItem, TypeSocialLink
 ├── lib/
-│   └── motion.ts      # anime.js scope helper — see below
+│   ├── date.ts            # formatMonthYear, formatDateRange (UTC-based)
+│   └── motion.ts          # anime.js scope helper
 └── ui/
-    ├── layouts/
-    │   └── Root.astro          # HTML document shell
-    └── page/
-        ├── Page.astro
-        ├── PageContainer.astro
-        ├── PageContent.astro
-        ├── PageDescription.astro
-        ├── PageFooter.astro
-        ├── PageHeader.astro
-        └── PageTitle.astro
+    ├── avatar/Avatar.astro
+    ├── badge/Badge.astro
+    ├── button/Button.astro
+    ├── card/Card.astro
+    ├── layouts/Root.astro          # HTML document shell
+    ├── page/                       # older slot-based layout primitives (currently unused by pages)
+    ├── prose/Prose.astro
+    ├── rating/Rating.astro
+    ├── section/Section.astro
+    └── site/
+        ├── SiteFooter.astro
+        └── SiteHeader.astro
 ```
+
+All components carry a `data-slot="..."` attribute for structural CSS targeting and follow the project's `class:list` pattern.
 
 ## `ui/layouts/Root.astro`
 
-The outermost wrapper for every page: renders `<html>`/`<head>`/`<body>`, sets favicons, viewport meta, the Astro generator meta tag, and the page `<title>` ("EnoEno Computer"). Registers the three site fonts via Astro's `<Font />` component (must match the `cssVariable` names declared in [`astro.config.mjs`](../../astro.config.mjs)) and imports the global stylesheet (`app/styles/global.css`). The `<body>` carries the base Tailwind classes (flex column layout, `font-sans`, background/text colors) shared by every page.
+The outermost wrapper for every page: renders `<html>`/`<head>`/`<body>`, sets favicons, viewport meta, the Astro generator meta tag, and the `<title>` (`"<title> | EnoEno Computer"`, or just the site name when no `title` prop is passed). A blocking inline script reads `localStorage.theme` (falling back to `prefers-color-scheme`) and sets the `dark` class on `<html>` before first paint. It also registers the three site fonts via Astro's `<Font />` component (names must match the `cssVariable` values in [`astro.config.mjs`](../../astro.config.mjs)) and imports the global stylesheet. The `<body>` carries the base Tailwind classes shared by every page.
+
+## Components
+
+| Component    | Notes                                                                                                                                                                                                              |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `Button`     | Props `variant` (`solid`, `outline`, `ghost`, `link`), `color` (`brand`, `primary`, `secondary`, `neutral`), `size` (`xxs` to `xxl`) and `loading`. An `svg`-only child makes it square (`has-[>svg:only-child]`). |
+| `Card`       | Props `href?` and `class?`. Renders an `<a>` when `href` is set (external links open in a new tab with `rel="noopener noreferrer"`), otherwise a `<div>`.                                                          |
+| `Badge`      | Variants `outline` and `success` (green dot).                                                                                                                                                                      |
+| `Avatar`     | Uses `Image` from `astro:assets`; falls back to initials.                                                                                                                                                          |
+| `Prose`      | Wrapper that applies the `[data-slot="prose"]` typography styles to rendered Markdoc.                                                                                                                              |
+| `Rating`     | Five Phosphor stars with an `aria-label`; props `value`.                                                                                                                                                           |
+| `Section`    | Props `title`, `href?`, `hrefLabel="View all"`. Adds the fade-up reveal via Alpine `x-intersect.once`.                                                                                                             |
+| `SiteHeader` | Sticky blurred bar with the site name, inline nav from `md`, a mobile menu (`x-show` with `x-cloak`) and an `actions` slot. The active link gets `aria-current="page"`.                                            |
+| `SiteFooter` | Navigate and Connect columns plus a copyright line; props `name`, `items`, `socials`.                                                                                                                              |
+
+Icons come from `astro-icon` with the Phosphor set (`<Icon name="ph:..." />`).
 
 ## `ui/page/*`
 
-A set of slot-based layout primitives, each a thin `<div>`/`<main>` wrapper with a `data-slot="..."` attribute (used for CSS targeting, e.g. `Page.astro`'s `has-data-[slot='page-footer']` selectors) and Tailwind utility classes:
-
-| Component               | Renders                              | Notes                                                                                                        |
-| ----------------------- | ------------------------------------ | ------------------------------------------------------------------------------------------------------------ |
-| `Page.astro`            | `<main data-slot="page">`            | The page-level flex container; adjusts padding when a header/footer is present.                              |
-| `PageContainer.astro`   | `<div data-slot="page-container">`   | Centers content, caps width at `max-w-5xl`.                                                                  |
-| `PageHeader.astro`      | `<div data-slot="page-header">`      | Top section (title + description).                                                                           |
-| `PageTitle.astro`       | `<h1 data-slot="page-title">`        | Large serif-font heading.                                                                                    |
-| `PageDescription.astro` | `<div data-slot="page-description">` | Subheading/tagline area.                                                                                     |
-| `PageContent.astro`     | `<div data-slot="page-content">`     | Generic body-content wrapper (not yet used by `index.astro`, available for pages with a body section).       |
-| `PageFooter.astro`      | `<div data-slot="page-footer">`      | Bottom section (e.g. copyright); accepts an optional `class` prop for variants like a `border-t` top border. |
-
-These compose via `<slot />` — see [`layers/pages.md`](./pages.md) for how `index.astro` assembles them. Full per-component docs with usage examples live in [`docs/components/`](../components/README.md).
+The earlier slot-based layout primitives (`Page`, `PageContainer`, `PageHeader`, `PageTitle`, `PageDescription`, `PageContent`, `PageFooter`). No page uses them since the site shell moved to `app/layouts/Site.astro`; they are kept because they were not part of this change. Per-component docs and examples are in [`docs/components/`](../components/README.md).
 
 ## `lib/`
 
-```
-src/shared/lib/
-└── motion.ts   # createMotionScope — reduced-motion-aware anime.js scope helper
-```
+- `date.ts`: `formatMonthYear(date)` and `formatDateRange(start, end?)`, formatted with `Intl.DateTimeFormat` in UTC (`"Jan 2024 - Present"`).
+- `motion.ts`: wraps anime.js's `createScope` so every animation checks `prefers-reduced-motion` consistently. See [`docs/animations.md`](../animations.md).
 
-`motion.ts` wraps anime.js's `createScope` so every animation in the app checks `prefers-reduced-motion` consistently, instead of each caller re-declaring the media query. See [`docs/animations.md`](../animations.md) for usage.
+## `config/site.ts`
 
-This is the first `lib` segment in `shared` — the natural place for future domain-agnostic utility code (formatting helpers, small wrappers around third-party libraries, etc.), parallel to the existing `ui` segment.
-
-## `config/`
-
-Currently an empty directory. Per [`.pages.yml`](../../.pages.yml), the Pages CMS "Site settings" entry is expected to write to `src/shared/config/site.json` (title, description, url) — that file doesn't exist yet, so global site metadata isn't wired up. See [`content.md`](../content.md).
+Holds the site name and the primary navigation (`navItems`: Home, Works, Projects, Uses, Books, Movies), plus the `TypeNavItem` and `TypeSocialLink` types. Add a route to `navItems` to put it in both the header and the footer.
 
 ## Conventions
 
-- Nothing in `shared` may import from `app`, `pages`, `features`, or `entities` — it's the foundation every other layer builds on.
-- Components here should stay generic (layout primitives, design-system pieces) rather than encoding any domain concept (a "post" or "project" belongs in `entities`, not here).
+- Nothing in `shared` may import from `app`, `pages`, `features`, or `entities`.
+- Components here stay generic. Anything that knows about a profile, work or book belongs in `entities` or `features`.

@@ -25,3 +25,5 @@ pnpm-debug.log*
 
 # misc
 PROMPTS.md
+# vercel adapter output
+.vercel/

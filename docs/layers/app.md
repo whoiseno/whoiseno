@@ -9,9 +9,15 @@ src/app/
 ├── fonts/
 │   ├── GeneralSans-Variable.woff2
 │   └── Supreme-Variable.woff2
+├── layouts/
+│   └── Site.astro       # site shell: header, main container, footer
 └── styles/
     └── global.css        # Tailwind entry point + theme tokens
 ```
+
+## `layouts/Site.astro`
+
+The shell every page uses: `Root` > `SiteHeader` (with `ThemeToggle` in its `actions` slot) > `<main>` (`max-w-2xl`) > `SiteFooter`. It lives here rather than in `shared` because it fetches the profile (name and socials for the footer), and `shared` cannot import from `entities`. Props: `title?` and `description?` (see [`pages.md`](./pages.md)).
 
 ## `entrypoints/alpine.ts`
 
@@ -31,9 +37,9 @@ Raw variable-font files (`.woff2`) referenced by `fontProviders.local()` entries
 
 ## `styles/global.css`
 
-The single global stylesheet, imported once from `Root.astro` ([`src/shared/ui/layouts/Root.astro`](../../src/shared/ui/layouts/Root.astro)). Pulls in Tailwind (`@import "tailwindcss"`) and defines the `@theme` block (breakpoints, font variables) plus base-layer CSS custom properties (colors, radius). Full breakdown in [`styling.md`](../styling.md).
+The single global stylesheet, imported once from `Root.astro` ([`src/shared/ui/layouts/Root.astro`](../../src/shared/ui/layouts/Root.astro)). Pulls in Tailwind (`@import "tailwindcss"`) and defines the `@theme` block (breakpoints, fonts, color and radius mapping), the light tokens in `:root`, the dark tokens in `.dark`, `[data-slot="prose"]` styles, scroll-reveal and `x-cloak`. Full breakdown in [`styling.md`](../styling.md).
 
 ## Conventions
 
-- Nothing in `app` should depend on `pages`, `features`, `entities`, or `shared` — it sits above all of them and is imported _by_ them (e.g. `shared/ui/layouts/Root.astro` imports `app/styles/global.css`).
+- `app` must not import from `pages`. Pages import `app` for the layout shell, and `app` imports `features`, `entities` and `shared` to compose it (that is how `Site.astro` works). One import goes the other way: `shared/ui/layouts/Root.astro` imports `app/styles/global.css`.
 - This is the layer for cross-cutting setup (fonts, global CSS, framework entrypoints) — not for reusable components (those belong in `shared`) or routes (those belong in `pages`).

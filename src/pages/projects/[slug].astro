@@ -1,0 +1,71 @@
+---
+import Site from "@/app/layouts/Site.astro";
+import { formatDateRange } from "@/shared/lib/date";
+import Badge from "@/shared/ui/badge/Badge.astro";
+import Prose from "@/shared/ui/prose/Prose.astro";
+import type { InferGetStaticPropsType } from "astro";
+import { Icon } from "astro-icon/components";
+import { getCollection, render } from "astro:content";
+
+export async function getStaticPaths() {
+  const projects = await getCollection("projects");
+  return projects.map((project) => ({ params: { slug: project.id }, props: { project } }));
+}
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { project } = Astro.props;
+const { title, description, startDate, endDate, skills, demoLink, sourceLink } = project.data;
+const { Content } = await render(project);
+const links = [
+  { label: "Live demo", href: demoLink },
+  { label: "Source", href: sourceLink },
+].filter((link) => link.href);
+---
+
+<Site
+  description={description}
+  title={title}
+>
+  <div class="space-y-3">
+    <div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-muted-foreground">
+      <p>{formatDateRange(startDate, endDate)}</p>
+      {links.map((link) => (
+        <a
+          class="inline-flex items-center gap-1 transition-colors hover:text-foreground"
+          href={link.href}
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          {link.label}
+          <Icon
+            class="size-3.5"
+            name="ph:arrow-up-right"
+          />
+        </a>
+      ))}
+    </div>
+    {skills.length > 0 && (
+      <ul class="flex flex-wrap gap-1.5">
+        {skills.map((skill) => (
+          <li>
+            <Badge>{skill}</Badge>
+          </li>
+        ))}
+      </ul>
+    )}
+  </div>
+  <Prose>
+    <Content />
+  </Prose>
+  <a
+    class="inline-flex items-center gap-1 text-muted-foreground transition-colors hover:text-foreground"
+    href="/projects"
+  >
+    <Icon
+      class="size-3.5"
+      name="ph:arrow-left"
+    />
+    All projects
+  </a>
+</Site>

@@ -1,0 +1,30 @@
+---
+import Button from "@/shared/ui/button/Button.astro";
+import { Icon } from "astro-icon/components";
+---
+
+<Button
+  aria-label="Toggle theme"
+  color="neutral"
+  size="md"
+  type="button"
+  variant="ghost"
+  x-data="{
+    toggle() {
+      const dark = document.documentElement.classList.toggle('dark');
+      try {
+        localStorage.setItem('theme', dark ? 'dark' : 'light');
+      } catch {}
+    },
+  }"
+  x-on:click="toggle()"
+>
+  <Icon
+    class="hidden dark:block"
+    name="ph:sun"
+  />
+  <Icon
+    class="dark:hidden"
+    name="ph:moon"
+  />
+</Button>

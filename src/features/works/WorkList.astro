@@ -1,0 +1,71 @@
+---
+import { formatDateRange } from "@/shared/lib/date";
+import Badge from "@/shared/ui/badge/Badge.astro";
+import Card from "@/shared/ui/card/Card.astro";
+import Prose from "@/shared/ui/prose/Prose.astro";
+import { getCollection, render } from "astro:content";
+
+interface Props {
+  limit?: number;
+  detailed?: boolean;
+}
+
+const { limit, detailed = false } = Astro.props;
+const works = (await getCollection("works"))
+  .sort((a, b) => b.data.startDate.getTime() - a.data.startDate.getTime())
+  .slice(0, limit);
+const items = await Promise.all(works.map(async (work) => ({ work, Content: (await render(work)).Content })));
+---
+
+{items.length === 0 ? (
+  <p class="text-muted-foreground">Nothing here yet.</p>
+) : (
+  <ul class="space-y-3">
+    {items.map(({ work, Content }) => {
+      const { company, role, location, startDate, endDate, link, skills } = work.data;
+      return (
+        <li>
+          <Card class="space-y-2">
+            <div class="flex items-start justify-between gap-3">
+              <div>
+                <h3 class="font-medium">
+                  {link ? (
+                    <a
+                      class="hover:underline"
+                      href={link}
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      {company}
+                    </a>
+                  ) : (
+                    company
+                  )}
+                </h3>
+                <p class="text-muted-foreground">{role}</p>
+              </div>
+              <div class="shrink-0 text-right text-xs text-muted-foreground">
+                <p>{formatDateRange(startDate, endDate)}</p>
+                {location && <p>{location}</p>}
+              </div>
+            </div>
+            {skills.length > 0 && (
+              <ul class="flex flex-wrap gap-1.5">
+                {skills.map((skill) => (
+                  <li>
+                    <Badge>{skill}</Badge>
+                  </li>
+                ))}
+              </ul>
+            )}
+            {detailed && (
+              <Prose>
+                <Content />
+              </Prose>
+            )}
+          </Card>
+        </li>
+      );
+    })}
+  </ul>
+)}

@@ -1,10 +1,20 @@
 ---
+import { siteName } from "@/shared/config/site";
 import { Font } from "astro:assets";
 
 import "../../../app/styles/global.css";
+
+interface Props {
+  title?: string;
+}
+
+const { title } = Astro.props;
 ---
 
-<html>
+<html
+  class="scroll-smooth"
+  lang="en"
+>
   <head>
     <meta charset="utf-8" />
     <link
@@ -24,12 +34,19 @@ import "../../../app/styles/global.css";
       name="generator"
       content={Astro.generator}
     />
-    <title>EnoEno Computer</title>
+    <title>{title ? `${title} | ${siteName}` : siteName}</title>
+    <script is:inline>
+      try {
+        const stored = localStorage.getItem("theme");
+        const dark = stored ? stored === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.classList.toggle("dark", dark);
+      } catch {}
+    </script>
     <Font cssVariable="--font-general-sans-variable" />
     <Font cssVariable="--font-supreme-variable" />
     <Font cssVariable="--font-geist-mono" />
   </head>
-  <body class="flex flex-col min-h-svh w-full *:w-full font-sans antialiased text-sm bg-gray-50 text-gray-950">
+  <body class="flex flex-col min-h-svh w-full *:w-full font-sans antialiased text-sm bg-background text-foreground">
     <slot />
   </body>
 </html>

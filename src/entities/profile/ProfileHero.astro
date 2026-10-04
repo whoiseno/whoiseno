@@ -1,0 +1,37 @@
+---
+import Avatar from "@/shared/ui/avatar/Avatar.astro";
+import Badge from "@/shared/ui/badge/Badge.astro";
+import Prose from "@/shared/ui/prose/Prose.astro";
+import { render } from "astro:content";
+
+import { getProfile } from "./getProfile";
+
+const profile = await getProfile();
+const { name, role, location, status, avatar } = profile.data;
+const { Content } = await render(profile);
+---
+
+<section
+  data-slot="profile-hero"
+  class="space-y-4"
+>
+  <div class="flex items-center gap-4">
+    <Avatar
+      name={name}
+      src={avatar}
+    />
+    <div class="space-y-1">
+      <h1 class="font-serif text-2xl font-bold">{name}</h1>
+      {role && <p class="text-muted-foreground">{role}</p>}
+      {(status || location) && (
+        <div class="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+          {status && <Badge variant="success">{status}</Badge>}
+          {location && <span>{location}</span>}
+        </div>
+      )}
+    </div>
+  </div>
+  <Prose>
+    <Content />
+  </Prose>
+</section>

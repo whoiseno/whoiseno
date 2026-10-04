@@ -1,0 +1,40 @@
+---
+import { getProfile } from "@/entities/profile/getProfile";
+import { getSocialLinks } from "@/entities/profile/socials";
+import ThemeToggle from "@/features/theme-toggle/ThemeToggle.astro";
+import { navItems } from "@/shared/config/site";
+import Root from "@/shared/ui/layouts/Root.astro";
+import SiteFooter from "@/shared/ui/site/SiteFooter.astro";
+import SiteHeader from "@/shared/ui/site/SiteHeader.astro";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+const profile = await getProfile();
+---
+
+<Root title={title}>
+  <SiteHeader items={navItems}>
+    <ThemeToggle slot="actions" />
+  </SiteHeader>
+  <main
+    class="mx-auto max-w-2xl flex-1 space-y-10 px-4 pt-8 pb-16"
+    data-slot="site-main"
+  >
+    {title && (
+      <header class="space-y-1">
+        <h1 class="font-serif text-2xl font-bold">{title}</h1>
+        {description && <p class="text-muted-foreground">{description}</p>}
+      </header>
+    )}
+    <slot />
+  </main>
+  <SiteFooter
+    name={profile.data.name}
+    items={navItems}
+    socials={getSocialLinks(profile.data.socials)}
+  />
+</Root>

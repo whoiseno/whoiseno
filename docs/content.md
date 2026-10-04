@@ -1,58 +1,57 @@
 # Content Management
 
-Content is authored through [Pages CMS](https://pagescms.org/), a git-backed CMS that edits files directly in this repo (similar to Netlify/Decap CMS). Its schema lives in [`.pages.yml`](../.pages.yml) at the repo root.
+Content is authored through [Keystatic](https://keystatic.com/docs/installation-astro), a git-backed CMS that edits files directly in this repo. The schema lives in [`keystatic.config.ts`](../keystatic.config.ts) and the Astro-side collection definitions live in [`src/content.config.ts`](../src/content.config.ts). The two describe the same shape and must be kept in sync by hand: Keystatic writes the files, Astro validates and reads them.
 
-## Current schema
+All content lives under `src/content/`. The seed entries are placeholders (`Example ...`) to replace with real content.
 
-```yaml
-media:
-  input: src/app/media
-  output: /app/media
-content:
-  - name: posts
-    label: Posts
-    type: collection
-    path: src/content/posts
-    fields:
-      - name: title
-        type: string
-      - name: body
-        type: rich-text
-  - name: site
-    label: Site settings
-    type: file
-    path: src/shared/config/site.json
-    fields:
-      - name: title
-        type: string
-      - name: description
-        type: text
-      - name: url
-        type: string
-```
+## Collections
 
-### `posts` (collection)
+| Keystatic key | Path                     | Format              | Shown on                             |
+| ------------- | ------------------------ | ------------------- | ------------------------------------ |
+| `profile`     | `src/content/profile/`   | `.mdoc` (singleton) | Home hero, footer                    |
+| `works`       | `src/content/works/*`    | `.mdoc`             | `/`, `/works`                        |
+| `projects`    | `src/content/projects/*` | `.mdoc`             | `/`, `/projects`, `/projects/[slug]` |
+| `software`    | `src/content/software/*` | `.yaml`             | `/uses`                              |
+| `hardware`    | `src/content/hardware/*` | `.yaml`             | `/uses`                              |
+| `books`       | `src/content/books/*`    | `.yaml`             | `/books`                             |
+| `movies`      | `src/content/movies/*`   | `.yaml`             | `/movies`                            |
 
-- Written to `src/content/posts/` — one file per post, each with `title` and `body`.
-- **Not yet wired into Astro.** There's no `src/content/config.ts` defining an Astro content collection, and no `src/content/posts/` directory exists yet — the CMS schema is ahead of the codebase. Before authoring posts, add a content collection config (see [Astro's content collections guide](https://docs.astro.build/en/guides/content-collections/)) with a schema matching (or superseding) these fields, and a route under `src/pages` to render them (see [`layers/pages.md`](./layers/pages.md)).
-- The natural home for post-related types/components once collections exist is `src/entities/post/` (see [`layers/entities.md`](./layers/entities.md)).
+- `.mdoc` entries are frontmatter plus a [Markdoc](https://markdoc.dev) body, rendered with `render()` from `astro:content` inside `Prose`. Works only render the body on `/works` (`WorkList detailed`), so the home page stays compact.
+- `.yaml` entries are data only.
+- `projects[].featured` controls which projects appear on the home page.
+- `books[].status` is `reading | read | want`; `movies[].status` is `watching | watched | planned`; `movies[].kind` is `movie | show | anime`. The list components group entries by these values.
+- Dates are coerced with `z.coerce.date()`. Display formatting is in [`src/shared/lib/date.ts`](../src/shared/lib/date.ts) and is UTC-based so a date never shifts by timezone.
+- The profile avatar is stored in `src/assets/profile/` and validated with Astro's `image()` helper, so it goes through `astro:assets`.
 
-### `site` (single file)
+## Adding or changing a field
 
-- Written to `src/shared/config/site.json` (title, description, url) — global site metadata.
-- **Also not yet created.** `src/shared/config/` is currently empty. Once this file exists, it's a plain JSON import — no Astro content-collection machinery needed for a single file.
+1. Add the field in `keystatic.config.ts`.
+2. Add it to the matching Zod schema in `src/content.config.ts`.
+3. Run `pnpm astro sync` to regenerate the collection types.
+4. Use it in the entity or feature that renders the collection, then run `pnpm astro check`.
 
-### Media
+## Admin UI
 
-- Uploads go to `src/app/media` on disk, served from `/app/media`. Neither the source folder nor any uploaded assets exist yet.
+Keystatic's integration injects `/keystatic` (the admin UI) and `/api/keystatic/*`. Those routes are server-rendered (`prerender: false`) while every other page stays static, which is why the project uses the Vercel adapter and why `@astrojs/react` is installed. React is used only by the Keystatic admin; site pages do not use it.
 
-## Summary of what's pending
+Storage is switched on `import.meta.env.PROD` in `keystatic.config.ts`:
 
-The CMS schema (`.pages.yml`) currently describes content structure that hasn't been scaffolded in code yet:
+- **Development:** `kind: "local"`. Run `pnpm dev`, open `/keystatic`, and edits are written straight to files in `src/content/`. Commit them like any other change. No environment variables are needed.
+- **Production:** `kind: "github"` against `whoiseno/whoiseno`. Edits made at `/keystatic` on the deployed site are committed to the repository through a GitHub App.
 
-1. No `src/content/config.ts` (Astro content collection definitions)
-2. No `src/content/posts/` directory or entries
-3. No `src/shared/config/site.json`
-4. No `src/app/media/` directory
+### GitHub mode environment variables
 
-Treat `.pages.yml` as the source of truth for the _intended_ content shape when building these pieces out.
+Set these in the Vercel project:
+
+| Variable                           | Purpose                                        |
+| ---------------------------------- | ---------------------------------------------- |
+| `KEYSTATIC_GITHUB_CLIENT_ID`       | GitHub App client ID                           |
+| `KEYSTATIC_GITHUB_CLIENT_SECRET`   | GitHub App client secret                       |
+| `KEYSTATIC_SECRET`                 | Random string used to sign sessions            |
+| `PUBLIC_KEYSTATIC_GITHUB_APP_SLUG` | GitHub App slug (public, read by the admin UI) |
+
+Per the Keystatic [GitHub mode guide](https://keystatic.com/docs/github-mode), the GitHub App is created from the `/keystatic` route locally, and the first three variables plus the app slug are then written to a `.env` file in the project. Copy those values into Vercel. Because this repo uses `local` storage in development, running that flow means temporarily pointing `storage` at `{ kind: "github", repo: "whoiseno/whoiseno" }` while developing; this repo has not run that flow yet, so treat the step as untested.
+
+## Dashboard grouping
+
+`ui.navigation` in `keystatic.config.ts` groups the sidebar as Profile, Work (works, projects), Uses (software, hardware) and Library (books, movies).

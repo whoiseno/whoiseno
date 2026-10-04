@@ -1,0 +1,76 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"button"> {
+  variant?: "solid" | "outline" | "ghost" | "link";
+  color?: "brand" | "primary" | "secondary" | "neutral";
+  size?: "xxs" | "xs" | "sm" | "md" | "lg" | "xl" | "xxl";
+  loading?: string | boolean | null | undefined;
+}
+
+const {
+  class: className,
+  type,
+  disabled,
+  variant = "solid",
+  color = "primary",
+  size = "md",
+  loading = false,
+  ...rest
+} = Astro.props;
+
+const isLoading = () => disabled || loading;
+
+const base =
+  "inline-flex shrink-0 items-center justify-center gap-2 rounded-lg font-medium whitespace-nowrap transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 has-[>svg:only-child]:aspect-square has-[>svg:only-child]:px-0";
+
+const sizes = {
+  xxs: "h-6 px-2 text-xs",
+  xs: "h-7 px-2.5 text-xs",
+  sm: "h-8 px-3 text-sm",
+  md: "h-9 px-4 text-sm",
+  lg: "h-10 px-5 text-sm",
+  xl: "h-11 px-6 text-base",
+  xxl: "h-12 px-8 text-base",
+};
+
+const variants = {
+  solid: {
+    brand: "bg-brand text-brand-foreground hover:bg-brand/90",
+    primary: "bg-primary text-primary-foreground hover:bg-primary/90",
+    secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+    neutral: "bg-neutral text-neutral-foreground hover:bg-neutral/80",
+  },
+  outline: {
+    brand: "border border-brand text-brand hover:bg-brand/10",
+    primary: "border border-primary text-primary hover:bg-primary/10",
+    secondary: "border text-secondary-foreground hover:bg-secondary",
+    neutral: "border text-foreground hover:bg-accent hover:text-accent-foreground",
+  },
+  ghost: {
+    brand: "text-brand hover:bg-brand/10",
+    primary: "text-primary hover:bg-primary/10",
+    secondary: "text-secondary-foreground hover:bg-secondary",
+    neutral: "text-foreground hover:bg-accent hover:text-accent-foreground",
+  },
+  link: {
+    brand: "text-brand underline-offset-4 hover:underline",
+    primary: "text-primary underline-offset-4 hover:underline",
+    secondary: "text-secondary-foreground underline-offset-4 hover:underline",
+    neutral: "text-foreground underline-offset-4 hover:underline",
+  },
+};
+---
+
+<button
+  data-slot="button"
+  data-variant={variant}
+  data-color={color}
+  data-size={size}
+  type={type}
+  class:list={[base, sizes[size], variants[variant][color], className]}
+  disabled={isLoading()}
+  {...rest}
+>
+  <slot />
+</button>

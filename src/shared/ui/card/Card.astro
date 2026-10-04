@@ -1,0 +1,33 @@
+---
+interface Props {
+  href?: string;
+  class?: string;
+}
+
+const { href, class: className } = Astro.props;
+const external = href?.startsWith("http");
+const classes = [
+  "block rounded-xl border bg-card px-3 py-2.5",
+  href && "transition-colors hover:bg-muted/60",
+  className,
+];
+---
+
+{href ? (
+  <a
+    data-slot="card"
+    class:list={classes}
+    href={href}
+    rel={external ? "noopener noreferrer" : undefined}
+    target={external ? "_blank" : undefined}
+  >
+    <slot />
+  </a>
+) : (
+  <div
+    data-slot="card"
+    class:list={classes}
+  >
+    <slot />
+  </div>
+)}

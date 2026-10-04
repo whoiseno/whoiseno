@@ -1,0 +1,46 @@
+---
+import { formatDateRange } from "@/shared/lib/date";
+import Badge from "@/shared/ui/badge/Badge.astro";
+import Card from "@/shared/ui/card/Card.astro";
+import { getCollection } from "astro:content";
+
+interface Props {
+  featured?: boolean;
+  limit?: number;
+}
+
+const { featured = false, limit } = Astro.props;
+const projects = (await getCollection("projects", ({ data }) => !featured || data.featured))
+  .sort((a, b) => b.data.startDate.getTime() - a.data.startDate.getTime())
+  .slice(0, limit);
+---
+
+{projects.length === 0 ? (
+  <p class="text-muted-foreground">Nothing here yet.</p>
+) : (
+  <ul class="space-y-3">
+    {projects.map(({ id, data }) => (
+      <li>
+        <Card
+          class="space-y-2"
+          href={`/projects/${id}`}
+        >
+          <div class="flex items-start justify-between gap-3">
+            <h3 class="font-medium">{data.title}</h3>
+            <p class="shrink-0 text-xs text-muted-foreground">{formatDateRange(data.startDate, data.endDate)}</p>
+          </div>
+          <p class="text-muted-foreground">{data.description}</p>
+          {data.skills.length > 0 && (
+            <ul class="flex flex-wrap gap-1.5">
+              {data.skills.map((skill) => (
+                <li>
+                  <Badge>{skill}</Badge>
+                </li>
+              ))}
+            </ul>
+          )}
+        </Card>
+      </li>
+    ))}
+  </ul>
+)}
