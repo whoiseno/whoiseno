@@ -1,0 +1,27 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { cn } from "tailwind-variants";
+
+interface Props extends HTMLAttributes<"div"> {}
+
+const { class: className, ...rest } = Astro.props;
+---
+
+<div
+  data-slot="accordion-content"
+  role="region"
+  class="grid grid-rows-[0fr] transition-[grid-template-rows] duration-200 ease-out group-data-[state=open]/accordion-item:grid-rows-[1fr] motion-reduce:transition-none"
+  inert
+  x-bind:id="$id('accordion-content')"
+  x-bind:aria-labelledby="$id('accordion-trigger')"
+  x-bind:inert="!isOpen(value)"
+>
+  <div class="overflow-hidden">
+    <div
+      class={cn("pt-3", className)}
+      {...rest}
+    >
+      <slot />
+    </div>
+  </div>
+</div>

@@ -1,5 +1,5 @@
 ---
-import { Icon } from "astro-icon/components";
+import Icon from "@/shared/ui/icon/Icon.astro";
 
 interface Props {
   value: number;
@@ -17,7 +17,8 @@ const { value } = Astro.props;
   {Array.from({ length: 5 }, (_, index) => (
     <Icon
       class:list={["size-3.5", index >= value && "text-dimmed"]}
-      name={index < value ? "ph:star-fill" : "ph:star"}
+      name="reicon:Star"
+      weight={index < value ? "Filled" : "Outline"}
     />
   ))}
 </span>

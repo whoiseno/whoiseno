@@ -1,32 +1,33 @@
 ---
-interface Props {
+import type { HTMLAttributes } from "astro/types";
+
+import { cardVariants } from "./variants";
+
+interface Props extends HTMLAttributes<"div"> {
   href?: string;
-  class?: string;
 }
 
-const { href, class: className } = Astro.props;
+const { href, class: className, ...rest } = Astro.props;
 const external = href?.startsWith("http");
-const classes = [
-  "block rounded-xl border bg-card px-3 py-2.5",
-  href && "transition-colors hover:bg-muted/60",
-  className,
-];
+const { root } = cardVariants({ interactive: Boolean(href) });
 ---
 
 {href ? (
   <a
     data-slot="card"
-    class:list={classes}
+    class={root({ class: className })}
     href={href}
     rel={external ? "noopener noreferrer" : undefined}
     target={external ? "_blank" : undefined}
+    {...rest}
   >
     <slot />
   </a>
 ) : (
   <div
     data-slot="card"
-    class:list={classes}
+    class={root({ class: className })}
+    {...rest}
   >
     <slot />
   </div>

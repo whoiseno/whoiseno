@@ -1,0 +1,28 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"button">, Pick<HTMLAttributes<"a">, "rel" | "target"> {
+  /** Renders an `<a>`, for hover cards that sit on a link. */
+  href?: string;
+}
+
+const { href, ...rest } = Astro.props;
+const Tag = href ? "a" : "button";
+---
+
+<Tag
+  data-slot="popover-trigger"
+  type={href ? undefined : "button"}
+  href={href}
+  aria-haspopup="dialog"
+  x-ref="trigger"
+  x-bind:aria-expanded="open"
+  x-on:click="if (!hover) toggle()"
+  x-on:mouseenter="enter()"
+  x-on:mouseleave="leave()"
+  x-on:focusin="enter()"
+  x-on:focusout="leave()"
+  {...rest}
+>
+  <slot />
+</Tag>

@@ -1,0 +1,15 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { cn } from "tailwind-variants";
+
+interface Props extends HTMLAttributes<"div"> {}
+
+const { class: className, ...rest } = Astro.props;
+---
+
+<div
+  data-slot="dropdown-menu-separator"
+  role="separator"
+  class={cn("-mx-1 my-1 h-px bg-border", className)}
+  {...rest}
+></div>

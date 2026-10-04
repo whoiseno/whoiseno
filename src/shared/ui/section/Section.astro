@@ -1,5 +1,5 @@
 ---
-import { Icon } from "astro-icon/components";
+import Icon from "@/shared/ui/icon/Icon.astro";
 
 interface Props {
   title: string;
@@ -27,7 +27,7 @@ const { title, href, hrefLabel = "View all" } = Astro.props;
         {hrefLabel}
         <Icon
           class="size-3.5"
-          name="ph:arrow-right"
+          name="reicon:ArrowRight"
         />
       </a>
     )}

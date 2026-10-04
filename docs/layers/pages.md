@@ -5,10 +5,13 @@ Astro's file-based router: every `.astro`/`.md`/`.ts` file here becomes a route.
 ```
 src/pages/
 ├── index.astro             # /           profile hero, latest works, featured projects
-├── works.astro             # /works      full work experience with details
+├── works.astro             # /works      every work experience (WorkList without limit)
 ├── projects/
 │   ├── index.astro         # /projects
 │   └── [slug].astro        # /projects/<id>   getStaticPaths from the projects collection
+├── writing/
+│   ├── index.astro         # /writing    WritingList, grouped by year
+│   └── [slug].astro        # /writing/<id>    getStaticPaths from the writing collection
 ├── uses.astro              # /uses       Software and Hardware sections
 ├── books.astro             # /books
 └── movies.astro            # /movies
@@ -24,6 +27,7 @@ Sections are built with `Section` (`shared/ui/section`), which adds the title, a
 
 - `index.astro`: `ProfileHero`, then a Works `Section` (`WorkList limit={3}`) and a Projects `Section` (`ProjectList featured limit={3}`).
 - `projects/[slug].astro`: date range, Live demo and Source links, skill badges, the Markdoc body inside `Prose`, and an "All projects" back link.
+- `writing/[slug].astro`: a badge with the entry kind (Blog, Tutorial, Journal or Note), the published date, the Markdoc body inside `Prose`, and an "All writing" back link. `Site` supplies the title and description.
 
 The older `Page*` primitives in `shared/ui/page` are no longer used by any page.
 

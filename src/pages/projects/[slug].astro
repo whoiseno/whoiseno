@@ -1,10 +1,10 @@
 ---
 import Site from "@/app/layouts/Site.astro";
 import { formatDateRange } from "@/shared/lib/date";
-import Badge from "@/shared/ui/badge/Badge.astro";
+import { Badge } from "@/shared/ui/badge";
+import Icon from "@/shared/ui/icon/Icon.astro";
 import Prose from "@/shared/ui/prose/Prose.astro";
 import type { InferGetStaticPropsType } from "astro";
-import { Icon } from "astro-icon/components";
 import { getCollection, render } from "astro:content";
 
 export async function getStaticPaths() {
@@ -40,7 +40,7 @@ const links = [
           {link.label}
           <Icon
             class="size-3.5"
-            name="ph:arrow-up-right"
+            name="reicon:ArrowUpRight"
           />
         </a>
       ))}
@@ -64,7 +64,7 @@ const links = [
   >
     <Icon
       class="size-3.5"
-      name="ph:arrow-left"
+      name="reicon:ArrowLeft"
     />
     All projects
   </a>

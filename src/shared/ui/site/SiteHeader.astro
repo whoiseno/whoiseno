@@ -1,7 +1,7 @@
 ---
 import { siteName, type TypeNavItem } from "@/shared/config/site";
-import Button from "@/shared/ui/button/Button.astro";
-import { Icon } from "astro-icon/components";
+import { Button } from "@/shared/ui/button";
+import Icon from "@/shared/ui/icon/Icon.astro";
 
 interface Props {
   items: TypeNavItem[];
@@ -52,11 +52,11 @@ const isActive = (href: string) =>
         x-on:click="open = !open"
       >
         <Icon
-          name="ph:list"
+          name="reicon:Menu"
           x-show="!open"
         />
         <Icon
-          name="ph:x"
+          name="reicon:X"
           x-cloak
           x-show="open"
         />

@@ -1,0 +1,21 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { cn } from "tailwind-variants";
+
+interface Props extends HTMLAttributes<"div"> {
+  type?: "single" | "multiple";
+  defaultValue?: string | string[];
+}
+
+const { type = "single", defaultValue = [], class: className, ...rest } = Astro.props;
+const options = { type, defaultValue: [defaultValue].flat() };
+---
+
+<div
+  data-slot="accordion"
+  class={cn(className)}
+  x-data={`accordion(${JSON.stringify(options)})`}
+  {...rest}
+>
+  <slot />
+</div>

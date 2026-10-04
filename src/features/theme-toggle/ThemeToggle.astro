@@ -1,6 +1,6 @@
 ---
-import Button from "@/shared/ui/button/Button.astro";
-import { Icon } from "astro-icon/components";
+import { Button } from "@/shared/ui/button";
+import Icon from "@/shared/ui/icon/Icon.astro";
 ---
 
 <Button
@@ -9,22 +9,15 @@ import { Icon } from "astro-icon/components";
   size="md"
   type="button"
   variant="ghost"
-  x-data="{
-    toggle() {
-      const dark = document.documentElement.classList.toggle('dark');
-      try {
-        localStorage.setItem('theme', dark ? 'dark' : 'light');
-      } catch {}
-    },
-  }"
+  x-data="themeToggle"
   x-on:click="toggle()"
 >
   <Icon
-    class="hidden dark:block"
-    name="ph:sun"
+    class="hidden size-4 dark:block"
+    name="reicon:Sun"
   />
   <Icon
-    class="dark:hidden"
-    name="ph:moon"
+    class="size-4 dark:hidden"
+    name="reicon:Moon"
   />
 </Button>

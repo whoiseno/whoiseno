@@ -1,0 +1,18 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+import { cardVariants } from "./variants";
+
+interface Props extends HTMLAttributes<"div"> {}
+
+const { class: className, ...rest } = Astro.props;
+const { content } = cardVariants();
+---
+
+<div
+  data-slot="card-content"
+  class={content({ class: className })}
+  {...rest}
+>
+  <slot />
+</div>

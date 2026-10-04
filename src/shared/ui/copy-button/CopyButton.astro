@@ -1,0 +1,49 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { cn } from "tailwind-variants";
+
+import Icon from "../icon/Icon.astro";
+
+interface Props extends HTMLAttributes<"button"> {
+  /** Text written to the clipboard. */
+  value: string;
+  label?: string;
+}
+
+const { value, label = "Copy to clipboard", class: className, ...rest } = Astro.props;
+---
+
+<button
+  data-slot="copy-button"
+  class={cn(
+    "inline-flex items-center justify-center text-muted-foreground transition-colors outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring",
+    className,
+  )}
+  type="button"
+  aria-label={label}
+  x-data={`copyText(${JSON.stringify(value)})`}
+  x-on:click="copy()"
+  {...rest}
+>
+  <span x-show="!copied">
+    <Icon
+      class="size-4"
+      name="reicon:Copy"
+    />
+  </span>
+  <span
+    class="text-success"
+    style="display: none"
+    x-show="copied"
+  >
+    <Icon
+      class="size-4"
+      name="reicon:Check"
+    />
+  </span>
+  <span
+    class="sr-only"
+    aria-live="polite"
+    x-text="copied ? 'Copied' : ''"
+  ></span>
+</button>

@@ -34,7 +34,6 @@ const profile = await getProfile();
   </main>
   <SiteFooter
     name={profile.data.name}
-    items={navItems}
-    socials={getSocialLinks(profile.data.socials)}
+    socials={getSocialLinks(profile.data)}
   />
 </Root>

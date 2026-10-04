@@ -1,0 +1,45 @@
+---
+import Site from "@/app/layouts/Site.astro";
+import { formatDate } from "@/shared/lib/date";
+import { Badge } from "@/shared/ui/badge";
+import Icon from "@/shared/ui/icon/Icon.astro";
+import Prose from "@/shared/ui/prose/Prose.astro";
+import type { InferGetStaticPropsType } from "astro";
+import { getCollection, render } from "astro:content";
+
+export async function getStaticPaths() {
+  const entries = await getCollection("writing");
+  return entries.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const kindLabels = { blog: "Blog", tutorial: "Tutorial", journal: "Journal", note: "Note" } as const;
+
+const { entry } = Astro.props;
+const { title, kind, description, publishedDate } = entry.data;
+const { Content } = await render(entry);
+---
+
+<Site
+  description={description}
+  title={title}
+>
+  <div class="flex items-center gap-3 text-xs text-muted-foreground">
+    <Badge>{kindLabels[kind]}</Badge>
+    <time datetime={publishedDate.toISOString()}>{formatDate(publishedDate)}</time>
+  </div>
+  <Prose>
+    <Content />
+  </Prose>
+  <a
+    class="inline-flex items-center gap-1 text-muted-foreground transition-colors hover:text-foreground"
+    href="/writing"
+  >
+    <Icon
+      class="size-3.5"
+      name="reicon:ArrowLeft"
+    />
+    All writing
+  </a>
+</Site>

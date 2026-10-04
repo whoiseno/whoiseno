@@ -1,71 +1,127 @@
 ---
 import { formatDateRange } from "@/shared/lib/date";
-import Badge from "@/shared/ui/badge/Badge.astro";
-import Card from "@/shared/ui/card/Card.astro";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/shared/ui/accordion";
+import { Badge } from "@/shared/ui/badge";
+import { Button } from "@/shared/ui/button";
+import Icon from "@/shared/ui/icon/Icon.astro";
+import { logoCatalog } from "@/shared/ui/icon/logos";
 import Prose from "@/shared/ui/prose/Prose.astro";
 import { getCollection, render } from "astro:content";
 
 interface Props {
+  /** Shows only the latest works, followed by a link to the full list. */
   limit?: number;
-  detailed?: boolean;
 }
 
-const { limit, detailed = false } = Astro.props;
-const works = (await getCollection("works"))
-  .sort((a, b) => b.data.startDate.getTime() - a.data.startDate.getTime())
-  .slice(0, limit);
+const workModes = { "on-site": "On-Site", "remote": "Remote", "hybrid": "Hybrid" } as const;
+
+const { limit } = Astro.props;
+const allWorks = (await getCollection("works")).sort((a, b) => b.data.startDate.getTime() - a.data.startDate.getTime());
+const works = allWorks.slice(0, limit);
+const hasMore = works.length < allWorks.length;
 const items = await Promise.all(works.map(async (work) => ({ work, Content: (await render(work)).Content })));
 ---
 
 {items.length === 0 ? (
   <p class="text-muted-foreground">Nothing here yet.</p>
 ) : (
-  <ul class="space-y-3">
-    {items.map(({ work, Content }) => {
-      const { company, role, location, startDate, endDate, link, skills } = work.data;
-      return (
-        <li>
-          <Card class="space-y-2">
-            <div class="flex items-start justify-between gap-3">
-              <div>
-                <h3 class="font-medium">
-                  {link ? (
-                    <a
-                      class="hover:underline"
-                      href={link}
-                      rel="noopener noreferrer"
-                      target="_blank"
-                    >
-                      {company}
-                    </a>
-                  ) : (
-                    company
-                  )}
-                </h3>
-                <p class="text-muted-foreground">{role}</p>
+  <div class="space-y-6">
+    <Accordion
+      class="divide-y"
+      type="single"
+    >
+      {items.map(({ work, Content }) => {
+        const { company, role, location, workMode, startDate, endDate, link, technologies } = work.data;
+        const mode = workModes[workMode];
+        return (
+          <AccordionItem
+            class="py-4 first:pt-0 last:pb-0"
+            value={work.id}
+          >
+            <AccordionTrigger
+              class="group/trigger"
+              chevron={false}
+            >
+              <span class="min-w-0 space-y-0.5">
+                <span class="flex items-center gap-2">
+                  <span class="font-medium">{company}</span>
+                  {!endDate && <Badge variant="success">Working</Badge>}
+                  <Icon
+                    class="size-4 shrink-0 text-muted-foreground transition-all duration-200 pointer-fine:opacity-0 pointer-fine:group-hover/trigger:opacity-100 pointer-fine:group-focus-visible/trigger:opacity-100 group-data-[state=open]/accordion-item:rotate-180 group-data-[state=open]/accordion-item:opacity-100"
+                    name="reicon:ChevronDown"
+                  />
+                </span>
+                <span class="block text-muted-foreground">{role}</span>
+              </span>
+              <span class="shrink-0 text-right text-xs text-muted-foreground">
+                <span class="block sm:hidden">{formatDateRange(startDate, endDate)}</span>
+                <span class="hidden sm:block">{formatDateRange(startDate, endDate, "long")}</span>
+                <span class="block sm:hidden">{mode}</span>
+                <span class="hidden sm:block">{location ? `${location} (${mode})` : mode}</span>
+              </span>
+            </AccordionTrigger>
+            <AccordionContent>
+              <div class="space-y-4 border-t pt-4">
+                {technologies.length > 0 && (
+                  <div class="space-y-2">
+                    <h4 class="text-xs font-medium tracking-wider text-muted-foreground uppercase">
+                      Technologies & Tools
+                    </h4>
+                    <ul class="flex flex-wrap gap-2">
+                      {technologies.map((name) => (
+                        <li>
+                          <span
+                            class="flex size-10 items-center justify-center rounded-lg border bg-card"
+                            title={logoCatalog[name].label}
+                          >
+                            <Icon
+                              class="size-5"
+                              name={`logo:${name}`}
+                            />
+                            <span class="sr-only">{logoCatalog[name].label}</span>
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                <div class="space-y-2">
+                  <h4 class="text-xs font-medium tracking-wider text-muted-foreground uppercase">What I've done</h4>
+                  <Prose>
+                    <Content />
+                  </Prose>
+                </div>
+                {link && (
+                  <a
+                    class="inline-flex items-center gap-1 text-muted-foreground transition-colors hover:text-foreground"
+                    href={link}
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    Visit {company}
+                    <Icon
+                      class="size-3.5"
+                      name="reicon:ArrowUpRight"
+                    />
+                  </a>
+                )}
               </div>
-              <div class="shrink-0 text-right text-xs text-muted-foreground">
-                <p>{formatDateRange(startDate, endDate)}</p>
-                {location && <p>{location}</p>}
-              </div>
-            </div>
-            {skills.length > 0 && (
-              <ul class="flex flex-wrap gap-1.5">
-                {skills.map((skill) => (
-                  <li>
-                    <Badge>{skill}</Badge>
-                  </li>
-                ))}
-              </ul>
-            )}
-            {detailed && (
-              <Prose>
-                <Content />
-              </Prose>
-            )}
-          </Card>
-        </li>
-      );
-    })}
-  </ul>
+            </AccordionContent>
+          </AccordionItem>
+        );
+      })}
+    </Accordion>
+    {hasMore && (
+      <div class="flex justify-center">
+        <Button
+          color="neutral"
+          href="/works"
+          size="md"
+          variant="outline"
+        >
+          Show all work experiences
+        </Button>
+      </div>
+    )}
+  </div>
 )}

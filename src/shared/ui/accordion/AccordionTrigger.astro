@@ -1,0 +1,36 @@
+---
+import Icon from "@/shared/ui/icon/Icon.astro";
+import type { HTMLAttributes } from "astro/types";
+import { cn } from "tailwind-variants";
+
+interface Props extends HTMLAttributes<"button"> {
+  /** Renders the default trailing chevron. Pass `false` to place your own. */
+  chevron?: boolean;
+}
+
+const { chevron = true, class: className, ...rest } = Astro.props;
+---
+
+<h3 class="flex">
+  <button
+    data-slot="accordion-trigger"
+    type="button"
+    class={cn(
+      "flex flex-1 items-start justify-between gap-4 rounded-lg text-left outline-none focus-visible:ring-2 focus-visible:ring-ring",
+      className,
+    )}
+    x-bind:id="$id('accordion-trigger')"
+    x-bind:aria-controls="$id('accordion-content')"
+    x-bind:aria-expanded="isOpen(value)"
+    x-on:click="toggle(value)"
+    {...rest}
+  >
+    <slot />
+    {chevron && (
+      <Icon
+        name="reicon:ChevronDown"
+        class="size-4 shrink-0 text-muted-foreground transition-transform duration-200 group-data-[state=open]/accordion-item:rotate-180"
+      />
+    )}
+  </button>
+</h3>

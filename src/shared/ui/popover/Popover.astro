@@ -1,0 +1,23 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { cn } from "tailwind-variants";
+
+interface Props extends HTMLAttributes<"div"> {
+  /** Opens on pointer hover or keyboard focus instead of on click. */
+  hover?: boolean;
+  openDelay?: number;
+  closeDelay?: number;
+}
+
+const { hover = false, openDelay = 150, closeDelay = 120, class: className, ...rest } = Astro.props;
+const options = { hover, openDelay, closeDelay };
+---
+
+<div
+  data-slot="popover"
+  class={cn("inline-flex", className)}
+  x-data={`popover(${JSON.stringify(options)})`}
+  {...rest}
+>
+  <slot />
+</div>

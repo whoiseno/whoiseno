@@ -2,6 +2,8 @@ import { defineCollection } from "astro:content";
 import { glob } from "astro/loaders";
 import { z } from "astro/zod";
 
+import { logoNames } from "./shared/ui/icon/logos";
+
 const date = z.coerce.date();
 const url = z.url().nullish();
 const skills = z.array(z.string()).default([]);
@@ -20,6 +22,12 @@ const profile = defineCollection({
           z.object({
             platform: z.enum(["github", "linkedin", "x", "instagram", "youtube", "email"]),
             url: z.string(),
+            handle: z.string().optional(),
+            displayName: z.string().optional(),
+            bio: z.string().optional(),
+            avatar: image().nullish(),
+            banner: image().nullish(),
+            verified: z.boolean().default(false),
           }),
         )
         .default([]),
@@ -32,10 +40,11 @@ const works = defineCollection({
     company: z.string(),
     role: z.string(),
     location: z.string().optional(),
+    workMode: z.enum(["on-site", "remote", "hybrid"]).default("on-site"),
     startDate: date,
     endDate: date.nullish(),
     link: url,
-    skills,
+    technologies: z.array(z.enum(logoNames)).default([]),
   }),
 });
 
@@ -50,6 +59,16 @@ const projects = defineCollection({
     skills,
     demoLink: url,
     sourceLink: url,
+  }),
+});
+
+const writing = defineCollection({
+  loader: glob({ pattern: "**/*.mdoc", base: "./src/content/writing" }),
+  schema: z.object({
+    title: z.string(),
+    kind: z.enum(["blog", "tutorial", "journal", "note"]).default("blog"),
+    description: z.string().optional(),
+    publishedDate: date,
   }),
 });
 
@@ -95,4 +114,4 @@ const movies = defineCollection({
   }),
 });
 
-export const collections = { profile, works, projects, software, hardware, books, movies };
+export const collections = { profile, works, projects, writing, software, hardware, books, movies };

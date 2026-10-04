@@ -1,0 +1,32 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+import { dropdownMenuItemVariants, type TypeDropdownMenuItemVariants } from "./variants";
+
+interface Props extends HTMLAttributes<"button">, TypeDropdownMenuItemVariants {
+  /** Renders an `<a>`. External `http` links open in a new tab. */
+  href?: string;
+  disabled?: boolean;
+}
+
+const { href, variant, disabled = false, class: className, ...rest } = Astro.props;
+const Tag = href ? "a" : "button";
+const external = href?.startsWith("http");
+---
+
+<Tag
+  data-slot="dropdown-menu-item"
+  data-variant={variant ?? "default"}
+  type={href ? undefined : "button"}
+  href={href}
+  rel={external ? "noopener noreferrer" : undefined}
+  target={external ? "_blank" : undefined}
+  role="menuitem"
+  tabindex="-1"
+  aria-disabled={disabled ? "true" : undefined}
+  class={dropdownMenuItemVariants({ variant, class: className })}
+  x-on:click="hide()"
+  {...rest}
+>
+  <slot />
+</Tag>

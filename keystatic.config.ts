@@ -1,5 +1,7 @@
 import { collection, config, fields, singleton } from "@keystatic/core";
 
+import { logoCatalog, logoNames } from "./src/shared/ui/icon/logos";
+
 export default config({
   storage: import.meta.env.PROD ? { kind: "github", repo: "whoiseno/whoiseno" } : { kind: "local" },
 
@@ -7,6 +9,7 @@ export default config({
     navigation: {
       Profile: ["profile"],
       Work: ["works", "projects"],
+      Writing: ["writing"],
       Uses: ["software", "hardware"],
       Library: ["books", "movies"],
     },
@@ -49,6 +52,27 @@ export default config({
               description: "Profile URL, or a mailto: link for email",
               validation: { isRequired: true },
             }),
+            handle: fields.text({
+              label: "Handle",
+              description: 'Shown under the platform name, e.g. "@whoiseno". Taken from the URL when empty.',
+            }),
+            displayName: fields.text({
+              label: "Hover card name",
+              description: "Defaults to your profile name",
+            }),
+            bio: fields.text({ label: "Hover card bio", multiline: true }),
+            avatar: fields.image({
+              label: "Hover card avatar",
+              description: "Defaults to your profile avatar",
+              directory: "src/assets/profile/socials",
+              publicPath: "../../assets/profile/socials/",
+            }),
+            banner: fields.image({
+              label: "Hover card banner",
+              directory: "src/assets/profile/socials",
+              publicPath: "../../assets/profile/socials/",
+            }),
+            verified: fields.checkbox({ label: "Verified", defaultValue: false }),
           }),
           { label: "Socials", itemLabel: (props) => props.fields.platform.value },
         ),
@@ -66,15 +90,27 @@ export default config({
       schema: {
         company: fields.slug({ name: { label: "Company" } }),
         role: fields.text({ label: "Role", validation: { isRequired: true } }),
-        location: fields.text({ label: "Location" }),
-        startDate: fields.date({ label: "Start date", validation: { isRequired: true } }),
-        endDate: fields.date({ label: "End date", description: "Leave empty for a current role" }),
-        link: fields.url({ label: "Company website" }),
-        skills: fields.array(fields.text({ label: "Skill" }), {
-          label: "Skills",
-          itemLabel: (props) => props.value,
+        location: fields.text({ label: "Location", description: 'City and country, e.g. "Hyderabad, India"' }),
+        workMode: fields.select({
+          label: "Work mode",
+          options: [
+            { label: "On-Site", value: "on-site" },
+            { label: "Remote", value: "remote" },
+            { label: "Hybrid", value: "hybrid" },
+          ],
+          defaultValue: "on-site",
         }),
-        content: fields.markdoc({ label: "Responsibilities and achievements" }),
+        startDate: fields.date({ label: "Start date", validation: { isRequired: true } }),
+        endDate: fields.date({
+          label: "End date",
+          description: 'Leave empty for a current role, which shows the "Working" badge',
+        }),
+        link: fields.url({ label: "Company website" }),
+        technologies: fields.multiselect({
+          label: "Technologies & Tools",
+          options: logoNames.map((value) => ({ label: logoCatalog[value].label, value })),
+        }),
+        content: fields.markdoc({ label: "What I've done" }),
       },
     }),
 
@@ -97,6 +133,30 @@ export default config({
         demoLink: fields.url({ label: "Demo link" }),
         sourceLink: fields.url({ label: "Source link" }),
         content: fields.markdoc({ label: "Details" }),
+      },
+    }),
+
+    writing: collection({
+      label: "Writing",
+      path: "src/content/writing/*",
+      slugField: "title",
+      entryLayout: "content",
+      format: { contentField: "content" },
+      schema: {
+        title: fields.slug({ name: { label: "Title" } }),
+        kind: fields.select({
+          label: "Kind",
+          options: [
+            { label: "Blog", value: "blog" },
+            { label: "Tutorial", value: "tutorial" },
+            { label: "Journal", value: "journal" },
+            { label: "Note", value: "note" },
+          ],
+          defaultValue: "blog",
+        }),
+        publishedDate: fields.date({ label: "Published on", validation: { isRequired: true } }),
+        description: fields.text({ label: "Short description", multiline: true }),
+        content: fields.markdoc({ label: "Content" }),
       },
     }),
 

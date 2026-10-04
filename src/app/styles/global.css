@@ -73,50 +73,50 @@
     --white: #ffffff;
 
     /* Overlay background color, dialogs & panels */
-    --scrim: #100f0f66;
+    --scrim: #1c191566;
 
     /* Base background and text colors */
-    --background: #f9f9f9;
-    --foreground: #100f0f;
+    --background: #fafaf9;
+    --foreground: #1c1917;
     /* Foreground dimmed, one level below the foreground color */
-    --toned: #737373;
+    --toned: #655f5a;
     /*
       Foreground dimmed, one level below the toned color,
       two level below the foreground color
     */
-    --dimmed: #909092;
+    --dimmed: #78716c;
 
     /* Surface color, one level below the background color */
-    --surface: #f5f5f5;
+    --surface: #f5f5f4;
 
     /* Card background and foreground, one level above the background */
-    --card: #f9f9f9;
-    --card-foreground: #100f0f;
+    --card: #ffffff;
+    --card-foreground: #1c1917;
 
     /*
       Popover background and foreground, dropdowns, hover cards, popovers, &
       context menus
     */
-    --popover: #f9f9f9;
-    --popover-foreground: #100f0f;
+    --popover: #ffffff;
+    --popover-foreground: #1c1917;
 
     /* Input background and foreground, inputs, and text areas */
-    --input: #e5e5e5;
-    --input-foreground: #100f0f;
+    --input: #e7e5e4;
+    --input-foreground: #1c1917;
 
     /*
       Accent background and foreground, checkboxes, radio buttons, & peer
       elements
     */
-    --accent: #f5f5f5;
-    --accent-foreground: #171717;
+    --accent: #f5f5f4;
+    --accent-foreground: #1c1917;
 
     /*
       Muted background and foreground, disabled, low priority &
       non-interactive
     */
-    --muted: #f5f5f5;
-    --muted-foreground: #737373;
+    --muted: #f5f5f4;
+    --muted-foreground: #78716c;
 
     /*
       Brand background and foreground. Main portfolio color, 70% usage
@@ -130,12 +130,12 @@
     --primary-foreground: #fafafa;
 
     /* Secondary background and foreground. 10% usage on portfolio */
-    --secondary: #f5f5f5;
-    --secondary-foreground: #171717;
+    --secondary: #f5f5f4;
+    --secondary-foreground: #1c1917;
 
     /* Neutral background and foreground */
-    --neutral: #e5e5e5;
-    --neutral-foreground: #171717;
+    --neutral: #e7e5e4;
+    --neutral-foreground: #1c1917;
 
     /* Info background color. Info messages & context */
     --info: #3b82f6;
@@ -154,12 +154,12 @@
     --error-foreground: #fafafa;
 
     /* Ring color. Focus states and outlines */
-    --ring: #a1a1a1;
+    --ring: #a8a29e;
 
     /* Border color. (all) */
-    --border: #e5e5e5;
-    --border-soft: #efefef;
-    --border-hard: #d4d4d4;
+    --border: #1c191521;
+    --border-soft: #1c19150f;
+    --border-hard: #1c191533;
   }
 
   .dark {
@@ -262,6 +262,44 @@
     blockquote {
       @apply border-l-2 pl-4 text-muted-foreground;
     }
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    mix-blend-mode: normal;
+    animation-duration: 0.7s;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+    animation-fill-mode: both;
+  }
+
+  ::view-transition-old(root) {
+    z-index: 1;
+    animation-name: theme-wipe-out;
+  }
+
+  ::view-transition-new(root) {
+    z-index: 2;
+    animation-name: theme-wipe-in;
+  }
+}
+
+@keyframes theme-wipe-out {
+  from {
+    clip-path: inset(0);
+  }
+  to {
+    clip-path: inset(100% 0 0);
+  }
+}
+
+@keyframes theme-wipe-in {
+  from {
+    clip-path: inset(0 0 100%);
+  }
+  to {
+    clip-path: inset(0);
   }
 }
 

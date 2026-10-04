@@ -1,0 +1,80 @@
+---
+import { Icon as AstroIcon } from "astro-icon/components";
+import type { ComponentProps } from "astro/types";
+import { cn } from "tailwind-variants";
+
+import { logoCatalog, type TypeLogoName } from "./logos";
+import { reicons, type TypeReiconName } from "./reicons";
+
+type TypeIconName = `logo:${TypeLogoName}` | `ph:${string}` | `reicon:${TypeReiconName}`;
+
+interface Props extends Omit<ComponentProps<typeof AstroIcon>, "name" | "size"> {
+  /**
+   * `reicon:Name` for UI glyphs, `logo:name` for tech-stack logos (SVGL),
+   * `ph:name` for Phosphor glyphs (brand marks Reicon lacks).
+   */
+  name: TypeIconName;
+  size?: number | string;
+  /** Reicon only. */
+  weight?: "Filled" | "Outline";
+}
+
+const { name, size = "1em", weight, class: className, ...rest } = Astro.props;
+
+const separator = name.indexOf(":");
+const set = name.slice(0, separator);
+const id = name.slice(separator + 1);
+
+const Reicon = set === "reicon" ? reicons[id as TypeReiconName] : undefined;
+const logo = set === "logo" ? logoCatalog[id as TypeLogoName] : undefined;
+
+if (!Reicon && !logo && set !== "ph") {
+  throw new Error(`Unknown icon "${name}"`);
+}
+---
+
+{Reicon && (
+  <Reicon
+    data-slot="icon"
+    class={className ?? undefined}
+    size={size}
+    weight={weight}
+    {...(rest as Record<string, unknown>)}
+  />
+)}
+{logo?.themed && (
+  <>
+    <AstroIcon
+      data-slot="icon"
+      class={cn("dark:hidden", className)}
+      name={`logos/${id}-light`}
+      size={size}
+      {...rest}
+    />
+    <AstroIcon
+      data-slot="icon"
+      class={cn("hidden dark:block", className)}
+      name={`logos/${id}-dark`}
+      size={size}
+      {...rest}
+    />
+  </>
+)}
+{logo && !logo.themed && (
+  <AstroIcon
+    data-slot="icon"
+    class={className}
+    name={`logos/${id}`}
+    size={size}
+    {...rest}
+  />
+)}
+{set === "ph" && (
+  <AstroIcon
+    data-slot="icon"
+    class={className}
+    name={name}
+    size={size}
+    {...rest}
+  />
+)}

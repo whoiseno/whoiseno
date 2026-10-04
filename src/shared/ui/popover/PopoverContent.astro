@@ -1,0 +1,33 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { cn } from "tailwind-variants";
+
+interface Props extends HTMLAttributes<"div"> {
+  side?: "top" | "right" | "bottom" | "left";
+  align?: "start" | "center" | "end";
+  sideOffset?: number;
+}
+
+const { side = "bottom", align = "center", sideOffset = 8, class: className, ...rest } = Astro.props;
+const placement = align === "center" ? side : `${side}-${align}`;
+const anchor = { [`x-anchor.${placement}.offset.${sideOffset}.fixed`]: "$refs.trigger" };
+---
+
+<div
+  data-slot="popover-content"
+  role="dialog"
+  class={cn("z-50 w-72 rounded-xl border bg-popover p-3 text-popover-foreground shadow-lg outline-none", className)}
+  style="display: none"
+  x-show="open"
+  x-transition.opacity.scale.95.duration.150ms
+  x-on:keydown.escape.window="hide()"
+  x-on:click.outside="if (!$refs.trigger.contains($event.target)) hide()"
+  x-on:mouseenter="enter()"
+  x-on:mouseleave="leave()"
+  x-on:focusin="enter()"
+  x-on:focusout="leave()"
+  {...anchor}
+  {...rest}
+>
+  <slot />
+</div>

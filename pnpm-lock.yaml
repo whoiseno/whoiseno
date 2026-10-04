@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@alpinejs/anchor':
+        specifier: ^3.17.4
+        version: 3.17.4
       '@alpinejs/intersect':
         specifier: ^3.17.4
         version: 3.17.4
@@ -62,6 +65,15 @@ importers:
       react-dom:
         specifier: ^19.3.0
         version: 19.3.0(react@19.3.0)
+      reicon-astro:
+        specifier: ^1.0.1
+        version: 1.0.1(astro@7.3.4(@emnapi/core@1.11.3)(@emnapi/runtime@1.11.3)(@vercel/functions@3.9.11)(idb-keyval@6.3.0)(jiti@2.7.0)(yaml@2.9.1))
+      tailwind-merge:
+        specifier: ^3.7.0
+        version: 3.7.0
+      tailwind-variants:
+        specifier: ^3.3.1
+        version: 3.3.1(tailwind-merge@3.7.0)(tailwindcss@4.3.3)
       tailwindcss:
         specifier: ^4.3.3
         version: 4.3.3
@@ -69,6 +81,9 @@ importers:
       '@ianvs/prettier-plugin-sort-imports':
         specifier: ^4.7.1
         version: 4.7.1(prettier@3.9.8)
+      '@types/alpinejs__anchor':
+        specifier: ^3.13.1
+        version: 3.13.1
       '@types/alpinejs__intersect':
         specifier: ^3.13.4
         version: 3.13.4
@@ -121,6 +136,9 @@ packages:
     peerDependenciesMeta:
       graphql:
         optional: true
+
+  '@alpinejs/anchor@3.17.4':
+    resolution: {integrity: sha512-sHCML94TM7fugZucIJBb+vyw/igMdd3ZawGe/daoD1OIzTtJe0ShgFAzqG6Wj1gilZwV/HrI5P/OWovMSd76WQ==}
 
   '@alpinejs/intersect@3.17.4':
     resolution: {integrity: sha512-soIfavWRHh1dEs05z6wkKtYf8i/ohIG1EDo51urbURj8HifVLV8hd4oCVEGlKwEwt6NXBZDhWMhKk9SM//JHtQ==}
@@ -1263,6 +1281,9 @@ packages:
 
   '@types/alpinejs@3.13.11':
     resolution: {integrity: sha512-3KhGkDixCPiLdL3Z/ok1GxHwLxEWqQOKJccgaQL01wc0EVM2tCTaqlC3NIedmxAXkVzt/V6VTM8qPgnOHKJ1MA==}
+
+  '@types/alpinejs__anchor@3.13.1':
+    resolution: {integrity: sha512-UyQ+qz456eshmbiMpyj8yX6YDP1Cyoget2EWMYHjFLFx4fw08/iDlaIyps97zfwTK26oIb6sAK67Lm7nsxZwzA==}
 
   '@types/alpinejs__intersect@3.13.4':
     resolution: {integrity: sha512-yoX6WO7AleeULOQvPz7rrx7FJmu6l033bM7QiGcWyvZjqF2KIut99ByUZO6OWUQuYmbRjxsKthGiUYNaAywHiA==}
@@ -3274,6 +3295,11 @@ packages:
     resolution: {integrity: sha512-dYqgNSZbDwkaJ2ceRd9ojCGjBq+mOm9LmtXnAnEGyHhN/5R7iDW2TRw3h+o/jCFxus3P2LfWIIiwowAjANm7IA==}
     engines: {node: '>= 0.4'}
 
+  reicon-astro@1.0.1:
+    resolution: {integrity: sha512-Am6u4WXiMsgWApc4wRsZV960PuUzT9XdPzXrgAX8HH0yAeuQpvKQkKhCTUm6HKCsko1p6/zc0DbnlAr38LXKWg==}
+    peerDependencies:
+      astro: '>=3.0.0'
+
   remove-accents@0.5.0:
     resolution: {integrity: sha512-8g3/Otx1eJaVD12e31UbJj1YzdtVvzH85HV7t+9MJYk/u3XmkOUJ5Ys9wQrf9PCPK8+xn4ymzqYCiZl6QWKn+A==}
 
@@ -3490,6 +3516,21 @@ packages:
 
   tabbable@6.5.0:
     resolution: {integrity: sha512-wieBHXygIm7OyQOu5hQlkk62/WyCFYGlWg7L6/ZCUZwx0o398Zkn4pVmMyfYhfMG8kGrj/Krt8eIk6UKC6VzwA==}
+
+  tailwind-merge@3.7.0:
+    resolution: {integrity: sha512-XPPUyAc+cvspz3lHTcR/QgPfW2A0lv/xQNIjX3HGhLR+Nq2lHaLq5MtTesHn8GUr3W3DguT2KT5x3NVgRtYwmA==}
+
+  tailwind-variants@3.3.1:
+    resolution: {integrity: sha512-4pAvwUtM4HKBiRZftncAbpn6V9Hhwoa5Fl7O2u5zbp7Z5Cvu+/o/6+176WY3WCEES209543quG8zFIcXCsc5Jw==}
+    engines: {node: '>=16.9.x', pnpm: '>=7.x'}
+    peerDependencies:
+      tailwind-merge: '>=3.0.0'
+      tailwindcss: '*'
+    peerDependenciesMeta:
+      tailwind-merge:
+        optional: true
+      tailwindcss:
+        optional: true
 
   tailwindcss@4.3.3:
     resolution: {integrity: sha512-gOhV3P7ufE62QDGg1zVaTgCR+EtPv92k2nIhVcVKcLmxT1sUBsQGhnZj175j+MqRt4zLF7ic+sCYjfhxMxj7YQ==}
@@ -3997,6 +4038,10 @@ snapshots:
   '@0no-co/graphql.web@1.3.4(graphql@16.14.2)':
     optionalDependencies:
       graphql: 16.14.2
+
+  '@alpinejs/anchor@3.17.4':
+    dependencies:
+      '@floating-ui/dom': 1.8.0
 
   '@alpinejs/intersect@3.17.4': {}
 
@@ -5094,6 +5139,10 @@ snapshots:
       tslib: 2.8.1
 
   '@types/alpinejs@3.13.11': {}
+
+  '@types/alpinejs__anchor@3.13.1':
+    dependencies:
+      '@types/alpinejs': 3.13.11
 
   '@types/alpinejs__intersect@3.13.4':
     dependencies:
@@ -7453,6 +7502,10 @@ snapshots:
       gopd: 1.2.0
       set-function-name: 2.0.2
 
+  reicon-astro@1.0.1(astro@7.3.4(@emnapi/core@1.11.3)(@emnapi/runtime@1.11.3)(@vercel/functions@3.9.11)(idb-keyval@6.3.0)(jiti@2.7.0)(yaml@2.9.1)):
+    dependencies:
+      astro: 7.3.4(@emnapi/core@1.11.3)(@emnapi/runtime@1.11.3)(@vercel/functions@3.9.11)(idb-keyval@6.3.0)(jiti@2.7.0)(yaml@2.9.1)
+
   remove-accents@0.5.0: {}
 
   request-light@0.5.8: {}
@@ -7768,6 +7821,13 @@ snapshots:
       '@pkgr/core': 0.3.6
 
   tabbable@6.5.0: {}
+
+  tailwind-merge@3.7.0: {}
+
+  tailwind-variants@3.3.1(tailwind-merge@3.7.0)(tailwindcss@4.3.3):
+    optionalDependencies:
+      tailwind-merge: 3.7.0
+      tailwindcss: 4.3.3
 
   tailwindcss@4.3.3: {}
 

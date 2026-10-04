@@ -5,7 +5,7 @@ User-facing slices, one per section of the portfolio. The `@/features/*` alias i
 ```
 src/features/
 ├── works/
-│   └── WorkList.astro          # work experience cards; props: limit?, detailed=false
+│   └── WorkList.astro          # work experience accordion; props: limit?
 ├── projects/
 │   └── ProjectList.astro       # project cards linking to /projects/[slug]; props: featured=false, limit?
 ├── uses/
@@ -15,23 +15,27 @@ src/features/
 │   └── BookList.astro          # grouped Reading, Read, Want to read
 ├── movies/
 │   └── MovieList.astro         # grouped Watching, Watched, Planned (movies, shows, anime)
+├── writing/
+│   └── WritingList.astro       # entries grouped by year; links to /writing/[slug]
 └── theme-toggle/
-    └── ThemeToggle.astro       # light/dark switch
+    ├── ThemeToggle.astro       # light/dark switch button
+    └── alpine.ts               # registerThemeToggle(): Alpine.data("themeToggle")
 ```
 
-Each list reads its own content collection with `getCollection`, sorts it, and renders `Card`s. Every list shows "Nothing here yet." when its collection is empty. Collection shapes are in [`content.md`](../content.md).
+Each list reads its own content collection with `getCollection` and sorts it. Every list shows "Nothing here yet." when its collection is empty. Collection shapes are in [`content.md`](../content.md).
 
-- `WorkList` sorts by `startDate` descending. The Markdoc body is only rendered with `detailed`, so the home page stays compact.
+- `WorkList` sorts by `startDate` descending and renders an `Accordion` with one row per work. A row shows the company, a "Working" badge for current roles, the role, the date range, and the location with the work mode. Opening a row reveals the technology logos, the Markdoc body and a link to the company site. With `limit`, only the latest works render, followed by a "Show all work experiences" button linking to `/works`; the button is hidden when nothing was cut off. The chevron is hidden until hover or focus on devices with a fine pointer (`pointer-fine:`), and always visible on touch.
+- `WritingList` sorts by `publishedDate` descending and groups entries by the UTC year. Each row is the title and the date.
 - `ProjectList` with `featured` filters to `featured: true` entries (used on the home page).
 - Software and hardware are two separate collections shown together on `/uses`.
 
 ## `theme-toggle`
 
-An Alpine `x-data` component. It toggles the `dark` class on `<html>` and stores `localStorage.theme`, with the write wrapped in `try/catch`. The first-paint theme is applied by the inline script in `Root.astro`, not by this component, so there is no flash. Sun and moon icons swap with `dark:` classes.
+A ghost `Button` bound to the Alpine `themeToggle` component from `alpine.ts`. `toggle()` flips the `dark` class on `<html>` and stores `localStorage.theme` (the write is wrapped in `try/catch`). The flip runs inside `document.startViewTransition`, which produces the top-to-bottom wipe defined in `global.css` (see [`styling.md`](../styling.md)); without `startViewTransition`, or with reduced motion, it flips instantly. The first-paint theme is applied by the inline script in `Root.astro`, not by this component, so there is no flash. Sun and moon icons swap with `dark:` classes.
 
 ## Conventions
 
 - Each feature gets its own subfolder. A feature may import from `entities` and `shared`, but never from `pages` or `app`, and never from another feature (compose features in `pages` or `app`).
-- Interactivity belongs in the feature as colocated Alpine `x-data`, rather than growing `app/entrypoints/alpine.ts` into a catch-all.
+- Interactivity belongs in the feature. Inline `x-data` is fine for trivial state. A feature that needs a reusable `Alpine.data` registers it from its own `alpine.ts` (as `theme-toggle` does), and `app/entrypoints/alpine.ts` only calls that register function.
 
 See [`architecture.md`](../architecture.md) for how this layer relates to the rest of the app.

@@ -1,0 +1,35 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { cn } from "tailwind-variants";
+
+interface Props extends HTMLAttributes<"div"> {
+  side?: "top" | "right" | "bottom" | "left";
+  align?: "start" | "center" | "end";
+  sideOffset?: number;
+}
+
+const { side = "bottom", align = "start", sideOffset = 4, class: className, ...rest } = Astro.props;
+const placement = align === "center" ? side : `${side}-${align}`;
+const anchor = { [`x-anchor.${placement}.offset.${sideOffset}.fixed`]: "$refs.trigger" };
+---
+
+<div
+  data-slot="dropdown-menu-content"
+  role="menu"
+  class={cn("z-50 min-w-40 rounded-xl border bg-popover p-1 text-popover-foreground shadow-lg", className)}
+  style="display: none"
+  x-ref="menu"
+  x-show="open"
+  x-transition.opacity.scale.95.duration.150ms
+  x-on:keydown.escape.window="close()"
+  x-on:keydown.arrow-down.prevent="move(1)"
+  x-on:keydown.arrow-up.prevent="move(-1)"
+  x-on:keydown.home.prevent="focusEdge('first')"
+  x-on:keydown.end.prevent="focusEdge('last')"
+  x-on:keydown.tab="hide()"
+  x-on:click.outside="if (!$refs.trigger.contains($event.target)) hide()"
+  {...anchor}
+  {...rest}
+>
+  <slot />
+</div>

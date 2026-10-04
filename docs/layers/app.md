@@ -5,7 +5,7 @@ The wiring layer: global setup that every page depends on but that isn't itself 
 ```
 src/app/
 ├── entrypoints/
-│   └── alpine.ts        # Alpine.js init hook (plugin registration)
+│   └── alpine.ts        # Alpine.js init hook (plugins and Alpine.data registrations)
 ├── fonts/
 │   ├── GeneralSans-Variable.woff2
 │   └── Supreme-Variable.woff2
@@ -17,19 +17,22 @@ src/app/
 
 ## `layouts/Site.astro`
 
-The shell every page uses: `Root` > `SiteHeader` (with `ThemeToggle` in its `actions` slot) > `<main>` (`max-w-2xl`) > `SiteFooter`. It lives here rather than in `shared` because it fetches the profile (name and socials for the footer), and `shared` cannot import from `entities`. Props: `title?` and `description?` (see [`pages.md`](./pages.md)).
+The shell every page uses: `Root` > `SiteHeader` (with `ThemeToggle` in its `actions` slot) > `<main>` (`max-w-2xl`) > `SiteFooter`. It lives here rather than in `shared` because it fetches the profile and passes the footer its `name` and `socials` (via `getSocialLinks`), and `shared` cannot import from `entities`. Props: `title?` and `description?` (see [`pages.md`](./pages.md)).
 
 ## `entrypoints/alpine.ts`
 
-Passed to the `@astrojs/alpinejs` integration as its `entrypoint` option in [`astro.config.mjs`](../../astro.config.mjs). Exports a default function `(Alpine: Alpine) => void` that runs before Alpine starts, used to register plugins:
+Passed to the `@astrojs/alpinejs` integration as its `entrypoint` option in [`astro.config.mjs`](../../astro.config.mjs). Exports a default function `(Alpine: Alpine) => void` that runs before Alpine starts, used to register plugins and `Alpine.data` components:
 
 ```ts
 export default (Alpine: Alpine) => {
+  Alpine.plugin(anchor);
   Alpine.plugin(intersect);
+  registerUi(Alpine);
+  registerThemeToggle(Alpine);
 };
 ```
 
-Currently registers `@alpinejs/intersect`. Add further `Alpine.plugin(...)` calls here for new Alpine plugins, and add the corresponding `window.Alpine` typing in [`src/env.d.ts`](../../src/env.d.ts) if needed.
+It registers `@alpinejs/anchor` (popover and dropdown positioning), `@alpinejs/intersect` (scroll reveal), every shared component's behavior through `registerUi` from `shared/ui/alpine.ts`, and the theme toggle through `registerThemeToggle` from `features/theme-toggle/alpine.ts`. Add further `Alpine.plugin(...)` calls here for new Alpine plugins, and add the corresponding `window.Alpine` typing in [`src/env.d.ts`](../../src/env.d.ts) if needed.
 
 ## `fonts/`
 

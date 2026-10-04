@@ -1,0 +1,21 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"button"> {}
+
+const { ...rest } = Astro.props;
+---
+
+<button
+  data-slot="dropdown-menu-trigger"
+  type="button"
+  aria-haspopup="menu"
+  x-ref="trigger"
+  x-bind:aria-expanded="open"
+  x-on:click="toggle()"
+  x-on:keydown.arrow-down.prevent="openAndFocus('first')"
+  x-on:keydown.arrow-up.prevent="openAndFocus('last')"
+  {...rest}
+>
+  <slot />
+</button>

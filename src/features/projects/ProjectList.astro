@@ -1,7 +1,7 @@
 ---
 import { formatDateRange } from "@/shared/lib/date";
-import Badge from "@/shared/ui/badge/Badge.astro";
-import Card from "@/shared/ui/card/Card.astro";
+import { Badge } from "@/shared/ui/badge";
+import { Card, CardAction, CardDescription, CardFooter, CardHeader, CardTitle } from "@/shared/ui/card";
 import { getCollection } from "astro:content";
 
 interface Props {
@@ -25,19 +25,23 @@ const projects = (await getCollection("projects", ({ data }) => !featured || dat
           class="space-y-2"
           href={`/projects/${id}`}
         >
-          <div class="flex items-start justify-between gap-3">
-            <h3 class="font-medium">{data.title}</h3>
-            <p class="shrink-0 text-xs text-muted-foreground">{formatDateRange(data.startDate, data.endDate)}</p>
-          </div>
-          <p class="text-muted-foreground">{data.description}</p>
+          <CardHeader>
+            <CardTitle>{data.title}</CardTitle>
+            <CardAction class="text-xs text-muted-foreground">
+              {formatDateRange(data.startDate, data.endDate)}
+            </CardAction>
+          </CardHeader>
+          <CardDescription>{data.description}</CardDescription>
           {data.skills.length > 0 && (
-            <ul class="flex flex-wrap gap-1.5">
-              {data.skills.map((skill) => (
-                <li>
-                  <Badge>{skill}</Badge>
-                </li>
-              ))}
-            </ul>
+            <CardFooter>
+              <ul class="flex flex-wrap gap-1.5">
+                {data.skills.map((skill) => (
+                  <li>
+                    <Badge>{skill}</Badge>
+                  </li>
+                ))}
+              </ul>
+            </CardFooter>
           )}
         </Card>
       </li>

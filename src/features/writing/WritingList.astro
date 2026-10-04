@@ -1,0 +1,44 @@
+---
+import { formatDate } from "@/shared/lib/date";
+import { getCollection } from "astro:content";
+
+const entries = (await getCollection("writing")).sort(
+  (a, b) => b.data.publishedDate.getTime() - a.data.publishedDate.getTime(),
+);
+
+const years = new Map<number, typeof entries>();
+for (const entry of entries) {
+  const year = entry.data.publishedDate.getUTCFullYear();
+  years.set(year, [...(years.get(year) ?? []), entry]);
+}
+---
+
+{entries.length === 0 ? (
+  <p class="text-muted-foreground">Nothing here yet.</p>
+) : (
+  <div class="space-y-10">
+    {[...years].map(([year, items]) => (
+      <section class="space-y-2">
+        <h2 class="font-mono text-xs text-muted-foreground">{year}</h2>
+        <ul class="divide-y">
+          {items.map(({ id, data }) => (
+            <li>
+              <a
+                class="flex items-baseline justify-between gap-4 py-3 transition-colors hover:text-muted-foreground"
+                href={`/writing/${id}`}
+              >
+                <span class="font-medium">{data.title}</span>
+                <time
+                  class="shrink-0 font-mono text-xs text-muted-foreground uppercase"
+                  datetime={data.publishedDate.toISOString()}
+                >
+                  {formatDate(data.publishedDate)}
+                </time>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))}
+  </div>
+)}

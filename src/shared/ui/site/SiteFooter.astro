@@ -1,14 +1,15 @@
 ---
-import type { TypeNavItem, TypeSocialLink } from "@/shared/config/site";
-import { Icon } from "astro-icon/components";
+import type { TypeSocialLink } from "@/shared/config/site";
+
+import { CopyButton } from "../copy-button";
+import Icon from "../icon/Icon.astro";
 
 interface Props {
   name: string;
-  items: TypeNavItem[];
   socials: TypeSocialLink[];
 }
 
-const { name, items, socials } = Astro.props;
+const { name, socials } = Astro.props;
 const year = new Date().getFullYear();
 ---
 
@@ -17,46 +18,58 @@ const year = new Date().getFullYear();
   class="border-t bg-muted/30 py-12"
 >
   <div class="mx-auto max-w-2xl space-y-10 px-4">
-    <div class="grid grid-cols-2 gap-8">
-      <div class="space-y-3">
-        <h2 class="text-xs tracking-wider text-muted-foreground uppercase">Navigate</h2>
-        <ul class="space-y-2">
-          {items.map((item) => (
-            <li>
-              <a
-                class="transition-colors hover:text-muted-foreground"
-                href={item.href}
-              >
-                {item.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </div>
-      {socials.length > 0 && (
-        <div class="space-y-3">
-          <h2 class="text-xs tracking-wider text-muted-foreground uppercase">Connect</h2>
-          <ul class="grid grid-cols-4 gap-2">
-            {socials.map((social) => (
-              <li>
+    {socials.length > 0 && (
+      <div class="space-y-6">
+        <h2 class="font-serif text-2xl">
+          Let's be friends{" "}
+          <span
+            class="text-success"
+            aria-hidden="true"
+          >
+            ✦
+          </span>
+        </h2>
+        <ul class="grid grid-cols-2 gap-x-6 gap-y-6 sm:grid-cols-3">
+          {socials.map((social) => (
+            <li class="min-w-0 space-y-0.5">
+              {social.email ? (
+                <>
+                  <span class="flex items-center gap-1.5 font-medium">
+                    {social.label}
+                    <CopyButton
+                      label="Copy email address"
+                      value={social.email}
+                    />
+                  </span>
+                  <a
+                    class="block truncate text-muted-foreground transition-colors hover:text-foreground"
+                    href={social.href}
+                  >
+                    {social.email}
+                  </a>
+                </>
+              ) : (
                 <a
-                  class="flex size-9 items-center justify-center rounded-lg border transition-colors hover:bg-muted"
-                  aria-label={social.label}
+                  class="group block"
                   href={social.href}
                   rel="noopener noreferrer"
                   target="_blank"
                 >
-                  <Icon
-                    class="size-4"
-                    name={social.icon}
-                  />
+                  <span class="flex items-center gap-1 font-medium">
+                    {social.label}
+                    <Icon
+                      class="size-3.5 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                      name="reicon:ArrowUpRight"
+                    />
+                  </span>
+                  <span class="block truncate text-muted-foreground">{social.handle}</span>
                 </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-    </div>
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
     <p class="text-xs text-muted-foreground">
       &copy; {year} {name}
     </p>

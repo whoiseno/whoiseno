@@ -1,25 +1,22 @@
 ---
-interface Props {
-  variant?: "outline" | "success";
-  class?: string;
-}
+import type { HTMLAttributes } from "astro/types";
 
-const { variant = "outline", class: className } = Astro.props;
+import { badgeVariants, type TypeBadgeVariants } from "./variants";
+
+interface Props extends HTMLAttributes<"span">, TypeBadgeVariants {}
+
+const { variant, class: className, ...rest } = Astro.props;
 ---
 
 <span
   data-slot="badge"
-  data-variant={variant}
-  class:list={[
-    "inline-flex items-center gap-1.5 border px-1.5 py-0.5 text-xs whitespace-nowrap",
-    variant === "outline" && "rounded-md text-muted-foreground",
-    variant === "success" && "rounded-full border-success/30 bg-success/10 px-2 text-foreground",
-    className,
-  ]}
+  data-variant={variant ?? "outline"}
+  class={badgeVariants({ variant, class: className })}
+  {...rest}
 >
   {variant === "success" && (
     <span
-      class="size-1.5 rounded-full bg-success"
+      class="size-1.5 rounded-full bg-success motion-safe:animate-pulse"
       aria-hidden="true"
     />
   )}

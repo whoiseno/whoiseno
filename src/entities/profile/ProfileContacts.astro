@@ -1,0 +1,103 @@
+---
+import type { TypeSocialLink } from "@/shared/config/site";
+import Avatar from "@/shared/ui/avatar/Avatar.astro";
+import { Button } from "@/shared/ui/button";
+import { CopyButton } from "@/shared/ui/copy-button";
+import Icon from "@/shared/ui/icon/Icon.astro";
+import { Popover, PopoverContent, PopoverTrigger } from "@/shared/ui/popover";
+import { Image } from "astro:assets";
+
+interface Props {
+  socials: TypeSocialLink[];
+}
+
+const { socials } = Astro.props;
+const email = socials.find((social) => social.email);
+const links = socials.filter((social) => !social.email);
+---
+
+{socials.length > 0 && (
+  <div
+    data-slot="profile-contacts"
+    class="flex flex-wrap items-center gap-2"
+  >
+    {email?.email && (
+      <div class="inline-flex h-9 items-center rounded-lg border bg-card">
+        <a
+          class="px-3 transition-colors hover:text-muted-foreground"
+          href={email.href}
+        >
+          {email.email}
+        </a>
+        <CopyButton
+          class="h-full rounded-r-lg border-l px-2.5 hover:bg-muted"
+          label="Copy email address"
+          value={email.email}
+        />
+      </div>
+    )}
+    {links.map((social) => (
+      <Popover hover>
+        <PopoverTrigger
+          class="flex size-9 items-center justify-center rounded-lg border bg-card text-muted-foreground transition-colors outline-none hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
+          aria-label={social.label}
+          href={social.href}
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <Icon
+            class="size-4"
+            name={social.icon}
+          />
+        </PopoverTrigger>
+        <PopoverContent
+          class="w-80 overflow-hidden p-0"
+          align="start"
+        >
+          <div class="h-20 bg-muted">
+            {social.banner && (
+              <Image
+                class="size-full object-cover"
+                alt=""
+                height={160}
+                src={social.banner}
+                width={640}
+              />
+            )}
+          </div>
+          <div class="space-y-2 px-4 pb-4">
+            <div class="-mt-8 flex items-end justify-between">
+              <Avatar
+                class="ring-4 ring-popover"
+                name={social.displayName}
+                src={social.avatar}
+              />
+              {social.actionLabel && (
+                <Button
+                  class="rounded-full"
+                  href={social.href}
+                  size="sm"
+                >
+                  {social.actionLabel}
+                </Button>
+              )}
+            </div>
+            <div>
+              <p class="flex items-center gap-1 font-medium">
+                {social.displayName}
+                {social.verified && (
+                  <Icon
+                    class="size-4 text-info"
+                    name="reicon:Verified"
+                  />
+                )}
+              </p>
+              <p class="text-muted-foreground">{social.handle}</p>
+            </div>
+            {social.bio && <p class="text-sm">{social.bio}</p>}
+          </div>
+        </PopoverContent>
+      </Popover>
+    ))}
+  </div>
+)}

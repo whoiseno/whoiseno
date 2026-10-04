@@ -1,0 +1,21 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { cn } from "tailwind-variants";
+
+interface Props extends HTMLAttributes<"div"> {
+  value: string;
+}
+
+const { value, class: className, ...rest } = Astro.props;
+---
+
+<div
+  data-slot="accordion-item"
+  class={cn("group/accordion-item", className)}
+  x-data={`{ value: ${JSON.stringify(value)} }`}
+  x-id="['accordion-trigger', 'accordion-content']"
+  x-bind:data-state="isOpen(value) ? 'open' : 'closed'"
+  {...rest}
+>
+  <slot />
+</div>

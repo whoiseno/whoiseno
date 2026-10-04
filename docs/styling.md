@@ -28,7 +28,7 @@ The project uses [Tailwind CSS v4](https://tailwindcss.com), configured entirely
 @layer base {
   :root {
     --radius: 0.45rem;
-    --background: #f9f9f9;
+    --background: #fafaf9;
     /* ...light tokens */
   }
 
@@ -76,11 +76,15 @@ Tailwind's default palette is removed (`--color-*: initial`), so classes like `t
 
 Each token is a CSS variable set in `:root` (light) and redefined in `.dark`. `--toned` is declared in both blocks but has no `--color-toned` mapping, so there is no `text-toned` utility yet.
 
+The light theme uses warm stone neutrals (Tailwind's stone scale: `#fafaf9` background, `#1c1917` foreground, `#78716c` muted text, white cards and popovers) modeled on Mayven's light mode. Borders in light mode are translucent stone (`#1c191521`) instead of opaque grey, so they stay readable on both the background and white cards. `brand`, `primary` and every dark-mode token are unchanged from the original design system.
+
 ## Dark mode
 
 Dark mode is class-based: `@custom-variant dark` makes the `dark:` variant match under `.dark` on `<html>`. Because the tokens already switch with the class, most components need no `dark:` classes; use `dark:` only for things that are not token-driven (for example swapping the sun and moon icons).
 
 The class is set before first paint by the inline script in [`Root.astro`](../src/shared/ui/layouts/Root.astro) (saved `localStorage.theme`, else `prefers-color-scheme`) and toggled by the [`theme-toggle`](./layers/features.md) feature.
+
+The toggle runs inside `document.startViewTransition`, and the keyframes in `global.css` (`theme-wipe-out` and `theme-wipe-in`, 0.7s) animate a `clip-path` so the new theme wipes in from the top to the bottom of the page. When the browser has no `startViewTransition`, or the user prefers reduced motion, the class flips immediately with no animation.
 
 ## Radius
 
@@ -89,6 +93,10 @@ One radius scale, derived from `--radius` (`rounded-sm` to `rounded-xl`). Cards 
 ## Motion
 
 Scroll-reveal is CSS in `global.css`: elements with `data-reveal` start faded and offset, and gain `.in-view` (added by Alpine `x-intersect.once` in `Section`). It only applies under `(scripting: enabled)` and `(prefers-reduced-motion: no-preference)`, so with JS off or reduced motion the content is simply visible.
+
+## Component variants
+
+Components with variants (`Button`, `Badge`, `Card`, `DropdownMenu`) declare them with [`tailwind-variants`](https://www.tailwind-variants.org) in a `variants.ts` next to the component, and merge caller classes with `cn` imported from the same package. Use `slots` when a component has several parts (as `Card` does) and `compoundVariants` for combinations such as `variant` plus `color`. See [`layers/shared.md`](./layers/shared.md).
 
 ## Conventions
 

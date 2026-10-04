@@ -49,17 +49,17 @@ Prettier's import-sort plugin ([`.prettierrc`](../.prettierrc)) is configured to
 2. The page wraps its content in `app/layouts/Site.astro`, which composes `Root`, `SiteHeader`, `SiteFooter` and the `ThemeToggle` feature, then fills the main area with feature slices (`WorkList`, `ProjectList`, ...) and entities (`ProfileHero`). See [`layers/pages.md`](./layers/pages.md).
 3. `Root.astro` sets up the HTML document shell: meta tags, favicon, `<title>`, a blocking inline script that applies the saved theme before first paint, and the three fonts declared in `astro.config.mjs` via Astro's `<Font />` component.
 4. Global Tailwind styles (`src/app/styles/global.css`) are imported once, inside `Root.astro`.
-5. The Alpine.js entrypoint (`src/app/entrypoints/alpine.ts`) is wired up via the `@astrojs/alpinejs` integration and registers plugins (currently `@alpinejs/intersect`) before Alpine initializes client-side.
+5. The Alpine.js entrypoint (`src/app/entrypoints/alpine.ts`) is wired up via the `@astrojs/alpinejs` integration and registers the `@alpinejs/anchor` and `@alpinejs/intersect` plugins plus the shared components' `Alpine.data` behaviors and the theme toggle before Alpine initializes client-side.
 
 ## Integrations in use
 
 Configured in [`astro.config.mjs`](../astro.config.mjs):
 
-- **`@astrojs/alpinejs`** — loads Alpine.js with a custom entrypoint for plugin registration.
+- **`@astrojs/alpinejs`** — loads Alpine.js with a custom entrypoint for plugin and component registration.
 - **`@astrojs/partytown`** — ready to offload third-party scripts (analytics, etc.) to a worker thread; no scripts routed through it yet.
 - **`@astrojs/markdoc`** — renders `.mdoc` content entries (see [`content.md`](./content.md)).
 - **`@keystatic/astro`** and **`@astrojs/react`** — the Keystatic CMS admin at `/keystatic`; React is a dependency of the admin only.
-- **`astro-icon`** with `@iconify-json/ph` — Phosphor icons via `<Icon name="ph:..." />`.
+- **`astro-icon`** with `@iconify-json/ph` — Phosphor icons, plus the local SVGL tech logos in `src/icons/logos/`. Together with `reicon-astro` (a component package, not an integration) it sits behind one `Icon` component in `shared/ui/icon`; see [`layers/shared.md`](./layers/shared.md).
 - **`@astrojs/vercel`** (adapter) — required for the on-demand Keystatic routes; the rest of the site stays static.
 - **`@tailwindcss/vite`** — Tailwind v4's Vite plugin (no `tailwind.config.js`; theme lives in CSS, see [`styling.md`](./styling.md)).
 - **Fonts** — two local variable fonts (Supreme, General Sans) served via `fontProviders.local()`, plus Geist Mono via `fontProviders.fontsource()` (Astro's built-in Fontsource integration, fetched at build time).
@@ -68,4 +68,4 @@ Not an Astro integration, but part of the same client-side stack: **anime.js** (
 
 ## Content
 
-Content lives in Astro content collections under `src/content` (profile, works, projects, software, hardware, books, movies), authored through Keystatic. See [`content.md`](./content.md) for the schema, the admin, and how it maps to the codebase.
+Content lives in Astro content collections under `src/content` (profile, works, projects, writing, software, hardware, books, movies), authored through Keystatic. See [`content.md`](./content.md) for the schema, the admin, and how it maps to the codebase.

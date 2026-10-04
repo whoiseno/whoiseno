@@ -1,5 +1,5 @@
 ---
-import Card from "@/shared/ui/card/Card.astro";
+import { Card, CardDescription, CardTitle } from "@/shared/ui/card";
 import { getCollection } from "astro:content";
 
 const software = (await getCollection("software")).sort((a, b) => a.data.name.localeCompare(b.data.name));
@@ -12,8 +12,8 @@ const software = (await getCollection("software")).sort((a, b) => a.data.name.lo
     {software.map(({ data }) => (
       <li>
         <Card href={data.link ?? undefined}>
-          <h3 class="font-medium">{data.name}</h3>
-          {data.description && <p class="text-muted-foreground">{data.description}</p>}
+          <CardTitle>{data.name}</CardTitle>
+          {data.description && <CardDescription>{data.description}</CardDescription>}
         </Card>
       </li>
     ))}

@@ -1,10 +1,12 @@
 ---
 import Avatar from "@/shared/ui/avatar/Avatar.astro";
-import Badge from "@/shared/ui/badge/Badge.astro";
+import { Badge } from "@/shared/ui/badge";
 import Prose from "@/shared/ui/prose/Prose.astro";
 import { render } from "astro:content";
 
 import { getProfile } from "./getProfile";
+import ProfileContacts from "./ProfileContacts.astro";
+import { getSocialLinks } from "./socials";
 
 const profile = await getProfile();
 const { name, role, location, status, avatar } = profile.data;
@@ -34,4 +36,5 @@ const { Content } = await render(profile);
   <Prose>
     <Content />
   </Prose>
+  <ProfileContacts socials={getSocialLinks(profile.data)} />
 </section>

@@ -11,17 +11,27 @@ All content lives under `src/content/`. The seed entries are placeholders (`Exam
 | `profile`     | `src/content/profile/`   | `.mdoc` (singleton) | Home hero, footer                    |
 | `works`       | `src/content/works/*`    | `.mdoc`             | `/`, `/works`                        |
 | `projects`    | `src/content/projects/*` | `.mdoc`             | `/`, `/projects`, `/projects/[slug]` |
+| `writing`     | `src/content/writing/*`  | `.mdoc`             | `/writing`, `/writing/[slug]`        |
 | `software`    | `src/content/software/*` | `.yaml`             | `/uses`                              |
 | `hardware`    | `src/content/hardware/*` | `.yaml`             | `/uses`                              |
 | `books`       | `src/content/books/*`    | `.yaml`             | `/books`                             |
 | `movies`      | `src/content/movies/*`   | `.yaml`             | `/movies`                            |
 
-- `.mdoc` entries are frontmatter plus a [Markdoc](https://markdoc.dev) body, rendered with `render()` from `astro:content` inside `Prose`. Works only render the body on `/works` (`WorkList detailed`), so the home page stays compact.
+- `.mdoc` entries are frontmatter plus a [Markdoc](https://markdoc.dev) body, rendered with `render()` from `astro:content` inside `Prose`. A work's body is shown inside its expanded accordion row.
 - `.yaml` entries are data only.
 - `projects[].featured` controls which projects appear on the home page.
+- `works[].technologies` is a list of SVGL logo slugs. The allowed values are `logoNames` from [`src/shared/ui/icon/logos.ts`](../src/shared/ui/icon/logos.ts), used by both the Zod `z.enum` and the Keystatic multiselect, so adding a logo there makes it selectable in both. `works[].workMode` is `on-site | remote | hybrid` (default `on-site`). A work with no `endDate` is current and shows the "Working" badge.
+- `writing[].kind` is `blog | tutorial | journal | note` (default `blog`). The list at `/writing` shows only the title and date, grouped by year; the kind is shown on the detail page. There is no draft flag, so every file in `src/content/writing/` is published.
+- Each `profile.socials[]` item feeds the footer and the hover cards on the home page. `platform` and `url` are required. The other fields are optional and have these fallbacks (see [`getSocialLinks`](../src/entities/profile/socials.ts)):
+  - `handle`: the email address, or `@` plus the last path segment of the URL.
+  - `displayName`: the profile `name`.
+  - `avatar`: the profile `avatar`, then initials.
+  - `banner`: a plain muted block.
+  - `bio` and `verified` (default `false`): shown only when set.
+  - For `platform: email`, `url` is `mailto:<address>`. It renders as the address with a copy button instead of a hover card.
 - `books[].status` is `reading | read | want`; `movies[].status` is `watching | watched | planned`; `movies[].kind` is `movie | show | anime`. The list components group entries by these values.
 - Dates are coerced with `z.coerce.date()`. Display formatting is in [`src/shared/lib/date.ts`](../src/shared/lib/date.ts) and is UTC-based so a date never shifts by timezone.
-- The profile avatar is stored in `src/assets/profile/` and validated with Astro's `image()` helper, so it goes through `astro:assets`.
+- The profile avatar is stored in `src/assets/profile/` and validated with Astro's `image()` helper, so it goes through `astro:assets`. Hover-card avatars and banners are stored in `src/assets/profile/socials/` the same way.
 
 ## Adding or changing a field
 
@@ -54,4 +64,4 @@ Per the Keystatic [GitHub mode guide](https://keystatic.com/docs/github-mode), t
 
 ## Dashboard grouping
 
-`ui.navigation` in `keystatic.config.ts` groups the sidebar as Profile, Work (works, projects), Uses (software, hardware) and Library (books, movies).
+`ui.navigation` in `keystatic.config.ts` groups the sidebar as Profile, Work (works, projects), Writing (writing), Uses (software, hardware) and Library (books, movies).
