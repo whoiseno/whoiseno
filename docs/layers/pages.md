@@ -10,8 +10,9 @@ src/pages/
 │   ├── index.astro         # /projects
 │   └── [slug].astro        # /projects/<id>   getStaticPaths from the projects collection
 ├── writing/
-│   ├── index.astro         # /writing    WritingList, grouped by year
-│   └── [slug].astro        # /writing/<id>    getStaticPaths from the writing collection
+│   ├── index.astro         # /writing    WritingTags and WritingList, grouped by year
+│   ├── [slug].astro        # /writing/<id>    getStaticPaths from the writing collection
+│   └── tags/[tag].astro    # /writing/tags/<slug>    getStaticPaths from getWritingTags()
 ├── uses.astro              # /uses       Software and Hardware sections
 ├── books.astro             # /books
 └── movies.astro            # /movies
@@ -21,13 +22,14 @@ All of these are prerendered. The only on-demand routes are `/keystatic` and `/a
 
 ## Composition
 
-Every page wraps its content in `Site` from [`app/layouts/Site.astro`](./app.md), which provides the header, `<main>` container and footer. `Site` takes `title` and `description`; when `title` is set it renders the page `<h1>` and the muted description, and `index.astro` omits it because `ProfileHero` provides the `<h1>`.
+Every page wraps its content in `Site` from [`app/layouts/Site.astro`](./app.md), which provides the header, `<main>` container and footer. `Site` takes `title` and `description`; when `title` is set it renders the page `<h1>` and the muted description, and `index.astro` omits it because `ProfileHero` provides the `<h1>`. A page can put content directly under the description with `<X slot="header" />` (the writing pages use it for the tag links).
 
 Sections are built with `Section` (`shared/ui/section`), which adds the title, an optional "View all" link and a scroll-reveal.
 
 - `index.astro`: `ProfileHero`, then a Works `Section` (`WorkList limit={3}`) and a Projects `Section` (`ProjectList featured limit={3}`).
 - `projects/[slug].astro`: date range, Live demo and Source links, skill badges, the Markdoc body inside `Prose`, and an "All projects" back link.
-- `writing/[slug].astro`: a badge with the entry kind (Blog, Tutorial, Journal or Note), the published date, the Markdoc body inside `Prose`, and an "All writing" back link. `Site` supplies the title and description.
+- `writing/[slug].astro`: a badge with the entry kind (Blog, Tutorial, Journal or Note), the published date, the width and focus buttons (`WritingToolbar`), the Markdoc body inside `Prose`, the table of contents (`WritingToc`, fixed on the far left from `lg`) and an "All writing" back link. `Site` supplies the title and description. A wrapper with `x-data="writingReader"` owns the wide and focus state and the active heading; see [`animations.md`](../animations.md) for focus mode and [`content.md`](../content.md) for what the body supports.
+- `writing/tags/[tag].astro`: `WritingTags` with the current tag highlighted, then `WritingList` filtered to that tag, and an "All writing" back link.
 
 The older `Page*` primitives in `shared/ui/page` are no longer used by any page.
 

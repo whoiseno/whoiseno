@@ -94,6 +94,17 @@ One radius scale, derived from `--radius` (`rounded-sm` to `rounded-xl`). Cards 
 
 Scroll-reveal is CSS in `global.css`: elements with `data-reveal` start faded and offset, and gain `.in-view` (added by Alpine `x-intersect.once` in `Section`). It only applies under `(scripting: enabled)` and `(prefers-reduced-motion: no-preference)`, so with JS off or reduced motion the content is simply visible.
 
+## Scrollbar gutter
+
+`<html>` in [`Root.astro`](../src/shared/ui/layouts/Root.astro) has `[scrollbar-gutter:stable]`. Without it, navigating between a short page and a page tall enough to scroll adds or removes the scrollbar, which changes the viewport width by the scrollbar's width and shifts the centered header sideways. The reserved gutter keeps the width constant, so the header no longer jumps on navigation.
+
+## Writing entry styles
+
+- **Code blocks:** Shiki is configured with `defaultColor: false`, so each token only carries `--shiki-light` and `--shiki-dark` variables. `global.css` applies `--shiki-light` to `pre.astro-code` and its spans, and `--shiki-dark` under `.dark`, scoped to `[data-slot="prose"]`.
+- **Wide mode:** the `data-wide` attribute on `<html>`, toggled by the width button, widens `<main>` in `Site.astro` with the `in-data-[wide]:max-w-4xl` variant and a `transition-[max-width]`. The header and footer keep their width.
+- **Focus mode:** `html[data-focus]` rules in `global.css`; see [`animations.md`](./animations.md).
+- **Anchored headings:** `h2` and `h3` inside `Prose` have `scroll-mt-20` so a table-of-contents jump does not hide the heading under the sticky header.
+
 ## Component variants
 
 Components with variants (`Button`, `Badge`, `Card`, `DropdownMenu`) declare them with [`tailwind-variants`](https://www.tailwind-variants.org) in a `variants.ts` next to the component, and merge caller classes with `cn` imported from the same package. Use `slots` when a component has several parts (as `Card` does) and `compoundVariants` for combinations such as `variant` plus `color`. See [`layers/shared.md`](./layers/shared.md).

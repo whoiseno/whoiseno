@@ -21,13 +21,14 @@ const profile = await getProfile();
     <ThemeToggle slot="actions" />
   </SiteHeader>
   <main
-    class="mx-auto max-w-2xl flex-1 space-y-10 px-4 pt-8 pb-16"
+    class="mx-auto max-w-2xl flex-1 space-y-10 px-4 pt-8 pb-16 transition-[max-width] duration-300 in-data-[wide]:max-w-4xl motion-reduce:transition-none"
     data-slot="site-main"
   >
     {title && (
       <header class="space-y-1">
         <h1 class="font-serif text-2xl font-bold">{title}</h1>
         {description && <p class="text-muted-foreground">{description}</p>}
+        <slot name="header" />
       </header>
     )}
     <slot />

@@ -3,6 +3,9 @@ title: Example Tutorial
 kind: tutorial
 description: Placeholder step-by-step guide.
 publishedDate: 2025-09-11
+tags:
+  - Astro
+  - Tailwind
 ---
 
 ## Before you start
@@ -11,8 +14,36 @@ List what the reader needs first.
 
 ## Step 1
 
-Describe the first step.
+Describe the first step, then show the command.
+
+```bash
+pnpm create astro@latest my-site
+```
+
+### Install dependencies
+
+Nested headings appear indented in the table of contents.
+
+```bash
+cd my-site
+pnpm install
+```
 
 ## Step 2
 
-Describe the second step.
+Describe the second step, then show the code.
+
+```ts
+type TypePost = {
+  title: string;
+  tags: string[];
+};
+
+export function byTag(posts: TypePost[], tag: string) {
+  return posts.filter((post) => post.tags.includes(tag));
+}
+```
+
+## Wrap up
+
+Summarise what the reader built and where to go next.

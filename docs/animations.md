@@ -1,5 +1,7 @@
 # Animations
 
+Simple animations (fades, slides, zooms on enter or exit) use [`tw-animate-css`](https://github.com/Wombosvideo/tw-animate-css), imported once in [`global.css`](../src/app/styles/global.css) with `@import "tw-animate-css"`. It provides `animate-in` / `animate-out` plus modifiers such as `fade-in`, `fade-out`, `slide-in-from-top-2`, `zoom-in-95`, `duration-*` and `fill-mode-forwards`. Use them as utility classes, or with `@apply` inside `global.css`.
+
 For anything beyond simple CSS transitions, this project uses [anime.js](https://animejs.com) v4 (`animejs` in [`package.json`](../package.json)) — a dependency-free animation engine with support for timelines, staggering, SVG/text effects, scroll-triggered animation, and spring physics.
 
 [Alpine.js](https://alpinejs.dev) (see [`architecture.md`](./architecture.md)) stays responsible for state and DOM reactivity (`x-data`, `x-show`, `x-intersect`, etc.); anime.js is for the animation itself. They compose fine — e.g. trigger an anime.js timeline from an Alpine `x-intersect` handler — but don't reach for anime.js to do what a Tailwind `transition-*` utility already handles well (hover states, simple fades). Reach for it when you need sequencing, staggering across multiple elements, or scroll-driven/spring-based motion.
@@ -66,3 +68,13 @@ Full API reference: [animejs.com/documentation](https://animejs.com/documentatio
 - Target elements by their existing `data-slot` attribute (or add a dedicated `data-*` attribute for elements that don't have one) rather than plain class selectors — keeps animation targeting decoupled from Tailwind utility classes that may change for styling reasons.
 - Keep animation setup in the `.astro` file (or feature) that owns the animated markup; only promote something to `src/shared/lib` if multiple, unrelated parts of the app need the same helper (as `createMotionScope` does).
 - Prefer `transform`/`opacity` properties (as in the example above) over animating layout properties (`width`, `top`, etc.) for performance.
+
+## Writing focus mode
+
+The "no distraction" view on `/writing/[slug]` is the one place `tw-animate-css` is used today. [`writing/alpine.ts`](../src/features/writing/alpine.ts) sets `data-focus="on"` or `"off"` on `<html>`, and `global.css` animates every `[data-focus-hide]` element (header, footer, table of contents, toolbar, meta row, back link):
+
+- `on`: `animate-out fade-out fill-mode-forwards`, plus `pointer-events-none`. The component also sets `inert` on those elements so they leave the tab order.
+- `off`: `animate-in fade-in`.
+- Both are 300ms with `ease-out`, and `motion-reduce:duration-0` makes them instant for reduced motion.
+
+The floating exit button is deliberately not inside a `data-focus-hide` element. With `fill-mode-forwards`, the element keeps the exit keyframe's `transform` and `filter`, which makes it the containing block for any `position: fixed` descendant and would move the button. The button fades with Alpine's `x-transition` using the same `animate-in` / `animate-out` classes.

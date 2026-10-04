@@ -1,10 +1,17 @@
 ---
 import { formatDate } from "@/shared/lib/date";
+import { slugify } from "@/shared/lib/slug";
 import { getCollection } from "astro:content";
 
-const entries = (await getCollection("writing")).sort(
-  (a, b) => b.data.publishedDate.getTime() - a.data.publishedDate.getTime(),
-);
+interface Props {
+  tag?: string;
+}
+
+const { tag } = Astro.props;
+
+const entries = (await getCollection("writing"))
+  .filter(({ data }) => !tag || data.tags.some((label) => slugify(label) === tag))
+  .sort((a, b) => b.data.publishedDate.getTime() - a.data.publishedDate.getTime());
 
 const years = new Map<number, typeof entries>();
 for (const entry of entries) {
@@ -16,7 +23,10 @@ for (const entry of entries) {
 {entries.length === 0 ? (
   <p class="text-muted-foreground">Nothing here yet.</p>
 ) : (
-  <div class="space-y-10">
+  <div
+    class="group/writing space-y-10"
+    data-slot="writing-list"
+  >
     {[...years].map(([year, items]) => (
       <section class="space-y-2">
         <h2 class="font-mono text-xs text-muted-foreground">{year}</h2>
@@ -24,7 +34,7 @@ for (const entry of entries) {
           {items.map(({ id, data }) => (
             <li>
               <a
-                class="flex items-baseline justify-between gap-4 py-3 transition-colors hover:text-muted-foreground"
+                class="flex items-baseline justify-between gap-4 py-3 transition-[filter,opacity] duration-200 [@media(hover:hover)]:group-has-[a:hover]/writing:not-hover:opacity-60 [@media(hover:hover)]:group-has-[a:hover]/writing:not-hover:blur-[1.5px]"
                 href={`/writing/${id}`}
               >
                 <span class="font-medium">{data.title}</span>

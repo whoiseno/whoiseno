@@ -1,0 +1,38 @@
+---
+import Site from "@/app/layouts/Site.astro";
+import { getWritingTags } from "@/entities/writing/getWritingTags";
+import WritingList from "@/features/writing/WritingList.astro";
+import WritingTags from "@/features/writing/WritingTags.astro";
+import Icon from "@/shared/ui/icon/Icon.astro";
+import type { InferGetStaticPropsType } from "astro";
+
+export async function getStaticPaths() {
+  const tags = await getWritingTags();
+  return tags.map((tag) => ({ params: { tag: tag.slug }, props: { tag } }));
+}
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { tag } = Astro.props;
+---
+
+<Site
+  description={`${tag.count} ${tag.count === 1 ? "post" : "posts"} tagged "${tag.label}".`}
+  title={`Writing / ${tag.label}`}
+>
+  <WritingTags
+    active={tag.slug}
+    slot="header"
+  />
+  <WritingList tag={tag.slug} />
+  <a
+    class="inline-flex items-center gap-1 text-muted-foreground transition-colors hover:text-foreground"
+    href="/writing"
+  >
+    <Icon
+      class="size-3.5"
+      name="reicon:ArrowLeft"
+    />
+    All writing
+  </a>
+</Site>

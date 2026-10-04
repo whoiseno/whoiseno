@@ -1,0 +1,40 @@
+---
+import { Button } from "@/shared/ui/button";
+import Icon from "@/shared/ui/icon/Icon.astro";
+---
+
+<div
+  class="flex items-center gap-1"
+  data-slot="writing-toolbar"
+>
+  <Button
+    class="hidden md:inline-flex"
+    aria-label="Toggle wider layout"
+    color="neutral"
+    size="sm"
+    type="button"
+    variant="ghost"
+    x-bind:aria-pressed="wide"
+    x-on:click="toggleWide()"
+  >
+    <Icon
+      name="reicon:Expand"
+      x-show="!wide"
+    />
+    <Icon
+      name="reicon:Compress"
+      x-cloak
+      x-show="wide"
+    />
+  </Button>
+  <Button
+    aria-label="Enter focus mode"
+    color="neutral"
+    size="sm"
+    type="button"
+    variant="ghost"
+    x-on:click="setFocus(true)"
+  >
+    <Icon name="reicon:Eye" />
+  </Button>
+</div>

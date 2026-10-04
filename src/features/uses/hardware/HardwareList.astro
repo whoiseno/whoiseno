@@ -1,5 +1,6 @@
 ---
-import { Card, CardDescription, CardTitle } from "@/shared/ui/card";
+import UsesItem from "@/features/uses/UsesItem.astro";
+import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 
 const hardware = (await getCollection("hardware")).sort((a, b) => a.data.name.localeCompare(b.data.name));
@@ -8,13 +9,31 @@ const hardware = (await getCollection("hardware")).sort((a, b) => a.data.name.lo
 {hardware.length === 0 ? (
   <p class="text-muted-foreground">Nothing here yet.</p>
 ) : (
-  <ul class="space-y-3">
-    {hardware.map(({ data }) => (
-      <li>
-        <Card href={data.link ?? undefined}>
-          <CardTitle>{data.name}</CardTitle>
-          {data.description && <CardDescription>{data.description}</CardDescription>}
-        </Card>
+  <ul class="flex flex-col gap-8">
+    {hardware.map(({ data: { photos, ...item } }) => (
+      <li class="space-y-3">
+        {photos.length > 0 && (
+          <ul
+            class="-mx-4 flex scroll-pl-4 snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-1 [scrollbar-width:none] sm:mx-0 sm:scroll-pl-0 sm:px-0 [&::-webkit-scrollbar]:hidden"
+            aria-label={`Photos of ${item.name}`}
+            data-slot="uses-photos"
+            role="region"
+            tabindex="0"
+          >
+            {photos.map(({ image, alt }) => (
+              <li class="shrink-0 snap-start">
+                <Image
+                  class="size-40 rounded-[10px] bg-muted object-cover"
+                  alt={alt ?? item.name}
+                  height={320}
+                  src={image}
+                  width={320}
+                />
+              </li>
+            ))}
+          </ul>
+        )}
+        <UsesItem {...item} />
       </li>
     ))}
   </ul>

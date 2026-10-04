@@ -1,4 +1,5 @@
 import { registerThemeToggle } from "@/features/theme-toggle/alpine";
+import { registerWriting } from "@/features/writing/alpine";
 import { registerUi } from "@/shared/ui/alpine";
 import anchor from "@alpinejs/anchor";
 import intersect from "@alpinejs/intersect";
@@ -9,4 +10,5 @@ export default (Alpine: Alpine) => {
   Alpine.plugin(intersect);
   registerUi(Alpine);
   registerThemeToggle(Alpine);
+  registerWriting(Alpine);
 };

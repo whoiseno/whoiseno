@@ -1,0 +1,33 @@
+---
+import { getWritingTags } from "@/entities/writing/getWritingTags";
+import { badgeVariants } from "@/shared/ui/badge";
+
+interface Props {
+  active?: string;
+}
+
+const { active } = Astro.props;
+const tags = await getWritingTags();
+---
+
+{tags.length > 0 && (
+  <nav
+    class="flex flex-wrap gap-2 pt-3"
+    aria-label="Writing tags"
+    data-slot="writing-tags"
+  >
+    {tags.map(({ slug, label, count }) => (
+      <a
+        class={badgeVariants({
+          class:
+            "transition-colors hover:bg-muted hover:text-foreground aria-[current=page]:bg-muted aria-[current=page]:text-foreground",
+        })}
+        aria-current={slug === active ? "page" : undefined}
+        href={`/writing/tags/${slug}`}
+      >
+        {label}
+        <span class="font-mono text-[10px] opacity-60">{count}</span>
+      </a>
+    ))}
+  </nav>
+)}

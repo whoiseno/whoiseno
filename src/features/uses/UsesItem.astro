@@ -1,0 +1,51 @@
+---
+import Icon from "@/shared/ui/icon/Icon.astro";
+import type { ImageMetadata } from "astro";
+import { Image } from "astro:assets";
+
+interface Props {
+  name: string;
+  logo?: ImageMetadata | null;
+  description?: string;
+  usage?: string;
+  link?: string | null;
+}
+
+const { name, logo, description, usage, link } = Astro.props;
+const Tag = link ? "a" : "div";
+const linkProps = link ? { href: link, target: "_blank", rel: "noopener noreferrer" } : {};
+---
+
+<Tag
+  data-slot="uses-item"
+  class="flex items-start gap-4 py-2"
+  {...linkProps}
+>
+  {logo ? (
+    <Image
+      class="size-10 shrink-0 rounded-xl bg-muted object-cover"
+      alt=""
+      height={80}
+      src={logo}
+      width={80}
+    />
+  ) : (
+    <div
+      class="flex size-10 shrink-0 items-center justify-center rounded-xl bg-muted font-serif text-base font-semibold"
+      aria-hidden="true"
+    >
+      {name[0]?.toUpperCase()}
+    </div>
+  )}
+  <div class="min-w-0 flex-1 space-y-0.5">
+    <h3 class="font-medium">{name}</h3>
+    {description && <p class="text-muted-foreground">{description}</p>}
+    {usage && <p>{usage}</p>}
+  </div>
+  {link && (
+    <Icon
+      class="mt-0.5 size-4 shrink-0 text-muted-foreground"
+      name="reicon:ArrowUpRight"
+    />
+  )}
+</Tag>

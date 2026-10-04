@@ -1,2 +1,11 @@
 name: Example Gadget
-description: Placeholder note on how it is used day to day.
+logo: ../../assets/uses/hardware/example-gadget.svg
+description: Placeholder description of what the product is.
+usage: Placeholder note on how it is used day to day.
+photos:
+  - image: ../../assets/uses/hardware/example-gadget-1.svg
+    alt: Placeholder photo of the gadget on a desk
+  - image: ../../assets/uses/hardware/example-gadget-2.svg
+    alt: Placeholder side view of the gadget
+  - image: ../../assets/uses/hardware/example-gadget-3.svg
+    alt: Placeholder close-up of the gadget

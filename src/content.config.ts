@@ -1,4 +1,4 @@
-import { defineCollection } from "astro:content";
+import { defineCollection, type SchemaContext } from "astro:content";
 import { glob } from "astro/loaders";
 import { z } from "astro/zod";
 
@@ -69,14 +69,18 @@ const writing = defineCollection({
     kind: z.enum(["blog", "tutorial", "journal", "note"]).default("blog"),
     description: z.string().optional(),
     publishedDate: date,
+    tags: z.array(z.string()).default([]),
   }),
 });
 
-const uses = z.object({
-  name: z.string(),
-  description: z.string().optional(),
-  link: url,
-});
+const uses = ({ image }: SchemaContext) =>
+  z.object({
+    name: z.string(),
+    logo: image().nullish(),
+    description: z.string().optional(),
+    usage: z.string().optional(),
+    link: url,
+  });
 
 const software = defineCollection({
   loader: glob({ pattern: "**/*.yaml", base: "./src/content/software" }),
@@ -85,7 +89,10 @@ const software = defineCollection({
 
 const hardware = defineCollection({
   loader: glob({ pattern: "**/*.yaml", base: "./src/content/hardware" }),
-  schema: uses,
+  schema: (context) =>
+    uses(context).extend({
+      photos: z.array(z.object({ image: context.image(), alt: z.string().optional() })).default([]),
+    }),
 });
 
 const books = defineCollection({

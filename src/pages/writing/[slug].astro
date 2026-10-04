@@ -1,7 +1,10 @@
 ---
 import Site from "@/app/layouts/Site.astro";
+import WritingToc from "@/features/writing/WritingToc.astro";
+import WritingToolbar from "@/features/writing/WritingToolbar.astro";
 import { formatDate } from "@/shared/lib/date";
 import { Badge } from "@/shared/ui/badge";
+import { Button } from "@/shared/ui/button";
 import Icon from "@/shared/ui/icon/Icon.astro";
 import Prose from "@/shared/ui/prose/Prose.astro";
 import type { InferGetStaticPropsType } from "astro";
@@ -18,28 +21,59 @@ const kindLabels = { blog: "Blog", tutorial: "Tutorial", journal: "Journal", not
 
 const { entry } = Astro.props;
 const { title, kind, description, publishedDate } = entry.data;
-const { Content } = await render(entry);
+const { Content, headings } = await render(entry);
 ---
 
 <Site
   description={description}
   title={title}
 >
-  <div class="flex items-center gap-3 text-xs text-muted-foreground">
-    <Badge>{kindLabels[kind]}</Badge>
-    <time datetime={publishedDate.toISOString()}>{formatDate(publishedDate)}</time>
-  </div>
-  <Prose>
-    <Content />
-  </Prose>
-  <a
-    class="inline-flex items-center gap-1 text-muted-foreground transition-colors hover:text-foreground"
-    href="/writing"
+  <div
+    class="space-y-10"
+    x-data="writingReader"
+    x-on:keydown.escape.window="setFocus(false)"
+    x-on:resize.window="update()"
+    x-on:scroll.window.passive="update()"
   >
-    <Icon
-      class="size-3.5"
-      name="reicon:ArrowLeft"
-    />
-    All writing
-  </a>
+    <WritingToc headings={headings} />
+    <Button
+      class="fixed top-4 right-4 z-50 opacity-50 hover:opacity-100 focus-visible:opacity-100"
+      aria-label="Exit focus mode"
+      color="neutral"
+      size="sm"
+      type="button"
+      variant="ghost"
+      x-cloak
+      x-on:click="setFocus(false)"
+      x-show="focus"
+      x-transition:enter="animate-in duration-300 fade-in"
+      x-transition:leave="animate-out duration-300 fade-out"
+    >
+      <Icon name="reicon:X" />
+    </Button>
+    <div
+      class="flex items-center justify-between gap-3"
+      data-focus-hide
+    >
+      <div class="flex items-center gap-3 text-xs text-muted-foreground">
+        <Badge>{kindLabels[kind]}</Badge>
+        <time datetime={publishedDate.toISOString()}>{formatDate(publishedDate)}</time>
+      </div>
+      <WritingToolbar />
+    </div>
+    <Prose>
+      <Content />
+    </Prose>
+    <a
+      class="inline-flex items-center gap-1 text-muted-foreground transition-colors hover:text-foreground"
+      data-focus-hide
+      href="/writing"
+    >
+      <Icon
+        class="size-3.5"
+        name="reicon:ArrowLeft"
+      />
+      All writing
+    </a>
+  </div>
 </Site>

@@ -6,22 +6,24 @@ All content lives under `src/content/`. The seed entries are placeholders (`Exam
 
 ## Collections
 
-| Keystatic key | Path                     | Format              | Shown on                             |
-| ------------- | ------------------------ | ------------------- | ------------------------------------ |
-| `profile`     | `src/content/profile/`   | `.mdoc` (singleton) | Home hero, footer                    |
-| `works`       | `src/content/works/*`    | `.mdoc`             | `/`, `/works`                        |
-| `projects`    | `src/content/projects/*` | `.mdoc`             | `/`, `/projects`, `/projects/[slug]` |
-| `writing`     | `src/content/writing/*`  | `.mdoc`             | `/writing`, `/writing/[slug]`        |
-| `software`    | `src/content/software/*` | `.yaml`             | `/uses`                              |
-| `hardware`    | `src/content/hardware/*` | `.yaml`             | `/uses`                              |
-| `books`       | `src/content/books/*`    | `.yaml`             | `/books`                             |
-| `movies`      | `src/content/movies/*`   | `.yaml`             | `/movies`                            |
+| Keystatic key | Path                     | Format              | Shown on                                             |
+| ------------- | ------------------------ | ------------------- | ---------------------------------------------------- |
+| `profile`     | `src/content/profile/`   | `.mdoc` (singleton) | Home hero, footer                                    |
+| `works`       | `src/content/works/*`    | `.mdoc`             | `/`, `/works`                                        |
+| `projects`    | `src/content/projects/*` | `.mdoc`             | `/`, `/projects`, `/projects/[slug]`                 |
+| `writing`     | `src/content/writing/*`  | `.mdoc`             | `/writing`, `/writing/[slug]`, `/writing/tags/[tag]` |
+| `software`    | `src/content/software/*` | `.yaml`             | `/uses`                                              |
+| `hardware`    | `src/content/hardware/*` | `.yaml`             | `/uses`                                              |
+| `books`       | `src/content/books/*`    | `.yaml`             | `/books`                                             |
+| `movies`      | `src/content/movies/*`   | `.yaml`             | `/movies`                                            |
 
 - `.mdoc` entries are frontmatter plus a [Markdoc](https://markdoc.dev) body, rendered with `render()` from `astro:content` inside `Prose`. A work's body is shown inside its expanded accordion row.
 - `.yaml` entries are data only.
 - `projects[].featured` controls which projects appear on the home page.
 - `works[].technologies` is a list of SVGL logo slugs. The allowed values are `logoNames` from [`src/shared/ui/icon/logos.ts`](../src/shared/ui/icon/logos.ts), used by both the Zod `z.enum` and the Keystatic multiselect, so adding a logo there makes it selectable in both. `works[].workMode` is `on-site | remote | hybrid` (default `on-site`). A work with no `endDate` is current and shows the "Working" badge.
 - `writing[].kind` is `blog | tutorial | journal | note` (default `blog`). The list at `/writing` shows only the title and date, grouped by year; the kind is shown on the detail page. There is no draft flag, so every file in `src/content/writing/` is published.
+- `writing[].tags` is a free-text list. The tag pages are derived from it: [`getWritingTags`](../src/entities/writing/getWritingTags.ts) groups the labels by `slugify(label)` (so `Astro` and `astro` are one tag) and `/writing/tags/[tag]` is generated for each. Tags are shown on `/writing` and the tag pages as links, never in the list rows.
+- `software[]` and `hardware[]` share these fields: `name` (required), `logo` (image), `description` (what it is), `usage` (how you use it) and `link`. `hardware[]` adds `photos`, a list of `{ image, alt }`. Images are stored in `src/assets/uses/software/` and `src/assets/uses/hardware/`. Without a `logo`, the item shows the first letter of the name.
 - Each `profile.socials[]` item feeds the footer and the hover cards on the home page. `platform` and `url` are required. The other fields are optional and have these fallbacks (see [`getSocialLinks`](../src/entities/profile/socials.ts)):
   - `handle`: the email address, or `@` plus the last path segment of the URL.
   - `displayName`: the profile `name`.
@@ -32,6 +34,19 @@ All content lives under `src/content/`. The seed entries are placeholders (`Exam
 - `books[].status` is `reading | read | want`; `movies[].status` is `watching | watched | planned`; `movies[].kind` is `movie | show | anime`. The list components group entries by these values.
 - Dates are coerced with `z.coerce.date()`. Display formatting is in [`src/shared/lib/date.ts`](../src/shared/lib/date.ts) and is UTC-based so a date never shifts by timezone.
 - The profile avatar is stored in `src/assets/profile/` and validated with Astro's `image()` helper, so it goes through `astro:assets`. Hover-card avatars and banners are stored in `src/assets/profile/socials/` the same way.
+
+## Writing entry body
+
+The body of a writing entry supports more than plain text. All of it is editable in the Keystatic editor and stored as Markdoc in the `.mdoc` file.
+
+- **Images** are inserted from the editor and stored in `src/assets/writing/`. The file references them as `![alt](../../assets/writing/name.png)` and Astro processes them through `astro:assets`, which needs `sharp` (a dependency).
+- **Code blocks** are fenced blocks with a language. [`markdoc.config.mjs`](../markdoc.config.mjs) highlights them with Shiki using `github-light` and `github-dark`. Rules in `global.css` switch between the two with the `.dark` class (see [`styling.md`](./styling.md)).
+- **Carousel** is `{% carousel %}` with two or more `{% slide %}` children. Each slide holds an image and optional text.
+- **Columns** is `{% columns %}` with exactly two `{% column %}` children, side by side from `sm` and stacked below it.
+
+The tags are declared in two places that must stay in sync: the `components` option of the `content` field in `keystatic.config.ts` (editor UI) and the `tags` map in `markdoc.config.mjs` (rendering, to `src/features/writing/content/*.astro`). After adding `markdoc.config.mjs` or changing it, restart `pnpm dev`; Astro does not pick up a new Markdoc config on the fly.
+
+`/writing/[slug]` renders headings with ids, and the sticky table of contents lists the `h2` and `h3` headings only.
 
 ## Adding or changing a field
 

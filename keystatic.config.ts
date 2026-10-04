@@ -1,6 +1,22 @@
 import { collection, config, fields, singleton } from "@keystatic/core";
+import { repeating, wrapper } from "@keystatic/core/content-components";
 
 import { logoCatalog, logoNames } from "./src/shared/ui/icon/logos";
+
+function usesFields(kind: "software" | "hardware") {
+  return {
+    name: fields.slug({ name: { label: "Name" } }),
+    logo: fields.image({
+      label: "Logo",
+      description: "Square works best",
+      directory: `src/assets/uses/${kind}`,
+      publicPath: `../../assets/uses/${kind}/`,
+    }),
+    description: fields.text({ label: "Description", description: "What the product is", multiline: true }),
+    usage: fields.text({ label: "How I use it", multiline: true }),
+    link: fields.url({ label: "Link" }),
+  };
+}
 
 export default config({
   storage: import.meta.env.PROD ? { kind: "github", repo: "whoiseno/whoiseno" } : { kind: "local" },
@@ -156,7 +172,36 @@ export default config({
         }),
         publishedDate: fields.date({ label: "Published on", validation: { isRequired: true } }),
         description: fields.text({ label: "Short description", multiline: true }),
-        content: fields.markdoc({ label: "Content" }),
+        tags: fields.array(fields.text({ label: "Tag" }), {
+          label: "Tags",
+          description: "Each tag links to a page listing every post that uses it",
+          itemLabel: (props) => props.value,
+        }),
+        content: fields.markdoc({
+          label: "Content",
+          options: {
+            image: { directory: "src/assets/writing", publicPath: "../../assets/writing/" },
+            codeBlock: true,
+          },
+          components: {
+            carousel: repeating({
+              label: "Carousel",
+              description: "Swipeable row of slides, each holding an image or text",
+              schema: {},
+              children: ["slide"],
+              validation: { children: { min: 2 } },
+            }),
+            slide: wrapper({ label: "Slide", schema: {}, forSpecificLocations: true }),
+            columns: repeating({
+              label: "Two columns",
+              description: "Side-by-side layout, stacked on small screens",
+              schema: {},
+              children: ["column"],
+              validation: { children: { min: 2, max: 2 } },
+            }),
+            column: wrapper({ label: "Column", schema: {}, forSpecificLocations: true }),
+          },
+        }),
       },
     }),
 
@@ -165,11 +210,7 @@ export default config({
       path: "src/content/software/*",
       slugField: "name",
       format: { data: "yaml" },
-      schema: {
-        name: fields.slug({ name: { label: "Name" } }),
-        description: fields.text({ label: "Description", multiline: true }),
-        link: fields.url({ label: "Link" }),
-      },
+      schema: usesFields("software"),
     }),
 
     hardware: collection({
@@ -178,9 +219,25 @@ export default config({
       slugField: "name",
       format: { data: "yaml" },
       schema: {
-        name: fields.slug({ name: { label: "Name" } }),
-        description: fields.text({ label: "Description", multiline: true }),
-        link: fields.url({ label: "Link" }),
+        ...usesFields("hardware"),
+        photos: fields.array(
+          fields.object({
+            image: fields.image({
+              label: "Photo",
+              directory: "src/assets/uses/hardware",
+              publicPath: "../../assets/uses/hardware/",
+            }),
+            alt: fields.text({
+              label: "Alt text",
+              description: "Describes the photo for screen readers. Defaults to the product name.",
+            }),
+          }),
+          {
+            label: "Photos",
+            description: "Your own photos of it, shown in order",
+            itemLabel: (props) => props.fields.alt.value || "Photo",
+          },
+        ),
       },
     }),
 

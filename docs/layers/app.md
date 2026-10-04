@@ -17,7 +17,7 @@ src/app/
 
 ## `layouts/Site.astro`
 
-The shell every page uses: `Root` > `SiteHeader` (with `ThemeToggle` in its `actions` slot) > `<main>` (`max-w-2xl`) > `SiteFooter`. It lives here rather than in `shared` because it fetches the profile and passes the footer its `name` and `socials` (via `getSocialLinks`), and `shared` cannot import from `entities`. Props: `title?` and `description?` (see [`pages.md`](./pages.md)).
+The shell every page uses: `Root` > `SiteHeader` (with `ThemeToggle` in its `actions` slot) > `<main>` (`max-w-2xl`, `max-w-4xl` while `<html>` has `data-wide`) > `SiteFooter`. A `header` slot renders under the page description. It lives here rather than in `shared` because it fetches the profile and passes the footer its `name` and `socials` (via `getSocialLinks`), and `shared` cannot import from `entities`. Props: `title?` and `description?` (see [`pages.md`](./pages.md)).
 
 ## `entrypoints/alpine.ts`
 
@@ -29,10 +29,11 @@ export default (Alpine: Alpine) => {
   Alpine.plugin(intersect);
   registerUi(Alpine);
   registerThemeToggle(Alpine);
+  registerWriting(Alpine);
 };
 ```
 
-It registers `@alpinejs/anchor` (popover and dropdown positioning), `@alpinejs/intersect` (scroll reveal), every shared component's behavior through `registerUi` from `shared/ui/alpine.ts`, and the theme toggle through `registerThemeToggle` from `features/theme-toggle/alpine.ts`. Add further `Alpine.plugin(...)` calls here for new Alpine plugins, and add the corresponding `window.Alpine` typing in [`src/env.d.ts`](../../src/env.d.ts) if needed.
+It registers `@alpinejs/anchor` (popover and dropdown positioning), `@alpinejs/intersect` (scroll reveal), every shared component's behavior through `registerUi` from `shared/ui/alpine.ts`, the theme toggle through `registerThemeToggle` from `features/theme-toggle/alpine.ts`, and the writing reader and carousel through `registerWriting` from `features/writing/alpine.ts`. Add further `Alpine.plugin(...)` calls here for new Alpine plugins, and add the corresponding `window.Alpine` typing in [`src/env.d.ts`](../../src/env.d.ts) if needed.
 
 ## `fonts/`
 
