@@ -1,6 +1,7 @@
 import { collection, config, fields, singleton } from "@keystatic/core";
-import { repeating, wrapper } from "@keystatic/core/content-components";
+import { block, inline, repeating, wrapper } from "@keystatic/core/content-components";
 
+import { mediaSourceCatalog, mediaSourceNames, type TypeMediaKind } from "./src/shared/config/media-sources";
 import { logoCatalog, logoNames } from "./src/shared/ui/icon/logos";
 
 function usesFields(kind: "software" | "hardware") {
@@ -18,20 +19,75 @@ function usesFields(kind: "software" | "hardware") {
   };
 }
 
+function posterField(kind: "books" | "movies") {
+  return fields.image({
+    label: "Poster",
+    description: "Cover or poster, portrait works best",
+    directory: `src/assets/${kind}`,
+    publicPath: `../../assets/${kind}/`,
+  });
+}
+
+function mediaLinksField(kind: TypeMediaKind) {
+  return fields.array(
+    fields.object({
+      source: fields.select({
+        label: "Source",
+        options: mediaSourceNames(kind).map((value) => ({ label: mediaSourceCatalog[value].label, value })),
+        defaultValue: mediaSourceNames(kind)[0],
+      }),
+      id: fields.text({
+        label: "ID or URL",
+        description: "The ID the source uses, or the full page URL",
+        validation: { isRequired: true },
+      }),
+    }),
+    {
+      label: "Attribution links",
+      description: "Links back to the catalogues the details came from",
+      itemLabel: (props) => `${mediaSourceCatalog[props.fields.source.value].name}: ${props.fields.id.value}`,
+    },
+  );
+}
+
 export default config({
   storage: import.meta.env.PROD ? { kind: "github", repo: "whoiseno/whoiseno" } : { kind: "local" },
 
   ui: {
     navigation: {
-      Profile: ["profile"],
+      Site: ["navigation", "profile"],
       Work: ["works", "projects"],
       Writing: ["writing"],
       Uses: ["software", "hardware"],
-      Library: ["books", "movies"],
+      Hobbies: ["books", "movies"],
     },
   },
 
   singletons: {
+    navigation: singleton({
+      label: "Navigation",
+      path: "src/content/navigation/",
+      format: { data: "yaml" },
+      schema: {
+        links: fields.array(
+          fields.object({
+            label: fields.text({ label: "Label", validation: { isRequired: true } }),
+            href: fields.text({
+              label: "Link",
+              description: 'Site path, e.g. "/writing"',
+              validation: { isRequired: true },
+            }),
+            visible: fields.checkbox({ label: "Show in navigation", defaultValue: true }),
+          }),
+          {
+            label: "Links",
+            description: "Shown in this order. Untick a link to hide it without deleting it.",
+            itemLabel: (props) => `${props.fields.label.value}${props.fields.visible.value ? "" : " (hidden)"}`,
+          },
+        ),
+      },
+    }),
+
     profile: singleton({
       label: "Profile",
       path: "src/content/profile/",
@@ -200,6 +256,20 @@ export default config({
               validation: { children: { min: 2, max: 2 } },
             }),
             column: wrapper({ label: "Column", schema: {}, forSpecificLocations: true }),
+            math: block({
+              label: "Math block",
+              description: "LaTeX equation on its own line",
+              schema: {
+                expression: fields.text({ label: "LaTeX", multiline: true, validation: { isRequired: true } }),
+              },
+              ContentView: ({ value }) => value.expression,
+            }),
+            inlineMath: inline({
+              label: "Inline math",
+              description: "LaTeX equation inside a sentence",
+              schema: { expression: fields.text({ label: "LaTeX", validation: { isRequired: true } }) },
+              ContentView: ({ value }) => value.expression,
+            }),
           },
         }),
       },
@@ -258,10 +328,13 @@ export default config({
           ],
           defaultValue: "read",
         }),
-        rating: fields.integer({ label: "Rating (1-5)", validation: { min: 1, max: 5 } }),
+        poster: posterField("books"),
+        publishedDate: fields.date({ label: "Published on" }),
+        startedDate: fields.date({ label: "Started on" }),
         finishedDate: fields.date({ label: "Finished on" }),
-        link: fields.url({ label: "Link" }),
-        note: fields.text({ label: "Note", multiline: true }),
+        rating: fields.integer({ label: "My rating (1-5)", validation: { min: 1, max: 5 } }),
+        description: fields.text({ label: "My description", multiline: true }),
+        links: mediaLinksField("book"),
       },
     }),
 
@@ -276,12 +349,13 @@ export default config({
           label: "Kind",
           options: [
             { label: "Movie", value: "movie" },
+            { label: "Series", value: "series" },
             { label: "Show", value: "show" },
             { label: "Anime", value: "anime" },
           ],
           defaultValue: "movie",
         }),
-        year: fields.integer({ label: "Release year" }),
+        creator: fields.text({ label: "Director or creator" }),
         status: fields.select({
           label: "Status",
           options: [
@@ -291,9 +365,13 @@ export default config({
           ],
           defaultValue: "watched",
         }),
-        rating: fields.integer({ label: "Rating (1-5)", validation: { min: 1, max: 5 } }),
-        link: fields.url({ label: "Link" }),
-        note: fields.text({ label: "Note", multiline: true }),
+        poster: posterField("movies"),
+        releaseDate: fields.date({ label: "Released on" }),
+        startedDate: fields.date({ label: "Started on" }),
+        watchedDate: fields.date({ label: "Finished on" }),
+        rating: fields.integer({ label: "My rating (1-5)", validation: { min: 1, max: 5 } }),
+        description: fields.text({ label: "My description", multiline: true }),
+        links: mediaLinksField("movie"),
       },
     }),
   },

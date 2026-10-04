@@ -1,0 +1,22 @@
+---
+import katex from "katex";
+
+import "katex/dist/katex.min.css";
+
+interface Props {
+  expression: string;
+  inline?: boolean;
+}
+
+const { expression, inline = false } = Astro.props;
+const html = katex.renderToString(expression, { displayMode: !inline, throwOnError: false });
+const Tag = inline ? "span" : "div";
+---
+
+{/* eslint-disable astro/no-set-html-directive -- KaTeX output; `trust` stays off so the source cannot inject links or HTML */}
+<Tag
+  class:list={[!inline && "overflow-x-auto overflow-y-hidden"]}
+  data-slot="equation"
+  set:html={html}
+/>
+{/* eslint-enable astro/no-set-html-directive */}

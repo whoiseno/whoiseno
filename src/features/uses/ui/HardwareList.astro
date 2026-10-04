@@ -1,7 +1,8 @@
 ---
-import UsesItem from "@/features/uses/UsesItem.astro";
 import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
+
+import UsesItem from "./UsesItem.astro";
 
 const hardware = (await getCollection("hardware")).sort((a, b) => a.data.name.localeCompare(b.data.name));
 ---

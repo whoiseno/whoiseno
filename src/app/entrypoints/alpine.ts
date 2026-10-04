@@ -1,5 +1,5 @@
-import { registerThemeToggle } from "@/features/theme-toggle/alpine";
-import { registerWriting } from "@/features/writing/alpine";
+import { registerThemeToggle } from "@/features/theme-toggle/client";
+import { registerWriting } from "@/features/writing/client";
 import { registerUi } from "@/shared/ui/alpine";
 import anchor from "@alpinejs/anchor";
 import intersect from "@alpinejs/intersect";

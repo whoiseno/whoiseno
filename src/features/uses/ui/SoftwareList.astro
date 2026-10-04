@@ -1,6 +1,7 @@
 ---
-import UsesItem from "@/features/uses/UsesItem.astro";
 import { getCollection } from "astro:content";
+
+import UsesItem from "./UsesItem.astro";
 
 const software = (await getCollection("software")).sort((a, b) => a.data.name.localeCompare(b.data.name));
 ---

@@ -1,6 +1,9 @@
 title: Example Movie
 kind: movie
-year: 2020
+creator: Placeholder Director
 status: watched
+releaseDate: 2020-01-01
+watchedDate: 2025-06-01
 rating: 4
-note: Placeholder note.
+description: Placeholder description.
+links: []

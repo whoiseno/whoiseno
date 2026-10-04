@@ -25,6 +25,12 @@
       "skillPath": "skills/taste-skill/SKILL.md",
       "computedHash": "899b84384f74f540ea5284d9b2e9234e050998b42eacc805410b518d4226c0b3"
     },
+    "feature-sliced-design": {
+      "source": "aiko-atami/fsd",
+      "sourceType": "github",
+      "skillPath": "SKILL.md",
+      "computedHash": "c8f8885aa89b1f1f3f16ada60244be6ebe52711dfef7d9fd40c16ebad3c025f5"
+    },
     "typescript-advanced-types": {
       "source": "wshobson/agents",
       "sourceType": "github",

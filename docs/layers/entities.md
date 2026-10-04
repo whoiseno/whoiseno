@@ -4,6 +4,9 @@ Domain objects and the minimal UI needed to display them. The `@/entities/*` ali
 
 ```
 src/entities/
+├── navigation/
+│   ├── index.ts              # public API: getNavItems
+│   └── api/getNavItems.ts    # reads the navigation singleton; returns the visible links as TypeNavItem[]
 ├── profile/
 │   ├── getProfile.ts     # getEntry("profile", "index"); throws a helpful error if the entry is missing
 │   ├── socials.ts            # platform -> label, icon and action label; getSocialLinks(profile.data)
@@ -13,7 +16,9 @@ src/entities/
     └── getWritingTags.ts     # getWritingTags(): { slug, label, count }[] from the writing collection
 ```
 
-The profile is reused across layers: the home hero (`pages/index.astro`) and the footer (`app/layouts/Site.astro`) both read it. The writing tags are reused by the `WritingTags` feature and by `pages/writing/tags/[tag].astro`, which needs them in `getStaticPaths`. Works, projects, books, movies and the writing list are rendered by feature slices instead (see [`features.md`](./features.md)), since each is only shown by its own section.
+The profile is reused across layers: the home hero (`pages/index.astro`) and the footer (`app/layouts/Site.astro`) both read it. The writing tags are reused by the writing feature (`WritingTags`, rendered inside `WritingFilters`) and by `pages/writing/tags/[tag].astro`, which needs them in `getStaticPaths`.
+
+`getNavItems()` reads the `navigation` singleton, drops links whose `visible` is `false` and returns the rest as `{ label, href }`. `Site.astro` passes the result to `SiteHeader`, so editing the links in Keystatic is all it takes to change the header. It throws a helpful error when the singleton file is missing. Only `navigation` has an `index.ts` public API so far; `profile` and `writing` are still imported by file path. Works, projects, books, movies and the writing list are rendered by feature slices instead (see [`features.md`](./features.md)), since each is only shown by its own section.
 
 `getSocialLinks(profile.data)` turns the profile's `socials` into `TypeSocialLink[]` (from `shared/config/site.ts`), applying the `handle`, `displayName` and `avatar` fallbacks described in [`content.md`](../content.md). Both `ProfileHero` and `Site.astro` call it. `ProfileContacts` renders the email entry as the address plus a `CopyButton`, and every other entry as an icon link inside a hover `Popover` showing the banner, avatar, name, verified mark, handle, bio and an action button (Follow, Connect or Subscribe).
 

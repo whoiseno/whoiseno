@@ -9,9 +9,18 @@ export default defineMarkdocConfig({
     }),
   ],
   tags: {
-    carousel: { render: component("./src/features/writing/content/Carousel.astro") },
-    slide: { render: component("./src/features/writing/content/Slide.astro") },
-    columns: { render: component("./src/features/writing/content/Columns.astro") },
-    column: { render: component("./src/features/writing/content/Column.astro") },
+    carousel: { render: component("./src/features/writing/index.ts", "Carousel") },
+    slide: { render: component("./src/features/writing/index.ts", "Slide") },
+    columns: { render: component("./src/features/writing/index.ts", "Columns") },
+    column: { render: component("./src/features/writing/index.ts", "Column") },
+    math: {
+      render: component("./src/features/writing/index.ts", "Equation"),
+      attributes: { expression: { type: String, required: true } },
+    },
+    inlineMath: {
+      inline: true,
+      render: component("./src/features/writing/index.ts", "Equation"),
+      attributes: { expression: { type: String, required: true }, inline: { type: Boolean, default: true } },
+    },
   },
 });

@@ -2,6 +2,7 @@ import { defineCollection, type SchemaContext } from "astro:content";
 import { glob } from "astro/loaders";
 import { z } from "astro/zod";
 
+import { mediaSourceNames, type TypeMediaKind } from "./shared/config/media-sources";
 import { logoNames } from "./shared/ui/icon/logos";
 
 const date = z.coerce.date();
@@ -95,30 +96,49 @@ const hardware = defineCollection({
     }),
 });
 
+const mediaLinks = (kind: TypeMediaKind) =>
+  z.array(z.object({ source: z.enum(mediaSourceNames(kind)), id: z.string() })).default([]);
+
 const books = defineCollection({
   loader: glob({ pattern: "**/*.yaml", base: "./src/content/books" }),
-  schema: z.object({
-    title: z.string(),
-    author: z.string(),
-    status: z.enum(["reading", "read", "want"]),
-    rating: z.number().min(1).max(5).nullish(),
-    finishedDate: date.nullish(),
-    link: url,
-    note: z.string().optional(),
-  }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      author: z.string(),
+      status: z.enum(["reading", "read", "want"]),
+      poster: image().nullish(),
+      publishedDate: date.nullish(),
+      startedDate: date.nullish(),
+      finishedDate: date.nullish(),
+      rating: z.number().min(1).max(5).nullish(),
+      description: z.string().optional(),
+      links: mediaLinks("book"),
+    }),
 });
 
 const movies = defineCollection({
   loader: glob({ pattern: "**/*.yaml", base: "./src/content/movies" }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      kind: z.enum(["movie", "series", "show", "anime"]),
+      creator: z.string().optional(),
+      status: z.enum(["watching", "watched", "planned"]),
+      poster: image().nullish(),
+      releaseDate: date.nullish(),
+      startedDate: date.nullish(),
+      watchedDate: date.nullish(),
+      rating: z.number().min(1).max(5).nullish(),
+      description: z.string().optional(),
+      links: mediaLinks("movie"),
+    }),
+});
+
+const navigation = defineCollection({
+  loader: glob({ pattern: "**/*.yaml", base: "./src/content/navigation" }),
   schema: z.object({
-    title: z.string(),
-    kind: z.enum(["movie", "show", "anime"]),
-    year: z.number().nullish(),
-    status: z.enum(["watching", "watched", "planned"]),
-    rating: z.number().min(1).max(5).nullish(),
-    link: url,
-    note: z.string().optional(),
+    links: z.array(z.object({ label: z.string(), href: z.string(), visible: z.boolean().default(true) })).default([]),
   }),
 });
 
-export const collections = { profile, works, projects, writing, software, hardware, books, movies };
+export const collections = { profile, navigation, works, projects, writing, software, hardware, books, movies };

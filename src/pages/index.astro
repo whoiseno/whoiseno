@@ -1,8 +1,8 @@
 ---
 import Site from "@/app/layouts/Site.astro";
 import ProfileHero from "@/entities/profile/ProfileHero.astro";
-import ProjectList from "@/features/projects/ProjectList.astro";
-import WorkList from "@/features/works/WorkList.astro";
+import { ProjectList } from "@/features/projects";
+import { WorkList } from "@/features/works";
 import Section from "@/shared/ui/section/Section.astro";
 ---
 
@@ -10,7 +10,7 @@ import Section from "@/shared/ui/section/Section.astro";
   <ProfileHero />
   <Section
     href="/works"
-    title="Works"
+    title="Work Experiences"
   >
     <WorkList limit={3} />
   </Section>

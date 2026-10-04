@@ -1,0 +1,101 @@
+---
+import { formatDate } from "@/shared/lib/date";
+import { Badge } from "@/shared/ui/badge";
+import Icon from "@/shared/ui/icon/Icon.astro";
+import Rating from "@/shared/ui/rating/Rating.astro";
+import type { ImageMetadata } from "astro";
+import { Image } from "astro:assets";
+
+interface Props {
+  title: string;
+  /** Author, director or creator. */
+  byline?: string;
+  poster?: ImageMetadata | null;
+  /** When the work itself came out. */
+  published?: Date | null;
+  /** Where the owner is with it, e.g. "Finished Jun 2025". */
+  timeline?: string;
+  rating?: number | null;
+  /** The owner's own words about it. */
+  description?: string;
+  badge?: string;
+  /** Attribution links to the catalogues the details came from. */
+  links?: { name: string; href: string }[];
+  /** `row` puts the poster beside the text, `card` stacks it on top. */
+  layout?: "row" | "card";
+}
+
+const {
+  title,
+  byline,
+  poster,
+  published,
+  timeline,
+  rating,
+  description,
+  badge,
+  links = [],
+  layout = "card",
+} = Astro.props;
+const row = layout === "row";
+---
+
+<article
+  data-slot="media-item"
+  data-layout={layout}
+  class:list={["flex gap-3", row ? "items-start gap-4" : "flex-col"]}
+>
+  <div class:list={[row ? "w-24 shrink-0 sm:w-28" : "w-full"]}>
+    {poster ? (
+      <Image
+        class="aspect-2/3 w-full rounded-lg border bg-muted object-cover"
+        alt=""
+        height={420}
+        src={poster}
+        width={280}
+      />
+    ) : (
+      <div
+        class="flex aspect-2/3 w-full items-center justify-center rounded-lg border bg-muted font-serif text-3xl font-semibold text-muted-foreground"
+        aria-hidden="true"
+      >
+        {title[0]?.toUpperCase()}
+      </div>
+    )}
+  </div>
+  <div class="min-w-0 flex-1 space-y-1.5">
+    <div class="space-y-0.5">
+      <h3 class="font-medium">{title}</h3>
+      {byline && <p class="text-muted-foreground">{byline}</p>}
+    </div>
+    {(badge || published) && (
+      <div class="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted-foreground">
+        {badge && <Badge>{badge}</Badge>}
+        {published && <time datetime={published.toISOString()}>{formatDate(published)}</time>}
+      </div>
+    )}
+    {rating && <Rating value={rating} />}
+    {timeline && <p class="text-xs text-muted-foreground">{timeline}</p>}
+    {description && <p>{description}</p>}
+    {links.length > 0 && (
+      <ul class="flex flex-wrap gap-x-3 gap-y-1 text-xs">
+        {links.map((link) => (
+          <li>
+            <a
+              class="inline-flex items-center gap-0.5 text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
+              href={link.href}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              {link.name}
+              <Icon
+                class="size-3"
+                name="reicon:ArrowUpRight"
+              />
+            </a>
+          </li>
+        ))}
+      </ul>
+    )}
+  </div>
+</article>

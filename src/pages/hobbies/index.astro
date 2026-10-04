@@ -1,0 +1,39 @@
+---
+import Site from "@/app/layouts/Site.astro";
+import { Card, CardAction, CardDescription, CardHeader, CardTitle } from "@/shared/ui/card";
+import Icon from "@/shared/ui/icon/Icon.astro";
+
+const hobbies = [
+  { title: "Books", description: "What I am reading, have read and want to read.", href: "/hobbies/books" },
+  { title: "Movies", description: "Movies, series, shows and anime I watch.", href: "/hobbies/movies" },
+];
+---
+
+<Site
+  description="Things I do when I am not working."
+  title="Hobbies"
+>
+  <ul class="grid gap-3 sm:grid-cols-2">
+    {hobbies.map((hobby) => (
+      <li>
+        <Card
+          class="h-full"
+          href={hobby.href}
+        >
+          <CardHeader>
+            <div>
+              <CardTitle>{hobby.title}</CardTitle>
+              <CardDescription>{hobby.description}</CardDescription>
+            </div>
+            <CardAction>
+              <Icon
+                class="mt-0.5 size-4 text-muted-foreground"
+                name="reicon:ArrowRight"
+              />
+            </CardAction>
+          </CardHeader>
+        </Card>
+      </li>
+    ))}
+  </ul>
+</Site>

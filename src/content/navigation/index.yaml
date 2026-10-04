@@ -1,0 +1,19 @@
+links:
+  - label: Home
+    href: /
+    visible: true
+  - label: Works
+    href: /works
+    visible: false
+  - label: Projects
+    href: /projects
+    visible: true
+  - label: Writing
+    href: /writing
+    visible: true
+  - label: Uses
+    href: /uses
+    visible: true
+  - label: Hobbies
+    href: /hobbies
+    visible: true

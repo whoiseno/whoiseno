@@ -1,8 +1,9 @@
 ---
+import { getNavItems } from "@/entities/navigation";
 import { getProfile } from "@/entities/profile/getProfile";
 import { getSocialLinks } from "@/entities/profile/socials";
-import ThemeToggle from "@/features/theme-toggle/ThemeToggle.astro";
-import { navItems } from "@/shared/config/site";
+import { ThemeToggle } from "@/features/theme-toggle";
+import { Button } from "@/shared/ui/button";
 import Root from "@/shared/ui/layouts/Root.astro";
 import SiteFooter from "@/shared/ui/site/SiteFooter.astro";
 import SiteHeader from "@/shared/ui/site/SiteHeader.astro";
@@ -14,11 +15,24 @@ interface Props {
 
 const { title, description } = Astro.props;
 const profile = await getProfile();
+const navItems = await getNavItems();
 ---
 
 <Root title={title}>
   <SiteHeader items={navItems}>
-    <ThemeToggle slot="actions" />
+    <Fragment slot="actions">
+      {import.meta.env.DEV && (
+        <Button
+          color="neutral"
+          href="/keystatic"
+          size="sm"
+          variant="outline"
+        >
+          CMS
+        </Button>
+      )}
+      <ThemeToggle />
+    </Fragment>
   </SiteHeader>
   <main
     class="mx-auto max-w-2xl flex-1 space-y-10 px-4 pt-8 pb-16 transition-[max-width] duration-300 in-data-[wide]:max-w-4xl motion-reduce:transition-none"

@@ -17,7 +17,9 @@ src/app/
 
 ## `layouts/Site.astro`
 
-The shell every page uses: `Root` > `SiteHeader` (with `ThemeToggle` in its `actions` slot) > `<main>` (`max-w-2xl`, `max-w-4xl` while `<html>` has `data-wide`) > `SiteFooter`. A `header` slot renders under the page description. It lives here rather than in `shared` because it fetches the profile and passes the footer its `name` and `socials` (via `getSocialLinks`), and `shared` cannot import from `entities`. Props: `title?` and `description?` (see [`pages.md`](./pages.md)).
+The shell every page uses: `Root` > `SiteHeader` (with `ThemeToggle` in its `actions` slot) > `<main>` (`max-w-2xl`, `max-w-4xl` while `<html>` has `data-wide`) > `SiteFooter`. A `header` slot renders under the page description. It lives here rather than in `shared` because it fetches the navigation (`getNavItems`, passed to the header) and the profile (the footer gets its `name` and `socials` via `getSocialLinks`), and `shared` cannot import from `entities`. Props: `title?` and `description?` (see [`pages.md`](./pages.md)).
+
+In development only (`import.meta.env.DEV`), the header's actions slot also shows a "CMS" button linking to `/keystatic`. The way back is added by the `keystaticBackLink` integration in [`astro.config.mjs`](../../astro.config.mjs): a dev-only `before-hydration` script that appends a fixed "Back to site" link to the Keystatic admin page. It uses `before-hydration` because the admin route renders a bare `client:only` island with no `<head>`, so a `page` script never reaches it. Neither control exists in production builds.
 
 ## `entrypoints/alpine.ts`
 
@@ -33,7 +35,7 @@ export default (Alpine: Alpine) => {
 };
 ```
 
-It registers `@alpinejs/anchor` (popover and dropdown positioning), `@alpinejs/intersect` (scroll reveal), every shared component's behavior through `registerUi` from `shared/ui/alpine.ts`, the theme toggle through `registerThemeToggle` from `features/theme-toggle/alpine.ts`, and the writing reader and carousel through `registerWriting` from `features/writing/alpine.ts`. Add further `Alpine.plugin(...)` calls here for new Alpine plugins, and add the corresponding `window.Alpine` typing in [`src/env.d.ts`](../../src/env.d.ts) if needed.
+It registers `@alpinejs/anchor` (popover and dropdown positioning), `@alpinejs/intersect` (scroll reveal), every shared component's behavior through `registerUi` from `shared/ui/alpine.ts`, the theme toggle through `registerThemeToggle` from `@/features/theme-toggle/client`, and the writing reader, carousel and kind filter store through `registerWriting` from `@/features/writing/client`. Features expose their browser code from `client.ts`, separate from the `.astro` exports in `index.ts` (see [`features.md`](./features.md)). Add further `Alpine.plugin(...)` calls here for new Alpine plugins, and add the corresponding `window.Alpine` typing in [`src/env.d.ts`](../../src/env.d.ts) if needed.
 
 ## `fonts/`
 

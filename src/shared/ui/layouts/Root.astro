@@ -46,7 +46,7 @@ const { title } = Astro.props;
     <Font cssVariable="--font-supreme-variable" />
     <Font cssVariable="--font-geist-mono" />
   </head>
-  <body class="flex flex-col min-h-svh w-full *:w-full font-sans antialiased text-sm bg-background text-foreground">
+  <body class="flex flex-col min-h-svh w-full overflow-x-clip *:w-full font-sans antialiased text-sm bg-background text-foreground">
     <slot />
   </body>
 </html>

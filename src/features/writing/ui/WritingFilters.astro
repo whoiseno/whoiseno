@@ -1,0 +1,48 @@
+---
+import { buttonVariants } from "@/shared/ui/button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/shared/ui/dropdown-menu";
+import Icon from "@/shared/ui/icon/Icon.astro";
+
+import { writingKindLabels } from "../config/kinds";
+import WritingTags from "./WritingTags.astro";
+
+interface Props {
+  tag?: string;
+}
+
+const { tag } = Astro.props;
+
+const labels = { all: "All kinds", ...writingKindLabels };
+---
+
+<div
+  class="flex flex-wrap items-start justify-between gap-3 pt-3"
+  data-slot="writing-filters"
+>
+  <WritingTags active={tag} />
+  <DropdownMenu class="ml-auto">
+    <DropdownMenuTrigger
+      class={buttonVariants({ variant: "outline", color: "neutral", size: "xs" })}
+      aria-label="Filter by kind"
+    >
+      <span x-text={`(${JSON.stringify(labels)})[$store.writingFilter.kind]`}>{labels.all}</span>
+      <Icon
+        class="size-3.5"
+        name="reicon:ChevronDown"
+      />
+    </DropdownMenuTrigger>
+    <DropdownMenuContent align="end">
+      {Object.entries(labels).map(([kind, label]) => (
+        <DropdownMenuItem x-on:click={`$store.writingFilter.set('${kind}'); hide()`}>
+          <span
+            class="size-4"
+            x-bind:class={`$store.writingFilter.kind !== '${kind}' && 'invisible'`}
+          >
+            <Icon name="reicon:Check" />
+          </span>
+          {label}
+        </DropdownMenuItem>
+      ))}
+    </DropdownMenuContent>
+  </DropdownMenu>
+</div>

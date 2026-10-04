@@ -1,6 +1,8 @@
 title: Example Book
 author: Placeholder Author
 status: read
-rating: 4
+publishedDate: 2020-01-01
 finishedDate: 2025-06-01
-note: Placeholder note.
+rating: 4
+description: Placeholder description.
+links: []

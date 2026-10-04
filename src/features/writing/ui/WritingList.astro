@@ -1,0 +1,71 @@
+---
+import { formatDate } from "@/shared/lib/date";
+import { slugify } from "@/shared/lib/slug";
+import { Badge } from "@/shared/ui/badge";
+import { getCollection } from "astro:content";
+
+import { writingKindLabels } from "../config/kinds";
+
+interface Props {
+  tag?: string;
+}
+
+const { tag } = Astro.props;
+
+const entries = (await getCollection("writing"))
+  .filter(({ data }) => !tag || data.tags.some((label) => slugify(label) === tag))
+  .sort((a, b) => b.data.publishedDate.getTime() - a.data.publishedDate.getTime());
+
+const years = new Map<number, typeof entries>();
+for (const entry of entries) {
+  const year = entry.data.publishedDate.getUTCFullYear();
+  years.set(year, [...(years.get(year) ?? []), entry]);
+}
+
+const counts: Record<string, number> = {};
+for (const { data } of entries) counts[data.kind] = (counts[data.kind] ?? 0) + 1;
+---
+
+{entries.length === 0 ? (
+  <p class="text-muted-foreground">Nothing here yet.</p>
+) : (
+  <div
+    class="group/writing space-y-10"
+    data-slot="writing-list"
+    x-data={`{ counts: ${JSON.stringify(counts)} }`}
+  >
+    {[...years].map(([year, items]) => (
+      <section class="space-y-2 [&:not(:has(li:not([hidden])))]:hidden">
+        <h2 class="font-mono text-xs text-muted-foreground">{year}</h2>
+        <ul class="[&>li:not([hidden])~li:not([hidden])]:border-t">
+          {items.map(({ id, data }) => (
+            <li x-bind:hidden={`!$store.writingFilter.shows('${data.kind}')`}>
+              <a
+                class="flex items-center justify-between gap-4 py-3 transition-[filter,opacity] duration-200 [@media(hover:hover)]:group-has-[a:hover]/writing:not-hover:opacity-60 [@media(hover:hover)]:group-has-[a:hover]/writing:not-hover:blur-[1.5px]"
+                href={`/writing/${id}`}
+              >
+                <span class="min-w-0 truncate font-medium">{data.title}</span>
+                <span class="flex shrink-0 items-center gap-2">
+                  <Badge>{writingKindLabels[data.kind]}</Badge>
+                  <time
+                    class="font-mono text-xs text-muted-foreground uppercase"
+                    datetime={data.publishedDate.toISOString()}
+                  >
+                    {formatDate(data.publishedDate)}
+                  </time>
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))}
+    <p
+      class="text-muted-foreground"
+      x-cloak
+      x-show="$store.writingFilter.kind !== 'all' && !counts[$store.writingFilter.kind]"
+    >
+      Nothing of this kind yet.
+    </p>
+  </div>
+)}

@@ -1,7 +1,6 @@
 ---
 import Site from "@/app/layouts/Site.astro";
-import WritingToc from "@/features/writing/WritingToc.astro";
-import WritingToolbar from "@/features/writing/WritingToolbar.astro";
+import { writingKindLabels, WritingPager, WritingToc, WritingToolbar } from "@/features/writing";
 import { formatDate } from "@/shared/lib/date";
 import { Badge } from "@/shared/ui/badge";
 import { Button } from "@/shared/ui/button";
@@ -11,15 +10,19 @@ import type { InferGetStaticPropsType } from "astro";
 import { getCollection, render } from "astro:content";
 
 export async function getStaticPaths() {
-  const entries = await getCollection("writing");
-  return entries.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+  const entries = (await getCollection("writing")).sort(
+    (a, b) => a.data.publishedDate.getTime() - b.data.publishedDate.getTime(),
+  );
+  const toLink = (entry?: (typeof entries)[number]) => (entry ? { id: entry.id, title: entry.data.title } : null);
+  return entries.map((entry, index) => ({
+    params: { slug: entry.id },
+    props: { entry, previous: toLink(entries[index - 1]), next: toLink(entries[index + 1]) },
+  }));
 }
 
 type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 
-const kindLabels = { blog: "Blog", tutorial: "Tutorial", journal: "Journal", note: "Note" } as const;
-
-const { entry } = Astro.props;
+const { entry, previous, next } = Astro.props;
 const { title, kind, description, publishedDate } = entry.data;
 const { Content, headings } = await render(entry);
 ---
@@ -29,7 +32,7 @@ const { Content, headings } = await render(entry);
   title={title}
 >
   <div
-    class="space-y-10"
+    class="relative space-y-10"
     x-data="writingReader"
     x-on:keydown.escape.window="setFocus(false)"
     x-on:resize.window="update()"
@@ -56,7 +59,7 @@ const { Content, headings } = await render(entry);
       data-focus-hide
     >
       <div class="flex items-center gap-3 text-xs text-muted-foreground">
-        <Badge>{kindLabels[kind]}</Badge>
+        <Badge>{writingKindLabels[kind]}</Badge>
         <time datetime={publishedDate.toISOString()}>{formatDate(publishedDate)}</time>
       </div>
       <WritingToolbar />
@@ -64,16 +67,24 @@ const { Content, headings } = await render(entry);
     <Prose>
       <Content />
     </Prose>
-    <a
-      class="inline-flex items-center gap-1 text-muted-foreground transition-colors hover:text-foreground"
+    <div
+      class="space-y-4"
       data-focus-hide
-      href="/writing"
     >
-      <Icon
-        class="size-3.5"
-        name="reicon:ArrowLeft"
+      <a
+        class="inline-flex items-center gap-1 text-muted-foreground transition-colors hover:text-foreground"
+        href="/writing"
+      >
+        <Icon
+          class="size-3.5"
+          name="reicon:ArrowLeft"
+        />
+        All writing
+      </a>
+      <WritingPager
+        next={next}
+        previous={previous}
       />
-      All writing
-    </a>
+    </div>
   </div>
 </Site>

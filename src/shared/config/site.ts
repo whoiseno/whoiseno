@@ -22,13 +22,3 @@ export interface TypeSocialLink {
 }
 
 export const siteName = "Enoabasi Computer";
-
-export const navItems: TypeNavItem[] = [
-  { label: "Home", href: "/" },
-  { label: "Works", href: "/works" },
-  { label: "Projects", href: "/projects" },
-  { label: "Writing", href: "/writing" },
-  { label: "Uses", href: "/uses" },
-  { label: "Books", href: "/books" },
-  { label: "Movies", href: "/movies" },
-];

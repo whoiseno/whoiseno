@@ -1,0 +1,4 @@
+interface:
+  display_name: "Feature-Sliced Design"
+  short_description: "Apply FSD v2.1 architecture patterns"
+  default_prompt: "Use $feature-sliced-design to design or refactor my frontend code structure by FSD v2.1."

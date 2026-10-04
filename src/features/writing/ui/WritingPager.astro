@@ -1,0 +1,54 @@
+---
+import { Card } from "@/shared/ui/card";
+import Icon from "@/shared/ui/icon/Icon.astro";
+
+interface TypePagerEntry {
+  id: string;
+  title: string;
+}
+
+interface Props {
+  /** The post published just before this one. */
+  previous?: TypePagerEntry | null;
+  /** The post published just after this one. */
+  next?: TypePagerEntry | null;
+}
+
+const { previous, next } = Astro.props;
+---
+
+{(previous || next) && (
+  <nav
+    class="grid gap-3 sm:grid-cols-2"
+    aria-label="Previous and next posts"
+    data-slot="writing-pager"
+  >
+    {previous && (
+      <Card href={`/writing/${previous.id}`}>
+        <span class="flex items-center gap-1 text-xs text-muted-foreground">
+          <Icon
+            class="size-3.5"
+            name="reicon:ArrowLeft"
+          />
+          Previous
+        </span>
+        <span class="mt-0.5 block truncate font-medium">{previous.title}</span>
+      </Card>
+    )}
+    {next && (
+      <Card
+        class="text-right sm:col-start-2"
+        href={`/writing/${next.id}`}
+      >
+        <span class="flex items-center justify-end gap-1 text-xs text-muted-foreground">
+          Next
+          <Icon
+            class="size-3.5"
+            name="reicon:ArrowRight"
+          />
+        </span>
+        <span class="mt-0.5 block truncate font-medium">{next.title}</span>
+      </Card>
+    )}
+  </nav>
+)}
