@@ -1,22 +1,23 @@
 import type { Alpine } from "alpinejs";
 
-export function registerReader(Alpine: Alpine) {
-  Alpine.data("writingReader", () => {
-    const root = document.documentElement;
+interface TypeWritingReaderState {
+  wide: boolean;
+  focus: boolean;
+}
 
-    return {
-      wide: false,
-      focus: false,
-      toggleWide() {
-        this.wide = !this.wide;
-        root.toggleAttribute("data-wide", this.wide);
-      },
-      setFocus(on: boolean) {
-        if (on === this.focus) return;
-        this.focus = on;
-        root.dataset.focus = on ? "on" : "off";
-        document.querySelectorAll("[data-focus-hide]").forEach((el) => el.toggleAttribute("inert", on));
-      },
-    };
+export function registerReader(Alpine: Alpine) {
+  Alpine.store("writingReader", {
+    wide: false,
+    focus: false,
+    toggleWide(this: TypeWritingReaderState) {
+      this.wide = !this.wide;
+      document.documentElement.toggleAttribute("data-wide", this.wide);
+    },
+    setFocus(this: TypeWritingReaderState, on: boolean) {
+      if (on === this.focus) return;
+      this.focus = on;
+      document.documentElement.dataset.focus = on ? "on" : "off";
+      document.querySelectorAll("[data-focus-hide]").forEach((el) => el.toggleAttribute("inert", on));
+    },
   });
 }

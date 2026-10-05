@@ -1,6 +1,7 @@
 ---
 import { getNavItems } from "@/entities/navigation";
 import { getProfile, getSocialLinks } from "@/entities/profile";
+import { ScrollToTop } from "@/features/scroll-to-top";
 import { ThemeToggle } from "@/features/theme-toggle";
 import { Button } from "@/shared/ui/button";
 import type { ImageMetadata } from "astro";
@@ -38,7 +39,7 @@ const previewImage =
   type={type}
 >
   <div
-    class="mx-auto w-full max-w-7xl flex-1 transition-[max-width] duration-300 in-data-wide:max-w-384 motion-reduce:transition-none lg:grid lg:grid-cols-[14rem_minmax(0,1fr)_14rem]"
+    class="mx-auto w-full max-w-7xl flex-1 transition-[max-width] duration-300 in-data-wide:max-w-384 motion-reduce:transition-none lg:grid lg:grid-cols-[14rem_minmax(0,1fr)_14rem] [--page-width:100cqw]"
     data-slot="site-body"
   >
     <SiteSidebar
@@ -51,18 +52,27 @@ const previewImage =
         name="toc"
         slot="toc"
       />
+      <slot
+        name="tools"
+        slot="tools"
+      />
       <Fragment slot="actions">
-        {import.meta.env.DEV && (
-          <Button
-            color="neutral"
-            href="/keystatic"
-            size="sm"
-            variant="outline"
-          >
-            CMS
-          </Button>
-        )}
-        <ThemeToggle />
+        <div class="max-lg:hidden">
+          <ScrollToTop />
+        </div>
+        <div class="flex items-center gap-1">
+          <ThemeToggle />
+          {import.meta.env.DEV && (
+            <Button
+              color="neutral"
+              href="/keystatic"
+              size="sm"
+              variant="outline"
+            >
+              CMS
+            </Button>
+          )}
+        </div>
       </Fragment>
     </SiteSidebar>
     <div

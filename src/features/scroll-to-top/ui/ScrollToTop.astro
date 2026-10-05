@@ -1,0 +1,22 @@
+---
+import { Button } from "@/shared/ui/button";
+import { Icon } from "@/shared/ui/icon";
+---
+
+<Button
+  aria-label="Scroll to top"
+  color="neutral"
+  disabled
+  size="md"
+  type="button"
+  variant="ghost"
+  x-bind:disabled="!scrolled"
+  x-data="scrollToTop"
+  x-on:click="top()"
+  x-on:scroll.window.passive="update()"
+>
+  <Icon
+    class="size-4"
+    name="reicon:ArrowUp"
+  />
+</Button>

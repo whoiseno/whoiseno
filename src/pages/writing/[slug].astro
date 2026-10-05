@@ -46,6 +46,11 @@ const { Content, headings } = await render(entry);
     slot="toc"
     headings={headings}
   />
+  <WritingToolbar
+    slot="tools"
+    class="max-lg:hidden"
+    size="icon-md"
+  />
   {cover && (
     <div
       slot="header"
@@ -60,8 +65,8 @@ const { Content, headings } = await render(entry);
   )}
   <div
     class="space-y-10"
-    x-data="writingReader"
-    x-on:keydown.escape.window="setFocus(false)"
+    x-data
+    x-on:keydown.escape.window="$store.writingReader.setFocus(false)"
   >
     <Button
       class="fixed top-4 right-4 z-50 opacity-50 hover:opacity-100 focus-visible:opacity-100"
@@ -71,8 +76,8 @@ const { Content, headings } = await render(entry);
       type="button"
       variant="ghost"
       x-cloak
-      x-on:click="setFocus(false)"
-      x-show="focus"
+      x-on:click="$store.writingReader.setFocus(false)"
+      x-show="$store.writingReader.focus"
       x-transition:enter="animate-in duration-300 fade-in"
       x-transition:leave="animate-out duration-300 fade-out"
     >
@@ -86,7 +91,7 @@ const { Content, headings } = await render(entry);
         <Badge>{writingKindLabels[kind]}</Badge>
         <time datetime={publishedDate.toISOString()}>{formatDate(publishedDate)}</time>
       </div>
-      <WritingToolbar />
+      <WritingToolbar class="lg:hidden" />
     </div>
     <Prose>
       <Content />

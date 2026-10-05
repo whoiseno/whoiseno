@@ -1,39 +1,47 @@
 ---
 import { Button } from "@/shared/ui/button";
 import { Icon } from "@/shared/ui/icon";
+import { cn } from "tailwind-variants";
+
+interface Props {
+  size?: "icon-sm" | "icon-md";
+  class?: string;
+}
+
+const { size = "icon-sm", class: className } = Astro.props;
 ---
 
 <div
-  class="flex items-center gap-1"
+  class={cn("flex items-center gap-1", className)}
   data-slot="writing-toolbar"
 >
   <Button
     class="hidden md:inline-flex"
     aria-label="Toggle wider layout"
     color="neutral"
-    size="sm"
+    size={size}
     type="button"
     variant="ghost"
-    x-bind:aria-pressed="wide"
-    x-on:click="toggleWide()"
+    x-bind:aria-pressed="$store.writingReader.wide"
+    x-on:click="$store.writingReader.toggleWide()"
   >
     <Icon
       name="reicon:Expand"
-      x-show="!wide"
+      x-show="!$store.writingReader.wide"
     />
     <Icon
       name="reicon:Compress"
       x-cloak
-      x-show="wide"
+      x-show="$store.writingReader.wide"
     />
   </Button>
   <Button
     aria-label="Enter focus mode"
     color="neutral"
-    size="sm"
+    size={size}
     type="button"
     variant="ghost"
-    x-on:click="setFocus(true)"
+    x-on:click="$store.writingReader.setFocus(true)"
   >
     <Icon name="reicon:Eye" />
   </Button>

@@ -59,7 +59,7 @@ Prettier's import-sort plugin ([`.prettierrc`](../.prettierrc)) is configured to
 2. The page wraps its content in `app/ui/Site.astro`, which composes `Root`, `SiteSidebar`, `SiteBreadcrumbs`, `SiteFooter` and the `ThemeToggle` feature, then fills the main area with feature slices (`WorkList`, `ProjectList`, ...) and entities (`ProfileHero`). See [`layers/pages.md`](./layers/pages.md).
 3. `Root.astro` sets up the HTML document shell: meta tags, favicon, `<title>`, a blocking inline script that applies the saved theme before first paint, and the three fonts declared in `astro.config.mjs` via Astro's `<Font />` component.
 4. Global Tailwind styles (`src/app/styles/global.css`) are imported once, inside `Root.astro`.
-5. The Alpine.js entrypoint (`src/app/config/alpine.ts`) is wired up via the `@astrojs/alpinejs` integration and registers the `@alpinejs/anchor` and `@alpinejs/intersect` plugins (the latter has no users right now) plus the shared components' `Alpine.data` behaviors, the theme toggle and the writing slice (reader with table of contents and wide and focus modes, carousel, kind filter store) before Alpine initializes client-side. Features register through their `client.ts`, not their `index.ts`.
+5. The Alpine.js entrypoint (`src/app/config/alpine.ts`) is wired up via the `@astrojs/alpinejs` integration and registers the `@alpinejs/anchor` and `@alpinejs/intersect` plugins (the latter has no users right now) plus the shared components' `Alpine.data` behaviors, the scroll-to-top button, the theme toggle and the writing slice (reader with table of contents and wide and focus modes, carousel, kind filter store) before Alpine initializes client-side. Features register through their `client.ts`, not their `index.ts`.
 
 ## Integrations in use
 

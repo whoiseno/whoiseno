@@ -3,8 +3,8 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* Width of the content column, captured on a carousel before it becomes a container itself. Registered so `cqw` resolves to px at the capture point. */
-@property --carousel-span {
+/* Width of the page, captured on the site body row, which sits directly in the `<body>` container. Registered so `cqw` resolves to px at the capture point. */
+@property --page-width {
   syntax: "<length>";
   inherits: true;
   initial-value: 0px;

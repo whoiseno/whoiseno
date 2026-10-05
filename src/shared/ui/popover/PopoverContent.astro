@@ -10,7 +10,7 @@ interface Props extends HTMLAttributes<"div"> {
 
 const { side = "bottom", align = "center", sideOffset = 8, class: className, ...rest } = Astro.props;
 const placement = align === "center" ? side : `${side}-${align}`;
-const anchor = { [`x-anchor.${placement}.offset.${sideOffset}.fixed`]: "$refs.trigger" };
+const anchor = { [`x-anchor.${placement}.offset.${sideOffset}`]: "$refs.trigger" };
 ---
 
 <div

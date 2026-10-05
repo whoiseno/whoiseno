@@ -1,5 +1,6 @@
 import ArrowLeft from "reicon-astro/icons/ArrowLeft.astro";
 import ArrowRight from "reicon-astro/icons/ArrowRight.astro";
+import ArrowUp from "reicon-astro/icons/ArrowUp.astro";
 import ArrowUpRight from "reicon-astro/icons/ArrowUpRight.astro";
 import Check from "reicon-astro/icons/Check.astro";
 import ChevronDown from "reicon-astro/icons/ChevronDown.astro";
@@ -24,6 +25,7 @@ import X from "reicon-astro/icons/X.astro";
 export const reicons = {
   ArrowLeft,
   ArrowRight,
+  ArrowUp,
   ArrowUpRight,
   Check,
   ChevronDown,
