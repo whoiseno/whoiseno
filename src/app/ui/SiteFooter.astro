@@ -10,6 +10,7 @@ interface Props {
 
 const { name, socials } = Astro.props;
 const year = new Date().getFullYear();
+const [firstName] = name.split(" ");
 ---
 
 <footer
@@ -70,8 +71,29 @@ const year = new Date().getFullYear();
         </ul>
       </div>
     )}
-    <p class="text-xs text-muted-foreground">
-      &copy; {year} {name}
-    </p>
+    <div class="space-y-3">
+      <div class="flex flex-wrap items-center justify-between gap-x-6 gap-y-1 text-xs text-muted-foreground">
+        <p>
+          &copy; {year} {name}
+        </p>
+        <p class="flex items-center gap-1">
+          Made with
+          <Icon
+            class="size-3.5 text-error"
+            name="reicon:Heart"
+            weight="Filled"
+          />
+          <span class="sr-only">love</span>
+          by {firstName}
+        </p>
+      </div>
+      <p class="text-xs/relaxed text-muted-foreground/70">
+        Built with Astro and Tailwind CSS, with Alpine.js for the small interactive parts. Pages are prerendered and
+        deployed on Vercel, and posts are Markdoc files in the repository, edited through Keystatic. I chose static
+        output and a little JavaScript over a client framework, and plain files in git over a database, so the site
+        stays fast and easy to move. Code blocks use Expressive Code, math uses KaTeX, the code is organised with
+        Feature-Sliced Design, and the type is Supreme, General Sans and Geist Mono.
+      </p>
+    </div>
   </div>
 </footer>

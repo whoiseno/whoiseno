@@ -2,7 +2,7 @@ import { component, defineMarkdocConfig, Markdoc, nodes } from "@astrojs/markdoc
 
 export default defineMarkdocConfig({
   nodes: {
-    // Expressive Code renders every fence; `title`, `mark`, `ins`, `del` and `wrap` come from `{% … %}` annotations.
+    // Expressive Code renders every fence; `mark`, `ins`, `del` and `wrap` come from `{% … %}` annotations.
     fence: {
       ...nodes.fence,
       render: component("./src/features/writing/index.ts", "CodeBlock"),
@@ -10,7 +10,6 @@ export default defineMarkdocConfig({
         ...nodes.fence.attributes,
         content: { type: String, required: true },
         language: { type: String },
-        title: { type: String },
         mark: { type: String },
         ins: { type: String },
         del: { type: String },

@@ -100,9 +100,13 @@ Pages fade between each other with native cross-document view transitions: `@vie
 
 `<html>` in [`Root.astro`](../src/app/ui/Root.astro) has `[scrollbar-gutter:stable]`. Without it, navigating between a short page and a page tall enough to scroll adds or removes the scrollbar, which changes the viewport width by the scrollbar's width and shifts the centered content sideways. The reserved gutter keeps the width constant, so the content no longer jumps on navigation.
 
+## Scrollbars
+
+Every scroll container is thin: `scrollbar-width: thin` and a `--border-hard` thumb on a transparent track, set on `*` in `@layer base` of `global.css`. Expressive Code resets inherited styles on its blocks with an unlayered `all: revert`, which a layered rule cannot beat, so `global.css` also has an unlayered `.expressive-code .frame pre { scrollbar-width: thin; }`.
+
 ## Site layout
 
-`Site.astro` is a grid from `md` (960px): a 14rem sidebar column and a flexible content column. The sidebar is `sticky top-0` at `h-svh`, so the navigation stays put while the page scrolls; the middle of it holds the table of contents on writing posts and the bottom holds the actions. Below `md` the sidebar is a sticky top bar with a menu. The content column is a size container (`@container`), which is why content measures its width with `cqw` (container query width) instead of `vw`: `100vw` would include the sidebar. `<main>` is `max-w-2xl` and centered in that column.
+`Site.astro` renders a body row and, below it, the footer as its own full-width row. From `lg` (1280px) the body row is a grid of three tracks, `14rem minmax(0,1fr) 14rem`, inside a centered container (`max-w-7xl`, `max-w-384` in wide mode). The sidebar takes the first track, the content column the second, and the third stays empty, so the side tracks are equal and `<main>` is centered on the screen rather than in the space beside the sidebar. The sidebar is not pinned to the screen edge: it sits inside the container beside the content, its grid cell stretches to the height of the row, and the rail inside it is `sticky top-0`, so it follows the page and stops where the footer row starts. The middle of the rail holds the table of contents on writing posts and the bottom holds the actions. Below `lg` the sidebar is a sticky top bar with a menu. The content column is a size container (`@container`), which is why content measures its width with `cqw` (container query width) instead of `vw`: `100vw` would include the sidebar. `<main>` is `max-w-2xl` and centered in that column.
 
 ## Writing entry styles
 
@@ -110,9 +114,9 @@ Pages fade between each other with native cross-document view transitions: `@vie
 - **Breakout:** `--breakout` (declared on `:root`, `min(10%, max(0px, calc((100cqw - 100%) / 2 - 1rem)))`) is 10% of the text column, clamped to the space left in the content column minus a 1rem gutter, so it is 0 on phones. Text keeps the column width, while code blocks, tables, blockquotes and images extend by `--breakout` on each side. The prose rules, including the `space-y-3` spacing between blocks, target `article` children because Markdoc wraps the document in an `<article>`. `--breakout` is a token stream, so the `%` resolves where it is used (against the column), and `cqw` resolves against the content column.
 - **Carousel span:** the carousel does not use `--breakout`. `@property --carousel-span` (a registered, inherited `<length>`) is set to `100cqw` on the carousel `<figure>`, which is also an `@container`. Registration makes the value compute to a length there, the width of the content column, instead of staying the text `100cqw` and re-resolving against the figure inside it. The track is `--carousel-span` wide, pulled left and padded (`padding-inline` and `scroll-padding-left`) by `(--carousel-span - 100cqw) / 2`, so it fills the content column while the first slide lines up with the text. The track does not use `w-screen`, so it never reaches under the sidebar.
 - **Lightbox scroll lock:** `html:has([data-slot="lightbox-content"][open])` sets `overflow: hidden` with a stable scrollbar gutter, so the page does not scroll or shift behind the dialog.
-- **Wide mode:** the `data-wide` attribute on `<html>`, toggled by the width button, widens `<main>` in `Site.astro` with the `in-data-[wide]:max-w-4xl` variant and a `transition-[max-width]`. The sidebar and footer keep their width.
+- **Wide mode:** the `data-wide` attribute on `<html>`, toggled by the width button, widens `<main>` in `Site.astro` to `max-w-4xl` and the body container to `max-w-384` with the `in-data-wide:` variant and a `transition-[max-width]`. The side tracks stay 14rem, so the content stays centered; the footer keeps its width.
 - **Focus mode:** `html[data-focus]` rules in `global.css`; see [`animations.md`](./animations.md).
-- **Anchored headings:** `h1` to `h3` inside `Prose` have `scroll-mt-20` below `md`, so a jump does not hide the heading under the sticky top bar, and `scroll-mt-8` from `md`, where the navigation is a side rail and nothing covers the top.
+- **Anchored headings:** `h1` to `h3` inside `Prose` have `scroll-mt-20` below `lg`, so a jump does not hide the heading under the sticky top bar, and `scroll-mt-8` from `lg`, where the navigation is a side rail and nothing covers the top.
 
 ## Component variants
 

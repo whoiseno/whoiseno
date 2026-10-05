@@ -67,15 +67,16 @@ The interactive components follow the [shadcn/ui](https://ui.shadcn.com) compoun
 
 `Icon.astro` is the single entry point for icons (`import { Icon } from "@/shared/ui/icon"`). It wraps `astro-icon` and [Reicon](https://reicon.dev/docs/astro) behind one prefixed `name`:
 
-| Name                  | Source                                                                   | Use for                                         |
-| --------------------- | ------------------------------------------------------------------------ | ----------------------------------------------- |
-| `reicon:ArrowUpRight` | `reicons.ts`, a curated set imported by path                             | UI glyphs (arrows, chevrons, copy, check, menu) |
-| `logo:astro`          | SVGL files in `src/assets/icons/logos/`, catalogued in `config/logos.ts` | Tech-stack logos                                |
-| `ph:github-logo`      | Phosphor through `astro-icon` (`@iconify-json/ph`)                       | Brand marks Reicon does not have                |
+| Name                  | Source                                                                  | Use for                                         |
+| --------------------- | ----------------------------------------------------------------------- | ----------------------------------------------- |
+| `reicon:ArrowUpRight` | `reicons.ts`, a curated set imported by path                            | UI glyphs (arrows, chevrons, copy, check, menu) |
+| `logo:astro`          | SVG files in `src/assets/icons/logos/`, catalogued in `config/logos.ts` | Tech-stack and social logos                     |
+| `ph:github-logo`      | Phosphor through `astro-icon` (`@iconify-json/ph`)                      | Glyphs Reicon does not have (none used today)   |
 
 - An unknown name throws at build time, so a typo cannot silently render nothing.
 - `size` defaults to `"1em"`, so an icon scales with the surrounding text. Reicon accepts `weight` (`Filled` or `Outline`).
 - Logos with `themed: true` ship separate `-light` and `-dark` SVGs. `Icon` renders both and switches with `dark:hidden` and `hidden dark:block`.
+- The tech-stack logos come from SVGL. The social logos `instagram`, `linkedin`, `x` (themed) and `youtube` are hand-drawn approximations; replace them with the official files under the same names in `src/assets/icons/logos/`. Every entry in `logoCatalog` is also selectable as a technology on a work in Keystatic, social logos included.
 - **Add a Reicon:** import it by path in `reicons.ts` (`reicon-astro/icons/<Name>.astro`) and add it to the `reicons` object. Do not import from the package barrel: it pulls in about 2,700 components and slows the dev server.
 - **Add a logo:** drop the SVG from [svgl.app](https://svgl.app) into `src/assets/icons/logos/` (as `<slug>.svg`, or `<slug>-light.svg` and `<slug>-dark.svg` for themed logos) and add an entry to `logoCatalog` in `src/shared/config/logos.ts`. `astro.config.mjs` passes `iconDir: "src/assets/icons"` to `astro-icon`, which is why the files sit under `assets/icons/` and are named `logos/<slug>` internally. `logos.ts` imports no `.astro` files, so `content.config.ts` and `keystatic.config.ts` can import `logoNames` from it for the works `technologies` field.
 - Logos are trademarks of their owners. Alpine.js and Keystatic have no SVGL logo, so none is included.

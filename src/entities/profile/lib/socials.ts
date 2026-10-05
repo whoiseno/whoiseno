@@ -6,12 +6,12 @@ type TypeProfile = CollectionEntry<"profile">["data"];
 type TypeSocial = TypeProfile["socials"][number];
 
 const platforms: Record<TypeSocial["platform"], Pick<TypeSocialLink, "label" | "icon" | "actionLabel">> = {
-  github: { label: "GitHub", icon: "ph:github-logo", actionLabel: "Follow" },
-  linkedin: { label: "LinkedIn", icon: "ph:linkedin-logo", actionLabel: "Connect" },
-  x: { label: "X", icon: "ph:x-logo", actionLabel: "Follow" },
-  instagram: { label: "Instagram", icon: "ph:instagram-logo", actionLabel: "Follow" },
-  youtube: { label: "YouTube", icon: "ph:youtube-logo", actionLabel: "Subscribe" },
-  email: { label: "Email", icon: "ph:envelope-simple" },
+  github: { label: "GitHub", icon: "logo:github", actionLabel: "Follow" },
+  linkedin: { label: "LinkedIn", icon: "logo:linkedin", actionLabel: "Connect" },
+  x: { label: "X", icon: "logo:x", actionLabel: "Follow" },
+  instagram: { label: "Instagram", icon: "logo:instagram", actionLabel: "Follow" },
+  youtube: { label: "YouTube", icon: "logo:youtube", actionLabel: "Subscribe" },
+  email: { label: "Email", icon: "reicon:Envelope" },
 };
 
 function handleFromUrl(url: string): string {

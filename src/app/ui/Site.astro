@@ -37,7 +37,10 @@ const previewImage =
   title={title}
   type={type}
 >
-  <div class="flex-1 md:grid md:grid-cols-[14rem_minmax(0,1fr)]">
+  <div
+    class="mx-auto w-full max-w-7xl flex-1 transition-[max-width] duration-300 in-data-wide:max-w-384 motion-reduce:transition-none lg:grid lg:grid-cols-[14rem_minmax(0,1fr)_14rem]"
+    data-slot="site-body"
+  >
     <SiteSidebar
       avatar={profile.data.avatar}
       crumbs={crumbs}
@@ -63,11 +66,11 @@ const previewImage =
       </Fragment>
     </SiteSidebar>
     <div
-      class="@container flex min-h-svh min-w-0 flex-col"
+      class="@container min-w-0"
       data-slot="site-content"
     >
       <main
-        class="mx-auto w-full max-w-2xl flex-1 space-y-10 px-4 pt-8 pb-16 transition-[max-width] duration-300 in-data-wide:max-w-4xl motion-reduce:transition-none"
+        class="mx-auto w-full max-w-2xl space-y-10 px-4 pt-8 pb-16 transition-[max-width] duration-300 in-data-wide:max-w-4xl motion-reduce:transition-none"
         data-slot="site-main"
       >
         {title && (
@@ -80,10 +83,10 @@ const previewImage =
         )}
         <slot />
       </main>
-      <SiteFooter
-        name={profile.data.name}
-        socials={getSocialLinks(profile.data)}
-      />
     </div>
   </div>
+  <SiteFooter
+    name={profile.data.name}
+    socials={getSocialLinks(profile.data)}
+  />
 </Root>

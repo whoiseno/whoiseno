@@ -1,7 +1,7 @@
 ---
 title: Example Tutorial
 kind: tutorial
-description: A step-by-step guide that builds a small tag filter, showing titled, highlighted and diffed code blocks along the way.
+description: A step-by-step guide that builds a small tag filter, showing highlighted and diffed code blocks along the way.
 publishedDate: 2025-09-11
 tags:
   - Astro
@@ -59,9 +59,9 @@ The site is now on `http://localhost:4321`. Leave it running while you work; edi
 
 ## Step 2: describe a post
 
-Add a type for a post and a helper that filters by tag. The title appears in the corner of the block, and the highlighted line is the one doing the work.
+Add a type for a post and a helper that filters by tag. The highlighted line is the one doing the work.
 
-```ts {% title="src/lib/posts.ts" mark="7" %}
+```ts {% mark="7" %}
 type TypePost = {
   title: string;
   tags: string[];
@@ -76,7 +76,7 @@ export function byTag(posts: TypePost[], tag: string) {
 
 Not every post is tagged, so make the helper return everything when no tag is given. Added lines are green and removed lines are red.
 
-```ts {% title="src/lib/posts.ts" del="1" ins="2-3" %}
+```ts {% del="1" ins="2-3" %}
 export function byTag(posts: TypePost[], tag: string) {
 export function byTag(posts: TypePost[], tag?: string) {
   if (!tag) return posts;
@@ -88,7 +88,7 @@ export function byTag(posts: TypePost[], tag?: string) {
 
 Use the helper in a page. Long lines scroll sideways by default; press the wrap button in the corner to wrap them instead.
 
-```astro {% title="src/pages/index.astro" wrap=true %}
+```astro {% wrap=true %}
 ---
 import { byTag } from "../lib/posts";
 
@@ -112,4 +112,4 @@ Check your work:
 
 ## Wrap up
 
-You built a small tag filter, and along the way saw titled, highlighted and diffed code blocks in action. From here, try moving the posts into a content collection and generating one page per tag.
+You built a small tag filter, and along the way saw highlighted and diffed code blocks in action. From here, try moving the posts into a content collection and generating one page per tag.

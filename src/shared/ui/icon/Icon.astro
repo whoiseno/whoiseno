@@ -10,8 +10,8 @@ type TypeIconName = `logo:${TypeLogoName}` | `ph:${string}` | `reicon:${TypeReic
 
 interface Props extends Omit<ComponentProps<typeof AstroIcon>, "name" | "size"> {
   /**
-   * `reicon:Name` for UI glyphs, `logo:name` for tech-stack logos (SVGL),
-   * `ph:name` for Phosphor glyphs (brand marks Reicon lacks).
+   * `reicon:Name` for UI glyphs, `logo:name` for tech-stack and social logos,
+   * `ph:name` for Phosphor glyphs.
    */
   name: TypeIconName;
   size?: number | string;

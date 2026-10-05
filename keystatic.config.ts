@@ -262,7 +262,6 @@ export default config({
             image: { directory: "src/assets/writing", publicPath: "../../assets/writing/" },
             codeBlock: {
               schema: {
-                title: fields.text({ label: "Title", description: "Filename or caption shown above the code" }),
                 mark: fields.text({ label: "Highlight lines", description: "For example 1,3-5" }),
                 ins: fields.text({ label: "Added lines", description: "Lines to show as inserted, for example 2" }),
                 del: fields.text({ label: "Removed lines", description: "Lines to show as deleted, for example 3" }),

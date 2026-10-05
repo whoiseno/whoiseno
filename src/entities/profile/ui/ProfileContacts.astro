@@ -40,14 +40,14 @@ const links = socials.filter((social) => !social.email);
     {links.map((social) => (
       <Popover hover>
         <PopoverTrigger
-          class="flex size-9 items-center justify-center rounded-lg border bg-card text-muted-foreground transition-colors outline-none hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
+          class="flex size-9 items-center justify-center rounded-lg border bg-card transition-colors outline-none hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring"
           aria-label={social.label}
           href={social.href}
           rel="noopener noreferrer"
           target="_blank"
         >
           <Icon
-            class="size-4"
+            class="size-4.5"
             name={social.icon}
           />
         </PopoverTrigger>

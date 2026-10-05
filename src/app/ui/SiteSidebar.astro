@@ -25,12 +25,12 @@ const isActive = (href: string) =>
 <header
   data-slot="site-sidebar"
   data-focus-hide
-  class="sticky top-0 z-40 border-b bg-background/60 backdrop-blur md:h-svh md:border-r md:border-b-0 md:bg-background md:backdrop-blur-none"
+  class="sticky top-0 z-40 border-b bg-background/60 backdrop-blur lg:static lg:border-b-0 lg:bg-transparent lg:backdrop-blur-none"
   x-data="{ open: false }"
 >
-  <div class="flex h-14 items-center gap-1 px-4 md:h-full md:flex-col md:items-stretch md:gap-0 md:py-6">
+  <div class="flex h-14 items-center gap-1 px-4 lg:sticky lg:top-0 lg:h-full lg:max-h-svh lg:flex-col lg:items-stretch lg:gap-0 lg:px-0 lg:py-6">
     <a
-      class="mr-auto flex min-w-0 items-center gap-2 font-serif font-semibold md:mr-0 md:mb-6 md:px-2.5"
+      class="mr-auto flex min-w-0 items-center gap-2 font-serif font-semibold lg:mr-0 lg:mb-6 lg:px-2.5"
       href="/"
     >
       <Avatar
@@ -42,17 +42,17 @@ const isActive = (href: string) =>
     </a>
     <nav
       id="site-nav"
-      class="absolute inset-x-0 top-full border-b bg-background px-4 py-2 max-md:not-data-open:hidden md:static md:border-0 md:bg-transparent md:p-0"
+      class="absolute inset-x-0 top-full border-b bg-background px-4 py-2 max-lg:not-data-open:hidden lg:static lg:border-0 lg:bg-transparent lg:p-0"
       aria-label="Primary"
       x-bind:data-open="open"
     >
-      <ul class="flex flex-col md:gap-0.5">
+      <ul class="flex flex-col lg:gap-0.5">
         {items.map((item) => {
           const nested = crumbs[0]?.href === item.href ? crumbs.slice(1) : [];
           return (
             <li>
               <a
-                class="block rounded-md py-2 text-muted-foreground transition-colors hover:text-foreground aria-[current]:font-medium aria-[current]:text-foreground md:px-2.5 md:py-1.5"
+                class="block rounded-md py-2 text-muted-foreground transition-colors hover:text-foreground aria-[current]:font-medium aria-[current]:text-foreground lg:px-2.5 lg:py-1.5"
                 aria-current={nested.length > 0 ? "true" : isActive(item.href) ? "page" : undefined}
                 href={item.href}
               >
@@ -86,17 +86,17 @@ const isActive = (href: string) =>
         })}
       </ul>
     </nav>
-    <div class="hidden min-h-0 flex-1 items-center md:flex">
+    <div class="hidden min-h-0 flex-1 items-center lg:flex">
       <slot name="toc" />
     </div>
     <div
-      class="flex items-center gap-1 md:flex-wrap md:px-1"
+      class="flex items-center gap-1 lg:flex-wrap lg:px-1"
       data-slot="site-actions"
     >
       <slot name="actions" />
     </div>
     <Button
-      class="md:hidden"
+      class="lg:hidden"
       aria-controls="site-nav"
       aria-label="Toggle menu"
       color="neutral"

@@ -4,7 +4,11 @@ interface TypeLogoEntry {
   themed: boolean;
 }
 
-/** Tech-stack logos from SVGL, stored in `src/assets/icons/logos/`. Trademarks belong to their owners. */
+/**
+ * Tech-stack and social logos, stored in `src/assets/icons/logos/`. Most come from SVGL; `instagram`, `linkedin`,
+ * `x` and `youtube` are hand-drawn approximations, replace them with the official files under the same names.
+ * Trademarks belong to their owners.
+ */
 export const logoCatalog = {
   "astro": { label: "Astro", themed: true },
   "aws": { label: "AWS", themed: true },
@@ -24,7 +28,9 @@ export const logoCatalog = {
   "go": { label: "Go", themed: true },
   "graphql": { label: "GraphQL", themed: false },
   "html5": { label: "HTML5", themed: false },
+  "instagram": { label: "Instagram", themed: false },
   "javascript": { label: "JavaScript", themed: false },
+  "linkedin": { label: "LinkedIn", themed: false },
   "linux": { label: "Linux", themed: false },
   "markdown": { label: "Markdown", themed: true },
   "mongodb": { label: "MongoDB", themed: true },
@@ -57,6 +63,8 @@ export const logoCatalog = {
   "vite": { label: "Vite", themed: false },
   "vscode": { label: "VS Code", themed: false },
   "vue": { label: "Vue", themed: false },
+  "x": { label: "X", themed: true },
+  "youtube": { label: "YouTube", themed: false },
   "zod": { label: "Zod", themed: false },
 } as const satisfies Record<string, TypeLogoEntry>;
 

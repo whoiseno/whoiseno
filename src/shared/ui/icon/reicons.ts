@@ -9,6 +9,7 @@ import Copy from "reicon-astro/icons/Copy.astro";
 import Envelope from "reicon-astro/icons/Envelope.astro";
 import Expand from "reicon-astro/icons/Expand.astro";
 import Eye from "reicon-astro/icons/Eye.astro";
+import Heart from "reicon-astro/icons/Heart.astro";
 import Menu from "reicon-astro/icons/Menu.astro";
 import Moon from "reicon-astro/icons/Moon.astro";
 import Star from "reicon-astro/icons/Star.astro";
@@ -32,6 +33,7 @@ export const reicons = {
   Envelope,
   Expand,
   Eye,
+  Heart,
   Menu,
   Moon,
   Star,

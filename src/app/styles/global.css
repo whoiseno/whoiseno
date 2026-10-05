@@ -237,6 +237,11 @@
     border-color: var(--border);
   }
 
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-hard) transparent;
+  }
+
   [x-cloak] {
     display: none !important;
   }
@@ -250,13 +255,13 @@
       @apply space-y-3;
     }
     h1 {
-      @apply scroll-mt-20 pt-6 font-serif text-xl font-bold md:scroll-mt-8;
+      @apply scroll-mt-20 pt-6 font-serif text-xl font-bold lg:scroll-mt-8;
     }
     h2 {
-      @apply scroll-mt-20 pt-4 font-serif text-lg font-semibold md:scroll-mt-8;
+      @apply scroll-mt-20 pt-4 font-serif text-lg font-semibold lg:scroll-mt-8;
     }
     h3 {
-      @apply scroll-mt-20 pt-2 font-serif text-base font-semibold md:scroll-mt-8;
+      @apply scroll-mt-20 pt-2 font-serif text-base font-semibold lg:scroll-mt-8;
     }
     a {
       @apply underline underline-offset-4 hover:text-muted-foreground;
@@ -313,6 +318,11 @@
   html[data-focus="off"] [data-focus-hide] {
     @apply animate-in duration-300 ease-out fade-in motion-reduce:duration-0;
   }
+}
+
+/* Expressive Code resets inherited styles with an unlayered `all: revert`, which the layered rule above cannot beat. */
+.expressive-code .frame pre {
+  scrollbar-width: thin;
 }
 
 @media (prefers-reduced-motion: no-preference) {
