@@ -1,4 +1,5 @@
 ---
+import { aspectRatioCatalog, type TypeAspectRatioName } from "@/shared/config/aspect-ratio";
 import { formatDate } from "@/shared/lib/date";
 import { Badge } from "@/shared/ui/badge";
 import Icon from "@/shared/ui/icon/Icon.astro";
@@ -11,6 +12,8 @@ interface Props {
   /** Author, director or creator. */
   byline?: string;
   poster?: ImageMetadata | null;
+  /** The shape the poster is cropped to. */
+  posterRatio?: TypeAspectRatioName;
   /** When the work itself came out. */
   published?: Date | null;
   /** Where the owner is with it, e.g. "Finished Jun 2025". */
@@ -29,6 +32,7 @@ const {
   title,
   byline,
   poster,
+  posterRatio = "2/3",
   published,
   timeline,
   rating,
@@ -38,6 +42,7 @@ const {
   layout = "card",
 } = Astro.props;
 const row = layout === "row";
+const posterShape = aspectRatioCatalog[posterRatio].ratio;
 ---
 
 <article
@@ -48,10 +53,11 @@ const row = layout === "row";
   <div class:list={[row ? "w-24 shrink-0 sm:w-28" : "w-full"]}>
     {poster ? (
       <Image
-        class="aspect-2/3 w-full rounded-lg border bg-muted object-cover"
+        class="w-full rounded-lg border bg-muted object-cover"
         alt=""
-        height={420}
+        height={posterShape ? Math.round(280 / posterShape) : undefined}
         src={poster}
+        style={{ aspectRatio: posterShape ?? undefined }}
         width={280}
       />
     ) : (

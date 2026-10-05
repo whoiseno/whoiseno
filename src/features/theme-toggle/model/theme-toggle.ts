@@ -18,7 +18,9 @@ export function registerThemeToggle(Alpine: Alpine) {
         return;
       }
 
-      document.startViewTransition(apply);
+      const root = document.documentElement;
+      root.dataset.themeTransition = "";
+      document.startViewTransition(apply).finished.finally(() => delete root.dataset.themeTransition);
     },
   }));
 }

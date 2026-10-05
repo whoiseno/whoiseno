@@ -1,8 +1,23 @@
+---
+import { aspectRatioCatalog, type TypeAspectRatioName } from "@/shared/config/aspect-ratio";
+
+interface Props {
+  ratio?: TypeAspectRatioName;
+}
+
+const { ratio = "original" } = Astro.props;
+const value = aspectRatioCatalog[ratio].ratio;
+---
+
 <div
-  class="w-4/5 shrink-0 snap-start space-y-2 [&_img]:w-full"
+  class:list={[
+    "w-4/5 shrink-0 snap-start space-y-2 [&_img]:w-full",
+    value && "[&_img]:aspect-(--ratio) [&_img]:object-cover",
+  ]}
   data-slot="slide"
   aria-roledescription="slide"
   role="group"
+  style={{ "--ratio": value ?? undefined }}
 >
   <slot />
 </div>

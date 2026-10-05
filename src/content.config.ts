@@ -2,6 +2,7 @@ import { defineCollection, type SchemaContext } from "astro:content";
 import { glob } from "astro/loaders";
 import { z } from "astro/zod";
 
+import { aspectRatioNames } from "./shared/config/aspect-ratio";
 import { mediaSourceNames, type TypeMediaKind } from "./shared/config/media-sources";
 import { logoNames } from "./shared/ui/icon/logos";
 
@@ -92,7 +93,15 @@ const hardware = defineCollection({
   loader: glob({ pattern: "**/*.yaml", base: "./src/content/hardware" }),
   schema: (context) =>
     uses(context).extend({
-      photos: z.array(z.object({ image: context.image(), alt: z.string().optional() })).default([]),
+      photos: z
+        .array(
+          z.object({
+            image: context.image(),
+            alt: z.string().optional(),
+            ratio: z.enum(aspectRatioNames).default("1/1"),
+          }),
+        )
+        .default([]),
     }),
 });
 
@@ -107,6 +116,7 @@ const books = defineCollection({
       author: z.string(),
       status: z.enum(["reading", "read", "want"]),
       poster: image().nullish(),
+      posterRatio: z.enum(aspectRatioNames).default("2/3"),
       publishedDate: date.nullish(),
       startedDate: date.nullish(),
       finishedDate: date.nullish(),
@@ -125,6 +135,7 @@ const movies = defineCollection({
       creator: z.string().optional(),
       status: z.enum(["watching", "watched", "planned"]),
       poster: image().nullish(),
+      posterRatio: z.enum(aspectRatioNames).default("2/3"),
       releaseDate: date.nullish(),
       startedDate: date.nullish(),
       watchedDate: date.nullish(),

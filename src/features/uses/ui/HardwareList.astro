@@ -1,4 +1,5 @@
 ---
+import { aspectRatioCatalog } from "@/shared/config/aspect-ratio";
 import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 
@@ -21,17 +22,21 @@ const hardware = (await getCollection("hardware")).sort((a, b) => a.data.name.lo
             role="region"
             tabindex="0"
           >
-            {photos.map(({ image, alt }) => (
-              <li class="shrink-0 snap-start">
-                <Image
-                  class="size-40 rounded-[10px] bg-muted object-cover"
-                  alt={alt ?? item.name}
-                  height={320}
-                  src={image}
-                  width={320}
-                />
-              </li>
-            ))}
+            {photos.map(({ image, alt, ratio }) => {
+              const value = aspectRatioCatalog[ratio].ratio;
+              return (
+                <li class="shrink-0 snap-start">
+                  <Image
+                    class="h-40 w-auto rounded-[10px] bg-muted object-cover"
+                    alt={alt ?? item.name}
+                    height={320}
+                    src={image}
+                    style={{ aspectRatio: value ?? undefined }}
+                    width={value ? Math.round(320 * value) : undefined}
+                  />
+                </li>
+              );
+            })}
           </ul>
         )}
         <UsesItem {...item} />

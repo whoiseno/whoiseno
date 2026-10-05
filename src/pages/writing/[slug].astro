@@ -1,6 +1,6 @@
 ---
 import Site from "@/app/layouts/Site.astro";
-import { writingKindLabels, WritingPager, WritingToc, WritingToolbar } from "@/features/writing";
+import { WritingBackLink, writingKindLabels, WritingPager, WritingToc, WritingToolbar } from "@/features/writing";
 import { formatDate } from "@/shared/lib/date";
 import { Badge } from "@/shared/ui/badge";
 import { Button } from "@/shared/ui/button";
@@ -71,16 +71,7 @@ const { Content, headings } = await render(entry);
       class="space-y-4"
       data-focus-hide
     >
-      <a
-        class="inline-flex items-center gap-1 text-muted-foreground transition-colors hover:text-foreground"
-        href="/writing"
-      >
-        <Icon
-          class="size-3.5"
-          name="reicon:ArrowLeft"
-        />
-        All writing
-      </a>
+      <WritingBackLink class="lg:hidden" />
       <WritingPager
         next={next}
         previous={previous}

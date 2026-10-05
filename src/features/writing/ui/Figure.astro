@@ -1,0 +1,31 @@
+---
+import type { ImageMetadata } from "astro";
+import { Image } from "astro:assets";
+
+interface Props {
+  src: ImageMetadata | string;
+  alt?: string;
+  title?: string;
+}
+
+const { src, alt = "", title } = Astro.props;
+---
+
+<figure
+  class="space-y-2"
+  data-slot="figure"
+>
+  {typeof src === "string" ? (
+    <img
+      alt={alt}
+      loading="lazy"
+      src={src}
+    />
+  ) : (
+    <Image
+      alt={alt}
+      src={src}
+    />
+  )}
+  {title && <figcaption class="text-xs text-muted-foreground">{title}</figcaption>}
+</figure>

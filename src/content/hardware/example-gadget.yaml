@@ -7,5 +7,7 @@ photos:
     alt: Placeholder photo of the gadget on a desk
   - image: ../../assets/uses/hardware/example-gadget-2.svg
     alt: Placeholder side view of the gadget
+    ratio: 4/3
   - image: ../../assets/uses/hardware/example-gadget-3.svg
     alt: Placeholder close-up of the gadget
+    ratio: 3/4

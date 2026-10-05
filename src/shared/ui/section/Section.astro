@@ -12,10 +12,7 @@ const { title, href, hrefLabel = "View all" } = Astro.props;
 
 <section
   data-slot="section"
-  data-reveal
   class="space-y-3"
-  x-data
-  x-intersect.once="$el.classList.add('in-view')"
 >
   <div class="flex items-baseline justify-between gap-3">
     <h2 class="font-serif text-xl font-semibold">{title}</h2>

@@ -78,3 +78,11 @@ The "no distraction" view on `/writing/[slug]` is the one place `tw-animate-css`
 - Both are 300ms with `ease-out`, and `motion-reduce:duration-0` makes them instant for reduced motion.
 
 The floating exit button is deliberately not inside a `data-focus-hide` element. With `fill-mode-forwards`, the element keeps the exit keyframe's `transform` and `filter`, which makes it the containing block for any `position: fixed` descendant and would move the button. The button fades with Alpine's `x-transition` using the same `animate-in` / `animate-out` classes.
+
+## Page transitions
+
+Navigating between pages cross-fades through native cross-document view transitions. `global.css` opts in with `@view-transition { navigation: auto; }` inside `@media (prefers-reduced-motion: no-preference)`, and the browser's default `root` cross-fade is used, so there is no script and no `ClientRouter`. Browsers without support (Firefox at the time of writing) load pages normally, and reduced motion turns it off.
+
+Nothing animates in when a page loads; the earlier scroll-reveal on `Section` children (`data-reveal` with `x-intersect`) was removed in favor of the fade.
+
+The theme toggle uses a separate same-document view transition (the top-to-bottom wipe). Its keyframes are scoped to `html[data-theme-transition]`, an attribute `theme-toggle.ts` sets while the transition runs, so the wipe never plays on a page navigation and the page fade never replaces the wipe. See [`styling.md`](./styling.md#dark-mode).

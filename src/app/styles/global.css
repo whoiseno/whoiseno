@@ -65,160 +65,163 @@
   :root {
     --radius: 0.45rem;
 
+    /* 10% of the text column on each side, never wider than the space left in the viewport */
+    --breakout: min(10%, max(0px, calc((100vw - 100%) / 2 - 1rem)));
+
     --font-heading: var(--font-general-sans-variable);
     --font-content: var(--font-supreme-variable);
     --font-code: var(--font-geist-mono);
 
     /* Raw black and white color */
-    --black: #000000;
-    --white: #ffffff;
+    --black: oklch(0 0 0);
+    --white: oklch(1 0 0);
 
     /* Overlay background color, dialogs & panels */
-    --scrim: #1c191566;
+    --scrim: oklch(0.2154 0.009 75.14 / 40%);
 
     /* Base background and text colors */
-    --background: #fafaf9;
-    --foreground: #1c1917;
+    --background: oklch(0.9848 0.0013 106.42);
+    --foreground: oklch(0.2161 0.0061 56.04);
     /* Foreground dimmed, one level below the foreground color */
-    --toned: #655f5a;
+    --toned: oklch(0.4895 0.011 62.41);
     /*
       Foreground dimmed, one level below the toned color,
       two level below the foreground color
     */
-    --dimmed: #78716c;
+    --dimmed: oklch(0.5534 0.0116 58.07);
 
     /* Surface color, one level below the background color */
-    --surface: #f5f5f4;
+    --surface: oklch(0.9699 0.0013 106.42);
 
     /* Card background and foreground, one level above the background */
-    --card: #ffffff;
-    --card-foreground: #1c1917;
+    --card: oklch(1 0 0);
+    --card-foreground: oklch(0.2161 0.0061 56.04);
 
     /*
       Popover background and foreground, dropdowns, hover cards, popovers, &
       context menus
     */
-    --popover: #ffffff;
-    --popover-foreground: #1c1917;
+    --popover: oklch(1 0 0);
+    --popover-foreground: oklch(0.2161 0.0061 56.04);
 
     /* Input background and foreground, inputs, and text areas */
-    --input: #e7e5e4;
-    --input-foreground: #1c1917;
+    --input: oklch(0.9232 0.0026 48.72);
+    --input-foreground: oklch(0.2161 0.0061 56.04);
 
     /*
       Accent background and foreground, checkboxes, radio buttons, & peer
       elements
     */
-    --accent: #f5f5f4;
-    --accent-foreground: #1c1917;
+    --accent: oklch(0.9699 0.0013 106.42);
+    --accent-foreground: oklch(0.2161 0.0061 56.04);
 
     /*
       Muted background and foreground, disabled, low priority &
       non-interactive
     */
-    --muted: #f5f5f4;
-    --muted-foreground: #78716c;
+    --muted: oklch(0.9699 0.0013 106.42);
+    --muted-foreground: oklch(0.5534 0.0116 58.07);
 
     /*
       Brand background and foreground. Main portfolio color, 70% usage
       on portfolio
     */
-    --brand: #171717;
-    --brand-foreground: #fafafa;
+    --brand: oklch(0.2046 0 0);
+    --brand-foreground: oklch(0.9851 0 0);
 
     /* Primary background and foreground. 20% usage on portfolio */
-    --primary: #171717;
-    --primary-foreground: #fafafa;
+    --primary: oklch(0.2046 0 0);
+    --primary-foreground: oklch(0.9851 0 0);
 
     /* Secondary background and foreground. 10% usage on portfolio */
-    --secondary: #f5f5f4;
-    --secondary-foreground: #1c1917;
+    --secondary: oklch(0.9699 0.0013 106.42);
+    --secondary-foreground: oklch(0.2161 0.0061 56.04);
 
     /* Neutral background and foreground */
-    --neutral: #e7e5e4;
-    --neutral-foreground: #1c1917;
+    --neutral: oklch(0.9232 0.0026 48.72);
+    --neutral-foreground: oklch(0.2161 0.0061 56.04);
 
     /* Info background color. Info messages & context */
-    --info: #3b82f6;
-    --info-foreground: #fafafa;
+    --info: oklch(0.6231 0.188 259.81);
+    --info-foreground: oklch(0.9851 0 0);
 
     /* Warning background color. Warning messages & context */
-    --warning: #f59e0b;
-    --warning-foreground: #171717;
+    --warning: oklch(0.7686 0.1647 70.08);
+    --warning-foreground: oklch(0.2046 0 0);
 
     /* Success background color. Success messages & context */
-    --success: #00c758;
-    --success-foreground: #052e16;
+    --success: oklch(0.7245 0.2033 149.23);
+    --success-foreground: oklch(0.2664 0.0628 152.93);
 
     /* Error background color. Error messages & context */
-    --error: #df2225;
-    --error-foreground: #fafafa;
+    --error: oklch(0.5802 0.22 27.1);
+    --error-foreground: oklch(0.9851 0 0);
 
     /* Ring color. Focus states and outlines */
-    --ring: #a8a29e;
+    --ring: oklch(0.7161 0.0091 56.26);
 
     /* Border color. (all) */
-    --border: #1c191521;
-    --border-soft: #1c19150f;
-    --border-hard: #1c191533;
+    --border: oklch(0.2154 0.009 75.14 / 13%);
+    --border-soft: oklch(0.2154 0.009 75.14 / 6%);
+    --border-hard: oklch(0.2154 0.009 75.14 / 20%);
   }
 
   .dark {
     color-scheme: dark;
 
-    --scrim: #100f0fb3;
+    --scrim: oklch(0.1696 0.0017 17.32 / 70%);
 
-    --background: #100f0f;
-    --foreground: #fafafa;
-    --toned: #a1a1a1;
-    --dimmed: #909092;
+    --background: oklch(0.1696 0.0017 17.32);
+    --foreground: oklch(0.9851 0 0);
+    --toned: oklch(0.709 0 0);
+    --dimmed: oklch(0.654 0.0029 286.32);
 
-    --surface: #171717;
+    --surface: oklch(0.2046 0 0);
 
-    --card: #171717;
-    --card-foreground: #fafafa;
+    --card: oklch(0.2046 0 0);
+    --card-foreground: oklch(0.9851 0 0);
 
-    --popover: #171717;
-    --popover-foreground: #fafafa;
+    --popover: oklch(0.2046 0 0);
+    --popover-foreground: oklch(0.9851 0 0);
 
-    --input: #ffffff26;
-    --input-foreground: #fafafa;
+    --input: oklch(1 0 0 / 15%);
+    --input-foreground: oklch(0.9851 0 0);
 
-    --accent: #404040;
-    --accent-foreground: #fafafa;
+    --accent: oklch(0.3715 0 0);
+    --accent-foreground: oklch(0.9851 0 0);
 
-    --muted: #262626;
-    --muted-foreground: #a1a1a1;
+    --muted: oklch(0.2686 0 0);
+    --muted-foreground: oklch(0.709 0 0);
 
-    --brand: #d4d4d4;
-    --brand-foreground: #171717;
+    --brand: oklch(0.8699 0 0);
+    --brand-foreground: oklch(0.2046 0 0);
 
-    --primary: #d4d4d4;
-    --primary-foreground: #171717;
+    --primary: oklch(0.8699 0 0);
+    --primary-foreground: oklch(0.2046 0 0);
 
-    --secondary: #262626;
-    --secondary-foreground: #fafafa;
+    --secondary: oklch(0.2686 0 0);
+    --secondary-foreground: oklch(0.9851 0 0);
 
-    --neutral: #404040;
-    --neutral-foreground: #fafafa;
+    --neutral: oklch(0.3715 0 0);
+    --neutral-foreground: oklch(0.9851 0 0);
 
-    --info: #60a5fa;
-    --info-foreground: #171717;
+    --info: oklch(0.7137 0.1434 254.62);
+    --info-foreground: oklch(0.2046 0 0);
 
-    --warning: #fbbf24;
-    --warning-foreground: #171717;
+    --warning: oklch(0.8369 0.1644 84.43);
+    --warning-foreground: oklch(0.2046 0 0);
 
-    --success: #00c758;
-    --success-foreground: #052e16;
+    --success: oklch(0.7245 0.2033 149.23);
+    --success-foreground: oklch(0.2664 0.0628 152.93);
 
-    --error: #ff6568;
-    --error-foreground: #171717;
+    --error: oklch(0.7036 0.1881 22.15);
+    --error-foreground: oklch(0.2046 0 0);
 
-    --ring: #737373;
+    --ring: oklch(0.5555 0 0);
 
-    --border: #ffffff1a;
-    --border-soft: #ffffff0d;
-    --border-hard: #ffffff33;
+    --border: oklch(1 0 0 / 10%);
+    --border-soft: oklch(1 0 0 / 5%);
+    --border-hard: oklch(1 0 0 / 20%);
   }
 
   *,
@@ -234,8 +237,11 @@
 
 @layer components {
   [data-slot="prose"] {
-    @apply space-y-3 text-sm leading-relaxed;
+    @apply text-sm leading-relaxed;
 
+    & > article {
+      @apply space-y-3;
+    }
     h2 {
       @apply scroll-mt-20 pt-4 font-serif text-lg font-semibold;
     }
@@ -268,7 +274,30 @@
       @apply rounded-lg border;
     }
     blockquote {
-      @apply border-l-2 pl-4 text-muted-foreground;
+      @apply rounded-r-lg border-l-2 bg-muted/40 px-4 py-2 text-muted-foreground;
+    }
+    table {
+      @apply w-full text-left;
+    }
+    th {
+      @apply bg-muted px-3 py-2 font-medium;
+    }
+    td {
+      @apply border-t px-3 py-2 align-top;
+    }
+
+    & > article > pre,
+    & > article > blockquote,
+    & > article > [data-slot="table"] {
+      margin-inline: calc(var(--breakout) * -1);
+    }
+    & > article > blockquote {
+      padding-inline: max(1rem, var(--breakout));
+    }
+    & > article > [data-slot="figure"] > img {
+      width: calc(100% + var(--breakout) * 2);
+      max-width: none;
+      margin-inline: calc(var(--breakout) * -1);
     }
   }
 
@@ -287,20 +316,24 @@
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  ::view-transition-old(root),
-  ::view-transition-new(root) {
+  @view-transition {
+    navigation: auto;
+  }
+
+  html[data-theme-transition]::view-transition-old(root),
+  html[data-theme-transition]::view-transition-new(root) {
     mix-blend-mode: normal;
     animation-duration: 0.7s;
     animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
     animation-fill-mode: both;
   }
 
-  ::view-transition-old(root) {
+  html[data-theme-transition]::view-transition-old(root) {
     z-index: 1;
     animation-name: theme-wipe-out;
   }
 
-  ::view-transition-new(root) {
+  html[data-theme-transition]::view-transition-new(root) {
     z-index: 2;
     animation-name: theme-wipe-in;
   }
@@ -321,20 +354,5 @@
   }
   to {
     clip-path: inset(0);
-  }
-}
-
-@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
-  [data-reveal] {
-    opacity: 0;
-    transform: translateY(20px);
-    transition:
-      opacity 0.6s ease-out,
-      transform 0.6s ease-out;
-  }
-
-  [data-reveal].in-view {
-    opacity: 1;
-    transform: none;
   }
 }

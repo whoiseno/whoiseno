@@ -17,9 +17,9 @@ Placeholder text for a long-form post, written in **Markdoc**. This paragraph on
 
 ## A single image
 
-![A placeholder illustration](../../assets/writing/example-wide.svg)
+![A placeholder illustration](../../assets/writing/example-wide.svg "A placeholder illustration, with an optional caption underneath.")
 
-Images keep their aspect ratio and scale down to the width of the column.
+Images keep their aspect ratio and flow 10% past the text column on each side, while the caption stays on the column.
 
 ## Two columns
 
@@ -34,19 +34,36 @@ The left column holds a short block of text. It sits beside the right column on 
 
 ## A carousel
 
-{% carousel %}
+{% carousel caption="Three placeholder slides, each cropped to its own aspect ratio." %}
 {% slide %}
 ![First slide](../../assets/writing/example-slide-1.svg)
 {% /slide %}
-{% slide %}
+{% slide ratio="1/1" %}
 ![Second slide](../../assets/writing/example-slide-2.svg)
 {% /slide %}
-{% slide %}
+{% slide ratio="3/4" %}
 ![Third slide](../../assets/writing/example-slide-3.svg)
 {% /slide %}
 {% /carousel %}
 
-Slides start aligned with the column, run past the right edge of the page, and travel right to left across the whole screen as you press the arrows or swipe.
+The track runs across the whole screen while the first slide lines up with the text. The arrows sit below it, aligned with the start of the text, and move one slide at a time. Each slide can be cropped to its own aspect ratio; the first one keeps its original shape.
+
+## Code, quotes and tables
+
+```ts
+export function greet(name: string) {
+  return `Hello, ${name}. This line is long enough to need horizontal scrolling inside the code block on a narrow screen.`;
+}
+```
+
+> A blockquote keeps its text on the column while the tinted box flows past it.
+
+| Element     | Flows out | Text stays on the column |
+| ----------- | --------- | ------------------------ |
+| Code block  | Yes       | No                       |
+| Image       | Yes       | Caption only             |
+| Table       | Yes       | No                       |
+| Blockquote  | Yes       | Yes                      |
 
 ## Math
 

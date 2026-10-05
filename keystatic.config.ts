@@ -1,8 +1,18 @@
 import { collection, config, fields, singleton } from "@keystatic/core";
 import { block, inline, repeating, wrapper } from "@keystatic/core/content-components";
 
+import { aspectRatioCatalog, aspectRatioNames, type TypeAspectRatioName } from "./src/shared/config/aspect-ratio";
 import { mediaSourceCatalog, mediaSourceNames, type TypeMediaKind } from "./src/shared/config/media-sources";
 import { logoCatalog, logoNames } from "./src/shared/ui/icon/logos";
+
+function aspectRatioField(defaultValue: TypeAspectRatioName) {
+  return fields.select({
+    label: "Aspect ratio",
+    description: "Crops the image to this shape. Original keeps its own ratio.",
+    options: aspectRatioNames.map((value) => ({ label: aspectRatioCatalog[value].label, value })),
+    defaultValue,
+  });
+}
 
 function usesFields(kind: "software" | "hardware") {
   return {
@@ -243,11 +253,15 @@ export default config({
             carousel: repeating({
               label: "Carousel",
               description: "Swipeable row of slides, each holding an image or text",
-              schema: {},
+              schema: { caption: fields.text({ label: "Caption", description: "Optional, shown under the slides" }) },
               children: ["slide"],
               validation: { children: { min: 2 } },
             }),
-            slide: wrapper({ label: "Slide", schema: {}, forSpecificLocations: true }),
+            slide: wrapper({
+              label: "Slide",
+              schema: { ratio: aspectRatioField("original") },
+              forSpecificLocations: true,
+            }),
             columns: repeating({
               label: "Two columns",
               description: "Side-by-side layout, stacked on small screens",
@@ -301,6 +315,7 @@ export default config({
               label: "Alt text",
               description: "Describes the photo for screen readers. Defaults to the product name.",
             }),
+            ratio: aspectRatioField("1/1"),
           }),
           {
             label: "Photos",
@@ -329,6 +344,7 @@ export default config({
           defaultValue: "read",
         }),
         poster: posterField("books"),
+        posterRatio: aspectRatioField("2/3"),
         publishedDate: fields.date({ label: "Published on" }),
         startedDate: fields.date({ label: "Started on" }),
         finishedDate: fields.date({ label: "Finished on" }),
@@ -366,6 +382,7 @@ export default config({
           defaultValue: "watched",
         }),
         poster: posterField("movies"),
+        posterRatio: aspectRatioField("2/3"),
         releaseDate: fields.date({ label: "Released on" }),
         startedDate: fields.date({ label: "Started on" }),
         watchedDate: fields.date({ label: "Finished on" }),

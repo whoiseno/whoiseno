@@ -35,7 +35,7 @@ export default (Alpine: Alpine) => {
 };
 ```
 
-It registers `@alpinejs/anchor` (popover and dropdown positioning), `@alpinejs/intersect` (scroll reveal), every shared component's behavior through `registerUi` from `shared/ui/alpine.ts`, the theme toggle through `registerThemeToggle` from `@/features/theme-toggle/client`, and the writing reader, carousel and kind filter store through `registerWriting` from `@/features/writing/client`. Features expose their browser code from `client.ts`, separate from the `.astro` exports in `index.ts` (see [`features.md`](./features.md)). Add further `Alpine.plugin(...)` calls here for new Alpine plugins, and add the corresponding `window.Alpine` typing in [`src/env.d.ts`](../../src/env.d.ts) if needed.
+It registers `@alpinejs/anchor` (popover and dropdown positioning), `@alpinejs/intersect` (registered, but no component uses `x-intersect` at the moment), every shared component's behavior through `registerUi` from `shared/ui/alpine.ts`, the theme toggle through `registerThemeToggle` from `@/features/theme-toggle/client`, and the writing reader, carousel and kind filter store through `registerWriting` from `@/features/writing/client`. Features expose their browser code from `client.ts`, separate from the `.astro` exports in `index.ts` (see [`features.md`](./features.md)). Add further `Alpine.plugin(...)` calls here for new Alpine plugins, and add the corresponding `window.Alpine` typing in [`src/env.d.ts`](../../src/env.d.ts) if needed.
 
 ## `fonts/`
 
@@ -43,7 +43,7 @@ Raw variable-font files (`.woff2`) referenced by `fontProviders.local()` entries
 
 ## `styles/global.css`
 
-The single global stylesheet, imported once from `Root.astro` ([`src/shared/ui/layouts/Root.astro`](../../src/shared/ui/layouts/Root.astro)). Pulls in Tailwind (`@import "tailwindcss"`) and defines the `@theme` block (breakpoints, fonts, color and radius mapping), the light tokens in `:root`, the dark tokens in `.dark`, `[data-slot="prose"]` styles, scroll-reveal and `x-cloak`. Full breakdown in [`styling.md`](../styling.md).
+The single global stylesheet, imported once from `Root.astro` ([`src/shared/ui/layouts/Root.astro`](../../src/shared/ui/layouts/Root.astro)). Pulls in Tailwind (`@import "tailwindcss"`) and defines the `@theme` block (breakpoints, fonts, color and radius mapping), the light tokens in `:root`, the dark tokens in `.dark`, `[data-slot="prose"]` styles (including the breakout), the page-fade `@view-transition`, the theme wipe, and `x-cloak`. Full breakdown in [`styling.md`](../styling.md).
 
 ## Conventions
 

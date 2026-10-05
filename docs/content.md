@@ -25,7 +25,7 @@ All content lives under `src/content/`. The seed entries are placeholders (`Exam
 - `navigation.links[]` is the header menu, in the order listed: `label`, `href` (a site path such as `/writing`) and `visible` (default `true`). Unticking "Show in navigation" hides a link without deleting it. The singleton file must exist (`src/content/navigation/index.yaml`); `getNavItems` throws without it. Hobbies appears as one link (`/hobbies`); Books and Movies are reached from that page.
 - `writing[].kind` is `blog | tutorial | journal | note` (default `blog`). The list at `/writing` shows the title, an outline badge with the kind and the date on one row, grouped by year, and a dropdown next to the tag links filters the list by kind. The detail page shows the same badge. There is no draft flag, so every file in `src/content/writing/` is published.
 - `writing[].tags` is a free-text list. The tag pages are derived from it: [`getWritingTags`](../src/entities/writing/getWritingTags.ts) groups the labels by `slugify(label)` (so `Astro` and `astro` are one tag) and `/writing/tags/[tag]` is generated for each. Tags are shown on `/writing` and the tag pages as links, never in the list rows.
-- `software[]` and `hardware[]` share these fields: `name` (required), `logo` (image), `description` (what it is), `usage` (how you use it) and `link`. `hardware[]` adds `photos`, a list of `{ image, alt }`. Images are stored in `src/assets/uses/software/` and `src/assets/uses/hardware/`. Without a `logo`, the item shows the first letter of the name.
+- `software[]` and `hardware[]` share these fields: `name` (required), `logo` (image), `description` (what it is), `usage` (how you use it) and `link`. `hardware[]` adds `photos`, a list of `{ image, alt, ratio }` (`ratio` is an [aspect ratio](#aspect-ratios), default `1/1`). Images are stored in `src/assets/uses/software/` and `src/assets/uses/hardware/`. Without a `logo`, the item shows the first letter of the name.
 - Each `profile.socials[]` item feeds the footer and the hover cards on the home page. `platform` and `url` are required. The other fields are optional and have these fallbacks (see [`getSocialLinks`](../src/entities/profile/socials.ts)):
   - `handle`: the email address, or `@` plus the last path segment of the URL.
   - `displayName`: the profile `name`.
@@ -33,7 +33,7 @@ All content lives under `src/content/`. The seed entries are placeholders (`Exam
   - `banner`: a plain muted block.
   - `bio` and `verified` (default `false`): shown only when set.
   - For `platform: email`, `url` is `mailto:<address>`. It renders as the address with a copy button instead of a hover card.
-- `books[]` and `movies[]` are the personal library. Shared fields: `title`, `status`, `poster` (image, stored in `src/assets/books/` or `src/assets/movies/`), `rating` (integer 1 to 5, your own), `description` (your own words, not a synopsis) and `links`. Books add `author`, `publishedDate`, `startedDate` and `finishedDate`; movies add `kind`, `creator` (director or creator), `releaseDate`, `startedDate` and `watchedDate`.
+- `books[]` and `movies[]` are the personal library. Shared fields: `title`, `status`, `poster` (image, stored in `src/assets/books/` or `src/assets/movies/`), `posterRatio` (an [aspect ratio](#aspect-ratios), default `2/3`), `rating` (integer 1 to 5, your own), `description` (your own words, not a synopsis) and `links`. Books add `author`, `publishedDate`, `startedDate` and `finishedDate`; movies add `kind`, `creator` (director or creator), `releaseDate`, `startedDate` and `watchedDate`.
 - `books[].status` is `reading | read | want`; `movies[].status` is `watching | watched | planned`; `movies[].kind` is `movie | series | show | anime` and shows as a badge. `/hobbies/books` and `/hobbies/movies` put `reading` and `watching` entries in a section on top and everything else in a "Library" grid.
 - `books[].links` and `movies[].links` are attribution links to free or open catalogues: each item is a `source` and an `id` (or the full page URL). The sources are listed in [`shared/config/media-sources.ts`](../src/shared/config/media-sources.ts): Open Library, Google Books, Hardcover and Wikidata for books; TMDB, IMDb, AniList, MyAnimeList and Wikidata for movies. To add one, add it to `mediaSourceCatalog`; the Zod schema and the Keystatic select both read from it. The details themselves (cover, dates) are typed in by hand, nothing is fetched at build time.
 - Dates are coerced with `z.coerce.date()`. Display formatting is in [`src/shared/lib/date.ts`](../src/shared/lib/date.ts) and is UTC-based so a date never shifts by timezone.
@@ -43,9 +43,11 @@ All content lives under `src/content/`. The seed entries are placeholders (`Exam
 
 The body of a writing entry supports more than plain text. All of it is editable in the Keystatic editor and stored as Markdoc in the `.mdoc` file.
 
-- **Images** are inserted from the editor and stored in `src/assets/writing/`. The file references them as `![alt](../../assets/writing/name.png)` and Astro processes them through `astro:assets`, which needs `sharp` (a dependency).
+- **Images** are inserted from the editor and stored in `src/assets/writing/`. The file references them as `![alt](../../assets/writing/name.png "Caption")` and Astro processes them through `astro:assets`, which needs `sharp` (a dependency). The optional title is the visible figure caption under the image (not a hover tooltip), and `alt` stays the text alternative. An image alone on its line renders as a `<figure>` through `Figure.astro`.
 - **Code blocks** are fenced blocks with a language. [`markdoc.config.mjs`](../markdoc.config.mjs) highlights them with Shiki using `github-light` and `github-dark`. Rules in `global.css` switch between the two with the `.dark` class (see [`styling.md`](./styling.md)).
-- **Carousel** is `{% carousel %}` with two or more `{% slide %}` children. Each slide holds an image and optional text. It is full-bleed: it runs past the text column to the edges of the screen, the first slide lines up with the column, and the buttons move one slide at a time.
+- **Carousel** is `{% carousel caption="..." %}` with two or more `{% slide %}` children. Each slide holds an image and optional text, and takes an optional `ratio` (see [Aspect ratios](#aspect-ratios)). The optional `caption` is shown under the track, beside the buttons. The track spans the entire screen, and the first slide lines up with the text column. The previous and next buttons sit below the track, start at the column edge and move one slide at a time.
+- **Tables** are standard Markdoc tables (the editor's table button, or pipe syntax in the file). They render inside a bordered wrapper that scrolls sideways when the table is wider than the space available.
+- **Breakout:** the text keeps the column width, while code blocks, images, tables and blockquotes extend 10% of the column past it on each side, as far as the viewport allows (not at all on phones). Captions and blockquote text stay on the column. The carousel does not use the breakout; its track runs the full width of the screen. See [`styling.md`](./styling.md).
 - **Columns** is `{% columns %}` with exactly two `{% column %}` children, side by side from `sm` and stacked below it.
 - **Math** is LaTeX, rendered with [KaTeX](https://katex.org) at build time. `{% math expression="..." /%}` is a block on its own line and `{% inlineMath expression="..." /%}` sits inside a sentence. In the editor they are the "Math block" and "Inline math" components; they show the raw LaTeX, not a rendered preview. A malformed expression renders as its source in red instead of failing the build.
 
@@ -54,6 +56,16 @@ The tags are declared in two places that must stay in sync: the `components` opt
 When writing a math tag by hand in the `.mdoc` file, double every backslash inside the attribute (`expression="\\frac{1}{3}"`): Markdoc treats a single backslash in a string as an escape and rejects it. The Keystatic editor writes the doubled form itself, so this matters only when editing the file directly.
 
 `/writing/[slug]` renders headings with ids, and the table of contents beside the text (from `lg`) lists the `h2` and `h3` headings only.
+
+## Aspect ratios
+
+Some images can be cropped to a shape picked from a fixed list in [`shared/config/aspect-ratio.ts`](../src/shared/config/aspect-ratio.ts): `original` (the image's own shape), `1/1`, `4/3`, `3/2`, `16/9`, `21/9`, `3/4` and `2/3`. The keys use a slash so they stay plain strings in YAML and Markdoc attributes. The Zod `z.enum` and the Keystatic select both read the list, so adding a key to `aspectRatioCatalog` makes it available in both. The image fills the shape (`object-cover`), so it is cropped, never stretched.
+
+- Writing carousel: `ratio` on each `{% slide %}`, default `original`.
+- Hardware photos: `ratio` on each photo, default `1/1`. All photos share one height, and the width follows the ratio.
+- Book and movie posters: `posterRatio`, default `2/3`.
+- An image placed on its own in a post keeps its own shape. Keystatic's standard image node only stores `alt` and `title`, so there is nowhere to keep a ratio for it.
+- Avatars, logos and banners are not on the list; their shape comes from the component that shows them.
 
 ## Adding or changing a field
 

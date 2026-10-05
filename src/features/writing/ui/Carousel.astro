@@ -1,13 +1,18 @@
 ---
 import { Button } from "@/shared/ui/button";
 import Icon from "@/shared/ui/icon/Icon.astro";
+
+interface Props {
+  caption?: string;
+}
+
+const { caption } = Astro.props;
 ---
 
-<div
-  class="@container relative"
+<figure
+  class="@container"
   data-slot="carousel"
   aria-roledescription="carousel"
-  role="group"
   x-data="carousel"
   x-on:resize.window="update()"
 >
@@ -22,35 +27,40 @@ import Icon from "@/shared/ui/icon/Icon.astro";
   >
     <slot />
   </div>
-  <Button
-    class="absolute top-1/2 left-2 -translate-y-1/2 rounded-full bg-background/80 backdrop-blur"
-    aria-label="Previous slide"
-    color="neutral"
-    disabled
-    size="sm"
-    type="button"
-    variant="outline"
-    x-bind:disabled="!canPrev"
-    x-on:click="go(-1)"
-  >
-    <Icon
-      class="size-4"
-      name="reicon:ArrowLeft"
-    />
-  </Button>
-  <Button
-    class="absolute top-1/2 right-2 -translate-y-1/2 rounded-full bg-background/80 backdrop-blur"
-    aria-label="Next slide"
-    color="neutral"
-    size="sm"
-    type="button"
-    variant="outline"
-    x-bind:disabled="!canNext"
-    x-on:click="go(1)"
-  >
-    <Icon
-      class="size-4"
-      name="reicon:ArrowRight"
-    />
-  </Button>
-</div>
+  <div class="mt-3 flex items-center gap-3">
+    <div class="flex shrink-0 gap-2">
+      <Button
+        class="rounded-full"
+        aria-label="Previous slide"
+        color="neutral"
+        disabled
+        size="sm"
+        type="button"
+        variant="outline"
+        x-bind:disabled="!canPrev"
+        x-on:click="go(-1)"
+      >
+        <Icon
+          class="size-4"
+          name="reicon:ArrowLeft"
+        />
+      </Button>
+      <Button
+        class="rounded-full"
+        aria-label="Next slide"
+        color="neutral"
+        size="sm"
+        type="button"
+        variant="outline"
+        x-bind:disabled="!canNext"
+        x-on:click="go(1)"
+      >
+        <Icon
+          class="size-4"
+          name="reicon:ArrowRight"
+        />
+      </Button>
+    </div>
+    {caption && <figcaption class="text-xs text-muted-foreground">{caption}</figcaption>}
+  </div>
+</figure>
