@@ -23,7 +23,7 @@ None. `PageTitle` takes no props — it's slot-only.
 
 ```astro
 ---
-import PageTitle from "@/shared/ui/page/PageTitle.astro";
+import { PageTitle } from "@/shared/ui/page";
 ---
 
 <PageTitle>Enoabasi Essien</PageTitle>

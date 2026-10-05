@@ -2,7 +2,7 @@
 
 `src/shared/ui/page/Page.astro`
 
-The outermost content wrapper for a route — a full-height flex column that owns the page's outer padding. Meant to sit directly inside [`Root`](../layers/shared.md#uilayoutsrootastro) and wrap everything else.
+The outermost content wrapper for a route — a full-height flex column that owns the page's outer padding. Meant to sit directly inside [`Root`](../layers/app.md#uirootastro) and wrap everything else.
 
 ## Props
 
@@ -24,9 +24,8 @@ None. `Page` takes no props — it's slot-only.
 
 ```astro
 ---
-import Root from "@/shared/ui/layouts/Root.astro";
-import Page from "@/shared/ui/page/Page.astro";
-import PageContainer from "@/shared/ui/page/PageContainer.astro";
+import Root from "@/app/ui/Root.astro";
+import { Page, PageContainer } from "@/shared/ui/page";
 ---
 
 <Root>
@@ -39,4 +38,4 @@ import PageContainer from "@/shared/ui/page/PageContainer.astro";
 ## Related
 
 - [`PageContainer`](./PageContainer.md) — typically the sole child of `Page`, adds the max-width/centering.
-- [`layers/shared.md`](../layers/shared.md) — how `Page` fits into `Root` and the rest of the layout stack.
+- [`layers/shared.md`](../layers/shared.md) — the `shared` layer and its `ui/page` group.

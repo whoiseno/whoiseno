@@ -1,9 +1,9 @@
 ---
+import { logoCatalog, type TypeLogoName } from "@/shared/config/logos";
 import { Icon as AstroIcon } from "astro-icon/components";
 import type { ComponentProps } from "astro/types";
 import { cn } from "tailwind-variants";
 
-import { logoCatalog, type TypeLogoName } from "./logos";
 import { reicons, type TypeReiconName } from "./reicons";
 
 type TypeIconName = `logo:${TypeLogoName}` | `ph:${string}` | `reicon:${TypeReiconName}`;

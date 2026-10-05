@@ -3,8 +3,8 @@ import { glob } from "astro/loaders";
 import { z } from "astro/zod";
 
 import { aspectRatioNames } from "./shared/config/aspect-ratio";
+import { logoNames } from "./shared/config/logos";
 import { mediaSourceNames, type TypeMediaKind } from "./shared/config/media-sources";
-import { logoNames } from "./shared/ui/icon/logos";
 
 const date = z.coerce.date();
 const url = z.url().nullish();

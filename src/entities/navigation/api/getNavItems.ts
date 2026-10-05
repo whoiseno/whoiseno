@@ -1,5 +1,6 @@
-import type { TypeNavItem } from "@/shared/config/site";
 import { getEntry } from "astro:content";
+
+import type { TypeNavItem } from "../model/types";
 
 export async function getNavItems(): Promise<TypeNavItem[]> {
   const navigation = await getEntry("navigation", "index");

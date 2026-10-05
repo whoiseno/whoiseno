@@ -1,7 +1,7 @@
 import { slugify } from "@/shared/lib/slug";
 import { getCollection } from "astro:content";
 
-export type TypeWritingTag = { slug: string; label: string; count: number };
+import type { TypeWritingTag } from "../model/types";
 
 export async function getWritingTags(): Promise<TypeWritingTag[]> {
   const tags = new Map<string, TypeWritingTag>();

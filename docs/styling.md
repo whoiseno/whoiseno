@@ -62,13 +62,13 @@ Tailwind's `font-serif` / `font-sans` / `font-mono` utilities are remapped to th
 
 Three fonts are declared in `astro.config.mjs` and loaded via Astro's built-in [fonts API](https://docs.astro.build/en/guides/fonts/):
 
-| Font         | Source                                                                            | Used for                                     |
-| ------------ | --------------------------------------------------------------------------------- | -------------------------------------------- |
-| Supreme      | Local variable font (`src/app/fonts/Supreme-Variable.woff2`), weights 100–900     | Body copy (`font-sans` → `--font-content`)   |
-| General Sans | Local variable font (`src/app/fonts/GeneralSans-Variable.woff2`), weights 100–900 | Headings (`font-serif` → `--font-heading`)   |
-| Geist Mono   | [Fontsource](https://fontsource.org/) provider (fetched, not bundled locally)     | Code/monospace (`font-mono` → `--font-code`) |
+| Font         | Source                                                                               | Used for                                     |
+| ------------ | ------------------------------------------------------------------------------------ | -------------------------------------------- |
+| Supreme      | Local variable font (`src/assets/fonts/Supreme-Variable.woff2`), weights 100–900     | Body copy (`font-sans` → `--font-content`)   |
+| General Sans | Local variable font (`src/assets/fonts/GeneralSans-Variable.woff2`), weights 100–900 | Headings (`font-serif` → `--font-heading`)   |
+| Geist Mono   | [Fontsource](https://fontsource.org/) provider (fetched, not bundled locally)        | Code/monospace (`font-mono` → `--font-code`) |
 
-Each is registered with a `cssVariable` (e.g. `--font-general-sans-variable`) in `astro.config.mjs`, and rendered into the page via `<Font cssVariable="..." />` calls in [`Root.astro`](../src/shared/ui/layouts/Root.astro) — a font must be both declared in the config _and_ rendered in `Root.astro` to actually load.
+Each is registered with a `cssVariable` (e.g. `--font-general-sans-variable`) in `astro.config.mjs`, and rendered into the page via `<Font cssVariable="..." />` calls in [`Root.astro`](../src/app/ui/Root.astro) — a font must be both declared in the config _and_ rendered in `Root.astro` to actually load.
 
 ## Color tokens
 
@@ -84,7 +84,7 @@ The light theme uses warm stone neutrals (Tailwind's stone scale for the backgro
 
 Dark mode is class-based: `@custom-variant dark` makes the `dark:` variant match under `.dark` on `<html>`. Because the tokens already switch with the class, most components need no `dark:` classes; use `dark:` only for things that are not token-driven (for example swapping the sun and moon icons).
 
-The class is set before first paint by the inline script in [`Root.astro`](../src/shared/ui/layouts/Root.astro) (saved `localStorage.theme`, else `prefers-color-scheme`) and toggled by the [`theme-toggle`](./layers/features.md) feature.
+The class is set before first paint by the inline script in [`Root.astro`](../src/app/ui/Root.astro) (saved `localStorage.theme`, else `prefers-color-scheme`) and toggled by the [`theme-toggle`](./layers/features.md) feature.
 
 The toggle runs inside `document.startViewTransition`, and the keyframes in `global.css` (`theme-wipe-out` and `theme-wipe-in`, 0.7s) animate a `clip-path` so the new theme wipes in from the top to the bottom of the page. The wipe rules only apply while `<html>` has `data-theme-transition`, which the toggle sets for the duration of the transition, so the page-to-page fade (see Motion below) is not affected. When the browser has no `startViewTransition`, or the user prefers reduced motion, the class flips immediately with no animation.
 
@@ -98,7 +98,7 @@ Pages fade between each other with native cross-document view transitions: `@vie
 
 ## Scrollbar gutter
 
-`<html>` in [`Root.astro`](../src/shared/ui/layouts/Root.astro) has `[scrollbar-gutter:stable]`. Without it, navigating between a short page and a page tall enough to scroll adds or removes the scrollbar, which changes the viewport width by the scrollbar's width and shifts the centered content sideways. The reserved gutter keeps the width constant, so the content no longer jumps on navigation.
+`<html>` in [`Root.astro`](../src/app/ui/Root.astro) has `[scrollbar-gutter:stable]`. Without it, navigating between a short page and a page tall enough to scroll adds or removes the scrollbar, which changes the viewport width by the scrollbar's width and shifts the centered content sideways. The reserved gutter keeps the width constant, so the content no longer jumps on navigation.
 
 ## Site layout
 

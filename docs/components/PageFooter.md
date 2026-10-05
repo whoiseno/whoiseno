@@ -28,7 +28,7 @@ Plain footer, no divider:
 
 ```astro
 ---
-import PageFooter from "@/shared/ui/page/PageFooter.astro";
+import { PageFooter } from "@/shared/ui/page";
 ---
 
 <PageFooter>

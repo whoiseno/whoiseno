@@ -24,10 +24,7 @@ None. `PageContainer` takes no props — it's slot-only.
 
 ```astro
 ---
-import Page from "@/shared/ui/page/Page.astro";
-import PageContainer from "@/shared/ui/page/PageContainer.astro";
-import PageFooter from "@/shared/ui/page/PageFooter.astro";
-import PageHeader from "@/shared/ui/page/PageHeader.astro";
+import { Page, PageContainer, PageFooter, PageHeader } from "@/shared/ui/page";
 ---
 
 <Page>

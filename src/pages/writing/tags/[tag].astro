@@ -1,8 +1,8 @@
 ---
-import Site from "@/app/layouts/Site.astro";
-import { getWritingTags } from "@/entities/writing/getWritingTags";
+import { Site } from "@/app/ui";
+import { getWritingTags } from "@/entities/writing";
 import { WritingFilters, WritingList } from "@/features/writing";
-import Icon from "@/shared/ui/icon/Icon.astro";
+import { Icon } from "@/shared/ui/icon";
 import type { InferGetStaticPropsType } from "astro";
 
 export async function getStaticPaths() {

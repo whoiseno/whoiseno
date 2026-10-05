@@ -24,9 +24,7 @@ None. `PageHeader` takes no props — it's slot-only.
 
 ```astro
 ---
-import PageDescription from "@/shared/ui/page/PageDescription.astro";
-import PageHeader from "@/shared/ui/page/PageHeader.astro";
-import PageTitle from "@/shared/ui/page/PageTitle.astro";
+import { PageDescription, PageHeader, PageTitle } from "@/shared/ui/page";
 ---
 
 <PageHeader>

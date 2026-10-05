@@ -26,7 +26,7 @@ All of these are prerendered. The only on-demand routes are `/keystatic` and `/a
 
 ## Composition
 
-Every page wraps its content in `Site` from [`app/layouts/Site.astro`](./app.md), which provides the sidebar, `<main>` container and footer. `Site` takes `title` and `description`; when `title` is set it renders the page `<h1>` and the muted description, and `index.astro` omits it because `ProfileHero` provides the `<h1>`. A page can put content directly under the description with `<X slot="header" />` (the writing pages use it for `WritingFilters`, the tag links and kind dropdown), and into the sidebar with `<X slot="toc" />` (the post page puts `WritingToc` there).
+Every page wraps its content in `Site` (`import { Site } from "@/app/ui"`, see [`app.md`](./app.md)), which provides the sidebar, `<main>` container and footer. `Site` takes `title` and `description`; when `title` is set it renders the page `<h1>` and the muted description, and `index.astro` omits it because `ProfileHero` provides the `<h1>`. A page can put content directly under the description with `<X slot="header" />` (the writing pages use it for `WritingFilters`, the tag links and kind dropdown), and into the sidebar with `<X slot="toc" />` (the post page puts `WritingToc` there).
 
 Pages with a dynamic or nested route pass `crumbs` (a `TypeCrumb[]`; the last step has no `href`). `Site` shows them above the title and nests the steps after the first under the matching sidebar link. The pages that do:
 
@@ -51,4 +51,6 @@ The older `Page*` primitives in `shared/ui/page` are no longer used by any page.
 ## Conventions
 
 - Keep pages thin: copy and composition order only. Data access and rendering belong in `entities` and `features`.
-- Pages may import from `app`, `features`, `entities` and `shared`, but nothing outside `pages` should import from `pages`.
+- Pages may import from `features`, `entities` and `shared`, but nothing outside `pages` should import from `pages`. Import them through each slice's public API (`@/entities/profile`, `@/features/works`) and each shared group's `index.ts` (`@/shared/ui/icon`); single-file shared modules such as `@/shared/lib/date` are imported directly.
+- The one upward import is `Site` from `@/app/ui` (see [`app.md`](./app.md#conventions)). There is no `widgets` layer to hold the shell.
+- `pages/` is Astro's file router, so it keeps the flat route layout above instead of FSD slices and segments.

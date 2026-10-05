@@ -1,9 +1,9 @@
 ---
-import Site from "@/app/layouts/Site.astro";
+import { Site } from "@/app/ui";
 import { formatDateRange } from "@/shared/lib/date";
 import { Badge } from "@/shared/ui/badge";
-import Icon from "@/shared/ui/icon/Icon.astro";
-import Prose from "@/shared/ui/prose/Prose.astro";
+import { Icon } from "@/shared/ui/icon";
+import { Prose } from "@/shared/ui/prose";
 import type { InferGetStaticPropsType } from "astro";
 import { getCollection, render } from "astro:content";
 

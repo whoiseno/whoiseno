@@ -1,8 +1,9 @@
 ---
-import { siteName } from "@/shared/config/site";
 import { Font } from "astro:assets";
 
-import "../../../app/styles/global.css";
+import { siteName } from "../config/site";
+
+import "../styles/global.css";
 
 interface Props {
   title?: string;
@@ -17,7 +18,7 @@ const { title, description, image, imageAlt, type = "website" } = Astro.props;
 ---
 
 <html
-  class="scroll-smooth [scrollbar-gutter:stable]"
+  class="scroll-smooth scrollbar-gutter-stable"
   lang="en"
 >
   <head>

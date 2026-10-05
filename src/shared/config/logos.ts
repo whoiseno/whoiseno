@@ -4,7 +4,7 @@ interface TypeLogoEntry {
   themed: boolean;
 }
 
-/** Tech-stack logos from SVGL, stored in `src/icons/logos/`. Trademarks belong to their owners. */
+/** Tech-stack logos from SVGL, stored in `src/assets/icons/logos/`. Trademarks belong to their owners. */
 export const logoCatalog = {
   "astro": { label: "Astro", themed: true },
   "aws": { label: "AWS", themed: true },

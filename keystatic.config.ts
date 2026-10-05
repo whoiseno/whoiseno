@@ -2,8 +2,8 @@ import { collection, config, fields, singleton } from "@keystatic/core";
 import { block, inline, repeating, wrapper } from "@keystatic/core/content-components";
 
 import { aspectRatioCatalog, aspectRatioNames, type TypeAspectRatioName } from "./src/shared/config/aspect-ratio";
+import { logoCatalog, logoNames } from "./src/shared/config/logos";
 import { mediaSourceCatalog, mediaSourceNames, type TypeMediaKind } from "./src/shared/config/media-sources";
-import { logoCatalog, logoNames } from "./src/shared/ui/icon/logos";
 
 function aspectRatioField(defaultValue: TypeAspectRatioName) {
   return fields.select({

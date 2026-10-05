@@ -1,11 +1,12 @@
 ---
-import type { TypeSocialLink } from "@/shared/config/site";
-import Avatar from "@/shared/ui/avatar/Avatar.astro";
+import { Avatar } from "@/shared/ui/avatar";
 import { Button } from "@/shared/ui/button";
 import { CopyButton } from "@/shared/ui/copy-button";
-import Icon from "@/shared/ui/icon/Icon.astro";
+import { Icon } from "@/shared/ui/icon";
 import { Popover, PopoverContent, PopoverTrigger } from "@/shared/ui/popover";
 import { Image } from "astro:assets";
+
+import type { TypeSocialLink } from "../model/types";
 
 interface Props {
   socials: TypeSocialLink[];

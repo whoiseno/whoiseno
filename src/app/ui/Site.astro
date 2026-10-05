@@ -1,16 +1,16 @@
 ---
 import { getNavItems } from "@/entities/navigation";
-import { getProfile } from "@/entities/profile/getProfile";
-import { getSocialLinks } from "@/entities/profile/socials";
+import { getProfile, getSocialLinks } from "@/entities/profile";
 import { ThemeToggle } from "@/features/theme-toggle";
-import type { TypeCrumb } from "@/shared/config/site";
 import { Button } from "@/shared/ui/button";
-import Root from "@/shared/ui/layouts/Root.astro";
-import SiteBreadcrumbs from "@/shared/ui/site/SiteBreadcrumbs.astro";
-import SiteFooter from "@/shared/ui/site/SiteFooter.astro";
-import SiteSidebar from "@/shared/ui/site/SiteSidebar.astro";
 import type { ImageMetadata } from "astro";
 import { getImage } from "astro:assets";
+
+import type { TypeCrumb } from "../model/types";
+import Root from "./Root.astro";
+import SiteBreadcrumbs from "./SiteBreadcrumbs.astro";
+import SiteFooter from "./SiteFooter.astro";
+import SiteSidebar from "./SiteSidebar.astro";
 
 interface Props {
   title?: string;

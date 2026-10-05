@@ -59,7 +59,7 @@ src/features/
 
 ## Two entry points per slice
 
-`index.ts` exports the `.astro` components. `client.ts` exports the Alpine registration and nothing else. They are separate because `app/entrypoints/alpine.ts` runs in the browser and must not pull `.astro` files into the client bundle. Pages import `@/features/writing`; the Alpine entrypoint imports `@/features/writing/client`.
+`index.ts` exports the `.astro` components. `client.ts` exports the Alpine registration and nothing else. They are separate because `app/config/alpine.ts` runs in the browser and must not pull `.astro` files into the client bundle. Pages import `@/features/writing`; the Alpine entrypoint imports `@/features/writing/client`.
 
 [`markdoc.config.mjs`](../../markdoc.config.mjs) points its tags at `src/features/writing/index.ts` with `component(path, exportName)`, so the Markdoc renderers must stay exported from there.
 
@@ -88,7 +88,7 @@ A ghost `Button` bound to the Alpine `themeToggle` component from `model/theme-t
 ## Conventions
 
 - Each feature gets its own subfolder with an `index.ts` public API. A feature may import from `entities` and `shared`, but never from `pages` or `app`, and never from another feature (compose features in `pages` or `app`).
-- Interactivity belongs in the feature. Inline `x-data` is fine for trivial state. A feature that needs a reusable `Alpine.data` or `Alpine.store` puts it in `model/`, registers it from `client.ts`, and `app/entrypoints/alpine.ts` only calls that register function.
+- Interactivity belongs in the feature. Inline `x-data` is fine for trivial state. A feature that needs a reusable `Alpine.data` or `Alpine.store` puts it in `model/`, registers it from `client.ts`, and `app/config/alpine.ts` only calls that register function.
 - In `Alpine.store` and `Alpine.data` methods, mutate through `this` (typed with a `this:` parameter), not through the object literal: Alpine wraps the object in a reactive proxy, and writes to the raw object do not trigger updates.
 - A page that only one feature serves (`/hobbies/books`, `/works`) still lives in `pages`, because Astro routes come from the file system. FSD's Pages-First guidance would keep such code inside the page; this project keeps the list in a feature so the home page can reuse it (`WorkList`, `ProjectList`).
 

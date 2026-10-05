@@ -1,8 +1,8 @@
 # UI Components
 
-Reference docs for every component in [`src/shared/ui`](../../src/shared/ui) **except** `layouts` (see [`layers/shared.md`](../layers/shared.md) for `Root.astro`, which is documented alongside the rest of the `shared` layer since it's a one-off document shell rather than a composable primitive).
+Reference docs for the `Page*` primitives in [`src/shared/ui/page`](../../src/shared/ui/page). `Root.astro`, the one-off document shell, is not a composable primitive and lives in the `app` layer instead (see [`layers/app.md`](../layers/app.md)).
 
-All of these live under `src/shared/ui/page/` and are imported via the `@/shared/ui/page/*` alias.
+All of these live under `src/shared/ui/page/` and are imported by name from the group's public API: `import { Page, PageContainer } from "@/shared/ui/page"`.
 
 | Component         | Renders                              | Doc                                        |
 | ----------------- | ------------------------------------ | ------------------------------------------ |

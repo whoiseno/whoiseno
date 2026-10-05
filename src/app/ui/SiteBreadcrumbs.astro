@@ -1,6 +1,4 @@
 ---
-import type { TypeCrumb } from "@/shared/config/site";
-
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -8,7 +6,9 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "../breadcrumb";
+} from "@/shared/ui/breadcrumb";
+
+import type { TypeCrumb } from "../model/types";
 
 interface Props {
   crumbs: TypeCrumb[];

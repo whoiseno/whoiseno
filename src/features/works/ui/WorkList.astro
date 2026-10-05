@@ -1,11 +1,11 @@
 ---
+import { logoCatalog } from "@/shared/config/logos";
 import { formatDateRange } from "@/shared/lib/date";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/shared/ui/accordion";
 import { Badge } from "@/shared/ui/badge";
 import { Button } from "@/shared/ui/button";
-import Icon from "@/shared/ui/icon/Icon.astro";
-import { logoCatalog } from "@/shared/ui/icon/logos";
-import Prose from "@/shared/ui/prose/Prose.astro";
+import { Icon } from "@/shared/ui/icon";
+import { Prose } from "@/shared/ui/prose";
 import { getCollection, render } from "astro:content";
 
 interface Props {

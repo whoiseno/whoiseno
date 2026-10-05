@@ -1,7 +1,7 @@
 ---
 import { resolveMediaLink } from "@/shared/config/media-sources";
 import { formatMonthYear } from "@/shared/lib/date";
-import MediaItem from "@/shared/ui/media-item/MediaItem.astro";
+import { MediaItem } from "@/shared/ui/media-item";
 import { getCollection, type CollectionEntry } from "astro:content";
 
 const order = { reading: 0, read: 1, want: 2 } as const;

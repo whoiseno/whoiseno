@@ -1,12 +1,12 @@
 ---
-import Avatar from "@/shared/ui/avatar/Avatar.astro";
+import { Avatar } from "@/shared/ui/avatar";
 import { Badge } from "@/shared/ui/badge";
-import Prose from "@/shared/ui/prose/Prose.astro";
+import { Prose } from "@/shared/ui/prose";
 import { render } from "astro:content";
 
-import { getProfile } from "./getProfile";
+import { getProfile } from "../api/getProfile";
+import { getSocialLinks } from "../lib/socials";
 import ProfileContacts from "./ProfileContacts.astro";
-import { getSocialLinks } from "./socials";
 
 const profile = await getProfile();
 const { name, role, location, status, avatar } = profile.data;

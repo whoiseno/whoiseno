@@ -1,5 +1,6 @@
-import type { TypeSocialLink } from "@/shared/config/site";
 import type { CollectionEntry } from "astro:content";
+
+import type { TypeSocialLink } from "../model/types";
 
 type TypeProfile = CollectionEntry<"profile">["data"];
 type TypeSocial = TypeProfile["socials"][number];

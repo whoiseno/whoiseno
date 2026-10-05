@@ -23,7 +23,7 @@ None. `PageDescription` takes no props — it's slot-only.
 
 ```astro
 ---
-import PageDescription from "@/shared/ui/page/PageDescription.astro";
+import { PageDescription } from "@/shared/ui/page";
 ---
 
 <PageDescription>

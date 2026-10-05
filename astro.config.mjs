@@ -36,13 +36,13 @@ export default defineConfig({
   site: process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : undefined,
 
   integrations: [
-    alpinejs({ entrypoint: "/src/app/entrypoints/alpine" }),
+    alpinejs({ entrypoint: "/src/app/config/alpine" }),
     partytown(),
     react(),
     expressiveCode(),
     markdoc(),
     keystatic(),
-    icon(),
+    icon({ iconDir: "src/assets/icons" }),
     keystaticBackLink,
   ],
 
@@ -62,7 +62,7 @@ export default defineConfig({
         {
           weight: "100 900",
           style: "normal",
-          src: ["./src/app/fonts/Supreme-Variable.woff2"]
+          src: ["./src/assets/fonts/Supreme-Variable.woff2"]
         }
       ]
     }
@@ -76,7 +76,7 @@ export default defineConfig({
         {
           weight: "100 900",
           style: "normal",
-          src: ["./src/app/fonts/GeneralSans-Variable.woff2"]
+          src: ["./src/assets/fonts/GeneralSans-Variable.woff2"]
         }
       ]
     }
