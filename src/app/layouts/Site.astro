@@ -3,52 +3,87 @@ import { getNavItems } from "@/entities/navigation";
 import { getProfile } from "@/entities/profile/getProfile";
 import { getSocialLinks } from "@/entities/profile/socials";
 import { ThemeToggle } from "@/features/theme-toggle";
+import type { TypeCrumb } from "@/shared/config/site";
 import { Button } from "@/shared/ui/button";
 import Root from "@/shared/ui/layouts/Root.astro";
+import SiteBreadcrumbs from "@/shared/ui/site/SiteBreadcrumbs.astro";
 import SiteFooter from "@/shared/ui/site/SiteFooter.astro";
-import SiteHeader from "@/shared/ui/site/SiteHeader.astro";
+import SiteSidebar from "@/shared/ui/site/SiteSidebar.astro";
+import type { ImageMetadata } from "astro";
+import { getImage } from "astro:assets";
 
 interface Props {
   title?: string;
   description?: string;
+  /** Trail shown above the title and nested under its nav link in the sidebar. */
+  crumbs?: TypeCrumb[];
+  /** Social preview image. Needs `site` in the Astro config to be emitted. */
+  image?: ImageMetadata | null;
+  imageAlt?: string;
+  type?: "website" | "article";
 }
 
-const { title, description } = Astro.props;
+const { title, description, crumbs, image, imageAlt, type } = Astro.props;
 const profile = await getProfile();
 const navItems = await getNavItems();
+const previewImage =
+  image && Astro.site ? new URL((await getImage({ src: image, width: 1200 })).src, Astro.site).href : undefined;
 ---
 
-<Root title={title}>
-  <SiteHeader items={navItems}>
-    <Fragment slot="actions">
-      {import.meta.env.DEV && (
-        <Button
-          color="neutral"
-          href="/keystatic"
-          size="sm"
-          variant="outline"
-        >
-          CMS
-        </Button>
-      )}
-      <ThemeToggle />
-    </Fragment>
-  </SiteHeader>
-  <main
-    class="mx-auto max-w-2xl flex-1 space-y-10 px-4 pt-8 pb-16 transition-[max-width] duration-300 in-data-wide:max-w-4xl motion-reduce:transition-none"
-    data-slot="site-main"
-  >
-    {title && (
-      <header class="space-y-1">
-        <h1 class="font-serif text-2xl font-bold">{title}</h1>
-        {description && <p class="text-muted-foreground">{description}</p>}
-        <slot name="header" />
-      </header>
-    )}
-    <slot />
-  </main>
-  <SiteFooter
-    name={profile.data.name}
-    socials={getSocialLinks(profile.data)}
-  />
+<Root
+  description={description}
+  image={previewImage}
+  imageAlt={imageAlt}
+  title={title}
+  type={type}
+>
+  <div class="flex-1 md:grid md:grid-cols-[14rem_minmax(0,1fr)]">
+    <SiteSidebar
+      avatar={profile.data.avatar}
+      crumbs={crumbs}
+      items={navItems}
+      owner={profile.data.name}
+    >
+      <slot
+        name="toc"
+        slot="toc"
+      />
+      <Fragment slot="actions">
+        {import.meta.env.DEV && (
+          <Button
+            color="neutral"
+            href="/keystatic"
+            size="sm"
+            variant="outline"
+          >
+            CMS
+          </Button>
+        )}
+        <ThemeToggle />
+      </Fragment>
+    </SiteSidebar>
+    <div
+      class="@container flex min-h-svh min-w-0 flex-col"
+      data-slot="site-content"
+    >
+      <main
+        class="mx-auto w-full max-w-2xl flex-1 space-y-10 px-4 pt-8 pb-16 transition-[max-width] duration-300 in-data-wide:max-w-4xl motion-reduce:transition-none"
+        data-slot="site-main"
+      >
+        {title && (
+          <header class="space-y-1">
+            {crumbs && <SiteBreadcrumbs crumbs={crumbs} />}
+            <h1 class="font-serif text-2xl font-bold">{title}</h1>
+            {description && <p class="text-muted-foreground">{description}</p>}
+            <slot name="header" />
+          </header>
+        )}
+        <slot />
+      </main>
+      <SiteFooter
+        name={profile.data.name}
+        socials={getSocialLinks(profile.data)}
+      />
+    </div>
+  </div>
 </Root>

@@ -1,69 +1,149 @@
 ---
 title: Example Blog Post
 kind: blog
-description: Placeholder long-form post. Replace it in Keystatic.
+description: A tour of everything a writing post can hold, from headings and lists to images, carousels, code and math.
 publishedDate: 2026-04-03
+cover: ../../assets/writing/example-cover.png
+coverAlt: Abstract dark gradient with a stylised letter A and three lines of text
 tags:
   - Astro
   - Design
 ---
 
-## Introduction
+This post exists to show every building block a writing post supports. Scroll through it, hover the tick marks on the left to jump between sections, click any image to open it full size, and try the width and focus controls next to the date.
 
-Placeholder text for a long-form post, written in **Markdoc**. This paragraph only exists so the page is tall enough to scroll and the table of contents has something to follow.
+# Part one: text
 
-- First point
-- Second point
+Everything in this part is plain Markdown, rendered with the site's typography.
+
+## Inline formatting
+
+Text can be **bold**, *italic*, ***both***, or ~~struck through~~. Short snippets of code such as `pnpm dev` or `getCollection("writing")` sit inline without breaking the line. Links look like [the Astro docs](https://docs.astro.build) and always keep their underline so they stay obvious.
+
+### Combining styles
+
+Styles nest: **bold text with `inline code` inside**, *italic text with a [link](https://astro.build) inside*, and ~~struck text~~ next to **bold** again.
+
+## Lists
+
+An unordered list for loose points:
+
+- Content lives in Markdoc files, edited through Keystatic
+- Pages are static, so there is nothing to wait for
+  - Images are optimised at build time
+  - Fonts are self-hosted
+- Interactivity is a few lines of Alpine.js
+
+An ordered list for steps:
+
+1. Write the post in Keystatic
+2. Add tags so it shows up in the filters
+3. Commit, and let the deploy do the rest
+   1. Preview the branch first
+   2. Merge when it looks right
+
+## Quotes and rules
+
+> A blockquote keeps its text on the column while the tinted box flows a little past it, so the words line up with the paragraphs around it.
+
+A horizontal rule separates two thoughts without a new heading.
+
+---
+
+Like that.
+
+# Part two: media
+
+Images, columns and carousels all keep their aspect ratio.
 
 ## A single image
 
-![A placeholder illustration](../../assets/writing/example-wide.svg "A placeholder illustration, with an optional caption underneath.")
+![A placeholder illustration](../../assets/writing/example-wide.svg "Click the image to open it full size. This caption stays on the text column.")
 
-Images keep their aspect ratio and flow 10% past the text column on each side, while the caption stays on the column.
+Images flow 10% past the text column on each side when there is room, and fall back to the column width when there is not. Pressing Enter or Space on a focused image opens the same dialog; Escape closes it and puts focus back where it was.
 
 ## Two columns
 
 {% columns %}
 {% column %}
-The left column holds a short block of text. It sits beside the right column on wide screens and stacks above it on small ones.
+The left column holds a short block of text. It sits beside the right column on wide screens and stacks above it on small ones, which makes it handy for an image with a few words of context.
 {% /column %}
+
 {% column %}
-![Right column image](../../assets/writing/example-slide-1.svg)
+![Right column image](../../assets/writing/example-slide-1.svg "Images in columns open the lightbox too.")
 {% /column %}
 {% /columns %}
 
 ## A carousel
 
 {% carousel caption="Three placeholder slides, each cropped to its own aspect ratio." %}
-{% slide %}
+{% slide ratio="original" %}
 ![First slide](../../assets/writing/example-slide-1.svg)
 {% /slide %}
+
 {% slide ratio="1/1" %}
 ![Second slide](../../assets/writing/example-slide-2.svg)
 {% /slide %}
+
 {% slide ratio="3/4" %}
 ![Third slide](../../assets/writing/example-slide-3.svg)
 {% /slide %}
 {% /carousel %}
 
-The track runs across the whole screen while the first slide lines up with the text. The arrows sit below it, aligned with the start of the text, and move one slide at a time. Each slide can be cropped to its own aspect ratio; the first one keeps its original shape.
+The track runs to the edges of the content area while the first slide lines up with the text. The arrows below it move one slide at a time, and the track itself can be scrolled with the keyboard once it has focus.
 
-## Code, quotes and tables
+# Part three: code and data
 
-```ts
+## Code blocks
+
+Code blocks have an optional title, line highlights, inserted and deleted lines, a copy button and a wrap toggle.
+
+```ts {% title="greet.ts" mark="2" ins="3" del="4" %}
 export function greet(name: string) {
   return `Hello, ${name}. This line is long enough to need horizontal scrolling inside the code block on a narrow screen.`;
+  const added = true;
+  const removed = false;
 }
 ```
 
-> A blockquote keeps its text on the column while the tinted box flows past it.
+A diff block colours additions and removals without any extra markup, and `wrap=true` starts it with long lines wrapped:
 
-| Element     | Flows out | Text stays on the column |
-| ----------- | --------- | ------------------------ |
-| Code block  | Yes       | No                       |
-| Image       | Yes       | Caption only             |
-| Table       | Yes       | No                       |
-| Blockquote  | Yes       | Yes                      |
+```diff {% wrap=true %}
+- const old = 1;
++ const next = 2;
+ const same = 3;
+```
+
+Shell commands get a terminal frame:
+
+```bash
+pnpm install
+pnpm dev
+```
+
+## Tables
+
+{% table %}
+- Element
+- Flows out
+- Text stays on the column
+---
+- Code block
+- Yes
+- No
+---
+- Image
+- Yes
+- Caption only
+---
+- Table
+- Yes
+- No
+---
+- Blockquote
+- Yes
+- Yes
+{% /table %}
 
 ## Math
 
@@ -71,8 +151,10 @@ Inline math sits in a sentence, like {% inlineMath expression="e^{i\\pi} + 1 = 0
 
 {% math expression="\\int_0^1 x^2\\,dx = \\frac{1}{3}" /%}
 
+### A longer expression
+
+{% math expression="\\sum_{k=1}^{n} k = \\frac{n(n+1)}{2}" /%}
+
 ## Closing thoughts
 
-Placeholder text to give the last section some length. Placeholder text to give the last section some length. Placeholder text to give the last section some length.
-
-Placeholder text to give the last section some length. Placeholder text to give the last section some length.
+That is every component in one place. When you write your own post, delete what you do not need; a short post with a single heading works just as well, and the table of contents simply disappears when there is nothing to list.

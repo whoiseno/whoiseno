@@ -1,0 +1,118 @@
+---
+import { siteName, type TypeCrumb, type TypeNavItem } from "@/shared/config/site";
+import type { ImageMetadata } from "astro";
+
+import Avatar from "../avatar/Avatar.astro";
+import { Button } from "../button";
+import Icon from "../icon/Icon.astro";
+
+interface Props {
+  items: TypeNavItem[];
+  owner: string;
+  avatar?: ImageMetadata | null;
+  /** Trail of the current page. Steps after the first nest under the nav link the trail starts from. */
+  crumbs?: TypeCrumb[];
+}
+
+const { items, owner, avatar, crumbs = [] } = Astro.props;
+const pathname = Astro.url.pathname.replace(/\/$/, "") || "/";
+const isActive = (href: string) =>
+  href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`);
+---
+
+<header
+  data-slot="site-sidebar"
+  data-focus-hide
+  class="sticky top-0 z-40 border-b bg-background/60 backdrop-blur md:h-svh md:border-r md:border-b-0 md:bg-background md:backdrop-blur-none"
+  x-data="{ open: false }"
+>
+  <div class="flex h-14 items-center gap-1 px-4 md:h-full md:flex-col md:items-stretch md:gap-0 md:py-6">
+    <a
+      class="mr-auto flex min-w-0 items-center gap-2 font-serif font-semibold md:mr-0 md:mb-6 md:px-2.5"
+      href="/"
+    >
+      <Avatar
+        class="size-7 shrink-0 text-xs"
+        name={owner}
+        src={avatar}
+      />
+      <span class="truncate">{siteName}</span>
+    </a>
+    <nav
+      id="site-nav"
+      class="absolute inset-x-0 top-full border-b bg-background px-4 py-2 max-md:not-data-open:hidden md:static md:border-0 md:bg-transparent md:p-0"
+      aria-label="Primary"
+      x-bind:data-open="open"
+    >
+      <ul class="flex flex-col md:gap-0.5">
+        {items.map((item) => {
+          const nested = crumbs[0]?.href === item.href ? crumbs.slice(1) : [];
+          return (
+            <li>
+              <a
+                class="block rounded-md py-2 text-muted-foreground transition-colors hover:text-foreground aria-[current]:font-medium aria-[current]:text-foreground md:px-2.5 md:py-1.5"
+                aria-current={nested.length > 0 ? "true" : isActive(item.href) ? "page" : undefined}
+                href={item.href}
+              >
+                {item.label}
+              </a>
+              {nested.length > 0 && (
+                <ul class="mb-1 ml-3 space-y-0.5 border-l pl-3 text-xs">
+                  {nested.map((crumb) => (
+                    <li>
+                      {crumb.href ? (
+                        <a
+                          class="block truncate py-1 text-muted-foreground transition-colors hover:text-foreground"
+                          href={crumb.href}
+                        >
+                          {crumb.label}
+                        </a>
+                      ) : (
+                        <span
+                          class="block truncate py-1 font-medium text-foreground"
+                          aria-current="page"
+                        >
+                          {crumb.label}
+                        </span>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </li>
+          );
+        })}
+      </ul>
+    </nav>
+    <div class="hidden min-h-0 flex-1 items-center md:flex">
+      <slot name="toc" />
+    </div>
+    <div
+      class="flex items-center gap-1 md:flex-wrap md:px-1"
+      data-slot="site-actions"
+    >
+      <slot name="actions" />
+    </div>
+    <Button
+      class="md:hidden"
+      aria-controls="site-nav"
+      aria-label="Toggle menu"
+      color="neutral"
+      size="md"
+      type="button"
+      variant="ghost"
+      x-bind:aria-expanded="open"
+      x-on:click="open = !open"
+    >
+      <Icon
+        name="reicon:Menu"
+        x-show="!open"
+      />
+      <Icon
+        name="reicon:X"
+        x-cloak
+        x-show="open"
+      />
+    </Button>
+  </div>
+</header>

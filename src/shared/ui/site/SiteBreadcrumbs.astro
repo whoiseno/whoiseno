@@ -1,0 +1,38 @@
+---
+import type { TypeCrumb } from "@/shared/config/site";
+
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "../breadcrumb";
+
+interface Props {
+  crumbs: TypeCrumb[];
+}
+
+const { crumbs } = Astro.props;
+---
+
+<Breadcrumb
+  class="pb-2"
+  data-focus-hide
+>
+  <BreadcrumbList>
+    {crumbs.map((crumb, index) => (
+      <>
+        {index > 0 && <BreadcrumbSeparator />}
+        <BreadcrumbItem class="min-w-0">
+          {crumb.href ? (
+            <BreadcrumbLink href={crumb.href}>{crumb.label}</BreadcrumbLink>
+          ) : (
+            <BreadcrumbPage class="truncate">{crumb.label}</BreadcrumbPage>
+          )}
+        </BreadcrumbItem>
+      </>
+    ))}
+  </BreadcrumbList>
+</Breadcrumb>

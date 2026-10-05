@@ -1,0 +1,17 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { cn } from "tailwind-variants";
+
+interface Props extends HTMLAttributes<"span"> {}
+
+const { class: className, ...rest } = Astro.props;
+---
+
+<span
+  data-slot="breadcrumb-page"
+  class={cn("font-medium text-foreground", className)}
+  aria-current="page"
+  {...rest}
+>
+  <slot />
+</span>

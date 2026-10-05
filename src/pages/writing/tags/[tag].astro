@@ -16,6 +16,7 @@ const { tag } = Astro.props;
 ---
 
 <Site
+  crumbs={[{ label: "Writing", href: "/writing" }, { label: tag.label }]}
   description={`${tag.count} ${tag.count === 1 ? "post" : "posts"} tagged "${tag.label}".`}
   title={`Writing / ${tag.label}`}
 >

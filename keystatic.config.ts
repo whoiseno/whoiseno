@@ -206,6 +206,12 @@ export default config({
         title: fields.slug({ name: { label: "Title" } }),
         featured: fields.checkbox({ label: "Featured", description: "Show on the home page", defaultValue: false }),
         description: fields.text({ label: "Short description", multiline: true, validation: { isRequired: true } }),
+        logo: fields.image({
+          label: "Logo",
+          description: "Shown centered on the project card. A transparent PNG or SVG works best",
+          directory: "src/assets/projects",
+          publicPath: "../../assets/projects/",
+        }),
         startDate: fields.date({ label: "Start date", validation: { isRequired: true } }),
         endDate: fields.date({ label: "End date", description: "Leave empty if ongoing" }),
         skills: fields.array(fields.text({ label: "Skill" }), {
@@ -238,6 +244,13 @@ export default config({
         }),
         publishedDate: fields.date({ label: "Published on", validation: { isRequired: true } }),
         description: fields.text({ label: "Short description", multiline: true }),
+        cover: fields.image({
+          label: "Cover image",
+          description: "Optional. Shown under the title and used as the social preview image. Not shown in the list",
+          directory: "src/assets/writing",
+          publicPath: "../../assets/writing/",
+        }),
+        coverAlt: fields.text({ label: "Cover image description", description: "Alt text for screen readers" }),
         tags: fields.array(fields.text({ label: "Tag" }), {
           label: "Tags",
           description: "Each tag links to a page listing every post that uses it",
@@ -247,7 +260,15 @@ export default config({
           label: "Content",
           options: {
             image: { directory: "src/assets/writing", publicPath: "../../assets/writing/" },
-            codeBlock: true,
+            codeBlock: {
+              schema: {
+                title: fields.text({ label: "Title", description: "Filename or caption shown above the code" }),
+                mark: fields.text({ label: "Highlight lines", description: "For example 1,3-5" }),
+                ins: fields.text({ label: "Added lines", description: "Lines to show as inserted, for example 2" }),
+                del: fields.text({ label: "Removed lines", description: "Lines to show as deleted, for example 3" }),
+                wrap: fields.checkbox({ label: "Wrap long lines", description: "Readers can still toggle this" }),
+              },
+            },
           },
           components: {
             carousel: repeating({

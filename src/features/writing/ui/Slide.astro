@@ -11,8 +11,8 @@ const value = aspectRatioCatalog[ratio].ratio;
 
 <div
   class:list={[
-    "w-4/5 shrink-0 snap-start space-y-2 [&_img]:w-full",
-    value && "[&_img]:aspect-(--ratio) [&_img]:object-cover",
+    "w-4/5 shrink-0 snap-start space-y-2 [&_[data-slot=figure-image]]:w-full [&_[data-slot=lightbox-trigger]]:w-full",
+    value && "[&_[data-slot=figure-image]]:aspect-(--ratio) [&_[data-slot=figure-image]]:object-cover",
   ]}
   data-slot="slide"
   aria-roledescription="slide"

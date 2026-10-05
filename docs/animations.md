@@ -71,7 +71,7 @@ Full API reference: [animejs.com/documentation](https://animejs.com/documentatio
 
 ## Writing focus mode
 
-The "no distraction" view on `/writing/[slug]` is the one place `tw-animate-css` is used today. [`writing/model/reader.ts`](../src/features/writing/model/reader.ts) sets `data-focus="on"` or `"off"` on `<html>`, and `global.css` animates every `[data-focus-hide]` element (header, footer, table of contents, the row with the kind badge, date and toolbar, and the bottom block with the back link and previous and next posts):
+The "no distraction" view on `/writing/[slug]` is the one place `tw-animate-css` is used today. [`writing/model/reader.ts`](../src/features/writing/model/reader.ts) sets `data-focus="on"` or `"off"` on `<html>`, and `global.css` animates every `[data-focus-hide]` element (the sidebar with its table of contents and actions, the breadcrumbs, the footer, the row with the kind badge, date and toolbar, and the bottom block with the back link and previous and next posts):
 
 - `on`: `animate-out fade-out fill-mode-forwards`, plus `pointer-events-none`. The component also sets `inert` on those elements so they leave the tab order.
 - `off`: `animate-in fade-in`.

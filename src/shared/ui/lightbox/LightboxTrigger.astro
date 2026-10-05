@@ -1,0 +1,21 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { cn } from "tailwind-variants";
+
+interface Props extends HTMLAttributes<"button"> {}
+
+const { class: className, ...rest } = Astro.props;
+---
+
+<button
+  data-slot="lightbox-trigger"
+  type="button"
+  aria-haspopup="dialog"
+  class={cn("block cursor-zoom-in rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-ring", className)}
+  x-on:click="show()"
+  x-on:focus.once="load()"
+  x-on:pointerenter.once="load()"
+  {...rest}
+>
+  <slot />
+</button>

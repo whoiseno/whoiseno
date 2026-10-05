@@ -1,7 +1,6 @@
 ---
-import { formatDateRange } from "@/shared/lib/date";
-import { Badge } from "@/shared/ui/badge";
-import { Card, CardAction, CardDescription, CardFooter, CardHeader, CardTitle } from "@/shared/ui/card";
+import { Card, CardDescription, CardTitle } from "@/shared/ui/card";
+import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 
 interface Props {
@@ -18,31 +17,33 @@ const projects = (await getCollection("projects", ({ data }) => !featured || dat
 {projects.length === 0 ? (
   <p class="text-muted-foreground">Nothing here yet.</p>
 ) : (
-  <ul class="space-y-3">
+  <ul class="grid gap-3 sm:grid-cols-2">
     {projects.map(({ id, data }) => (
-      <li>
+      <li class="min-w-0">
         <Card
-          class="space-y-2"
+          class="group flex h-full flex-col gap-3 p-1.5"
           href={`/projects/${id}`}
         >
-          <CardHeader>
+          <div class="flex aspect-video items-center justify-center overflow-hidden rounded-md border bg-muted">
+            {data.logo ? (
+              <Image
+                class="h-12 w-auto max-w-3/5 object-contain transition-transform duration-300 group-hover:scale-105 motion-reduce:transition-none"
+                alt=""
+                src={data.logo}
+              />
+            ) : (
+              <span
+                class="font-serif text-3xl font-semibold text-muted-foreground/40"
+                aria-hidden="true"
+              >
+                {data.title.charAt(0)}
+              </span>
+            )}
+          </div>
+          <div class="space-y-0.5 px-1.5 pb-1.5">
             <CardTitle>{data.title}</CardTitle>
-            <CardAction class="text-xs text-muted-foreground">
-              {formatDateRange(data.startDate, data.endDate)}
-            </CardAction>
-          </CardHeader>
-          <CardDescription>{data.description}</CardDescription>
-          {data.skills.length > 0 && (
-            <CardFooter>
-              <ul class="flex flex-wrap gap-1.5">
-                {data.skills.map((skill) => (
-                  <li>
-                    <Badge>{skill}</Badge>
-                  </li>
-                ))}
-              </ul>
-            </CardFooter>
-          )}
+            <CardDescription class="line-clamp-2">{data.description}</CardDescription>
+          </div>
         </Card>
       </li>
     ))}

@@ -20,6 +20,7 @@ const allWorks = (await getCollection("works")).sort((a, b) => b.data.startDate.
 const works = allWorks.slice(0, limit);
 const hasMore = works.length < allWorks.length;
 const items = await Promise.all(works.map(async (work) => ({ work, Content: (await render(work)).Content })));
+const current = items.find(({ work }) => !work.data.endDate)?.work.id;
 ---
 
 {items.length === 0 ? (
@@ -28,6 +29,7 @@ const items = await Promise.all(works.map(async (work) => ({ work, Content: (awa
   <div class="space-y-6">
     <Accordion
       class="divide-y"
+      defaultValue={current}
       type="single"
     >
       {items.map(({ work, Content }) => {

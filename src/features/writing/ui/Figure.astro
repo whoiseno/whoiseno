@@ -1,31 +1,62 @@
 ---
+import {
+  Lightbox,
+  LightboxCaption,
+  LightboxClose,
+  LightboxContent,
+  LightboxImage,
+  LightboxTrigger,
+} from "@/shared/ui/lightbox";
 import type { ImageMetadata } from "astro";
-import { Image } from "astro:assets";
+import { getImage, Image } from "astro:assets";
 
 interface Props {
   src: ImageMetadata | string;
   alt?: string;
   title?: string;
+  /** Load eagerly with high fetch priority, for an image visible on first paint. */
+  priority?: boolean;
 }
 
-const { src, alt = "", title } = Astro.props;
+const { src, alt = "", title, priority = false } = Astro.props;
+// Optimised variant, capped so a large original is never sent to the dialog.
+const full = typeof src === "string" ? src : (await getImage({ src, width: Math.min(src.width, 2000) })).src;
 ---
 
 <figure
   class="space-y-2"
   data-slot="figure"
 >
-  {typeof src === "string" ? (
-    <img
-      alt={alt}
-      loading="lazy"
-      src={src}
-    />
-  ) : (
-    <Image
-      alt={alt}
-      src={src}
-    />
-  )}
+  <Lightbox>
+    <LightboxTrigger aria-label={alt ? `Enlarge image: ${alt}` : "Enlarge image"}>
+      {typeof src === "string" ? (
+        <img
+          class="rounded-lg border"
+          alt={alt}
+          data-slot="figure-image"
+          fetchpriority={priority ? "high" : undefined}
+          loading={priority ? "eager" : "lazy"}
+          src={src}
+        />
+      ) : (
+        <Image
+          class="rounded-lg border"
+          alt={alt}
+          data-slot="figure-image"
+          fetchpriority={priority ? "high" : undefined}
+          loading={priority ? "eager" : "lazy"}
+          src={src}
+        />
+      )}
+    </LightboxTrigger>
+    <LightboxContent label={alt || title}>
+      <LightboxImage
+        alt={alt}
+        src={full}
+      />
+      {title && <LightboxCaption>{title}</LightboxCaption>}
+      <LightboxClose />
+    </LightboxContent>
+  </Lightbox>
   {title && <figcaption class="text-xs text-muted-foreground">{title}</figcaption>}
 </figure>

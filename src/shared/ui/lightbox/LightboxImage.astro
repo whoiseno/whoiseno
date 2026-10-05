@@ -1,0 +1,21 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { cn } from "tailwind-variants";
+
+interface Props extends Omit<HTMLAttributes<"img">, "src"> {
+  /** Full-size source. Only requested once the visitor shows intent to open the lightbox. */
+  src: string;
+  alt: string;
+}
+
+const { src, class: className, ...rest } = Astro.props;
+---
+
+<img
+  data-slot="lightbox-image"
+  data-src={src}
+  decoding="async"
+  class={cn("max-h-full min-h-0 max-w-full rounded-lg object-contain not-[[src]]:hidden", className)}
+  x-ref="image"
+  {...rest}
+/>

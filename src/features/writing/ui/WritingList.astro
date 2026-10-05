@@ -5,6 +5,7 @@ import { Badge } from "@/shared/ui/badge";
 import { getCollection } from "astro:content";
 
 import { writingKindLabels } from "../config/kinds";
+import { getReadingMinutes } from "../model/reading-time";
 
 interface Props {
   tag?: string;
@@ -38,7 +39,7 @@ for (const { data } of entries) counts[data.kind] = (counts[data.kind] ?? 0) + 1
       <section class="space-y-2 [&:not(:has(li:not([hidden])))]:hidden">
         <h2 class="font-mono text-xs text-muted-foreground">{year}</h2>
         <ul class="[&>li:not([hidden])~li:not([hidden])]:border-t">
-          {items.map(({ id, data }) => (
+          {items.map(({ id, data, body }) => (
             <li x-bind:hidden={`!$store.writingFilter.shows('${data.kind}')`}>
               <a
                 class="flex items-center justify-between gap-4 py-3 transition-[filter,opacity] duration-200 [@media(hover:hover)]:group-has-[a:hover]/writing:not-hover:opacity-60 [@media(hover:hover)]:group-has-[a:hover]/writing:not-hover:blur-[1.5px]"
@@ -47,6 +48,9 @@ for (const { data } of entries) counts[data.kind] = (counts[data.kind] ?? 0) + 1
                 <span class="min-w-0 truncate font-medium">{data.title}</span>
                 <span class="flex shrink-0 items-center gap-2">
                   <Badge>{writingKindLabels[data.kind]}</Badge>
+                  <span class="hidden font-mono text-xs text-muted-foreground uppercase sm:inline">
+                    {getReadingMinutes(body)} min read
+                  </span>
                   <time
                     class="font-mono text-xs text-muted-foreground uppercase"
                     datetime={data.publishedDate.toISOString()}

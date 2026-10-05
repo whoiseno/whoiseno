@@ -1,10 +1,46 @@
 ---
 title: Example Note
 kind: note
-description: Placeholder short note.
+description: A short, rough note on picking type sizes, with a table, a formula and a snippet.
 publishedDate: 2026-03-01
 tags:
   - Design
 ---
 
-A short, rough note. Keep it as brief as you like.
+A short, rough note. Keep it as brief as you like, and it still gets the same formatting as a long post.
+
+## A type scale
+
+Each step is the previous one multiplied by a ratio. With a ratio of {% inlineMath expression="r = 1.25" /%}, the size at step {% inlineMath expression="n" /%} is:
+
+{% math expression="s_n = s_0 \\cdot r^{n}" /%}
+
+{% table %}
+- Step
+- Size (px)
+- Used for
+---
+- 0
+- 16
+- Body text
+---
+- 1
+- 20
+- Subheadings
+---
+- 2
+- 25
+- Headings
+{% /table %}
+
+## In CSS
+
+```css {% title="scale.css" mark="2-3" %}
+:root {
+  --step-0: 1rem;
+  --step-1: calc(var(--step-0) * 1.25);
+  --step-2: calc(var(--step-1) * 1.25);
+}
+```
+
+Reminder to self: pick the ratio first, then let everything else follow from it.

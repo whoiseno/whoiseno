@@ -1,0 +1,25 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { cn } from "tailwind-variants";
+
+import Icon from "../icon/Icon.astro";
+
+interface Props extends HTMLAttributes<"li"> {}
+
+const { class: className, ...rest } = Astro.props;
+---
+
+<li
+  data-slot="breadcrumb-separator"
+  class={cn("inline-flex items-center", className)}
+  aria-hidden="true"
+  role="presentation"
+  {...rest}
+>
+  <slot>
+    <Icon
+      class="size-3.5"
+      name="reicon:ChevronRight"
+    />
+  </slot>
+</li>

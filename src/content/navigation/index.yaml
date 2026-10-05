@@ -7,7 +7,7 @@ links:
     visible: false
   - label: Projects
     href: /projects
-    visible: true
+    visible: false
   - label: Writing
     href: /writing
     visible: true

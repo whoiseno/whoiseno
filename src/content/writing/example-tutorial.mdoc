@@ -1,20 +1,40 @@
 ---
 title: Example Tutorial
 kind: tutorial
-description: Placeholder step-by-step guide.
+description: A step-by-step guide that builds a small tag filter, showing titled, highlighted and diffed code blocks along the way.
 publishedDate: 2025-09-11
 tags:
   - Astro
   - Tailwind
 ---
 
+By the end of this tutorial you will have a small Astro project with a list of posts and a tag filter. It is deliberately tiny so the steps stay easy to follow, and it doubles as a showcase for the code blocks on this site.
+
 ## Before you start
 
-List what the reader needs first.
+You will need:
 
-## Step 1
+- Node.js 22 or newer
+- A package manager, this guide uses `pnpm`
+- A terminal and an editor you like
 
-Describe the first step, then show the command.
+{% table %}
+- Tool
+- Version
+- Check with
+---
+- Node.js
+- 22.12 or newer
+- `node -v`
+---
+- pnpm
+- 10 or newer
+- `pnpm -v`
+{% /table %}
+
+## Step 1: create the project
+
+Scaffold a new site and answer the prompts.
 
 ```bash
 pnpm create astro@latest my-site
@@ -22,18 +42,26 @@ pnpm create astro@latest my-site
 
 ### Install dependencies
 
-Nested headings appear indented in the table of contents.
+Move into the folder and install everything. The copy button in the top corner of each block copies the commands without the prompt.
 
 ```bash
 cd my-site
 pnpm install
 ```
 
-## Step 2
+### Start the dev server
 
-Describe the second step, then show the code.
+```bash
+pnpm dev
+```
 
-```ts
+The site is now on `http://localhost:4321`. Leave it running while you work; edits show up instantly.
+
+## Step 2: describe a post
+
+Add a type for a post and a helper that filters by tag. The title appears in the corner of the block, and the highlighted line is the one doing the work.
+
+```ts {% title="src/lib/posts.ts" mark="7" %}
 type TypePost = {
   title: string;
   tags: string[];
@@ -44,6 +72,44 @@ export function byTag(posts: TypePost[], tag: string) {
 }
 ```
 
+### Handle a missing tag
+
+Not every post is tagged, so make the helper return everything when no tag is given. Added lines are green and removed lines are red.
+
+```ts {% title="src/lib/posts.ts" del="1" ins="2-3" %}
+export function byTag(posts: TypePost[], tag: string) {
+export function byTag(posts: TypePost[], tag?: string) {
+  if (!tag) return posts;
+  return posts.filter((post) => post.tags.includes(tag));
+}
+```
+
+## Step 3: render the list
+
+Use the helper in a page. Long lines scroll sideways by default; press the wrap button in the corner to wrap them instead.
+
+```astro {% title="src/pages/index.astro" wrap=true %}
+---
+import { byTag } from "../lib/posts";
+
+const posts = [
+  { title: "Hello world, a post with a rather long title that would normally force this block to scroll sideways", tags: ["astro"] },
+  { title: "Styling with Tailwind", tags: ["tailwind"] },
+];
+const filtered = byTag(posts, Astro.url.searchParams.get("tag") ?? undefined);
+---
+
+<ul>
+  {filtered.map((post) => <li>{post.title}</li>)}
+</ul>
+```
+
+Check your work:
+
+1. Open the home page, both posts should appear
+2. Add `?tag=astro` to the address, only the first remains
+3. Add `?tag=nothing`, the list is empty
+
 ## Wrap up
 
-Summarise what the reader built and where to go next.
+You built a small tag filter, and along the way saw titled, highlighted and diffed code blocks in action. From here, try moving the posts into a content collection and generating one page per tag.

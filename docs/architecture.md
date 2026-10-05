@@ -28,7 +28,7 @@ See the per-layer reference docs in [`layers/`](./layers/) for what lives in eac
 
 Books and movies are reached through a `/hobbies` hub (`/hobbies/books`, `/hobbies/movies`) rather than top-level routes.
 
-`app/layouts/Site.astro` (the header/main/footer shell) lives in `app`, not `shared`, because it reads the profile entity for the footer and `shared` cannot import upward.
+`app/layouts/Site.astro` (the sidebar/main/footer shell) lives in `app`, not `shared`, because it reads the profile entity for the footer and `shared` cannot import upward.
 
 ## Path aliases
 
@@ -48,7 +48,7 @@ Prettier's import-sort plugin ([`.prettierrc`](../.prettierrc)) is configured to
 ## Rendering & routing flow
 
 1. A request for a route (e.g. `/works`) matches a file under `src/pages` ([routing docs](https://docs.astro.build/en/guides/routing/)). All site routes are prerendered; only `/keystatic` and `/api/keystatic/*` are rendered on demand.
-2. The page wraps its content in `app/layouts/Site.astro`, which composes `Root`, `SiteHeader`, `SiteFooter` and the `ThemeToggle` feature, then fills the main area with feature slices (`WorkList`, `ProjectList`, ...) and entities (`ProfileHero`). See [`layers/pages.md`](./layers/pages.md).
+2. The page wraps its content in `app/layouts/Site.astro`, which composes `Root`, `SiteSidebar`, `SiteBreadcrumbs`, `SiteFooter` and the `ThemeToggle` feature, then fills the main area with feature slices (`WorkList`, `ProjectList`, ...) and entities (`ProfileHero`). See [`layers/pages.md`](./layers/pages.md).
 3. `Root.astro` sets up the HTML document shell: meta tags, favicon, `<title>`, a blocking inline script that applies the saved theme before first paint, and the three fonts declared in `astro.config.mjs` via Astro's `<Font />` component.
 4. Global Tailwind styles (`src/app/styles/global.css`) are imported once, inside `Root.astro`.
 5. The Alpine.js entrypoint (`src/app/entrypoints/alpine.ts`) is wired up via the `@astrojs/alpinejs` integration and registers the `@alpinejs/anchor` and `@alpinejs/intersect` plugins (the latter has no users right now) plus the shared components' `Alpine.data` behaviors, the theme toggle and the writing slice (reader with table of contents and wide and focus modes, carousel, kind filter store) before Alpine initializes client-side. Features register through their `client.ts`, not their `index.ts`.
@@ -59,7 +59,8 @@ Configured in [`astro.config.mjs`](../astro.config.mjs):
 
 - **`@astrojs/alpinejs`** — loads Alpine.js with a custom entrypoint for plugin and component registration.
 - **`@astrojs/partytown`** — ready to offload third-party scripts (analytics, etc.) to a worker thread; no scripts routed through it yet.
-- **`@astrojs/markdoc`** — renders `.mdoc` content entries (see [`content.md`](./content.md)). [`markdoc.config.mjs`](../markdoc.config.mjs) at the project root adds Shiki highlighting, the `carousel` (with an optional `caption`), `slide` (with an optional `ratio`), `columns`, `column`, `math` and `inlineMath` tags used by writing entries, and custom `image`, `table` and `paragraph` nodes (a captioned figure, a scrollable table, and a paragraph that unwraps a lone image). The two math tags are rendered at build time by [KaTeX](https://katex.org) (`katex` dependency), so no math code ships to the browser.
+- **`@astrojs/markdoc`** — renders `.mdoc` content entries (see [`content.md`](./content.md)). [`markdoc.config.mjs`](../markdoc.config.mjs) at the project root renders every `fence` through the `CodeBlock` component (Expressive Code), and adds the `carousel` (with an optional `caption`), `slide` (with an optional `ratio`), `columns`, `column`, `math` and `inlineMath` tags used by writing entries, and custom `image`, `table` and `paragraph` nodes (a captioned figure, a scrollable table, and a paragraph that unwraps a lone image). The two math tags are rendered at build time by [KaTeX](https://katex.org) (`katex` dependency), so no math code ships to the browser.
+- **`astro-expressive-code`** — code block rendering for the writing entries, configured in [`ec.config.mjs`](../ec.config.mjs): `github-light` and `github-dark` themes switched by the `.dark` class, frames with a title or terminal header, line marks, `ins` and `del` lines, diff syntax, a copy button, and a custom wrap toggle plugin ([`code-wrap-toggle.mjs`](../src/features/writing/config/code-wrap-toggle.mjs)). It is registered before `@astrojs/markdoc`. Markdoc has no remark or rehype pipeline, so `CodeBlock.astro` hands each fence to Expressive Code's `Code` component instead of a plugin hooking into Markdown.
 - **`@keystatic/astro`** and **`@astrojs/react`** — the Keystatic CMS admin at `/keystatic`; React is a dependency of the admin only.
 - **`keystaticBackLink`** — a small inline integration in `astro.config.mjs`, active only under `astro dev`, that adds a "Back to site" link to the admin page. See [`layers/app.md`](./layers/app.md).
 - **`astro-icon`** with `@iconify-json/ph` — Phosphor icons, plus the local SVGL tech logos in `src/icons/logos/`. Together with `reicon-astro` (a component package, not an integration) it sits behind one `Icon` component in `shared/ui/icon`; see [`layers/shared.md`](./layers/shared.md).

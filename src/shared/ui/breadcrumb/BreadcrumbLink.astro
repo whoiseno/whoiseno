@@ -1,0 +1,18 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { cn } from "tailwind-variants";
+
+interface Props extends HTMLAttributes<"a"> {
+  href: string;
+}
+
+const { class: className, ...rest } = Astro.props;
+---
+
+<a
+  data-slot="breadcrumb-link"
+  class={cn("transition-colors hover:text-foreground", className)}
+  {...rest}
+>
+  <slot />
+</a>

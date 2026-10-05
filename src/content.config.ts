@@ -52,27 +52,32 @@ const works = defineCollection({
 
 const projects = defineCollection({
   loader: glob({ pattern: "**/*.mdoc", base: "./src/content/projects" }),
-  schema: z.object({
-    title: z.string(),
-    featured: z.boolean().default(false),
-    description: z.string(),
-    startDate: date,
-    endDate: date.nullish(),
-    skills,
-    demoLink: url,
-    sourceLink: url,
-  }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      featured: z.boolean().default(false),
+      description: z.string(),
+      logo: image().nullish(),
+      startDate: date,
+      endDate: date.nullish(),
+      skills,
+      demoLink: url,
+      sourceLink: url,
+    }),
 });
 
 const writing = defineCollection({
   loader: glob({ pattern: "**/*.mdoc", base: "./src/content/writing" }),
-  schema: z.object({
-    title: z.string(),
-    kind: z.enum(["blog", "tutorial", "journal", "note"]).default("blog"),
-    description: z.string().optional(),
-    publishedDate: date,
-    tags: z.array(z.string()).default([]),
-  }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      kind: z.enum(["blog", "tutorial", "journal", "note"]).default("blog"),
+      description: z.string().optional(),
+      publishedDate: date,
+      cover: image().nullish(),
+      coverAlt: z.string().optional(),
+      tags: z.array(z.string()).default([]),
+    }),
 });
 
 const uses = ({ image }: SchemaContext) =>

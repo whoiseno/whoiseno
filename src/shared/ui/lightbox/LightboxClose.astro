@@ -1,0 +1,30 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { cn } from "tailwind-variants";
+
+import Icon from "../icon/Icon.astro";
+
+interface Props extends HTMLAttributes<"button"> {}
+
+const { class: className, ...rest } = Astro.props;
+---
+
+<button
+  data-slot="lightbox-close"
+  type="button"
+  aria-label="Close"
+  autofocus
+  class={cn(
+    "absolute top-3 right-3 inline-flex size-9 items-center justify-center rounded-full bg-white/10 text-white outline-none transition-colors hover:bg-white/20 focus-visible:ring-2 focus-visible:ring-white",
+    className,
+  )}
+  x-on:click="hide()"
+  {...rest}
+>
+  <slot>
+    <Icon
+      class="size-4"
+      name="reicon:X"
+    />
+  </slot>
+</button>

@@ -1,14 +1,22 @@
 import { component, defineMarkdocConfig, Markdoc, nodes } from "@astrojs/markdoc/config";
-import shiki from "@astrojs/markdoc/shiki";
 
 export default defineMarkdocConfig({
-  extends: [
-    shiki({
-      themes: { light: "github-light", dark: "github-dark" },
-      defaultColor: false,
-    }),
-  ],
   nodes: {
+    // Expressive Code renders every fence; `title`, `mark`, `ins`, `del` and `wrap` come from `{% … %}` annotations.
+    fence: {
+      ...nodes.fence,
+      render: component("./src/features/writing/index.ts", "CodeBlock"),
+      attributes: {
+        ...nodes.fence.attributes,
+        content: { type: String, required: true },
+        language: { type: String },
+        title: { type: String },
+        mark: { type: String },
+        ins: { type: String },
+        del: { type: String },
+        wrap: { type: Boolean },
+      },
+    },
     image: { ...nodes.image, render: component("./src/features/writing/index.ts", "Figure") },
     table: { ...nodes.table, render: component("./src/features/writing/index.ts", "Table") },
     // A figure cannot sit inside a paragraph, so a paragraph holding only an image renders as the image alone.

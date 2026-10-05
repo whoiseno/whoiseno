@@ -7,6 +7,7 @@ import vercel from "@astrojs/vercel";
 import keystatic from "@keystatic/astro";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig, fontProviders } from "astro/config";
+import expressiveCode from "astro-expressive-code";
 import icon from "astro-icon";
 
 /** @type {import("astro").AstroIntegration} */
@@ -31,10 +32,14 @@ const keystaticBackLink = {
 
 // https://astro.build/config
 export default defineConfig({
+  // Absolute URLs (social preview images) need the site origin. Vercel provides it at build time.
+  site: process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : undefined,
+
   integrations: [
     alpinejs({ entrypoint: "/src/app/entrypoints/alpine" }),
     partytown(),
     react(),
+    expressiveCode(),
     markdoc(),
     keystatic(),
     icon(),

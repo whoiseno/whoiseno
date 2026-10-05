@@ -1,0 +1,25 @@
+---
+import { Code } from "astro-expressive-code/components";
+
+interface Props {
+  content: string;
+  language?: string;
+  title?: string;
+  mark?: string;
+  ins?: string;
+  del?: string;
+  wrap?: boolean;
+}
+
+const { content, language, title, mark, ins, del, wrap } = Astro.props;
+
+const meta = [mark && `{${mark}}`, ins && `ins={${ins}}`, del && `del={${del}}`].filter(Boolean).join(" ");
+---
+
+<Code
+  code={content.replace(/\n$/, "")}
+  lang={language || "text"}
+  {title}
+  {wrap}
+  {meta}
+/>

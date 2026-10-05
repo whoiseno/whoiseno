@@ -1,5 +1,6 @@
 export { writingKindLabels } from "./config/kinds";
 export { default as Carousel } from "./ui/Carousel.astro";
+export { default as CodeBlock } from "./ui/CodeBlock.astro";
 export { default as Column } from "./ui/Column.astro";
 export { default as Columns } from "./ui/Columns.astro";
 export { default as Equation } from "./ui/Equation.astro";

@@ -1,0 +1,17 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { cn } from "tailwind-variants";
+
+interface Props extends HTMLAttributes<"nav"> {}
+
+const { class: className, ...rest } = Astro.props;
+---
+
+<nav
+  data-slot="breadcrumb"
+  class={cn(className)}
+  aria-label="Breadcrumb"
+  {...rest}
+>
+  <slot />
+</nav>

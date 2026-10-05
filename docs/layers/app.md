@@ -10,16 +10,20 @@ src/app/
 │   ├── GeneralSans-Variable.woff2
 │   └── Supreme-Variable.woff2
 ├── layouts/
-│   └── Site.astro       # site shell: header, main container, footer
+│   └── Site.astro       # site shell: sidebar, main container, footer
 └── styles/
     └── global.css        # Tailwind entry point + theme tokens
 ```
 
 ## `layouts/Site.astro`
 
-The shell every page uses: `Root` > `SiteHeader` (with `ThemeToggle` in its `actions` slot) > `<main>` (`max-w-2xl`, `max-w-4xl` while `<html>` has `data-wide`) > `SiteFooter`. A `header` slot renders under the page description. It lives here rather than in `shared` because it fetches the navigation (`getNavItems`, passed to the header) and the profile (the footer gets its `name` and `socials` via `getSocialLinks`), and `shared` cannot import from `entities`. Props: `title?` and `description?` (see [`pages.md`](./pages.md)).
+The shell every page uses: `Root` > a grid of `SiteSidebar` and the content column. From `md` the sidebar is a 14rem rail, sticky to the top at full viewport height, with the site name, the navigation, a `toc` slot in the middle and an `actions` slot at the bottom (`ThemeToggle`, plus more actions as they are added). Below `md` the same component becomes a sticky top bar with a menu button that opens the links. The content column is an `@container` (`data-slot="site-content"`, so `cqw` inside it is the column width) holding `<main>` (`max-w-2xl`, `max-w-4xl` while `<html>` has `data-wide`) and `SiteFooter`.
 
-In development only (`import.meta.env.DEV`), the header's actions slot also shows a "CMS" button linking to `/keystatic`. The way back is added by the `keystaticBackLink` integration in [`astro.config.mjs`](../../astro.config.mjs): a dev-only `before-hydration` script that appends a fixed "Back to site" link to the Keystatic admin page. It uses `before-hydration` because the admin route renders a bare `client:only` island with no `<head>`, so a `page` script never reaches it. Neither control exists in production builds.
+When `title` is set, `Site` renders a `<header>` with the breadcrumbs (when `crumbs` is passed), the page `<h1>` and the muted description, then the `header` slot. The `toc` slot is forwarded to the sidebar. It lives here rather than in `shared` because it fetches the navigation (`getNavItems`, passed to the sidebar) and the profile (the footer gets its `name` and `socials` via `getSocialLinks`), and `shared` cannot import from `entities`.
+
+Props: `title?`, `description?`, `crumbs?` (a `TypeCrumb[]` trail, shown above the title and nested under its nav link in the sidebar), `image?` and `imageAlt?` (the social preview image, an `ImageMetadata`) and `type?` (`website` or `article`, for `og:type`). `image` is resized to 1200px wide with `getImage` and turned into an absolute URL against `Astro.site`, so `og:image` is emitted only when `site` is set. [`astro.config.mjs`](../../astro.config.mjs) sets it from `VERCEL_PROJECT_PRODUCTION_URL`; locally and on a deployment without that variable the tag is omitted. The image keeps the format of the source file, so use a PNG or JPEG cover (social networks do not render SVG). See [`pages.md`](./pages.md).
+
+In development only (`import.meta.env.DEV`), the actions slot also shows a "CMS" button linking to `/keystatic`. The way back is added by the `keystaticBackLink` integration in [`astro.config.mjs`](../../astro.config.mjs): a dev-only `before-hydration` script that appends a fixed "Back to site" link to the Keystatic admin page. It uses `before-hydration` because the admin route renders a bare `client:only` island with no `<head>`, so a `page` script never reaches it. Neither control exists in production builds.
 
 ## `entrypoints/alpine.ts`
 
@@ -43,7 +47,7 @@ Raw variable-font files (`.woff2`) referenced by `fontProviders.local()` entries
 
 ## `styles/global.css`
 
-The single global stylesheet, imported once from `Root.astro` ([`src/shared/ui/layouts/Root.astro`](../../src/shared/ui/layouts/Root.astro)). Pulls in Tailwind (`@import "tailwindcss"`) and defines the `@theme` block (breakpoints, fonts, color and radius mapping), the light tokens in `:root`, the dark tokens in `.dark`, `[data-slot="prose"]` styles (including the breakout), the page-fade `@view-transition`, the theme wipe, and `x-cloak`. Full breakdown in [`styling.md`](../styling.md).
+The single global stylesheet, imported once from `Root.astro` ([`src/shared/ui/layouts/Root.astro`](../../src/shared/ui/layouts/Root.astro)). Pulls in Tailwind (`@import "tailwindcss"`) and defines the `@theme` block (breakpoints, fonts, color and radius mapping), the light tokens in `:root`, the dark tokens in `.dark`, `[data-slot="prose"]` styles (including the breakout), the registered `--carousel-span` property, the lightbox scroll lock, the page-fade `@view-transition`, the theme wipe, and `x-cloak`. Full breakdown in [`styling.md`](../styling.md).
 
 ## Conventions
 

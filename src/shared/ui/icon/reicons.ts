@@ -3,6 +3,7 @@ import ArrowRight from "reicon-astro/icons/ArrowRight.astro";
 import ArrowUpRight from "reicon-astro/icons/ArrowUpRight.astro";
 import Check from "reicon-astro/icons/Check.astro";
 import ChevronDown from "reicon-astro/icons/ChevronDown.astro";
+import ChevronRight from "reicon-astro/icons/ChevronRight.astro";
 import Compress from "reicon-astro/icons/Compress.astro";
 import Copy from "reicon-astro/icons/Copy.astro";
 import Envelope from "reicon-astro/icons/Envelope.astro";
@@ -25,6 +26,7 @@ export const reicons = {
   ArrowUpRight,
   Check,
   ChevronDown,
+  ChevronRight,
   Compress,
   Copy,
   Envelope,
