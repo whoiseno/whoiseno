@@ -7,7 +7,8 @@ Movies are added from the Keystatic admin. Books are not in the CMS: `/hobbies/b
 To add, rate or finish a book, do it in the Hardcover app. The page picks it up within about five minutes, because the page and the API responses are cached for that long. There is no file to edit and no deploy to wait for.
 
 - **What shows:** only books with a _Public_ privacy setting, in the statuses _Want to read_, _Currently reading_ and _Read_. Set a book to private in Hardcover to hide it from the site.
-- **Reading** shows up to 20 books you are currently reading, newest first. **Library** shows the rest, read books first by most recently finished, then the want-to-read list, 12 per page with Previous and Next links (`?page=2`).
+- **Reading** shows up to 20 books you are currently reading, newest first. **Library** shows the rest, read books first by most recently finished, then the want-to-read list, 12 per page with Previous and Next links (`?page=2`). The Library grid is five columns from `lg` (1280px) and wider than the text column, three from `sm` and two below that.
+- **Links:** a book's cover opens its Hardcover page in a new tab.
 - **Rating** shows as a pill such as "4/5" with a yellow star. **Review** shows the first 200 characters of your Hardcover review, faint and in quotes. A review marked as containing spoilers is left out.
 - **Covers and authors** come from Hardcover. To fix a wrong cover or author, edit the book on Hardcover.
 

@@ -1,4 +1,5 @@
 ---
+import { getPlaceholder } from "@/shared/api/placeholders";
 import { aspectRatioCatalog, type TypeAspectRatioName } from "@/shared/config/aspect-ratio";
 import { formatDate } from "@/shared/lib/date";
 import { Badge } from "@/shared/ui/badge";
@@ -25,6 +26,8 @@ interface Props {
   badge?: string;
   /** Attribution links to the catalogues the details came from. */
   links?: { name: string; href: string }[];
+  /** Makes the poster a link to the work. */
+  href?: string;
   /** `row` puts the poster beside the text, `card` stacks it on top. */
   layout?: "row" | "card";
 }
@@ -40,14 +43,24 @@ const {
   description,
   badge,
   links = [],
+  href,
   layout = "card",
 } = Astro.props;
 const row = layout === "row";
 const posterShape = aspectRatioCatalog[posterRatio].ratio;
 // A remote cover has no metadata to read a size from, so "Original" falls back to the usual cover shape for it.
 const remoteShape = posterShape ?? 2 / 3;
-const posterClass =
-  "w-full object-cover transition-transform duration-300 group-hover/poster:scale-105 motion-reduce:transition-none";
+// The size the poster is shown at in CSS pixels. `densities` adds the 2x and 3x files for sharper screens.
+const posterWidth = row ? 112 : 200;
+const posterImage = { alt: "", densities: [1, 2, 3], quality: 85, width: posterWidth };
+// A blurred preview sits behind the poster, which fades in once it has loaded. Without JavaScript it shows at once.
+const placeholder = typeof poster === "string" ? await getPlaceholder(poster) : null;
+const posterClass = placeholder
+  ? "relative w-full object-cover opacity-0 transition-opacity duration-500 data-loaded:opacity-100 [@media(scripting:none)]:opacity-100"
+  : "w-full object-cover";
+const posterOnLoad = placeholder ? "this.dataset.loaded = ''" : undefined;
+const Poster = href ? "a" : "div";
+const posterLink = href ? { href, "target": "_blank", "rel": "noopener noreferrer", "aria-label": title } : {};
 ---
 
 <article
@@ -55,26 +68,35 @@ const posterClass =
   data-layout={layout}
   class:list={["flex gap-3", row ? "items-start gap-4" : "flex-col"]}
 >
-  <div class:list={[row ? "w-24 shrink-0 sm:w-28" : "w-full"]}>
+  <Poster
+    class={row ? "block w-24 shrink-0 rounded-lg sm:w-28" : "block w-full rounded-lg"}
+    {...posterLink}
+  >
     {poster ? (
-      <div class="group/poster overflow-hidden rounded-lg border bg-muted">
+      <div class="relative overflow-hidden rounded-lg border bg-muted">
+        {placeholder && (
+          <div
+            class="absolute inset-0 scale-110 bg-cover bg-center blur-xl"
+            style={{ backgroundImage: `url(${placeholder})` }}
+            aria-hidden="true"
+          />
+        )}
         {typeof poster === "string" ? (
           <Image
+            {...posterImage}
             class={posterClass}
-            alt=""
-            height={Math.round(280 / remoteShape)}
+            height={Math.round(posterWidth / remoteShape)}
+            onload={posterOnLoad}
             src={poster}
             style={{ aspectRatio: remoteShape }}
-            width={280}
           />
         ) : (
           <Image
+            {...posterImage}
             class={posterClass}
-            alt=""
-            height={posterShape ? Math.round(280 / posterShape) : undefined}
+            height={posterShape ? Math.round(posterWidth / posterShape) : undefined}
             src={poster}
             style={{ aspectRatio: posterShape ?? undefined }}
-            width={280}
           />
         )}
       </div>
@@ -86,7 +108,7 @@ const posterClass =
         {title[0]?.toUpperCase()}
       </div>
     )}
-  </div>
+  </Poster>
   <div class="min-w-0 flex-1 space-y-1.5">
     <div class="space-y-0.5">
       <h3 class="font-medium">{title}</h3>

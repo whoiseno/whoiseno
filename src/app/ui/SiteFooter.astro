@@ -89,13 +89,24 @@ const [firstName] = name.split(" ");
       </div>
       <p class="text-xs/relaxed text-muted-foreground/70">
         Built with Astro and Tailwind CSS, with Alpine.js for the small interactive parts. Pages are prerendered and
-        deployed on Vercel, and posts are Markdoc files in the repository, edited through Keystatic. I chose static
-        output and a little JavaScript over a client framework, and plain files in git over a database, so the site
-        stays fast and easy to move. Code blocks use Expressive Code, math uses KaTeX, the code is organised with
-        Feature-Sliced Design, and the type is Supreme, General Sans and Geist Mono.
+        deployed on Vercel, apart from the books page, which is rendered on demand from my Hardcover library and cached
+        for a few minutes. Posts and movies are files in the repository, edited through Keystatic. I chose static output
+        and a little JavaScript over a client framework, and plain files in git over a database, so the site stays fast
+        and easy to move. Covers and posters are resized by Astro for each screen density and fade in over a blurred
+        preview. Code blocks use Expressive Code, math uses KaTeX, the code is organised with Feature-Sliced Design, and
+        the type is Supreme, General Sans and Geist Mono.
       </p>
       <p class="text-xs/relaxed text-muted-foreground/70">
-        Film and series posters come from
+        Book data and covers come from
+        <a
+          class="underline underline-offset-4 transition-colors hover:text-foreground"
+          href="https://hardcover.app"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          Hardcover
+        </a>
+        , and film and series posters from
         <a
           class="underline underline-offset-4 transition-colors hover:text-foreground"
           href="https://www.themoviedb.org"
