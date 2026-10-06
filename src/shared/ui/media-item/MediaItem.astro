@@ -11,7 +11,8 @@ interface Props {
   title: string;
   /** Author, director or creator. */
   byline?: string;
-  poster?: ImageMetadata | null;
+  /** An imported image, or the URL of a remote cover. */
+  poster?: ImageMetadata | string | null;
   /** The shape the poster is cropped to. */
   posterRatio?: TypeAspectRatioName;
   /** When the work itself came out. */
@@ -43,6 +44,10 @@ const {
 } = Astro.props;
 const row = layout === "row";
 const posterShape = aspectRatioCatalog[posterRatio].ratio;
+// A remote cover has no metadata to read a size from, so "Original" falls back to the usual cover shape for it.
+const remoteShape = posterShape ?? 2 / 3;
+const posterClass =
+  "w-full object-cover transition-transform duration-300 group-hover/poster:scale-105 motion-reduce:transition-none";
 ---
 
 <article
@@ -52,14 +57,27 @@ const posterShape = aspectRatioCatalog[posterRatio].ratio;
 >
   <div class:list={[row ? "w-24 shrink-0 sm:w-28" : "w-full"]}>
     {poster ? (
-      <Image
-        class="w-full rounded-lg border bg-muted object-cover"
-        alt=""
-        height={posterShape ? Math.round(280 / posterShape) : undefined}
-        src={poster}
-        style={{ aspectRatio: posterShape ?? undefined }}
-        width={280}
-      />
+      <div class="group/poster overflow-hidden rounded-lg border bg-muted">
+        {typeof poster === "string" ? (
+          <Image
+            class={posterClass}
+            alt=""
+            height={Math.round(280 / remoteShape)}
+            src={poster}
+            style={{ aspectRatio: remoteShape }}
+            width={280}
+          />
+        ) : (
+          <Image
+            class={posterClass}
+            alt=""
+            height={posterShape ? Math.round(280 / posterShape) : undefined}
+            src={poster}
+            style={{ aspectRatio: posterShape ?? undefined }}
+            width={280}
+          />
+        )}
+      </div>
     ) : (
       <div
         class="flex aspect-2/3 w-full items-center justify-center rounded-lg border bg-muted font-serif text-3xl font-semibold text-muted-foreground"

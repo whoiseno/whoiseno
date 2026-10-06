@@ -47,12 +47,6 @@ export const mediaSourceCatalog = {
     kinds: ["movie"],
     url: (id) => `https://www.themoviedb.org/tv/${id}`,
   },
-  "imdb": {
-    name: "IMDb",
-    label: "IMDb (title ID, e.g. tt1375666)",
-    kinds: ["movie"],
-    url: (id) => `https://www.imdb.com/title/${id}/`,
-  },
   "anilist": {
     name: "AniList",
     label: "AniList (anime ID)",

@@ -28,6 +28,7 @@
     "@iconify-json/ph": "^1.2.2",
     "@keystatic/astro": "^6.0.0",
     "@keystatic/core": "^0.6.9",
+    "@lorenzopant/tmdb": "^2.1.0",
     "@tailwindcss/vite": "^4.3.3",
     "@types/alpinejs": "^3.13.11",
     "alpinejs": "^3.17.4",

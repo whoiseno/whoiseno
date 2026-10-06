@@ -4,19 +4,20 @@ Reference docs for the `whoiseno` project — Enoabasi Essien's portfolio site.
 
 Start here, then jump into the file that covers the part you're touching.
 
-| Doc                                        | Covers                                                                                |
-| ------------------------------------------ | ------------------------------------------------------------------------------------- |
-| [architecture.md](./architecture.md)       | Overall design: Astro + Feature-Sliced Design layering, path aliases, rendering model |
-| [setup.md](./setup.md)                     | Local dev environment, scripts, tooling (lint/format/hooks)                           |
-| [layers/app.md](./layers/app.md)           | `src/app` — document and site shell, Alpine setup, global styles                      |
-| [layers/pages.md](./layers/pages.md)       | `src/pages` — file-based routing                                                      |
-| [layers/features.md](./layers/features.md) | `src/features` — one slice per portfolio section, plus the theme toggle               |
-| [layers/entities.md](./layers/entities.md) | `src/entities` — the profile, navigation and writing tag entities                     |
-| [layers/shared.md](./layers/shared.md)     | `src/shared` — reusable UI primitives and config                                      |
-| [components/](./components/README.md)      | Detailed docs + usage examples for every `shared/ui/page` component                   |
-| [content.md](./content.md)                 | Content collections and the Keystatic CMS integration                                 |
-| [styling.md](./styling.md)                 | Tailwind v4 theme, fonts, design tokens                                               |
-| [animations.md](./animations.md)           | anime.js setup and usage patterns                                                     |
+| Doc                                          | Covers                                                                                |
+| -------------------------------------------- | ------------------------------------------------------------------------------------- |
+| [architecture.md](./architecture.md)         | Overall design: Astro + Feature-Sliced Design layering, path aliases, rendering model |
+| [setup.md](./setup.md)                       | Local dev environment, scripts, tooling (lint/format/hooks)                           |
+| [layers/app.md](./layers/app.md)             | `src/app` — document and site shell, Alpine setup, global styles                      |
+| [layers/pages.md](./layers/pages.md)         | `src/pages` — file-based routing                                                      |
+| [layers/features.md](./layers/features.md)   | `src/features` — one slice per portfolio section, plus the theme toggle               |
+| [layers/entities.md](./layers/entities.md)   | `src/entities` — the profile, navigation and writing tag entities                     |
+| [layers/shared.md](./layers/shared.md)       | `src/shared` — reusable UI primitives and config                                      |
+| [components/](./components/README.md)        | Detailed docs + usage examples for every `shared/ui/page` component                   |
+| [content.md](./content.md)                   | Content collections and the Keystatic CMS integration                                 |
+| [books-and-movies.md](./books-and-movies.md) | Workflow for adding books and movies in the CMS admin, and how covers are found       |
+| [styling.md](./styling.md)                   | Tailwind v4 theme, fonts, design tokens                                               |
+| [animations.md](./animations.md)             | anime.js setup and usage patterns                                                     |
 
 ## Quick facts
 
