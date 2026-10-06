@@ -15,7 +15,6 @@ All content lives under `src/content/`. The seed entries are placeholders (`Exam
 | `writing`     | `src/content/writing/*`   | `.mdoc`             | `/writing`, `/writing/[slug]`, `/writing/tags/[tag]` |
 | `software`    | `src/content/software/*`  | `.yaml`             | `/uses`                                              |
 | `hardware`    | `src/content/hardware/*`  | `.yaml`             | `/uses`                                              |
-| `books`       | `src/content/books/*`     | `.yaml`             | `/hobbies/books`                                     |
 | `movies`      | `src/content/movies/*`    | `.yaml`             | `/hobbies/movies`                                    |
 
 - `.mdoc` entries are frontmatter plus a [Markdoc](https://markdoc.dev) body, rendered with `render()` from `astro:content` inside `Prose`. A work's body is shown inside its expanded accordion row.
@@ -34,9 +33,10 @@ All content lives under `src/content/`. The seed entries are placeholders (`Exam
   - `banner`: a plain muted block.
   - `bio` and `verified` (default `false`): shown only when set.
   - For `platform: email`, `url` is `mailto:<address>`. It renders as the address with a copy button instead of a hover card.
-- `books[]` and `movies[]` are the personal library. For the step-by-step admin workflow see [`books-and-movies.md`](./books-and-movies.md). Shared fields: `title`, `status`, `poster` (optional image, stored in `src/assets/books/` or `src/assets/movies/`; when empty the cover is fetched from the first `link` that has one, see [`shared.md`](./layers/shared.md#apiposters)), `posterRatio` (an [aspect ratio](#aspect-ratios), default `2/3`), `rating` (integer 1 to 5, your own), `description` (your own words, not a synopsis) and `links`. Books add `author`, `startedDate` and `finishedDate`; movies add `kind`, `creator` (director or creator), `releaseDate`, `startedDate` and `watchedDate`.
-- `books[].status` is `reading | read | want`; `movies[].status` is `watching | watched | planned`; `movies[].kind` is `movie | series | show | anime` and shows as a badge. `/hobbies/books` and `/hobbies/movies` put `reading` and `watching` entries in a section on top and everything else in a "Library" grid.
-- `books[].links` and `movies[].links` are attribution links to free or open catalogues: each item is a `source` and an `id` (or the full page URL). The sources are listed in [`shared/config/media-sources.ts`](../src/shared/config/media-sources.ts): Open Library, Google Books, Hardcover and Wikidata for books; TMDB, AniList, MyAnimeList and Wikidata for movies. To add one, add it to `mediaSourceCatalog`; the Zod schema and the Keystatic select both read from it. Dates and the rest of the details are typed in by hand. Only the cover is fetched at build time, from Open Library, Google Books, TMDB or AniList, and only when no `poster` is uploaded. Put the link you want the cover from first.
+- Books are not a collection. `/hobbies/books` is rendered on demand from the [Hardcover](https://hardcover.app) API, so books are managed in the Hardcover app (see [`books-and-movies.md`](./books-and-movies.md#books)).
+- `movies[]` is the movie library. For the step-by-step admin workflow see [`books-and-movies.md`](./books-and-movies.md). Fields: `title`, `kind`, `creator` (director or creator), `status`, `poster` (optional image, stored in `src/assets/movies/`; when empty the poster is fetched from the first `link` that has one, see [`shared.md`](./layers/shared.md#apiposters)), `posterRatio` (an [aspect ratio](#aspect-ratios), default `2/3`), `releaseDate`, `startedDate`, `watchedDate`, `rating` (integer 1 to 5, your own), `description` (your own words, not a synopsis) and `links`.
+- `movies[].status` is `watching | watched | planned`; `movies[].kind` is `movie | series | show | anime` and shows as a badge. `/hobbies/movies` puts `watching` entries in a section on top and everything else in a "Library" grid.
+- `movies[].links` are attribution links to free or open catalogues: each item is a `source` and an `id` (or the full page URL). The sources are listed in [`shared/config/media-sources.ts`](../src/shared/config/media-sources.ts): TMDB, AniList, MyAnimeList and Wikidata. To add one, add it to `mediaSourceCatalog`; the Zod schema and the Keystatic select both read from it. Dates and the rest of the details are typed in by hand. Only the poster is fetched at build time, from TMDB or AniList, and only when no `poster` is uploaded. Put the link you want the poster from first.
 - Dates are coerced with `z.coerce.date()`. Display formatting is in [`src/shared/lib/date.ts`](../src/shared/lib/date.ts) and is UTC-based so a date never shifts by timezone.
 - The profile avatar is stored in `src/assets/profile/` and validated with Astro's `image()` helper, so it goes through `astro:assets`. Hover-card avatars and banners are stored in `src/assets/profile/socials/` the same way.
 
@@ -64,7 +64,7 @@ Some images can be cropped to a shape picked from a fixed list in [`shared/confi
 
 - Writing carousel: `ratio` on each `{% slide %}`, default `original`.
 - Hardware photos: `ratio` on each photo, default `1/1`. All photos share one height, and the width follows the ratio.
-- Book and movie posters: `posterRatio`, default `2/3`.
+- Movie posters: `posterRatio`, default `2/3`.
 - An image placed on its own in a post keeps its own shape. Keystatic's standard image node only stores `alt` and `title`, so there is nowhere to keep a ratio for it.
 - Avatars, logos and banners are not on the list; their shape comes from the component that shows them.
 
@@ -77,7 +77,7 @@ Some images can be cropped to a shape picked from a fixed list in [`shared/confi
 
 ## Admin UI
 
-Keystatic's integration injects `/keystatic` (the admin UI) and `/api/keystatic/*`. Those routes are server-rendered (`prerender: false`) while every other page stays static, which is why the project uses the Vercel adapter and why `@astrojs/react` is installed. React is used only by the Keystatic admin; site pages do not use it.
+Keystatic's integration injects `/keystatic` (the admin UI) and `/api/keystatic/*`. Those routes are server-rendered (`prerender: false`) while every other page stays static, apart from `/hobbies/books` (see [`books-and-movies.md`](./books-and-movies.md#books)), which is why the project uses the Vercel adapter and why `@astrojs/react` is installed. React is used only by the Keystatic admin; site pages do not use it.
 
 Storage is switched on `import.meta.env.PROD` in `keystatic.config.ts`:
 
@@ -99,6 +99,6 @@ Per the Keystatic [GitHub mode guide](https://keystatic.com/docs/github-mode), t
 
 ## Dashboard grouping
 
-`ui.navigation` in `keystatic.config.ts` groups the sidebar as Site (navigation, profile), Work (works, projects), Writing (writing), Uses (software, hardware) and Hobbies (books, movies).
+`ui.navigation` in `keystatic.config.ts` groups the sidebar as Site (navigation, profile), Work (works, projects), Writing (writing), Uses (software, hardware) and Hobbies (movies).
 
 In development, every site page has a "CMS" button in the sidebar actions that opens `/keystatic`, and the admin shows a "Back to site" link in its bottom-right corner. Both are dev-only; see [`layers/app.md`](./layers/app.md).

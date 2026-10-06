@@ -55,7 +55,7 @@ Prettier's import-sort plugin ([`.prettierrc`](../.prettierrc)) is configured to
 
 ## Rendering & routing flow
 
-1. A request for a route (e.g. `/works`) matches a file under `src/pages` ([routing docs](https://docs.astro.build/en/guides/routing/)). All site routes are prerendered; only `/keystatic` and `/api/keystatic/*` are rendered on demand.
+1. A request for a route (e.g. `/works`) matches a file under `src/pages` ([routing docs](https://docs.astro.build/en/guides/routing/)). Site routes are prerendered, except `/hobbies/books`, which reads Hardcover on demand; `/keystatic` and `/api/keystatic/*` are also rendered on demand.
 2. The page wraps its content in `app/ui/Site.astro`, which composes `Root`, `SiteSidebar`, `SiteBreadcrumbs`, `SiteFooter` and the `ThemeToggle` feature, then fills the main area with feature slices (`WorkList`, `ProjectList`, ...) and entities (`ProfileHero`). See [`layers/pages.md`](./layers/pages.md).
 3. `Root.astro` sets up the HTML document shell: meta tags, favicon, `<title>`, a blocking inline script that applies the saved theme before first paint, and the three fonts declared in `astro.config.mjs` via Astro's `<Font />` component.
 4. Global Tailwind styles (`src/app/styles/global.css`) are imported once, inside `Root.astro`.
@@ -82,4 +82,4 @@ Not an Astro integration, but part of the same client-side stack: **`tw-animate-
 
 ## Content
 
-Content lives in Astro content collections under `src/content` (navigation, profile, works, projects, writing, software, hardware, books, movies), authored through Keystatic. See [`content.md`](./content.md) for the schema, the admin, and how it maps to the codebase.
+Content lives in Astro content collections under `src/content` (navigation, profile, works, projects, writing, software, hardware, movies), authored through Keystatic. See [`content.md`](./content.md) for the schema, the admin, and how it maps to the codebase.

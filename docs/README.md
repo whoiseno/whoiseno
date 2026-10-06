@@ -15,13 +15,13 @@ Start here, then jump into the file that covers the part you're touching.
 | [layers/shared.md](./layers/shared.md)       | `src/shared` — reusable UI primitives and config                                      |
 | [components/](./components/README.md)        | Detailed docs + usage examples for every `shared/ui/page` component                   |
 | [content.md](./content.md)                   | Content collections and the Keystatic CMS integration                                 |
-| [books-and-movies.md](./books-and-movies.md) | Workflow for adding books and movies in the CMS admin, and how covers are found       |
+| [books-and-movies.md](./books-and-movies.md) | Books from Hardcover (caching and quota), and adding movies in the CMS admin          |
 | [styling.md](./styling.md)                   | Tailwind v4 theme, fonts, design tokens                                               |
 | [animations.md](./animations.md)             | anime.js setup and usage patterns                                                     |
 
 ## Quick facts
 
-- **Framework:** [Astro](https://astro.build) 7, statically prerendered with the Vercel adapter for the CMS routes. Site components are `.astro` plus a light dusting of [Alpine.js](https://alpinejs.dev); React is present only for the Keystatic admin.
+- **Framework:** [Astro](https://astro.build) 7, statically prerendered with the Vercel adapter for the CMS routes and the on-demand books page. Site components are `.astro` plus a light dusting of [Alpine.js](https://alpinejs.dev); React is present only for the Keystatic admin.
 - **Styling:** Tailwind CSS v4 via `@tailwindcss/vite`, configured through CSS `@theme` rather than a JS config file.
 - **Architecture pattern:** [Feature-Sliced Design](https://feature-sliced.design/) (`app` → `pages` → `features` → `entities` → `shared`), enforced only by convention and TS path aliases.
 - **Content:** Managed through [Keystatic](https://keystatic.com) (`keystatic.config.ts`), writing Markdoc and YAML files into Astro content collections under `src/content`.

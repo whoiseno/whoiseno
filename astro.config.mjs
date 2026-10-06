@@ -48,20 +48,15 @@ export default defineConfig({
 
   adapter: vercel(),
 
-  // Poster providers, see src/shared/api/posters. Open Library redirects a cover to archive.org, which redirects again
-  // to an iaNNNNNN.us.archive.org host. Astro checks every hop, and "**." does not match the bare archive.org.
+  // Movie posters (see src/shared/api/posters) and Hardcover book covers (see src/features/books).
   image: {
-    domains: ["image.tmdb.org", "books.google.com", "s4.anilist.co"],
-    remotePatterns: [
-      { protocol: "https", hostname: "covers.openlibrary.org" },
-      { protocol: "https", hostname: "archive.org" },
-      { protocol: "https", hostname: "**.archive.org" },
-    ],
+    domains: ["image.tmdb.org", "s4.anilist.co", "assets.hardcover.app"],
   },
 
   env: {
     schema: {
       TMDB_TOKEN: envField.string({ context: "server", access: "secret", optional: true }),
+      HARDCOVER_API_KEY: envField.string({ context: "server", access: "secret", optional: true }),
     },
   },
 

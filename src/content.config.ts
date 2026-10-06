@@ -113,23 +113,6 @@ const hardware = defineCollection({
 const mediaLinks = (kind: TypeMediaKind) =>
   z.array(z.object({ source: z.enum(mediaSourceNames(kind)), id: z.string() })).default([]);
 
-const books = defineCollection({
-  loader: glob({ pattern: "**/*.yaml", base: "./src/content/books" }),
-  schema: ({ image }) =>
-    z.object({
-      title: z.string(),
-      author: z.string(),
-      status: z.enum(["reading", "read", "want"]),
-      poster: image().nullish(),
-      posterRatio: z.enum(aspectRatioNames).default("2/3"),
-      startedDate: date.nullish(),
-      finishedDate: date.nullish(),
-      rating: z.number().min(1).max(5).nullish(),
-      description: z.string().optional(),
-      links: mediaLinks("book"),
-    }),
-});
-
 const movies = defineCollection({
   loader: glob({ pattern: "**/*.yaml", base: "./src/content/movies" }),
   schema: ({ image }) =>
@@ -156,4 +139,4 @@ const navigation = defineCollection({
   }),
 });
 
-export const collections = { profile, navigation, works, projects, writing, software, hardware, books, movies };
+export const collections = { profile, navigation, works, projects, writing, software, hardware, movies };

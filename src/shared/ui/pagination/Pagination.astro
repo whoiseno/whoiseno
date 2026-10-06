@@ -1,0 +1,51 @@
+---
+import { Button } from "@/shared/ui/button";
+import { Icon } from "@/shared/ui/icon";
+
+interface Props {
+  page: number;
+  pageCount: number;
+  /** The URL of a page. */
+  href: (page: number) => string;
+}
+
+const { page, pageCount, href } = Astro.props;
+---
+
+{pageCount > 1 && (
+  <nav
+    class="flex items-center justify-between gap-3"
+    aria-label="Pagination"
+    data-slot="pagination"
+  >
+    <Button
+      color="neutral"
+      disabled={page <= 1}
+      href={page > 1 ? href(page - 1) : undefined}
+      size="sm"
+      variant="outline"
+    >
+      <Icon
+        class="size-3.5"
+        name="reicon:ArrowLeft"
+      />
+      Previous
+    </Button>
+    <p class="text-xs text-muted-foreground">
+      Page {page} of {pageCount}
+    </p>
+    <Button
+      color="neutral"
+      disabled={page >= pageCount}
+      href={page < pageCount ? href(page + 1) : undefined}
+      size="sm"
+      variant="outline"
+    >
+      Next
+      <Icon
+        class="size-3.5"
+        name="reicon:ArrowRight"
+      />
+    </Button>
+  </nav>
+)}

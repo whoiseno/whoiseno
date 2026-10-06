@@ -1,4 +1,4 @@
-export type TypeMediaKind = "book" | "movie";
+export type TypeMediaKind = "movie";
 
 interface TypeMediaSource {
   /** Public name shown on the attribution link. */
@@ -11,30 +11,6 @@ interface TypeMediaSource {
 
 /** Free or open catalogues that an entry can link back to. `id` is the part of the entry URL that identifies it. */
 export const mediaSourceCatalog = {
-  "openlibrary": {
-    name: "Open Library",
-    label: "Open Library (work ID, e.g. OL45804W)",
-    kinds: ["book"],
-    url: (id) => `https://openlibrary.org/works/${id}`,
-  },
-  "openlibrary-isbn": {
-    name: "Open Library",
-    label: "Open Library (ISBN)",
-    kinds: ["book"],
-    url: (id) => `https://openlibrary.org/isbn/${id}`,
-  },
-  "googlebooks": {
-    name: "Google Books",
-    label: "Google Books (volume ID)",
-    kinds: ["book"],
-    url: (id) => `https://books.google.com/books?id=${id}`,
-  },
-  "hardcover": {
-    name: "Hardcover",
-    label: "Hardcover (book slug)",
-    kinds: ["book"],
-    url: (id) => `https://hardcover.app/books/${id}`,
-  },
   "tmdb-movie": {
     name: "TMDB",
     label: "TMDB (movie ID)",
@@ -62,7 +38,7 @@ export const mediaSourceCatalog = {
   "wikidata": {
     name: "Wikidata",
     label: "Wikidata (item ID, e.g. Q25188)",
-    kinds: ["book", "movie"],
+    kinds: ["movie"],
     url: (id) => `https://www.wikidata.org/wiki/${id}`,
   },
 } as const satisfies Record<string, TypeMediaSource>;

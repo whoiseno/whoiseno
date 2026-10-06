@@ -7,13 +7,17 @@ The bottom layer: reusable, domain-agnostic building blocks with no dependency o
 ```
 src/shared/
 ├── api/
+│   ├── hardcover/
+│   │   ├── cache.ts       # cached(key, ttl, load): in-memory TTL cache with request sharing and stale-on-error
+│   │   ├── client.ts      # hardcover(query, variables): the authenticated GraphQL call
+│   │   └── index.ts
 │   └── posters/
-│       ├── index.ts       # resolvePoster(links): the first cover a link's catalogue can supply
-│       └── providers.ts   # one fetcher per source (Open Library, Google Books, TMDB, AniList)
+│       ├── index.ts       # resolvePoster(links): the first poster a link's catalogue can supply
+│       └── providers.ts   # one fetcher per source (TMDB, AniList)
 ├── config/
 │   ├── aspect-ratio.ts    # catalogue of the shapes images can be cropped to
 │   ├── logos.ts           # catalogue of the SVGL tech-stack logos (logoCatalog, logoNames)
-│   └── media-sources.ts   # catalogue of free/open databases that books and movies link back to
+│   └── media-sources.ts   # catalogue of free/open databases that movies link back to
 ├── lib/
 │   ├── date.ts            # formatDate, formatMonthYear, formatDateRange (UTC-based)
 │   ├── motion.ts          # anime.js scope helper
@@ -32,6 +36,7 @@ src/shared/
     ├── lightbox/                   # compound: Lightbox, Trigger, Content, Image, Caption, Close (+ alpine.ts)
     ├── media-item/                 # MediaItem.astro (poster, title, byline, rating and attribution links), index.ts
     ├── page/                       # older slot-based layout primitives (currently unused by pages)
+    ├── pagination/                 # Pagination.astro, index.ts
     ├── popover/                    # compound: Popover, Trigger, Content (+ alpine.ts)
     ├── prose/                      # Prose.astro, index.ts
     ├── rating/                     # Rating.astro, index.ts
@@ -63,6 +68,7 @@ The interactive components follow the [shadcn/ui](https://ui.shadcn.com) compoun
 | `Prose`                                                                                                     | Wrapper that applies the `[data-slot="prose"]` typography styles to rendered Markdoc.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 | `Rating`                                                                                                    | A pill on a muted background reading "4/5" followed by one filled star in the `rating` color, with an `aria-label`; props `value`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | `MediaItem`                                                                                                 | One book, movie, series or anime. Props `title`, `byline?`, `poster?` (an imported image or the URL of a remote cover; a placeholder with the title's first letter without one), `posterRatio?` (an `aspectRatioCatalog` key, default `2/3`; a remote cover has no size of its own, so `original` falls back to `2/3` for it), `published?` (a release date, which only movies pass), `timeline?` (e.g. "Finished Jun 2025"), `rating?`, `description?` (shown faint, in quotes), `badge?`, `links?` (`{ name, href }[]`, shown as external attribution links) and `layout` (`card` stacks the poster on top, `row` puts it beside the text). |
+| `Pagination`                                                                                                | Previous and Next buttons around "Page 2 of 5". Props `page`, `pageCount` and `href(page)`, which builds the URL of a page. Renders nothing when there is only one page, and disables the button at either end. The pages are plain links, so it works without JavaScript.                                                                                                                                                                                                                                                                                                                                                                    |
 | `Section`                                                                                                   | Props `title`, `href?`, `hrefLabel="View all"`. A titled block with an optional "View all" link.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | `Breadcrumb`, `BreadcrumbList`, `BreadcrumbItem`, `BreadcrumbLink`, `BreadcrumbPage`, `BreadcrumbSeparator` | A `<nav aria-label="Breadcrumb">` with an `<ol>`. `BreadcrumbPage` is the current page (`aria-current="page"`, no link); `BreadcrumbSeparator` is a hidden `<li>` with a chevron, or whatever its slot holds. Purely static markup, no Alpine.                                                                                                                                                                                                                                                                                                                                                                                                |
 | `Lightbox`, `LightboxTrigger`, `LightboxContent`, `LightboxImage`, `LightboxCaption`, `LightboxClose`       | Opens an image in a native `<dialog>`, so the focus trap, Escape to close and focus return to the trigger come from the browser. `LightboxTrigger` is a `<button>` (Enter and Space work), `LightboxContent` takes `label` for the dialog's accessible name, and clicking the backdrop closes it. For performance, `LightboxImage` takes the full-size `src` as `data-src` and sets the real `src` only on the first focus, hover or open, so a page never downloads images nobody opens. `html` scroll is locked with `html:has([data-slot="lightbox-content"][open])` in `global.css`.                                                      |
@@ -105,33 +111,38 @@ The earlier slot-based layout primitives (`Page`, `PageContainer`, `PageHeader`,
 
 ## `config/media-sources.ts`
 
-`mediaSourceCatalog` lists the free or open databases an entry can credit: Open Library (work ID or ISBN), Google Books, Hardcover, TMDB (movie or TV), AniList, MyAnimeList and Wikidata. IMDb is not on the list: it is no longer free to use, so TMDB is the source for films and series. Each source has a public `name` (the link text), a CMS `label` that says which ID to paste, the media kinds it applies to (`book`, `movie`) and a `url(id)` builder.
+`mediaSourceCatalog` lists the free or open databases a movie entry can credit: TMDB (movie or TV), AniList, MyAnimeList and Wikidata. IMDb is not on the list: it is no longer free to use, so TMDB is the source for films and series. Books are not here, since they come from Hardcover (see [`api/hardcover`](#apihardcover)). Each source has a public `name` (the link text), a CMS `label` that says which ID to paste, the media kinds it applies to (only `movie` today, which is what `mediaSourceNames(kind)` filters on) and a `url(id)` builder.
 
 - `mediaSourceNames(kind)` returns the source keys valid for a kind. `content.config.ts` uses it for the Zod `z.enum` and `keystatic.config.ts` for the select options, so adding a source to the catalogue makes it available in both.
 - `resolveMediaLink(source, id)` builds the `{ name, href }` attribution link. A full `http(s)` URL pasted as the `id` is used unchanged, and any other value is URL-encoded into the source's template.
-- The catalogue only builds links. Covers are fetched separately, by [`api/posters`](#apiposters).
+- The catalogue only builds links. Posters are fetched separately, by [`api/posters`](#apiposters).
 
 ## `api/posters`
 
-`resolvePoster(links)` takes an entry's `links` and returns the URL of the first cover it can find, or `null`. `BookList` and `MovieList` call it only when the entry has no uploaded `poster`, so the order is: uploaded image, then the first link that yields a cover (in the order the links are listed), then the initial-letter tile. It runs at build time, so a visitor's browser never calls these services, and `MediaItem` passes the URL to `Image`, which downloads, optimizes and self-hosts the cover.
+`resolvePoster(links)` takes an entry's `links` and returns the URL of the first poster it can find, or `null`. `MovieList` calls it only when the entry has no uploaded `poster`, so the order is: uploaded image, then the first link that yields a poster (in the order the links are listed), then the initial-letter tile. It runs at build time, so a visitor's browser never calls these services, and `MediaItem` passes the URL to `Image`, which downloads, optimizes and self-hosts the poster.
 
-| Source                            | Where the cover comes from                                                                                                                      |
-| --------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| `openlibrary`, `openlibrary-isbn` | The `covers` list in the work or ISBN JSON, then `covers.openlibrary.org` (which redirects to `archive.org`)                                    |
-| `googlebooks`                     | The `books.google.com` cover endpoint for the volume ID. Google returns a PNG placeholder when a book has no cover, so only a JPEG is accepted. |
-| `tmdb-movie`, `tmdb-tv`           | `poster_path` from TMDB through the [`@lorenzopant/tmdb`](https://tmdb.lorenzopant.dev) wrapper, served from `image.tmdb.org`                   |
-| `anilist`, `myanimelist`          | AniList's GraphQL `coverImage` (MyAnimeList IDs are looked up through AniList's `idMal`)                                                        |
+| Source                   | Where the poster comes from                                                                                                   |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------- |
+| `tmdb-movie`, `tmdb-tv`  | `poster_path` from TMDB through the [`@lorenzopant/tmdb`](https://tmdb.lorenzopant.dev) wrapper, served from `image.tmdb.org` |
+| `anilist`, `myanimelist` | AniList's GraphQL `coverImage` (MyAnimeList IDs are looked up through AniList's `idMal`)                                      |
 
-`hardcover` and `wikidata` have no provider (no key-free cover source), so they stay link-only.
+`wikidata` has no provider (no key-free poster source), so it stays link-only.
 
 - A lookup that fails never fails the build. It logs `[posters] <source> <id>: <reason>` and falls through to the next link. Each request has a 10 second limit, and the URL is checked with a `HEAD` request before it is used, because a dead remote image would otherwise fail `astro build`.
 - A link whose `id` is a pasted URL is skipped, since there is no ID to look up.
 - Hits are cached per source and ID for the life of the process. Misses are not, so in dev a provider that was down is asked again on the next request.
 - TMDB needs the `TMDB_TOKEN` secret (see [`setup.md`](../setup.md#environment-variables)). Without it TMDB entries fall back to the tile and the build still passes.
-- The hosts are allowed in `image.domains` and `image.remotePatterns` in `astro.config.mjs`. A new provider needs its image host added there, and so does every host its image redirects through, because Astro checks each hop. An Open Library cover goes `covers.openlibrary.org`, then `archive.org`, then `iaNNNNNN.us.archive.org`, which is why both `archive.org` and `**.archive.org` are listed (`**.` does not match the bare domain).
-- Open Library's [covers API](https://openlibrary.org/dev/docs/api/covers) rate-limits lookups by ISBN, OCLC and LCCN (100 requests per IP every 5 minutes) but not by cover ID, so the provider reads the cover ID from the work or edition JSON and builds `/b/id/<id>-L.jpg` instead of calling `/b/isbn/`. Open Library also asks for a courtesy link back, which the entry's `openlibrary` link already provides.
+- The hosts are allowed in `image.domains` in `astro.config.mjs` (`image.tmdb.org`, `s4.anilist.co` and `assets.hardcover.app`). A new provider needs its image host added there, and so does every host its image redirects through, because Astro checks each hop. A host in `remotePatterns` such as `**.example.com` does not match the bare `example.com`.
 - To add a provider, add a function to `posterProviders` in `providers.ts` that takes the `id` and returns an image URL, `null` or `undefined`.
 - TMDB's terms require the attribution notice in the footer (`SiteFooter`) and the TMDB logo in an About or Credits section.
+
+## `api/hardcover`
+
+The client for the [Hardcover GraphQL API](https://docs.hardcover.app/api/getting-started/), used by the books feature at request time (see [`features.md`](./features.md#books)). It is server-only: the token never reaches the browser.
+
+- `hardcover<T>(query, variables?)` POSTs to `https://api.hardcover.app/v1/graphql` with the `HARDCOVER_API_KEY` secret as a bearer token (a `Bearer ` prefix already in the secret is kept as is). It has a 10 second limit and throws on a missing key, a non-2xx response (including 429, with the `Retry-After` value in the message) or a GraphQL `errors` array.
+- `cached(key, ttlMs, load)` memoizes `load` per key. Concurrent calls for a key share one request, and when a refresh fails the last good value is served for another minute instead of an error. With no earlier value the error is thrown.
+- The free plan allows 5,000 requests a day (reset at midnight UTC), 60 a minute and 30 seconds per query, and counts each top-level GraphQL field as one request however many rows it returns. A query can be nested three levels deep at most, which is why `features/books` reads `cached_image` and `cached_contributors` (JSON fields) instead of joining authors and editions.
 
 ## Conventions
 

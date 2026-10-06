@@ -29,7 +29,7 @@ function usesFields(kind: "software" | "hardware") {
   };
 }
 
-function posterField(kind: "books" | "movies") {
+function posterField(kind: "movies") {
   return fields.image({
     label: "Poster",
     description: "Cover or poster, portrait works best",
@@ -69,7 +69,7 @@ export default config({
       Work: ["works", "projects"],
       Writing: ["writing"],
       Uses: ["software", "hardware"],
-      Hobbies: ["books", "movies"],
+      Hobbies: ["movies"],
     },
   },
 
@@ -343,33 +343,6 @@ export default config({
             itemLabel: (props) => props.fields.alt.value || "Photo",
           },
         ),
-      },
-    }),
-
-    books: collection({
-      label: "Books",
-      path: "src/content/books/*",
-      slugField: "title",
-      format: { data: "yaml" },
-      schema: {
-        title: fields.slug({ name: { label: "Title" } }),
-        author: fields.text({ label: "Author", validation: { isRequired: true } }),
-        status: fields.select({
-          label: "Status",
-          options: [
-            { label: "Reading", value: "reading" },
-            { label: "Read", value: "read" },
-            { label: "Want to read", value: "want" },
-          ],
-          defaultValue: "read",
-        }),
-        poster: posterField("books"),
-        posterRatio: aspectRatioField("2/3"),
-        startedDate: fields.date({ label: "Started on" }),
-        finishedDate: fields.date({ label: "Finished on" }),
-        rating: fields.integer({ label: "My rating (1-5)", validation: { min: 1, max: 5 } }),
-        description: fields.text({ label: "My description", multiline: true }),
-        links: mediaLinksField("book"),
       },
     }),
 

@@ -16,13 +16,13 @@ src/pages/
 ├── uses.astro              # /uses       Software and Hardware sections
 └── hobbies/
     ├── index.astro         # /hobbies         cards linking to each hobby
-    ├── books.astro         # /hobbies/books
+    ├── books.astro         # /hobbies/books   rendered on demand from Hardcover; ?page=N
     └── movies.astro        # /hobbies/movies
 ```
 
 `/books` and `/movies` no longer exist (they moved under `/hobbies`), and there are no redirects.
 
-All of these are prerendered. The only on-demand routes are `/keystatic` and `/api/keystatic/*`, injected by the Keystatic integration (there is no file for them here).
+All of these are prerendered except `hobbies/books.astro` (`export const prerender = false`), which reads the library from Hardcover on each uncached request. The other on-demand routes are `/keystatic` and `/api/keystatic/*`, injected by the Keystatic integration (there is no file for them here).
 
 ## Composition
 
@@ -44,7 +44,8 @@ Sections are built with `Section` (`shared/ui/section`), which adds the title an
 - `writing/[slug].astro`: the optional cover image (after the title and description, through the `header` slot; it is also the `og:image`, and is not shown in the writing list), a badge with the entry kind (Blog, Tutorial, Journal or Note), the published date, the width and focus buttons (`WritingToolbar`: in the sidebar from `lg`, in this row below it), the Markdoc body inside `Prose`, the table of contents (`WritingToc`, in the sidebar from `lg`), the "All writing" back link below the text on screens under `lg`, and the previous and next posts (`WritingPager`) right below it. The cover is loaded eagerly with high fetch priority because it is above the fold. `getStaticPaths` sorts entries by `publishedDate` ascending and passes each page its neighbours as `previous` and `next`. `Site` supplies the title and description. The wide and focus state lives in the `writingReader` Alpine store (read through `$store`, so the sidebar and the post can both use it); the wrapper's bare `x-data` only lets the Escape handler and the exit button use it. See [`animations.md`](../animations.md) for focus mode and [`content.md`](../content.md) for what the body supports.
 - `writing/tags/[tag].astro`: `WritingFilters` with the current tag highlighted, then `WritingList` filtered to that tag, and an "All writing" back link.
 - `hobbies/index.astro`: one `Card` per hobby (Books, Movies). To add another hobby, add an entry to the `hobbies` array there and create `hobbies/<name>.astro`. The header link is the single "Hobbies" entry in the Navigation singleton (see [`content.md`](../content.md)).
-- `hobbies/books.astro` and `hobbies/movies.astro`: `Site` around `BookList` and `MovieList`.
+- `hobbies/movies.astro`: `Site` around `MovieList`.
+- `hobbies/books.astro`: reads `?page=` (anything that is not a whole number above 1 is page 1), calls `getBooks(page)` and renders `BookList` in `Site`. A page past the end redirects to the last page. A success sets `Cache-Control: public, s-maxage=300, stale-while-revalidate=3600`, so Vercel's CDN serves repeat visits for each `?page=` without running the page. When Hardcover fails and nothing is cached, it renders a short message with status 503 and `no-store`. See [`books-and-movies.md`](../books-and-movies.md#books).
 
 The older `Page*` primitives in `shared/ui/page` are no longer used by any page.
 

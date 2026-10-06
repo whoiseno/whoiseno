@@ -1,6 +1,32 @@
 ---
 import { Site } from "@/app/ui";
-import { BookList } from "@/features/books";
+import { BookList, getBooks, type TypeBookPage } from "@/features/books";
+
+// Rendered on demand so the library is read from Hardcover instead of baked in at build time. The CDN and the cache in
+// `getBooks` keep that from spending the API quota on every visit.
+export const prerender = false;
+
+const { pathname, searchParams } = Astro.url;
+const requested = Number(searchParams.get("page"));
+const page = Number.isInteger(requested) && requested > 1 ? requested : 1;
+
+let data: TypeBookPage | undefined;
+try {
+  data = await getBooks(page);
+} catch (error) {
+  console.error(`[books] ${error instanceof Error ? error.message : String(error)}`);
+}
+
+if (data && page > data.pageCount) {
+  return Astro.redirect(data.pageCount === 1 ? pathname : `${pathname}?page=${data.pageCount}`);
+}
+
+if (data) {
+  Astro.response.headers.set("Cache-Control", "public, s-maxage=300, stale-while-revalidate=3600");
+} else {
+  Astro.response.status = 503;
+  Astro.response.headers.set("Cache-Control", "no-store");
+}
 ---
 
 <Site
@@ -8,5 +34,9 @@ import { BookList } from "@/features/books";
   description="Books I have read, am reading and want to read."
   title="Books"
 >
-  <BookList />
+  {data ? (
+    <BookList data={data} />
+  ) : (
+    <p class="text-muted-foreground">My books are unavailable right now. Try again in a few minutes.</p>
+  )}
 </Site>

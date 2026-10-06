@@ -29,17 +29,18 @@ Defined in [`package.json`](../package.json):
 
 ### Building on Windows
 
-`pnpm build` compiles and prerenders every page, then `@astrojs/vercel` bundles the server function by creating symlinks into `.vercel/output`. Windows blocks symlink creation for normal users, so that last step fails with `EPERM: operation not permitted, symlink` unless Developer Mode is enabled (or the shell is elevated). The failure is environmental, not a code error; Vercel builds on Linux. Everything before it (including the static routes) completes.
+`pnpm build` compiles and prerenders every static page (`/hobbies/books` is rendered on demand instead), then `@astrojs/vercel` bundles the server function by creating symlinks into `.vercel/output`. Windows blocks symlink creation for normal users, so that last step fails with `EPERM: operation not permitted, symlink` unless Developer Mode is enabled (or the shell is elevated). The failure is environmental, not a code error; Vercel builds on Linux. Everything before it (including the static routes) completes.
 
 ## Environment variables
 
 Declared in the `env` schema in `astro.config.mjs` and imported from `astro:env/server`. Copy [`.env.example`](../.env.example) to `.env` for local work.
 
-| Variable     | Required | Purpose                                                                                                                                                                                                                  |
-| ------------ | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `TMDB_TOKEN` | No       | TMDB "API Read Access Token" (the long JWT) or a v3 API key, from your TMDB account's API settings. Used at build time to fetch movie and series posters. Without it those entries fall back to the initial-letter tile. |
+| Variable            | Required | Purpose                                                                                                                                                                                                                                                                                           |
+| ------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `TMDB_TOKEN`        | No       | TMDB "API Read Access Token" (the long JWT) or a v3 API key, from your TMDB account's API settings. Used at build time to fetch movie and series posters. Without it those entries fall back to the initial-letter tile.                                                                          |
+| `HARDCOVER_API_KEY` | No       | Hardcover API token, from your Hardcover account (see the [API docs](https://docs.hardcover.app/api/getting-started/)). The `Bearer ` prefix is optional. Read at request time to list the books on `/hobbies/books`. Without it that page shows "My books are unavailable right now" with a 503. |
 
-Set it in Vercel under Project Settings, Environment Variables for both Production and Preview, since the CMS saves trigger a rebuild there. It is a server secret, so it never reaches the browser or the built pages.
+Set both in Vercel under Project Settings, Environment Variables for both Production and Preview, since the CMS saves trigger a rebuild there and Preview deployments render the books page too. They are server secrets, so they never reach the browser or the built pages.
 
 ## Git hooks
 
