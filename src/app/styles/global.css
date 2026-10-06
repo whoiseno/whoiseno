@@ -62,6 +62,7 @@
   --color-success-foreground: var(--success-foreground);
   --color-error: var(--error);
   --color-error-foreground: var(--error-foreground);
+  --color-rating: var(--rating);
   --color-ring: var(--ring);
   --color-border: var(--border);
   --color-border-soft: var(--border-soft);
@@ -164,6 +165,9 @@
     --error: oklch(0.5802 0.22 27.1);
     --error-foreground: oklch(0.9851 0 0);
 
+    /* Rating star color. A true yellow, where the warning color is amber */
+    --rating: oklch(0.795 0.184 86.047);
+
     /* Ring color. Focus states and outlines */
     --ring: oklch(0.7161 0.0091 56.26);
 
@@ -223,6 +227,8 @@
 
     --error: oklch(0.7036 0.1881 22.15);
     --error-foreground: oklch(0.2046 0 0);
+
+    --rating: oklch(0.852 0.199 91.936);
 
     --ring: oklch(0.5555 0 0);
 

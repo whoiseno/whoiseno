@@ -100,7 +100,7 @@ const posterClass =
     )}
     {rating && <Rating value={rating} />}
     {timeline && <p class="text-xs text-muted-foreground">{timeline}</p>}
-    {description && <p>{description}</p>}
+    {description && <p class="text-muted-foreground/70">“{description}”</p>}
     {links.length > 0 && (
       <ul class="flex flex-wrap gap-x-3 gap-y-1 text-xs">
         {links.map((link) => (

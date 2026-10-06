@@ -13,8 +13,8 @@ The file name comes from the title (`The Pragmatic Programmer` becomes `the-prag
 
 1. **Create entry**, then fill in **Title** and **Author**. Both are required.
 2. Set **Status**: _Reading_, _Read_ or _Want to read_.
-3. Add the dates that apply. **Published on** is when the book came out, **Started on** and **Finished on** are yours.
-4. Optionally set **My rating (1-5)** and **My description**. The description is your own words, not the blurb.
+3. Add the dates that apply, **Started on** and **Finished on**.
+4. Optionally set **My rating (1-5)** and **My description**. The rating shows as a pill such as "4/5" with a yellow star. The description is your own words, not the blurb, and shows faint and in quotes.
 5. Under **Attribution links**, add a link (see [Getting a cover](#getting-a-cover)). One link both credits the catalogue and supplies the cover.
 6. Save.
 

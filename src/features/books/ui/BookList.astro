@@ -46,7 +46,6 @@ function timeline({ status, startedDate, finishedDate }: CollectionEntry<"books"
                 links={data.links.map(({ source, id }) => resolveMediaLink(source, id))}
                 poster={poster}
                 posterRatio={data.posterRatio}
-                published={data.publishedDate}
                 rating={data.rating}
                 timeline={timeline(data)}
                 title={data.title}
@@ -68,7 +67,6 @@ function timeline({ status, startedDate, finishedDate }: CollectionEntry<"books"
                 links={data.links.map(({ source, id }) => resolveMediaLink(source, id))}
                 poster={poster}
                 posterRatio={data.posterRatio}
-                published={data.publishedDate}
                 rating={data.rating}
                 timeline={timeline(data)}
                 title={data.title}

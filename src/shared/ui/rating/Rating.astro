@@ -10,15 +10,14 @@ const { value } = Astro.props;
 
 <span
   data-slot="rating"
-  class="inline-flex items-center gap-0.5"
+  class="flex w-fit items-center gap-1 rounded-md bg-muted px-1.5 py-0.5 text-xs text-muted-foreground"
   aria-label={`${value} out of 5`}
   role="img"
 >
-  {Array.from({ length: 5 }, (_, index) => (
-    <Icon
-      class:list={["size-3.5", index >= value && "text-dimmed"]}
-      name="reicon:Star"
-      weight={index < value ? "Filled" : "Outline"}
-    />
-  ))}
+  {value}/5
+  <Icon
+    class="size-3 text-rating"
+    name="reicon:Star"
+    weight="Filled"
+  />
 </span>

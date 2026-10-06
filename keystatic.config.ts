@@ -365,7 +365,6 @@ export default config({
         }),
         poster: posterField("books"),
         posterRatio: aspectRatioField("2/3"),
-        publishedDate: fields.date({ label: "Published on" }),
         startedDate: fields.date({ label: "Started on" }),
         finishedDate: fields.date({ label: "Finished on" }),
         rating: fields.integer({ label: "My rating (1-5)", validation: { min: 1, max: 5 } }),

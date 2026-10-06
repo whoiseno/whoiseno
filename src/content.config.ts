@@ -122,7 +122,6 @@ const books = defineCollection({
       status: z.enum(["reading", "read", "want"]),
       poster: image().nullish(),
       posterRatio: z.enum(aspectRatioNames).default("2/3"),
-      publishedDate: date.nullish(),
       startedDate: date.nullish(),
       finishedDate: date.nullish(),
       rating: z.number().min(1).max(5).nullish(),
