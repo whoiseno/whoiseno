@@ -153,6 +153,52 @@ Inline math sits in a sentence, like {% inlineMath expression="e^{i\\pi} + 1 = 0
 
 {% math expression="\\sum_{k=1}^{n} k = \\frac{n(n+1)}{2}" /%}
 
-## Closing thoughts
+# Part four: footnotes
+
+## Notes in the margin
+
+From a wide screen a footnote sits in the margin, level with the line that mentions it.{% footnoteRef id="margin" /%} The number in the text and the note beside it belong together: hover either one and both light up, so you never have to hunt for which note goes with which line. Notes that would land on top of each other are held back instead, each one clipped with a soft fade until you open it.
+
+{% footnote id="margin" %}
+A note can hold several paragraphs, **bold text**, `inline code` and [links](https://astro.build).
+
+When two notes want the same spot, the earlier one is clipped with a fade until you open it.
+{% /footnote %}
+
+Click a number, or the note itself, to pin it open.{% footnoteRef id="pin" /%} The notes below it slide down to make room, and clicking again, or pressing Escape, lets it go. On a narrow screen there is no margin to use, so each note stays in the text, in a small box right where it was written. That is also what a reader sees without scripts, so nothing is lost either way.
+
+{% footnote id="pin" %}
+A pinned note pushes the ones below it out of the way. Press Escape to let go.
+{% /footnote %}
+
+## Images, handwriting, video and audio
+
+A note does not have to be text. This one carries a picture, which opens full size when you click it, just like an image in the post.{% footnoteRef id="image" /%} The margin is narrow, so the picture is scaled to fit it, and the paragraph around it is long enough to give the note room to show the whole picture without being clipped by whatever comes next. Pictures in a note suit a screenshot, a diagram, or the thing you are describing, shown without breaking the flow of the sentence it belongs to. A note that is taller than the room it has will show its top and fade out, and a click opens the rest. Keep that in mind when you place the numbers: two notes that both carry pictures want a few lines of text between them, so that each has the room to be seen at a glance, instead of both waiting for a click.
+
+{% footnote id="image" %}
+![A placeholder illustration](../../assets/writing/example-slide-1.svg "Images in a note open the lightbox too.")
+{% /footnote %}
+
+Some notes should look as if they were written by hand.{% footnoteRef id="hand" /%} A handwriting note is ordinary text in a handwriting typeface, which makes it good for a reminder, a correction, or an aside you would scribble beside a line in a book if the page were yours. Because it is text, a screen reader can read it, the search box can find it and a translator can translate it, like the rest of the page.
+
+{% footnote id="hand" %}
+{% handwriting %}
+Remember to write this down properly later.
+{% /handwriting %}
+{% /footnote %}
+
+A note can also hold a video.{% footnoteRef id="video" /%} The clip uses the browser's own controls, loads only its first frame until you press play, and works the same whether you upload it in the editor or link to a file hosted elsewhere. Short loops suit the margin best. Anything longer is better placed in the text, where it has the width to breathe. If the clip does not play in a browser, the note offers a link to download it instead. A caption under the player says what to look for, which matters more in a margin than in the text, because a reader skims the margin and only stops for what looks worth stopping for. Keep clips short, keep them small, and give each one a reason to be there.
+
+{% footnote id="video" %}
+{% video file="/writing/example-clip.webm" caption="A two second clip." /%}
+{% /footnote %}
+
+Last, a note can hold a sound.{% footnoteRef id="audio" /%} An audio note is one row of controls with an optional caption, so it takes very little room: a voice memo, a snippet of the song you are talking about, or the sound of whatever you are describing.
+
+{% footnote id="audio" %}
+{% audio file="/writing/example-chime.wav" caption="A short chime." /%}
+{% /footnote %}
+
+# Closing thoughts
 
 That is every component in one place. When you write your own post, delete what you do not need; a short post with a single heading works just as well, and the table of contents simply disappears when there is nothing to list.

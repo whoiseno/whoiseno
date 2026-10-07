@@ -1,0 +1,40 @@
+---
+import { Text } from "@/shared/ui/text";
+
+interface Props {
+  /** A file uploaded in the CMS, as a path under `public/`. */
+  file?: string;
+  /** A direct link to a video file. Used when there is no uploaded `file`. */
+  url?: string;
+  caption?: string;
+}
+
+const { file, url, caption } = Astro.props;
+const src = file || url;
+if (!src) throw new Error("A video needs a file or a url.");
+---
+
+<figure
+  class="space-y-2xs"
+  data-slot="video"
+>
+  <video
+    class="w-full rounded-lg border bg-muted"
+    aria-label={caption || "Video"}
+    controls
+    playsinline
+    preload="metadata"
+    src={src}
+  >
+    Your browser cannot play this video. <a href={src}>Download it</a>.
+  </video>
+  {caption && (
+    <Text
+      as="figcaption"
+      tone="muted"
+      variant="small"
+    >
+      {caption}
+    </Text>
+  )}
+</figure>

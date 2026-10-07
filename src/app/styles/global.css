@@ -15,6 +15,7 @@
   --font-serif: var(--font-heading);
   --font-sans: var(--font-content);
   --font-mono: var(--font-code);
+  --font-hand: var(--font-handwriting);
 
   /* The only breakpoint: the sidebar rail beside the content, or a top bar with a menu above it. */
   --breakpoint-*: initial;
@@ -88,6 +89,7 @@
     --font-heading: var(--font-general-sans-variable);
     --font-content: var(--font-supreme-variable);
     --font-code: var(--font-geist-mono);
+    --font-handwriting: var(--font-caveat);
 
     /* Raw black and white color */
     --black: oklch(0 0 0);
@@ -321,6 +323,146 @@
 
       & > img {
         width: 100%;
+      }
+    }
+  }
+
+  /*
+    Footnotes. Where the author wrote it, a footnote is a small note in the text. From `rail`, `sidenotes.ts` moves each
+    one into the rail beside its number (`data-placed`) and sets `visible`, `lit`, `expanded` and `clipped` on it.
+  */
+  [data-slot="prose"] a[data-slot="footnote-ref"] {
+    @apply -mx-[0.2em] scroll-mt-20 rounded-sm px-[0.2em] text-muted-foreground no-underline transition-colors hover:bg-muted hover:text-foreground rail:scroll-mt-8;
+  }
+
+  :root[data-sidenotes] [data-slot="footnote-ref"] {
+    cursor: default;
+
+    &[lit] {
+      @apply bg-muted text-foreground;
+    }
+    &[pinned] {
+      @apply bg-primary text-primary-foreground;
+    }
+  }
+
+  [data-slot="footnote"] {
+    @apply grid scroll-mt-20 grid-cols-[1.4em_1fr] rounded-lg bg-muted/40 px-s py-xs text-step--1 text-muted-foreground target:ring-2 target:ring-ring rail:scroll-mt-8;
+
+    [data-slot="footnote-marker"] {
+      @apply no-underline transition-colors hover:text-foreground;
+      font-size: 0.75em;
+      translate: 0 -0.35em;
+    }
+
+    [data-slot="footnote-body"] {
+      @apply min-w-0 wrap-break-word;
+
+      & > * {
+        @apply max-w-full;
+        margin-block: 0 0.6em;
+      }
+      & > :last-child {
+        margin-block-end: 0;
+      }
+      a {
+        @apply underline underline-offset-4 hover:text-foreground;
+      }
+      ul {
+        @apply list-disc space-y-3xs pl-m;
+      }
+      ol {
+        @apply list-decimal space-y-3xs pl-m;
+      }
+      code {
+        @apply rounded-sm bg-muted px-3xs py-0.5 font-mono;
+      }
+      :is(img, video, audio, [data-slot="lightbox-trigger"]) {
+        @apply w-full;
+      }
+    }
+  }
+
+  /* A visitor with scripts on, wide enough for the rail, gets the notes placed at once instead of seeing them jump. */
+  @media (scripting: enabled) and (width >= theme(--breakpoint-rail)) {
+    [data-slot="footnote"]:not([data-placed]) {
+      @apply sr-only;
+    }
+  }
+
+  [data-slot="sidenotes"] {
+    clip-path: inset(0 -100vw);
+
+    [data-slot="footnote"][data-placed] {
+      --fill: var(--background);
+      --fade: 0.2s ease;
+      --glide: 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+
+      position: absolute;
+      inset-inline: var(--spacing-m) 0;
+      inset-block-start: 0;
+      border-radius: 0;
+      padding-inline: 0;
+      padding-block: var(--spacing-2xs);
+      background-color: var(--fill);
+      color: var(--lit, var(--muted-foreground));
+      visibility: hidden;
+      transition: color var(--fade);
+      clip-path: inset(-1lh -100vw var(--clip, -1lh) -100vw);
+
+      &[visible] {
+        visibility: visible;
+        pointer-events: auto;
+        cursor: pointer;
+      }
+      &[lit] {
+        --lit: var(--foreground);
+      }
+
+      /* Fades above and below hide the seam where a clipped note meets the next one. */
+      &::before,
+      &::after {
+        content: "";
+        position: absolute;
+        inset-inline: 0;
+        block-size: 1lh;
+        pointer-events: none;
+        background: linear-gradient(to var(--edge), var(--fill), transparent);
+      }
+      &::before {
+        --edge: top;
+        inset-block-end: 100%;
+      }
+      &::after {
+        --edge: bottom;
+        inset-block-start: 100%;
+      }
+
+      [data-slot="footnote-marker"] {
+        color: var(--lit, var(--muted-foreground));
+        pointer-events: none;
+        transition:
+          color var(--fade),
+          opacity var(--fade);
+      }
+      [data-slot="footnote-body"] {
+        transition: opacity var(--fade);
+      }
+    }
+
+    /* With one note open, the others step back. */
+    &:has([data-placed][expanded]) [data-slot="footnote"][data-placed]:not([expanded], :hover) {
+      :is([data-slot="footnote-marker"], [data-slot="footnote-body"]) {
+        opacity: 0.4;
+      }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      &[animating] [data-slot="footnote"][data-placed] {
+        transition:
+          translate var(--glide),
+          clip-path var(--glide),
+          color var(--fade);
       }
     }
   }

@@ -112,6 +112,7 @@ The interactive components follow the [shadcn/ui](https://ui.shadcn.com) compoun
 | `small`      | -1   | regular                          | `p`             |
 | `overline`   | -1   | medium, uppercase, wide tracking | `p`             |
 | `mono`       | -1   | monospace                        | `span`          |
+| `hand`       | 1    | handwriting font (Caveat)        | `p`             |
 
 - `tone` sets the colour: `default` inherits, `muted` is `text-muted-foreground`, `faint` is the same colour at 70%.
 - Pass `as` when the element matters more than the look (a card's `h3`, a `time`, a `figcaption`, an `h4`). Pass `class` for layout (`flex gap-2xs`, `truncate`) or a one-off change: a clash resolves in favour of the caller, so `class="font-normal"` beats the weight of a variant.

@@ -1,0 +1,39 @@
+---
+import { Text } from "@/shared/ui/text";
+
+interface Props {
+  /** A file uploaded in the CMS, as a path under `public/`. */
+  file?: string;
+  /** A direct link to an audio file. Used when there is no uploaded `file`. */
+  url?: string;
+  caption?: string;
+}
+
+const { file, url, caption } = Astro.props;
+const src = file || url;
+if (!src) throw new Error("An audio clip needs a file or a url.");
+---
+
+<figure
+  class="space-y-2xs"
+  data-slot="audio"
+>
+  <audio
+    class="w-full"
+    aria-label={caption || "Audio"}
+    controls
+    preload="metadata"
+    src={src}
+  >
+    Your browser cannot play this audio. <a href={src}>Download it</a>.
+  </audio>
+  {caption && (
+    <Text
+      as="figcaption"
+      tone="muted"
+      variant="small"
+    >
+      {caption}
+    </Text>
+  )}
+</figure>

@@ -51,12 +51,35 @@ The body of a writing entry supports more than plain text. All of it is editable
 - **Width:** code blocks, images and blockquotes stay on the text column, and an image fills it. Tables extend 10% of the column past it on each side, as far as the viewport allows (not at all on phones). The carousel does not follow the column: its track runs the full width of the page. See [`styling.md`](./styling.md).
 - **Columns** is `{% columns %}` with exactly two `{% column %}` children, side by side while each column can be 16rem wide, and stacked when it cannot.
 - **Math** is LaTeX, rendered with [KaTeX](https://katex.org) at build time. `{% math expression="..." /%}` is a block on its own line and `{% inlineMath expression="..." /%}` sits inside a sentence. In the editor they are the "Math block" and "Inline math" components; they show the raw LaTeX, not a rendered preview. A malformed expression renders as its source in red instead of failing the build.
+- **Footnotes, video, audio and handwriting** are covered under [Footnotes](#footnotes).
 
 The tags are declared in two places that must stay in sync: the `components` option of the `content` field in `keystatic.config.ts` (editor UI) and the `tags` map in `markdoc.config.mjs` (rendering, with `component("./src/features/writing/index.ts", "<ExportName>")`). After adding `markdoc.config.mjs` or changing it, restart `pnpm dev`; Astro does not pick up a new Markdoc config on the fly.
 
 When writing a math tag by hand in the `.mdoc` file, double every backslash inside the attribute (`expression="\\frac{1}{3}"`): Markdoc treats a single backslash in a string as an escape and rejects it. The Keystatic editor writes the doubled form itself, so this matters only when editing the file directly.
 
 `/writing/[slug]` renders headings with ids, and the table of contents in the sidebar (from `rail`) has one tick for each `h1`, `h2` and `h3` heading, so a post with more headings gets more ticks. A `#` heading in the body is a second `<h1>` on the page, because the title already is one; use `##` for sections unless you want that level in the contents.
+
+## Footnotes
+
+A footnote is two tags with the same id: a reference in the text and the footnote that holds its content.
+
+```
+It happened on a Tuesday.{% footnoteRef id="tuesday" /%}
+
+{% footnote id="tuesday" %}
+Or possibly a Wednesday. See [the diary](https://example.com).
+{% /footnote %}
+```
+
+- **Numbering** follows the order of the references, not of the footnotes, and is worked out when the page is built, so the numbers are in the HTML without any script.
+- **The id** is letters, digits, `-` and `_`. The build fails, naming the id, if a reference has no footnote, a footnote has no reference, or an id is used twice. Each reference needs its own footnote.
+- **What a footnote can hold** is any blocks: paragraphs with bold text and links, lists, code, an image (`![alt](...)`, which opens the lightbox), and three more tags:
+  - `{% video file="/writing/clip.webm" caption="..." /%}` and `{% audio file="/writing/chime.wav" caption="..." /%}` take an uploaded `file`, or a `url` that links straight to a media file when nothing is uploaded. The browser's own controls play them, and only the metadata loads until someone presses play. A tag with neither fails the build. Uploads from the editor go to `public/writing/` and are referenced as `/writing/<name>`, so keep clips small: they live in the repository.
+  - `{% handwriting %}text{% /handwriting %}` is ordinary text in a handwriting typeface (Caveat, the `hand` variant of [`Text`](./layers/shared.md#uitext)), so it stays searchable and readable by a screen reader.
+  - `video`, `audio` and `handwriting` also work outside a footnote, at the width of the text.
+- **Where a note shows** depends on the screen. From `rail` (1280px) it sits in the margin, level with its number (see [`styling.md`](./styling.md#writing-entry-styles)). Below that, and for anyone without scripts, it stays in the text where it was written, in a small box, so write each footnote right under the paragraph that refers to it.
+- **In the margin**, hovering or focusing a number lights it and its note. Clicking a number or its note pins the note open, which moves the notes below it down; clicking again, or Escape, lets go. A note that would sit on top of the next one is clipped with a fade until it is opened, so leave a few lines of text between two notes that hold pictures or video.
+- **In the editor** the pieces are the `Footnote reference` (inline) and `Footnote` components in the toolbar, plus `Video`, `Audio` and `Handwriting`. The `Footnote ID` field of both has to match.
 
 ## Aspect ratios
 

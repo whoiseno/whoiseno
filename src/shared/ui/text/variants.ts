@@ -26,6 +26,8 @@ export const textVariants = tv({
       overline: "text-step--1 font-medium tracking-wider uppercase",
       /** Small figures and codes. */
       mono: "font-mono text-step--1",
+      /** A handwritten aside. The face is small for its size, so it runs a step above the text around it. */
+      hand: "font-hand text-step-1",
     },
     tone: {
       default: "",
@@ -56,6 +58,7 @@ const textTags = {
   small: "p",
   overline: "p",
   mono: "span",
+  hand: "p",
 } as const satisfies Record<TypeTextVariant, TypeTextTag>;
 
 /**

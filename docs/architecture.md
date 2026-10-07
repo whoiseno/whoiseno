@@ -57,7 +57,7 @@ Prettier's import-sort plugin ([`.prettierrc`](../.prettierrc)) is configured to
 
 1. A request for a route (e.g. `/works`) matches a file under `src/pages` ([routing docs](https://docs.astro.build/en/guides/routing/)). Site routes are prerendered, except `/hobbies/books`, which reads Hardcover on demand; `/keystatic` and `/api/keystatic/*` are also rendered on demand.
 2. The page wraps its content in `app/ui/Site.astro`, which composes `Root`, `SiteSidebar`, `SiteBreadcrumbs`, `SiteFooter` and the `ThemeToggle` feature, then fills the main area with feature slices (`WorkList`, `ProjectList`, ...) and entities (`ProfileHero`). See [`layers/pages.md`](./layers/pages.md).
-3. `Root.astro` sets up the HTML document shell: meta tags, favicon, `<title>`, a blocking inline script that applies the saved theme before first paint, and the three fonts declared in `astro.config.mjs` via Astro's `<Font />` component.
+3. `Root.astro` sets up the HTML document shell: meta tags, favicon, `<title>`, a blocking inline script that applies the saved theme before first paint, and the four fonts declared in `astro.config.mjs` via Astro's `<Font />` component.
 4. Global Tailwind styles (`src/app/styles/global.css`) are imported once, inside `Root.astro`.
 5. The Alpine.js entrypoint (`src/app/config/alpine.ts`) is wired up via the `@astrojs/alpinejs` integration and registers the `@alpinejs/anchor` and `@alpinejs/intersect` plugins (the latter has no users right now) plus the shared components' `Alpine.data` behaviors, the scroll-to-top button, the theme toggle and the writing slice (reader with table of contents and wide and focus modes, carousel, kind filter store) before Alpine initializes client-side. Features register through their `client.ts`, not their `index.ts`.
 
@@ -74,7 +74,7 @@ Configured in [`astro.config.mjs`](../astro.config.mjs):
 - **`astro-icon`** with `@iconify-json/ph` — Phosphor icons, plus the local SVGL tech logos in `src/assets/icons/logos/` (the plugin's `iconDir` is `src/assets/icons`). Together with `reicon-astro` (a component package, not an integration) it sits behind one `Icon` component in `shared/ui/icon`; see [`layers/shared.md`](./layers/shared.md).
 - **`@astrojs/vercel`** (adapter) — required for the on-demand Keystatic routes; the rest of the site stays static.
 - **`@tailwindcss/vite`** — Tailwind v4's Vite plugin (no `tailwind.config.js`; theme lives in CSS, see [`styling.md`](./styling.md)).
-- **Fonts** — two local variable fonts (Supreme, General Sans, in `src/assets/fonts/`) served via `fontProviders.local()`, plus Geist Mono via `fontProviders.fontsource()` (Astro's built-in Fontsource integration, fetched at build time).
+- **Fonts** — two local variable fonts (Supreme, General Sans, in `src/assets/fonts/`) served via `fontProviders.local()`, plus Geist Mono and Caveat (the handwriting face, weight 500) via `fontProviders.fontsource()` (Astro's built-in Fontsource integration, fetched at build time).
 
 Not an Astro integration, but part of the same client-side stack: **`tw-animate-css`** for simple enter and exit animations (a Tailwind v4 plugin imported in `global.css`), and **anime.js** (`animejs`), a general-purpose animation library used for anything beyond that (staggered/sequenced/scroll-driven animation). Imported directly in component `<script>` tags rather than through a config-level entrypoint like Alpine — see [`animations.md`](./animations.md).
 

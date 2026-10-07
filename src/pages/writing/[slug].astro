@@ -5,6 +5,7 @@ import {
   WritingBackLink,
   writingKindLabels,
   WritingPager,
+  WritingSidenotes,
   WritingToc,
   WritingToolbar,
 } from "@/features/writing";
@@ -47,6 +48,7 @@ const { Content, headings } = await render(entry);
     slot="toc"
     headings={headings}
   />
+  <WritingSidenotes slot="sidenotes" />
   <WritingToolbar
     slot="tools"
     class="max-rail:hidden"

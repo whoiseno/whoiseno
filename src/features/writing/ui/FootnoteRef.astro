@@ -1,0 +1,21 @@
+---
+interface Props {
+  id: string;
+  /** Counted in reference order by the Markdoc `document` node. */
+  number: number;
+}
+
+const { id, number } = Astro.props;
+---
+
+<sup data-slot="footnote-sup">
+  <a
+    id={`fnref-${id}`}
+    aria-describedby={`fn-${id}`}
+    data-footnote-ref={id}
+    data-slot="footnote-ref"
+    href={`#fn-${id}`}
+  >
+    {number}
+  </a>
+</sup>

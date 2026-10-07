@@ -14,6 +14,33 @@ function aspectRatioField(defaultValue: TypeAspectRatioName) {
   });
 }
 
+function footnoteIdField() {
+  return fields.text({
+    label: "Footnote ID",
+    description: "Pairs a reference with its footnote. Letters, digits, - and _, used once in the post.",
+    validation: {
+      isRequired: true,
+      pattern: { regex: /^[A-Za-z0-9_-]+$/, message: "Use letters, digits, - and _ only" },
+    },
+  });
+}
+
+function mediaFields(kind: "video" | "audio") {
+  return {
+    file: fields.file({
+      label: `${kind === "video" ? "Video" : "Audio"} file`,
+      description: "Upload a clip, or leave empty and give a link below",
+      directory: "public/writing",
+      publicPath: "/writing/",
+    }),
+    url: fields.url({
+      label: "Link",
+      description: `A direct link to a ${kind} file. Used when no file is uploaded.`,
+    }),
+    caption: fields.text({ label: "Caption", description: "Optional, shown under the player" }),
+  };
+}
+
 function usesFields(kind: "software" | "hardware") {
   return {
     name: fields.slug({ name: { label: "Name" } }),
@@ -303,6 +330,35 @@ export default config({
               description: "LaTeX equation inside a sentence",
               schema: { expression: fields.text({ label: "LaTeX", validation: { isRequired: true } }) },
               ContentView: ({ value }) => value.expression,
+            }),
+            footnoteRef: inline({
+              label: "Footnote reference",
+              description: "Marks where a footnote belongs in the text. Write the footnote itself with the same ID.",
+              schema: { id: footnoteIdField() },
+              ContentView: ({ value }) => `[${value.id}]`,
+            }),
+            footnote: wrapper({
+              label: "Footnote",
+              description:
+                "Sits in the margin beside its reference on a wide screen, and in the text otherwise. Holds text, images, video, audio and handwriting.",
+              schema: { id: footnoteIdField() },
+            }),
+            video: block({
+              label: "Video",
+              description: "A video with the browser's own controls. Works in a footnote or on its own.",
+              schema: mediaFields("video"),
+              ContentView: ({ value }) => value.caption || "Video",
+            }),
+            audio: block({
+              label: "Audio",
+              description: "An audio clip with the browser's own controls. Works in a footnote or on its own.",
+              schema: mediaFields("audio"),
+              ContentView: ({ value }) => value.caption || "Audio",
+            }),
+            handwriting: wrapper({
+              label: "Handwriting",
+              description: "Text in a handwriting font, for a note that should look jotted down.",
+              schema: {},
             }),
           },
         }),

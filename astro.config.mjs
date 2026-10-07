@@ -97,6 +97,13 @@ export default defineConfig({
     provider: fontProviders.fontsource(),
     name: "Geist Mono",
     cssVariable: "--font-geist-mono",
+  },
+  {
+    provider: fontProviders.fontsource(),
+    name: "Caveat",
+    cssVariable: "--font-caveat",
+    weights: [500],
+    styles: ["normal"],
   }
 ]
 });
