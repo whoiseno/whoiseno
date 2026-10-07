@@ -1,0 +1,65 @@
+---
+import type { TypeSocialLink } from "@/entities/profile";
+import { CopyButton } from "@/shared/ui/copy-button";
+import { Icon } from "@/shared/ui/icon";
+import { Text } from "@/shared/ui/text";
+
+interface Props {
+  social: TypeSocialLink;
+}
+
+const { social } = Astro.props;
+---
+
+<li
+  data-slot="site-footer-social"
+  class="min-w-0 space-y-3xs"
+>
+  {social.email ? (
+    <>
+      <Text
+        as="span"
+        class="flex items-center gap-2xs"
+        variant="label"
+      >
+        {social.label}
+        <CopyButton
+          label="Copy email address"
+          value={social.email}
+        />
+      </Text>
+      <a
+        class="block truncate text-muted-foreground transition-colors hover:text-foreground"
+        href={social.href}
+      >
+        {social.email}
+      </a>
+    </>
+  ) : (
+    <a
+      class="group block"
+      href={social.href}
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      <Text
+        as="span"
+        class="flex items-center gap-3xs"
+        variant="label"
+      >
+        {social.label}
+        <Icon
+          class="size-3.5 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+          name="reicon:ArrowUpRight"
+        />
+      </Text>
+      <Text
+        as="span"
+        class="block truncate"
+        tone="muted"
+      >
+        {social.handle}
+      </Text>
+    </a>
+  )}
+</li>

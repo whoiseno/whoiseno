@@ -1,5 +1,6 @@
 import type { Alpine } from "alpinejs";
 
+/** Only the state lives here. `CarouselContent` is the `track` ref; `CarouselPrevious` and `CarouselNext` follow `canPrev` and `canNext`. */
 export function registerCarousel(Alpine: Alpine) {
   Alpine.data("carousel", () => ({
     canPrev: false,

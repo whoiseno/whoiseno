@@ -1,0 +1,37 @@
+---
+import type { TypeSocialLink } from "@/entities/profile";
+import { Text } from "@/shared/ui/text";
+
+import SiteFooterSocial from "./SiteFooterSocial.astro";
+
+interface Props {
+  socials: TypeSocialLink[];
+}
+
+const { socials } = Astro.props;
+---
+
+{socials.length > 0 && (
+  <div
+    data-slot="site-footer-socials"
+    class="space-y-s-m"
+  >
+    <Text
+      class="font-normal"
+      variant="heading"
+    >
+      Let's be friends{" "}
+      <span
+        class="text-success"
+        aria-hidden="true"
+      >
+        ✦
+      </span>
+    </Text>
+    <ul class="grid-fluid gap-m [--grid-min:9.5rem]">
+      {socials.map((social) => (
+        <SiteFooterSocial social={social} />
+      ))}
+    </ul>
+  </div>
+)}

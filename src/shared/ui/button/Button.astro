@@ -9,7 +9,18 @@ interface Props extends Omit<HTMLAttributes<"button">, "color">, TypeButtonVaria
   loading?: string | boolean | null | undefined;
 }
 
-const { class: className, type, disabled, href, variant, color, size, loading = false, ...rest } = Astro.props;
+const {
+  "class": className,
+  "data-slot": slot = "button",
+  type,
+  disabled,
+  href,
+  variant,
+  color,
+  size,
+  loading = false,
+  ...rest
+} = Astro.props;
 
 const external = href?.startsWith("http");
 const classes = buttonVariants({ variant, color, size, class: className });
@@ -17,7 +28,7 @@ const classes = buttonVariants({ variant, color, size, class: className });
 
 {href ? (
   <a
-    data-slot="button"
+    data-slot={slot}
     data-cuelume-navigate
     data-cuelume-hover="select"
     data-variant={variant ?? "solid"}
@@ -33,7 +44,7 @@ const classes = buttonVariants({ variant, color, size, class: className });
   </a>
 ) : (
   <button
-    data-slot="button"
+    data-slot={slot}
     data-cuelume-tap
     data-cuelume-hover="select"
     data-variant={variant ?? "solid"}

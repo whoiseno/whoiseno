@@ -1,8 +1,8 @@
 ---
-import { Card, CardDescription, CardTitle } from "@/shared/ui/card";
 import { Text } from "@/shared/ui/text";
-import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
+
+import ProjectCard from "./ProjectCard.astro";
 
 interface Props {
   featured?: boolean;
@@ -19,35 +19,9 @@ const projects = (await getCollection("projects", ({ data }) => !featured || dat
   <Text tone="muted">Nothing here yet.</Text>
 ) : (
   <ul class="grid-fluid gap-s-m [--grid-min:16rem]">
-    {projects.map(({ id, data }) => (
+    {projects.map((project) => (
       <li class="min-w-0">
-        <Card
-          class="group flex h-full flex-col gap-xs p-2xs"
-          href={`/projects/${id}`}
-        >
-          <div class="flex aspect-video items-center justify-center overflow-hidden rounded-md border bg-muted">
-            {data.logo ? (
-              <Image
-                class="h-12 w-auto max-w-3/5 object-contain transition-transform duration-300 group-hover:scale-105 motion-reduce:transition-none"
-                alt=""
-                src={data.logo}
-              />
-            ) : (
-              <Text
-                as="span"
-                class="text-muted-foreground/40"
-                aria-hidden="true"
-                variant="display"
-              >
-                {data.title.charAt(0)}
-              </Text>
-            )}
-          </div>
-          <div class="space-y-3xs px-2xs pb-2xs">
-            <CardTitle>{data.title}</CardTitle>
-            <CardDescription class="line-clamp-2">{data.description}</CardDescription>
-          </div>
-        </Card>
+        <ProjectCard project={project} />
       </li>
     ))}
   </ul>

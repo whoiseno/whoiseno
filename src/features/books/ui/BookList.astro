@@ -1,10 +1,9 @@
 ---
-import { formatMonthYear } from "@/shared/lib/date";
-import { MediaItem } from "@/shared/ui/media-item";
 import { Pagination } from "@/shared/ui/pagination";
 import { Text } from "@/shared/ui/text";
 
-import type { TypeBook, TypeBookPage } from "../api/books";
+import type { TypeBookPage } from "../api/books";
+import BookItem from "./BookItem.astro";
 
 interface Props {
   data: TypeBookPage;
@@ -14,12 +13,6 @@ const { page, pageCount, reading, library } = Astro.props.data;
 const { pathname } = Astro.url;
 
 const href = (target: number) => (target === 1 ? pathname : `${pathname}?page=${target}`);
-
-function timeline({ status, startedAt, finishedAt }: TypeBook) {
-  if (status === "want") return "Want to read";
-  if (status === "reading") return startedAt ? `Started ${formatMonthYear(startedAt)}` : "Reading";
-  return finishedAt ? `Finished ${formatMonthYear(finishedAt)}` : undefined;
-}
 ---
 
 {reading.length === 0 && library.length === 0 ? (
@@ -32,15 +25,9 @@ function timeline({ status, startedAt, finishedAt }: TypeBook) {
         <ul class="space-y-m">
           {reading.map((book) => (
             <li>
-              <MediaItem
-                byline={book.author}
-                description={book.review}
-                href={book.url}
+              <BookItem
+                book={book}
                 layout="row"
-                poster={book.cover}
-                rating={book.rating}
-                timeline={timeline(book)}
-                title={book.title}
               />
             </li>
           ))}
@@ -55,15 +42,7 @@ function timeline({ status, startedAt, finishedAt }: TypeBook) {
           <ul class="grid-fluid items-start gap-x-s gap-y-l [--grid-min:9.5rem]">
             {library.map((book) => (
               <li>
-                <MediaItem
-                  byline={book.author}
-                  description={book.review}
-                  href={book.url}
-                  poster={book.cover}
-                  rating={book.rating}
-                  timeline={timeline(book)}
-                  title={book.title}
-                />
+                <BookItem book={book} />
               </li>
             ))}
           </ul>

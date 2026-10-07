@@ -1,0 +1,24 @@
+---
+import { cn } from "@/shared/lib/tailwind";
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"header"> {}
+
+const { class: className, ...rest } = Astro.props;
+---
+
+<header
+  data-slot="sidebar"
+  data-focus-hide
+  class={cn(
+    "sticky top-0 z-40 border-b bg-background/60 backdrop-blur rail:static rail:z-auto rail:border-b-0 rail:bg-transparent rail:backdrop-blur-none rail:has-[[data-slot=sidebar-toc]>*:is(:hover,:focus-within)]:z-50",
+    className,
+  )}
+  x-data="sidebar"
+  x-id="['sidebar-nav']"
+  {...rest}
+>
+  <div class="flex h-14 items-center gap-3xs px-s-l rail:sticky rail:top-0 rail:h-full rail:max-h-svh rail:flex-col rail:items-stretch rail:gap-0 rail:px-0 rail:py-m">
+    <slot />
+  </div>
+</header>

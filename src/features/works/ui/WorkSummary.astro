@@ -1,0 +1,54 @@
+---
+import { formatDateRange } from "@/shared/lib/date";
+import { AccordionTrigger } from "@/shared/ui/accordion";
+import { Badge } from "@/shared/ui/badge";
+import { Icon } from "@/shared/ui/icon";
+import { Text } from "@/shared/ui/text";
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  work: CollectionEntry<"works">;
+}
+
+const workModes = { "on-site": "On-Site", "remote": "Remote", "hybrid": "Hybrid" } as const;
+
+const { company, role, location, workMode, startDate, endDate } = Astro.props.work.data;
+const mode = workModes[workMode];
+---
+
+<AccordionTrigger
+  class="group/trigger flex-wrap gap-y-3xs"
+  chevron={false}
+>
+  <span class="min-w-0 space-y-3xs">
+    <span class="flex items-center gap-2xs">
+      <Text
+        as="span"
+        variant="label"
+      >
+        {company}
+      </Text>
+      {!endDate && <Badge variant="success">Working</Badge>}
+      <Icon
+        class="size-4 shrink-0 text-muted-foreground transition-all duration-200 pointer-fine:opacity-0 pointer-fine:group-hover/trigger:opacity-100 pointer-fine:group-focus-visible/trigger:opacity-100 group-data-[state=open]/accordion-item:rotate-180 group-data-[state=open]/accordion-item:opacity-100"
+        name="reicon:ChevronDown"
+      />
+    </span>
+    <Text
+      as="span"
+      class="block"
+      tone="muted"
+    >
+      {role}
+    </Text>
+  </span>
+  <Text
+    as="span"
+    class="ml-auto shrink-0 text-right"
+    tone="muted"
+    variant="small"
+  >
+    <span class="block">{formatDateRange(startDate, endDate, "long")}</span>
+    <span class="block">{location ? `${location} (${mode})` : mode}</span>
+  </Text>
+</AccordionTrigger>

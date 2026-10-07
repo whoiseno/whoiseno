@@ -1,0 +1,29 @@
+---
+import { cn } from "@/shared/lib/tailwind";
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"li"> {
+  /** The `id` of the heading. The tick lights up while that heading is the one in view. */
+  slug: string;
+  /** The heading level: the higher the level, the longer the tick. */
+  depth: number;
+}
+
+const tickWidth: Record<number, string> = { 1: "w-5", 2: "w-3.5", 3: "w-2" };
+
+const { slug, depth, class: className, ...rest } = Astro.props;
+---
+
+<li
+  data-slot="toc-tick"
+  class={cn("flex h-3.5 items-center", className)}
+  {...rest}
+>
+  <span
+    class={cn(
+      "h-0.5 rounded-full bg-border-hard transition-colors motion-reduce:transition-none data-[active=true]:bg-foreground",
+      tickWidth[depth],
+    )}
+    x-bind:data-active={`active === '${slug}'`}
+  />
+</li>

@@ -14,7 +14,10 @@ src/entities/
 │   ├── lib/socials.ts            # platform -> label, icon and action label; getSocialLinks(profile.data)
 │   ├── model/types.ts            # TypeSocialLink
 │   └── ui/
-│       ├── ProfileContacts.astro # email address with a copy button, and a hover-card icon per other social
+│       ├── ProfileContacts.astro # the contacts row: the email, then a hover-card icon per other social
+│       ├── ProfileEmail.astro    # email address with a copy button; props: social
+│       ├── ProfileSocial.astro   # one social: a logo link in a hover Popover; props: social
+│       ├── ProfileSocialCard.astro # the popover's content: banner, avatar, name, handle, bio and action; props: social
 │       └── ProfileHero.astro     # avatar, name, role, status badge, location, Markdoc bio, contacts
 └── writing/
     ├── index.ts                  # public API: getWritingTags, TypeWritingTag
@@ -26,7 +29,7 @@ The profile is reused across layers: the home hero (`pages/index.astro`) and the
 
 `getNavItems()` reads the `navigation` singleton, drops links whose `visible` is `false` and returns the rest as `{ label, href }`. `Site.astro` passes the result to `SiteSidebar`, so editing the links in Keystatic is all it takes to change the navigation. It throws a helpful error when the singleton file is missing. Works, projects, books, movies and the writing list are rendered by feature slices instead (see [`features.md`](./features.md)), since each is only shown by its own section.
 
-`getSocialLinks(profile.data)` turns the profile's `socials` into `TypeSocialLink[]` (from `entities/profile/model/types.ts`), applying the `handle`, `displayName` and `avatar` fallbacks described in [`content.md`](../content.md). Both `ProfileHero` and `Site.astro` call it. `ProfileContacts` renders the email entry as the address plus a `CopyButton`, and every other entry as a link showing the platform's own logo (`logo:github`, `logo:linkedin`, `logo:x`, `logo:instagram`, `logo:youtube`; the email entry uses a Reicon) inside a hover `Popover` showing the banner, avatar, name, verified mark, handle, bio and an action button (Follow, Connect or Subscribe).
+`getSocialLinks(profile.data)` turns the profile's `socials` into `TypeSocialLink[]` (from `entities/profile/model/types.ts`), applying the `handle`, `displayName` and `avatar` fallbacks described in [`content.md`](../content.md). Both `ProfileHero` and `Site.astro` call it. `ProfileContacts` renders the email entry as a `ProfileEmail` (the address plus a `CopyButton`), and every other entry as a `ProfileSocial`, a link showing the platform's own logo (`logo:github`, `logo:linkedin`, `logo:x`, `logo:instagram`, `logo:youtube`; the email entry uses a Reicon) inside a hover `Popover` whose content (`ProfileSocialCard`) shows the banner, avatar, name, verified mark, handle, bio and an action button (Follow, Connect or Subscribe).
 
 The profile content is the `profile` singleton in [`keystatic.config.ts`](../../keystatic.config.ts); see [`content.md`](../content.md).
 

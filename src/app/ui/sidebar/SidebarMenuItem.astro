@@ -1,0 +1,14 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"li"> {}
+
+const { ...rest } = Astro.props;
+---
+
+<li
+  data-slot="sidebar-menu-item"
+  {...rest}
+>
+  <slot />
+</li>

@@ -1,10 +1,8 @@
 ---
-import { Badge } from "@/shared/ui/badge";
 import { Text } from "@/shared/ui/text";
 import { getCollection } from "astro:content";
 
-import { writingKindLabels } from "../config/kinds";
-import { getReadingMinutes } from "../model/reading-time";
+import WritingListItem from "./WritingListItem.astro";
 
 interface Props {
   /** How many of the newest entries to show. */
@@ -25,32 +23,8 @@ const entries = (await getCollection("writing"))
     class="group/writing [&>li+li]:border-t"
     data-slot="writing-latest"
   >
-    {entries.map(({ id, data, body }) => (
-      <li>
-        <a
-          class="flex flex-wrap items-baseline justify-between gap-x-s gap-y-3xs py-s transition-[filter,opacity] duration-200 [@media(hover:hover)]:group-has-[a:hover]/writing:not-hover:opacity-60 [@media(hover:hover)]:group-has-[a:hover]/writing:not-hover:blur-[1.5px]"
-          href={`/writing/${id}`}
-        >
-          <Text
-            as="span"
-            class="min-w-0 flex-[1_1_12rem] truncate"
-            variant="label"
-          >
-            {data.title}
-          </Text>
-          <span class="flex shrink-0 items-center gap-2xs">
-            <Badge>{writingKindLabels[data.kind]}</Badge>
-            <Text
-              as="span"
-              class="uppercase"
-              tone="muted"
-              variant="mono"
-            >
-              {getReadingMinutes(body)} min read
-            </Text>
-          </span>
-        </a>
-      </li>
+    {entries.map((entry) => (
+      <WritingListItem entry={entry} />
     ))}
   </ul>
 )}

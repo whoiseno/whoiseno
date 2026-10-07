@@ -1,0 +1,49 @@
+---
+import { AccordionContent } from "@/shared/ui/accordion";
+import { Icon } from "@/shared/ui/icon";
+import { Prose } from "@/shared/ui/prose";
+import { Text } from "@/shared/ui/text";
+import { render, type CollectionEntry } from "astro:content";
+
+import WorkTechnologies from "./WorkTechnologies.astro";
+
+interface Props {
+  work: CollectionEntry<"works">;
+}
+
+const { work } = Astro.props;
+const { company, link, technologies } = work.data;
+const { Content } = await render(work);
+---
+
+<AccordionContent>
+  <div class="space-y-s-m border-t pt-s-m">
+    {technologies.length > 0 && <WorkTechnologies names={technologies} />}
+    <div class="space-y-2xs">
+      <Text
+        as="h4"
+        tone="muted"
+        variant="overline"
+      >
+        What I've done
+      </Text>
+      <Prose>
+        <Content />
+      </Prose>
+    </div>
+    {link && (
+      <a
+        class="inline-flex items-center gap-3xs text-muted-foreground transition-colors hover:text-foreground"
+        href={link}
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        Visit {company}
+        <Icon
+          class="size-3.5"
+          name="reicon:ArrowUpRight"
+        />
+      </a>
+    )}
+  </div>
+</AccordionContent>

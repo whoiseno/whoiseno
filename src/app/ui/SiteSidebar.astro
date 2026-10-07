@@ -1,12 +1,21 @@
 ---
 import type { TypeNavItem } from "@/entities/navigation";
 import { Avatar } from "@/shared/ui/avatar";
-import { Button } from "@/shared/ui/button";
-import { Icon } from "@/shared/ui/icon";
 import type { ImageMetadata } from "astro";
 
-import { siteName } from "../config/site";
 import type { TypeCrumb } from "../model/types";
+import {
+  Sidebar,
+  SidebarActions,
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarMenuLink,
+  SidebarMenuSub,
+  SidebarMenuSubLink,
+  SidebarNav,
+  SidebarToc,
+  SidebarTrigger,
+} from "./sidebar";
 
 interface Props {
   items: TypeNavItem[];
@@ -22,92 +31,39 @@ const isActive = (href: string) =>
   href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`);
 ---
 
-<header
-  data-slot="site-sidebar"
-  data-focus-hide
-  class="sticky top-0 z-40 border-b bg-background/60 backdrop-blur rail:static rail:z-auto rail:border-b-0 rail:bg-transparent rail:backdrop-blur-none rail:has-[[data-slot=site-toc]>*:is(:hover,:focus-within)]:z-50"
-  x-data="{ open: false }"
->
-  <div class="flex h-14 items-center gap-3xs px-s-l rail:sticky rail:top-0 rail:h-full rail:max-h-svh rail:flex-col rail:items-stretch rail:gap-0 rail:px-0 rail:py-m">
-    <nav
-      id="site-nav"
-      class="absolute inset-x-0 top-full border-b bg-background px-s-l py-2xs max-rail:not-data-open:hidden rail:static rail:border-0 rail:bg-transparent rail:p-0"
-      aria-label="Primary"
-      x-bind:data-open="open"
-    >
-      <ul class="flex flex-col rail:gap-3xs">
-        {items.map((item) => {
-          const nested = crumbs[0]?.href === item.href ? crumbs.slice(1) : [];
-          return (
-            <li>
-              <a
-                class="block rounded-md py-xs text-muted-foreground transition-colors hover:text-foreground aria-[current]:font-medium aria-[current]:text-foreground rail:px-xs rail:py-2xs"
-                aria-current={nested.length > 0 ? "true" : isActive(item.href) ? "page" : undefined}
-                href={item.href}
-              >
-                {item.label}
-              </a>
-              {nested.length > 0 && (
-                <ul class="mb-3xs ml-xs space-y-3xs border-l pl-xs text-step--1">
-                  {nested.map((crumb) => (
-                    <li>
-                      {crumb.href ? (
-                        <a
-                          class="block truncate py-3xs text-muted-foreground transition-colors hover:text-foreground"
-                          href={crumb.href}
-                        >
-                          {crumb.label}
-                        </a>
-                      ) : (
-                        <span
-                          class="block truncate py-3xs font-medium text-foreground"
-                          aria-current="page"
-                        >
-                          {crumb.label}
-                        </span>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </li>
-          );
-        })}
-      </ul>
-    </nav>
-    <div
-      class="hidden min-h-0 flex-1 items-center pb-3xl rail:flex"
-      data-slot="site-toc"
-    >
-      <slot name="toc" />
-    </div>
-    <div
-      class="grid grid-cols-[repeat(3,auto)] items-center justify-start gap-2xs rail:px-3xs"
-      data-slot="site-actions"
-    >
-      <slot name="tools" />
-      <slot name="actions" />
-    </div>
-    <Button
-      class="rail:hidden"
-      aria-controls="site-nav"
-      aria-label="Toggle menu"
-      color="neutral"
-      size="md"
-      type="button"
-      variant="ghost"
-      x-bind:aria-expanded="open"
-      x-on:click="open = !open"
-    >
-      <Icon
-        name="reicon:Menu"
-        x-show="!open"
-      />
-      <Icon
-        name="reicon:X"
-        x-cloak
-        x-show="open"
-      />
-    </Button>
-  </div>
-</header>
+<Sidebar>
+  <SidebarNav>
+    <SidebarMenu>
+      {items.map((item) => {
+        const nested = crumbs[0]?.href === item.href ? crumbs.slice(1) : [];
+        return (
+          <SidebarMenuItem>
+            <SidebarMenuLink
+              aria-current={nested.length > 0 ? "true" : isActive(item.href) ? "page" : undefined}
+              href={item.href}
+            >
+              {item.label}
+            </SidebarMenuLink>
+            {nested.length > 0 && (
+              <SidebarMenuSub>
+                {nested.map((crumb) => (
+                  <SidebarMenuItem>
+                    <SidebarMenuSubLink href={crumb.href}>{crumb.label}</SidebarMenuSubLink>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenuSub>
+            )}
+          </SidebarMenuItem>
+        );
+      })}
+    </SidebarMenu>
+  </SidebarNav>
+  <SidebarToc>
+    <slot name="toc" />
+  </SidebarToc>
+  <SidebarActions>
+    <slot name="tools" />
+    <slot name="actions" />
+  </SidebarActions>
+  <SidebarTrigger />
+</Sidebar>

@@ -1,0 +1,16 @@
+---
+import { cn } from "@/shared/lib/tailwind";
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"ul"> {}
+
+const { class: className, ...rest } = Astro.props;
+---
+
+<ul
+  data-slot="sidebar-menu"
+  class={cn("flex flex-col rail:gap-3xs", className)}
+  {...rest}
+>
+  <slot />
+</ul>

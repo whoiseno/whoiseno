@@ -1,0 +1,29 @@
+---
+import { cn } from "@/shared/lib/tailwind";
+import { Button } from "@/shared/ui/button";
+import { Icon } from "@/shared/ui/icon";
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends Omit<HTMLAttributes<"button">, "color"> {}
+
+const { class: className, ...rest } = Astro.props;
+---
+
+<Button
+  data-slot="carousel-previous"
+  class={cn("rounded-full", className)}
+  aria-label="Previous slide"
+  color="neutral"
+  disabled
+  size="sm"
+  type="button"
+  variant="outline"
+  x-bind:disabled="!canPrev"
+  x-on:click="go(-1)"
+  {...rest}
+>
+  <Icon
+    class="size-4"
+    name="reicon:ArrowLeft"
+  />
+</Button>

@@ -1,0 +1,34 @@
+---
+import { Icon } from "@/shared/ui/icon";
+import { Popover, PopoverContent, PopoverTrigger } from "@/shared/ui/popover";
+
+import type { TypeSocialLink } from "../model/types";
+import ProfileSocialCard from "./ProfileSocialCard.astro";
+
+interface Props {
+  social: TypeSocialLink;
+}
+
+const { social } = Astro.props;
+---
+
+<Popover hover>
+  <PopoverTrigger
+    class="flex size-9 items-center justify-center rounded-lg border bg-card transition-colors outline-none hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring"
+    aria-label={social.label}
+    href={social.href}
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    <Icon
+      class="size-4.5"
+      name={social.icon}
+    />
+  </PopoverTrigger>
+  <PopoverContent
+    class="w-80 overflow-hidden p-0"
+    align="start"
+  >
+    <ProfileSocialCard social={social} />
+  </PopoverContent>
+</Popover>

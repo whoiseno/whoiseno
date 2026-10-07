@@ -1,0 +1,31 @@
+---
+import { cn } from "@/shared/lib/tailwind";
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"a"> {
+  /** Without one, this is the current page and renders as text. */
+  href?: string;
+}
+
+const { href, class: className, ...rest } = Astro.props;
+---
+
+{href ? (
+  <a
+    data-slot="sidebar-menu-sub-link"
+    class={cn("block truncate py-3xs text-muted-foreground transition-colors hover:text-foreground", className)}
+    href={href}
+    {...rest}
+  >
+    <slot />
+  </a>
+) : (
+  <span
+    data-slot="sidebar-menu-sub-link"
+    class={cn("block truncate py-3xs font-medium text-foreground", className)}
+    aria-current="page"
+    {...rest}
+  >
+    <slot />
+  </span>
+)}

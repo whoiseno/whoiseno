@@ -1,0 +1,32 @@
+---
+import { Text } from "@/shared/ui/text";
+
+import type { TypeCrumb } from "../model/types";
+import SiteBreadcrumbs from "./SiteBreadcrumbs.astro";
+
+interface Props {
+  title: string;
+  description?: string;
+  /** Trail shown above the title. */
+  crumbs?: TypeCrumb[];
+}
+
+const { title, description, crumbs } = Astro.props;
+---
+
+<header
+  data-slot="site-header"
+  class="space-y-2xs"
+>
+  {crumbs && <SiteBreadcrumbs crumbs={crumbs} />}
+  <Text variant="title">{title}</Text>
+  {description && (
+    <Text
+      tone="muted"
+      variant="lead"
+    >
+      {description}
+    </Text>
+  )}
+  <slot />
+</header>

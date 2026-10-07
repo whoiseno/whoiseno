@@ -1,0 +1,16 @@
+---
+import { cn } from "@/shared/lib/tailwind";
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"div"> {}
+
+const { class: className, ...rest } = Astro.props;
+---
+
+<div
+  data-slot="sidebar-actions"
+  class={cn("grid grid-cols-[repeat(3,auto)] items-center justify-start gap-2xs rail:px-3xs", className)}
+  {...rest}
+>
+  <slot />
+</div>

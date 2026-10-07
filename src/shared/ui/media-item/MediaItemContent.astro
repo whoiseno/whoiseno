@@ -1,0 +1,16 @@
+---
+import { cn } from "@/shared/lib/tailwind";
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"div"> {}
+
+const { class: className, ...rest } = Astro.props;
+---
+
+<div
+  data-slot="media-item-content"
+  class={cn("min-w-0 flex-1 space-y-2xs", className)}
+  {...rest}
+>
+  <slot />
+</div>

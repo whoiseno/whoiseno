@@ -1,0 +1,22 @@
+---
+import { cn } from "@/shared/lib/tailwind";
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"nav"> {}
+
+const { class: className, ...rest } = Astro.props;
+---
+
+<nav
+  data-slot="sidebar-nav"
+  class={cn(
+    "absolute inset-x-0 top-full border-b bg-background px-s-l py-2xs max-rail:not-data-open:hidden rail:static rail:border-0 rail:bg-transparent rail:p-0",
+    className,
+  )}
+  aria-label="Primary"
+  x-bind:data-open="open"
+  x-bind:id="$id('sidebar-nav')"
+  {...rest}
+>
+  <slot />
+</nav>

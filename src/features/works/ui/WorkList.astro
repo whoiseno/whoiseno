@@ -1,30 +1,24 @@
 ---
-import { logoCatalog } from "@/shared/config/logos";
-import { formatDateRange } from "@/shared/lib/date";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/shared/ui/accordion";
-import { Badge } from "@/shared/ui/badge";
+import { Accordion } from "@/shared/ui/accordion";
 import { Button } from "@/shared/ui/button";
-import { Icon } from "@/shared/ui/icon";
-import { Prose } from "@/shared/ui/prose";
 import { Text } from "@/shared/ui/text";
-import { getCollection, render } from "astro:content";
+import { getCollection } from "astro:content";
+
+import WorkItem from "./WorkItem.astro";
 
 interface Props {
   /** Shows only the latest works, followed by a link to the full list. */
   limit?: number;
 }
 
-const workModes = { "on-site": "On-Site", "remote": "Remote", "hybrid": "Hybrid" } as const;
-
 const { limit } = Astro.props;
 const allWorks = (await getCollection("works")).sort((a, b) => b.data.startDate.getTime() - a.data.startDate.getTime());
 const works = allWorks.slice(0, limit);
 const hasMore = works.length < allWorks.length;
-const items = await Promise.all(works.map(async (work) => ({ work, Content: (await render(work)).Content })));
-const current = items.find(({ work }) => !work.data.endDate)?.work.id;
+const current = works.find((work) => !work.data.endDate)?.id;
 ---
 
-{items.length === 0 ? (
+{works.length === 0 ? (
   <Text tone="muted">Nothing here yet.</Text>
 ) : (
   <div class="space-y-m">
@@ -33,110 +27,9 @@ const current = items.find(({ work }) => !work.data.endDate)?.work.id;
       defaultValue={current}
       type="single"
     >
-      {items.map(({ work, Content }) => {
-        const { company, role, location, workMode, startDate, endDate, link, technologies } = work.data;
-        const mode = workModes[workMode];
-        return (
-          <AccordionItem
-            class="py-m first:pt-0 last:pb-0"
-            value={work.id}
-          >
-            <AccordionTrigger
-              class="group/trigger flex-wrap gap-y-3xs"
-              chevron={false}
-            >
-              <span class="min-w-0 space-y-3xs">
-                <span class="flex items-center gap-2xs">
-                  <Text
-                    as="span"
-                    variant="label"
-                  >
-                    {company}
-                  </Text>
-                  {!endDate && <Badge variant="success">Working</Badge>}
-                  <Icon
-                    class="size-4 shrink-0 text-muted-foreground transition-all duration-200 pointer-fine:opacity-0 pointer-fine:group-hover/trigger:opacity-100 pointer-fine:group-focus-visible/trigger:opacity-100 group-data-[state=open]/accordion-item:rotate-180 group-data-[state=open]/accordion-item:opacity-100"
-                    name="reicon:ChevronDown"
-                  />
-                </span>
-                <Text
-                  as="span"
-                  class="block"
-                  tone="muted"
-                >
-                  {role}
-                </Text>
-              </span>
-              <Text
-                as="span"
-                class="ml-auto shrink-0 text-right"
-                tone="muted"
-                variant="small"
-              >
-                <span class="block">{formatDateRange(startDate, endDate, "long")}</span>
-                <span class="block">{location ? `${location} (${mode})` : mode}</span>
-              </Text>
-            </AccordionTrigger>
-            <AccordionContent>
-              <div class="space-y-s-m border-t pt-s-m">
-                {technologies.length > 0 && (
-                  <div class="space-y-2xs">
-                    <Text
-                      as="h4"
-                      tone="muted"
-                      variant="overline"
-                    >
-                      Technologies & Tools
-                    </Text>
-                    <ul class="flex flex-wrap gap-2xs">
-                      {technologies.map((name) => (
-                        <li>
-                          <span
-                            class="flex size-10 items-center justify-center rounded-lg border bg-card"
-                            title={logoCatalog[name].label}
-                          >
-                            <Icon
-                              class="size-5"
-                              name={`logo:${name}`}
-                            />
-                            <span class="sr-only">{logoCatalog[name].label}</span>
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-                <div class="space-y-2xs">
-                  <Text
-                    as="h4"
-                    tone="muted"
-                    variant="overline"
-                  >
-                    What I've done
-                  </Text>
-                  <Prose>
-                    <Content />
-                  </Prose>
-                </div>
-                {link && (
-                  <a
-                    class="inline-flex items-center gap-3xs text-muted-foreground transition-colors hover:text-foreground"
-                    href={link}
-                    rel="noopener noreferrer"
-                    target="_blank"
-                  >
-                    Visit {company}
-                    <Icon
-                      class="size-3.5"
-                      name="reicon:ArrowUpRight"
-                    />
-                  </a>
-                )}
-              </div>
-            </AccordionContent>
-          </AccordionItem>
-        );
-      })}
+      {works.map((work) => (
+        <WorkItem work={work} />
+      ))}
     </Accordion>
     {hasMore && (
       <div class="flex justify-center">

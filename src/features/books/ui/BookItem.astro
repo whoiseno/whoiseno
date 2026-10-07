@@ -1,0 +1,50 @@
+---
+import { formatMonthYear } from "@/shared/lib/date";
+import {
+  MediaItem,
+  MediaItemByline,
+  MediaItemContent,
+  MediaItemDescription,
+  MediaItemHeader,
+  MediaItemPoster,
+  MediaItemTimeline,
+  MediaItemTitle,
+} from "@/shared/ui/media-item";
+import { Rating } from "@/shared/ui/rating";
+
+import type { TypeBook } from "../api/books";
+
+interface Props {
+  book: TypeBook;
+  /** `row` puts the cover beside the text, `card` stacks it on top. */
+  layout?: "row" | "card";
+}
+
+const { book, layout = "card" } = Astro.props;
+
+function timeline({ status, startedAt, finishedAt }: TypeBook) {
+  if (status === "want") return "Want to read";
+  if (status === "reading") return startedAt ? `Started ${formatMonthYear(startedAt)}` : "Reading";
+  return finishedAt ? `Finished ${formatMonthYear(finishedAt)}` : undefined;
+}
+
+const when = timeline(book);
+---
+
+<MediaItem layout={layout}>
+  <MediaItemPoster
+    href={book.url}
+    src={book.cover}
+    title={book.title}
+    width={layout === "row" ? 112 : undefined}
+  />
+  <MediaItemContent>
+    <MediaItemHeader>
+      <MediaItemTitle>{book.title}</MediaItemTitle>
+      {book.author && <MediaItemByline>{book.author}</MediaItemByline>}
+    </MediaItemHeader>
+    {book.rating && <Rating value={book.rating} />}
+    {when && <MediaItemTimeline>{when}</MediaItemTimeline>}
+    {book.review && <MediaItemDescription>{book.review}</MediaItemDescription>}
+  </MediaItemContent>
+</MediaItem>

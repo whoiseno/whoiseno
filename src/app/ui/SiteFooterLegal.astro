@@ -1,0 +1,34 @@
+---
+import { Icon } from "@/shared/ui/icon";
+import { Text } from "@/shared/ui/text";
+
+interface Props {
+  name: string;
+}
+
+const { name } = Astro.props;
+const year = new Date().getFullYear();
+const [firstName] = name.split(" ");
+---
+
+<Text
+  data-slot="site-footer-legal"
+  as="div"
+  class="flex flex-wrap items-center justify-between gap-x-m gap-y-3xs"
+  tone="muted"
+  variant="small"
+>
+  <p>
+    &copy; {year} {name}
+  </p>
+  <p class="flex items-center gap-3xs">
+    Made with
+    <Icon
+      class="size-3.5 text-error"
+      name="reicon:Heart"
+      weight="Filled"
+    />
+    <span class="sr-only">love</span>
+    by {firstName}
+  </p>
+</Text>

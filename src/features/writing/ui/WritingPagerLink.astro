@@ -1,0 +1,49 @@
+---
+import { cn } from "@/shared/lib/tailwind";
+import { Card } from "@/shared/ui/card";
+import { Icon } from "@/shared/ui/icon";
+import { Text } from "@/shared/ui/text";
+
+interface Props {
+  /** `previous` puts the arrow before the label, `next` puts it after and aligns the card to the right. */
+  direction: "previous" | "next";
+  href: string;
+  title: string;
+}
+
+const { direction, href, title } = Astro.props;
+const next = direction === "next";
+---
+
+<Card
+  class={cn(next && "text-right")}
+  href={href}
+>
+  <Text
+    as="span"
+    class={cn("flex items-center gap-3xs", next && "justify-end")}
+    tone="muted"
+    variant="small"
+  >
+    {!next && (
+      <Icon
+        class="size-3.5"
+        name="reicon:ArrowLeft"
+      />
+    )}
+    {next ? "Next" : "Previous"}
+    {next && (
+      <Icon
+        class="size-3.5"
+        name="reicon:ArrowRight"
+      />
+    )}
+  </Text>
+  <Text
+    as="span"
+    class="mt-3xs block truncate"
+    variant="label"
+  >
+    {title}
+  </Text>
+</Card>

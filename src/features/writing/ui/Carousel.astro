@@ -1,6 +1,5 @@
 ---
-import { Button } from "@/shared/ui/button";
-import { Icon } from "@/shared/ui/icon";
+import { Carousel, CarouselContent, CarouselNext, CarouselPrevious } from "@/shared/ui/carousel";
 import { Text } from "@/shared/ui/text";
 
 interface Props {
@@ -10,13 +9,7 @@ interface Props {
 const { caption } = Astro.props;
 ---
 
-<figure
-  class="@container relative z-10"
-  data-slot="carousel"
-  aria-roledescription="carousel"
-  x-data="carousel"
-  x-on:resize.window="update()"
->
+<Carousel class="@container relative z-10">
   <div class="mb-xs flex items-center gap-xs">
     {caption && (
       <Text
@@ -29,48 +22,11 @@ const { caption } = Astro.props;
       </Text>
     )}
     <div class="ml-auto flex shrink-0 gap-2xs">
-      <Button
-        class="rounded-full"
-        aria-label="Previous slide"
-        color="neutral"
-        disabled
-        size="sm"
-        type="button"
-        variant="outline"
-        x-bind:disabled="!canPrev"
-        x-on:click="go(-1)"
-      >
-        <Icon
-          class="size-4"
-          name="reicon:ArrowLeft"
-        />
-      </Button>
-      <Button
-        class="rounded-full"
-        aria-label="Next slide"
-        color="neutral"
-        size="sm"
-        type="button"
-        variant="outline"
-        x-bind:disabled="!canNext"
-        x-on:click="go(1)"
-      >
-        <Icon
-          class="size-4"
-          name="reicon:ArrowRight"
-        />
-      </Button>
+      <CarouselPrevious />
+      <CarouselNext />
     </div>
   </div>
-  <div
-    class="-ml-[calc((var(--page-width)-100cqw)/2)] flex w-(--page-width) scroll-pl-[calc((var(--page-width)-100cqw)/2)] snap-x snap-mandatory items-start gap-xs overflow-x-auto px-[calc((var(--page-width)-100cqw)/2)] scrollbar-none [&::-webkit-scrollbar]:hidden"
-    data-slot="carousel-track"
-    aria-label="Slides"
-    role="region"
-    tabindex="0"
-    x-on:scroll.passive="update()"
-    x-ref="track"
-  >
+  <CarouselContent class="-ml-[calc((var(--page-width)-100cqw)/2)] w-(--page-width) scroll-pl-[calc((var(--page-width)-100cqw)/2)] px-[calc((var(--page-width)-100cqw)/2)]">
     <slot />
-  </div>
-</figure>
+  </CarouselContent>
+</Carousel>

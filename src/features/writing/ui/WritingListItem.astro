@@ -1,0 +1,59 @@
+---
+import { formatDate } from "@/shared/lib/date";
+import { Badge } from "@/shared/ui/badge";
+import { Text } from "@/shared/ui/text";
+import type { CollectionEntry } from "astro:content";
+import type { HTMLAttributes } from "astro/types";
+
+import { writingKindLabels } from "../config/kinds";
+import { getReadingMinutes } from "../model/reading-time";
+
+interface Props extends HTMLAttributes<"li"> {
+  entry: CollectionEntry<"writing">;
+  /** Adds the publication date after the reading time. */
+  showDate?: boolean;
+}
+
+const { entry, showDate = false, ...rest } = Astro.props;
+const { id, data, body } = entry;
+---
+
+<li
+  data-slot="writing-list-item"
+  {...rest}
+>
+  <a
+    class="flex flex-wrap items-baseline justify-between gap-x-s gap-y-3xs py-s transition-[filter,opacity] duration-200 [@media(hover:hover)]:group-has-[a:hover]/writing:not-hover:opacity-60 [@media(hover:hover)]:group-has-[a:hover]/writing:not-hover:blur-[1.5px]"
+    href={`/writing/${id}`}
+  >
+    <Text
+      as="span"
+      class="min-w-0 flex-[1_1_12rem] truncate"
+      variant="label"
+    >
+      {data.title}
+    </Text>
+    <span class="flex shrink-0 items-center gap-2xs">
+      <Badge>{writingKindLabels[data.kind]}</Badge>
+      <Text
+        as="span"
+        class="uppercase"
+        tone="muted"
+        variant="mono"
+      >
+        {getReadingMinutes(body)} min read
+      </Text>
+      {showDate && (
+        <Text
+          as="time"
+          class="uppercase"
+          datetime={data.publishedDate.toISOString()}
+          tone="muted"
+          variant="mono"
+        >
+          {formatDate(data.publishedDate)}
+        </Text>
+      )}
+    </span>
+  </a>
+</li>

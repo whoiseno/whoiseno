@@ -1,12 +1,10 @@
 ---
 import { resolvePoster } from "@/shared/api/posters";
-import { resolveMediaLink } from "@/shared/config/media-sources";
-import { formatMonthYear } from "@/shared/lib/date";
-import { MediaItem } from "@/shared/ui/media-item";
 import { Text } from "@/shared/ui/text";
-import { getCollection, type CollectionEntry } from "astro:content";
+import { getCollection } from "astro:content";
 
-const kinds = { movie: "Movie", series: "Series", show: "Show", anime: "Anime" } as const;
+import MovieItem from "./MovieItem.astro";
+
 const order = { watching: 0, watched: 1, planned: 2 } as const;
 
 const entries = await Promise.all(
@@ -23,12 +21,6 @@ const movies = entries.sort(
 );
 const watching = movies.filter(({ data }) => data.status === "watching");
 const library = movies.filter(({ data }) => data.status !== "watching");
-
-function timeline({ status, startedDate, watchedDate }: CollectionEntry<"movies">["data"]) {
-  if (status === "planned") return "Planned";
-  if (status === "watching") return startedDate ? `Started ${formatMonthYear(startedDate)}` : "Watching";
-  return watchedDate ? `Watched ${formatMonthYear(watchedDate)}` : undefined;
-}
 ---
 
 {movies.length === 0 ? (
@@ -41,18 +33,10 @@ function timeline({ status, startedDate, watchedDate }: CollectionEntry<"movies"
         <ul class="space-y-m">
           {watching.map(({ data, poster }) => (
             <li>
-              <MediaItem
-                badge={kinds[data.kind]}
-                byline={data.creator}
-                description={data.description}
+              <MovieItem
+                data={data}
                 layout="row"
-                links={data.links.map(({ source, id }) => resolveMediaLink(source, id))}
                 poster={poster}
-                posterRatio={data.posterRatio}
-                published={data.releaseDate}
-                rating={data.rating}
-                timeline={timeline(data)}
-                title={data.title}
               />
             </li>
           ))}
@@ -65,17 +49,9 @@ function timeline({ status, startedDate, watchedDate }: CollectionEntry<"movies"
         <ul class="grid-fluid items-start gap-x-s gap-y-l [--grid-min:9.5rem]">
           {library.map(({ data, poster }) => (
             <li>
-              <MediaItem
-                badge={kinds[data.kind]}
-                byline={data.creator}
-                description={data.description}
-                links={data.links.map(({ source, id }) => resolveMediaLink(source, id))}
+              <MovieItem
+                data={data}
                 poster={poster}
-                posterRatio={data.posterRatio}
-                published={data.releaseDate}
-                rating={data.rating}
-                timeline={timeline(data)}
-                title={data.title}
               />
             </li>
           ))}

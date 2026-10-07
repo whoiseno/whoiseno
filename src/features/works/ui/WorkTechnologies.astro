@@ -1,0 +1,40 @@
+---
+import { logoCatalog, type TypeLogoName } from "@/shared/config/logos";
+import { Icon } from "@/shared/ui/icon";
+import { Text } from "@/shared/ui/text";
+
+interface Props {
+  names: TypeLogoName[];
+}
+
+const { names } = Astro.props;
+---
+
+<div
+  data-slot="work-technologies"
+  class="space-y-2xs"
+>
+  <Text
+    as="h4"
+    tone="muted"
+    variant="overline"
+  >
+    Technologies & Tools
+  </Text>
+  <ul class="flex flex-wrap gap-2xs">
+    {names.map((name) => (
+      <li>
+        <span
+          class="flex size-10 items-center justify-center rounded-lg border bg-card"
+          title={logoCatalog[name].label}
+        >
+          <Icon
+            class="size-5"
+            name={`logo:${name}`}
+          />
+          <span class="sr-only">{logoCatalog[name].label}</span>
+        </span>
+      </li>
+    ))}
+  </ul>
+</div>

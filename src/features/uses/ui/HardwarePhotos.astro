@@ -1,0 +1,37 @@
+---
+import { aspectRatioCatalog, type TypeAspectRatioName } from "@/shared/config/aspect-ratio";
+import type { ImageMetadata } from "astro";
+import { Image } from "astro:assets";
+
+interface Props {
+  /** The item the photos show, for the accessible names. */
+  name: string;
+  photos: { image: ImageMetadata; alt?: string; ratio: TypeAspectRatioName }[];
+}
+
+const { name, photos } = Astro.props;
+---
+
+<ul
+  class="-mx-s-l flex scroll-pl-s-l snap-x snap-mandatory gap-xs overflow-x-auto px-s-l pb-3xs [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+  aria-label={`Photos of ${name}`}
+  data-slot="uses-photos"
+  role="region"
+  tabindex="0"
+>
+  {photos.map(({ image, alt, ratio }) => {
+    const value = aspectRatioCatalog[ratio].ratio;
+    return (
+      <li class="shrink-0 snap-start">
+        <Image
+          class="h-40 w-auto rounded-[10px] bg-muted object-cover"
+          alt={alt ?? name}
+          height={320}
+          src={image}
+          style={{ aspectRatio: value ?? undefined }}
+          width={value ? Math.round(320 * value) : undefined}
+        />
+      </li>
+    );
+  })}
+</ul>

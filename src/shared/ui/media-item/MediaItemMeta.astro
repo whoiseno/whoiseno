@@ -1,0 +1,20 @@
+---
+import { cn } from "@/shared/lib/tailwind";
+import { Text } from "@/shared/ui/text";
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"div"> {}
+
+const { class: className, ...rest } = Astro.props;
+---
+
+<Text
+  data-slot="media-item-meta"
+  as="div"
+  class={cn("flex flex-wrap items-center gap-x-2xs gap-y-3xs", className)}
+  tone="muted"
+  variant="small"
+  {...rest}
+>
+  <slot />
+</Text>

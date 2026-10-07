@@ -1,0 +1,31 @@
+---
+import { CopyButton } from "@/shared/ui/copy-button";
+
+import type { TypeSocialLink } from "../model/types";
+
+interface Props {
+  /** The `mailto:` entry of the profile's socials. */
+  social: TypeSocialLink;
+}
+
+const { social } = Astro.props;
+---
+
+{social.email && (
+  <div
+    data-slot="profile-email"
+    class="inline-flex h-9 items-center rounded-lg border bg-card"
+  >
+    <a
+      class="px-xs transition-colors hover:text-muted-foreground"
+      href={social.href}
+    >
+      {social.email}
+    </a>
+    <CopyButton
+      class="h-full rounded-r-lg border-l px-2xs-xs hover:bg-muted"
+      label="Copy email address"
+      value={social.email}
+    />
+  </div>
+)}

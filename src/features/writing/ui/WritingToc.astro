@@ -1,57 +1,34 @@
 ---
 import type { MarkdownHeading } from "astro";
 
+import { Toc, TocContent, TocItem, TocTick, TocTicks } from "./toc";
+
 interface Props {
   headings: MarkdownHeading[];
 }
 
 const items = Astro.props.headings.filter((heading) => heading.depth <= 3);
-const tickWidth = { 1: "w-5", 2: "w-3.5", 3: "w-2" } as Record<number, string>;
-const titleIndent = { 1: "pl-2", 2: "pl-4", 3: "pl-7" } as Record<number, string>;
 ---
 
 {items.length > 0 && (
-  <nav
-    class="group/toc relative"
-    data-slot="writing-toc"
-    aria-label="Table of contents"
-    x-data="writingToc"
-    x-on:resize.window="update()"
-    x-on:scroll.window.passive="update()"
-  >
-    <ul
-      class="flex flex-col px-2.5 py-2"
-      aria-hidden="true"
-    >
+  <Toc>
+    <TocTicks>
       {items.map((item) => (
-        <li class="flex h-3.5 items-center">
-          <span
-            class:list={[
-              "h-0.5 rounded-full bg-border-hard transition-colors motion-reduce:transition-none data-[active=true]:bg-foreground",
-              tickWidth[item.depth],
-            ]}
-            x-bind:data-active={`active === '${item.slug}'`}
-          />
-        </li>
+        <TocTick
+          depth={item.depth}
+          slug={item.slug}
+        />
       ))}
-    </ul>
-    <div class="pointer-events-none absolute top-1/2 left-0 z-50 -translate-y-1/2 pl-9 opacity-0 transition-opacity group-focus-within/toc:pointer-events-auto group-focus-within/toc:opacity-100 group-hover/toc:pointer-events-auto group-hover/toc:opacity-100 motion-reduce:transition-none">
-      <ol class="max-h-[70svh] w-64 overflow-y-auto rounded-lg border bg-popover p-1.5 text-step--1 shadow-lg">
-        {items.map((item) => (
-          <li>
-            <a
-              class:list={[
-                "block truncate rounded-md py-1 pr-2 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground aria-[current]:font-medium aria-[current]:text-foreground motion-reduce:transition-none",
-                titleIndent[item.depth],
-              ]}
-              href={`#${item.slug}`}
-              x-bind:aria-current={`active === '${item.slug}' ? 'location' : false`}
-            >
-              {item.text}
-            </a>
-          </li>
-        ))}
-      </ol>
-    </div>
-  </nav>
+    </TocTicks>
+    <TocContent>
+      {items.map((item) => (
+        <TocItem
+          depth={item.depth}
+          slug={item.slug}
+        >
+          {item.text}
+        </TocItem>
+      ))}
+    </TocContent>
+  </Toc>
 )}

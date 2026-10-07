@@ -1,0 +1,32 @@
+---
+import { cn } from "@/shared/lib/tailwind";
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"li"> {
+  /** The `id` of the heading, which the link jumps to and which marks the link as current while in view. */
+  slug: string;
+  /** The heading level: the higher the level, the less the link is indented. */
+  depth: number;
+}
+
+const titleIndent: Record<number, string> = { 1: "pl-2", 2: "pl-4", 3: "pl-7" };
+
+const { slug, depth, class: className, ...rest } = Astro.props;
+---
+
+<li
+  data-slot="toc-item"
+  class={className}
+  {...rest}
+>
+  <a
+    class={cn(
+      "block truncate rounded-md py-1 pr-2 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground aria-[current]:font-medium aria-[current]:text-foreground motion-reduce:transition-none",
+      titleIndent[depth],
+    )}
+    href={`#${slug}`}
+    x-bind:aria-current={`active === '${slug}' ? 'location' : false`}
+  >
+    <slot />
+  </a>
+</li>

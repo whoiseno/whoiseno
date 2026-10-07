@@ -1,0 +1,20 @@
+---
+import { cn } from "@/shared/lib/tailwind";
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"nav"> {}
+
+const { class: className, ...rest } = Astro.props;
+---
+
+<nav
+  data-slot="writing-toc"
+  class={cn("group/toc relative", className)}
+  aria-label="Table of contents"
+  x-data="writingToc"
+  x-on:resize.window="update()"
+  x-on:scroll.window.passive="update()"
+  {...rest}
+>
+  <slot />
+</nav>

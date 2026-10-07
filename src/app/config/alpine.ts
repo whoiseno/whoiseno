@@ -7,10 +7,13 @@ import anchor from "@alpinejs/anchor";
 import intersect from "@alpinejs/intersect";
 import type { Alpine } from "alpinejs";
 
+import { registerSidebar } from "../ui/sidebar/alpine";
+
 export default (Alpine: Alpine) => {
   Alpine.plugin(anchor);
   Alpine.plugin(intersect);
   registerUi(Alpine);
+  registerSidebar(Alpine);
   registerScrollToTop(Alpine);
   registerSoundToggle(Alpine);
   registerThemeToggle(Alpine);

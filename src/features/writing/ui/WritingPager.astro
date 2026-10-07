@@ -1,7 +1,5 @@
 ---
-import { Card } from "@/shared/ui/card";
-import { Icon } from "@/shared/ui/icon";
-import { Text } from "@/shared/ui/text";
+import WritingPagerLink from "./WritingPagerLink.astro";
 
 interface TypePagerEntry {
   href: string;
@@ -27,53 +25,18 @@ const { previous, next, label = "Previous and next posts" } = Astro.props;
     data-slot="writing-pager"
   >
     {previous && (
-      <Card href={previous.href}>
-        <Text
-          as="span"
-          class="flex items-center gap-3xs"
-          tone="muted"
-          variant="small"
-        >
-          <Icon
-            class="size-3.5"
-            name="reicon:ArrowLeft"
-          />
-          Previous
-        </Text>
-        <Text
-          as="span"
-          class="mt-3xs block truncate"
-          variant="label"
-        >
-          {previous.title}
-        </Text>
-      </Card>
+      <WritingPagerLink
+        direction="previous"
+        href={previous.href}
+        title={previous.title}
+      />
     )}
     {next && (
-      <Card
-        class="text-right"
+      <WritingPagerLink
+        direction="next"
         href={next.href}
-      >
-        <Text
-          as="span"
-          class="flex items-center justify-end gap-3xs"
-          tone="muted"
-          variant="small"
-        >
-          Next
-          <Icon
-            class="size-3.5"
-            name="reicon:ArrowRight"
-          />
-        </Text>
-        <Text
-          as="span"
-          class="mt-3xs block truncate"
-          variant="label"
-        >
-          {next.title}
-        </Text>
-      </Card>
+        title={next.title}
+      />
     )}
   </nav>
 )}

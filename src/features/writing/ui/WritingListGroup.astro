@@ -1,0 +1,26 @@
+---
+import { Text } from "@/shared/ui/text";
+
+interface Props {
+  /** The heading above the rows, such as the year. */
+  label: string | number;
+}
+
+const { label } = Astro.props;
+---
+
+<section
+  data-slot="writing-list-group"
+  class="space-y-2xs [&:not(:has(li:not([hidden])))]:hidden"
+>
+  <Text
+    as="h2"
+    tone="muted"
+    variant="mono"
+  >
+    {label}
+  </Text>
+  <ul class="[&>li:not([hidden])~li:not([hidden])]:border-t">
+    <slot />
+  </ul>
+</section>

@@ -1,0 +1,21 @@
+---
+import { cn } from "@/shared/lib/tailwind";
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"div"> {}
+
+const { class: className, ...rest } = Astro.props;
+---
+
+<div
+  data-slot="toc-content"
+  class={cn(
+    "pointer-events-none absolute top-1/2 left-0 z-50 -translate-y-1/2 pl-9 opacity-0 transition-opacity group-focus-within/toc:pointer-events-auto group-focus-within/toc:opacity-100 group-hover/toc:pointer-events-auto group-hover/toc:opacity-100 motion-reduce:transition-none",
+    className,
+  )}
+  {...rest}
+>
+  <ol class="max-h-[70svh] w-64 overflow-y-auto rounded-lg border bg-popover p-1.5 text-step--1 shadow-lg">
+    <slot />
+  </ol>
+</div>

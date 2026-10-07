@@ -1,0 +1,30 @@
+---
+import { cn } from "@/shared/lib/tailwind";
+import { Icon } from "@/shared/ui/icon";
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"a"> {
+  href: string;
+}
+
+const { class: className, ...rest } = Astro.props;
+---
+
+<li>
+  <a
+    data-slot="media-item-link"
+    class={cn(
+      "inline-flex items-center gap-3xs text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline",
+      className,
+    )}
+    rel="noopener noreferrer"
+    target="_blank"
+    {...rest}
+  >
+    <slot />
+    <Icon
+      class="size-3"
+      name="reicon:ArrowUpRight"
+    />
+  </a>
+</li>

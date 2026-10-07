@@ -1,0 +1,21 @@
+---
+import { cn } from "@/shared/lib/tailwind";
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"a"> {
+  href: string;
+}
+
+const { class: className, ...rest } = Astro.props;
+---
+
+<a
+  data-slot="sidebar-menu-link"
+  class={cn(
+    "block rounded-md py-xs text-muted-foreground transition-colors hover:text-foreground aria-[current]:font-medium aria-[current]:text-foreground rail:px-xs rail:py-2xs",
+    className,
+  )}
+  {...rest}
+>
+  <slot />
+</a>

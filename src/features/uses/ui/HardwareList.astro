@@ -1,9 +1,8 @@
 ---
-import { aspectRatioCatalog } from "@/shared/config/aspect-ratio";
 import { Text } from "@/shared/ui/text";
-import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 
+import HardwarePhotos from "./HardwarePhotos.astro";
 import UsesItem from "./UsesItem.astro";
 
 const hardware = (await getCollection("hardware")).sort((a, b) => a.data.name.localeCompare(b.data.name));
@@ -16,29 +15,10 @@ const hardware = (await getCollection("hardware")).sort((a, b) => a.data.name.lo
     {hardware.map(({ data: { photos, ...item } }) => (
       <li class="space-y-xs">
         {photos.length > 0 && (
-          <ul
-            class="-mx-s-l flex scroll-pl-s-l snap-x snap-mandatory gap-xs overflow-x-auto px-s-l pb-3xs [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-            aria-label={`Photos of ${item.name}`}
-            data-slot="uses-photos"
-            role="region"
-            tabindex="0"
-          >
-            {photos.map(({ image, alt, ratio }) => {
-              const value = aspectRatioCatalog[ratio].ratio;
-              return (
-                <li class="shrink-0 snap-start">
-                  <Image
-                    class="h-40 w-auto rounded-[10px] bg-muted object-cover"
-                    alt={alt ?? item.name}
-                    height={320}
-                    src={image}
-                    style={{ aspectRatio: value ?? undefined }}
-                    width={value ? Math.round(320 * value) : undefined}
-                  />
-                </li>
-              );
-            })}
-          </ul>
+          <HardwarePhotos
+            name={item.name}
+            photos={photos}
+          />
         )}
         <UsesItem {...item} />
       </li>

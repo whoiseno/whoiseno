@@ -1,0 +1,36 @@
+---
+import { Button } from "@/shared/ui/button";
+import { Icon } from "@/shared/ui/icon";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/ui/tooltip";
+
+interface Props {
+  size?: "icon-sm" | "icon-md";
+}
+
+const { size = "icon-sm" } = Astro.props;
+---
+
+<Tooltip class="hidden rail:inline-flex">
+  <TooltipTrigger>
+    <Button
+      aria-label="Toggle wider layout"
+      color="neutral"
+      size={size}
+      type="button"
+      variant="ghost"
+      x-bind:aria-pressed="$store.writingReader.wide"
+      x-on:click="$store.writingReader.toggleWide()"
+    >
+      <Icon
+        name="reicon:Expand"
+        x-show="!$store.writingReader.wide"
+      />
+      <Icon
+        name="reicon:Compress"
+        x-cloak
+        x-show="$store.writingReader.wide"
+      />
+    </Button>
+  </TooltipTrigger>
+  <TooltipContent>Switch between the standard and a wider layout</TooltipContent>
+</Tooltip>

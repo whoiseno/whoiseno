@@ -16,19 +16,25 @@ src/app/
 └── ui/
     ├── index.ts             # public API: Site
     ├── Root.astro           # HTML document shell
-    ├── Site.astro           # site shell: sidebar, main container, footer
+    ├── Site.astro           # site shell: sidebar, header, main container, footer
     ├── SiteBreadcrumbs.astro
-    ├── SiteFooter.astro
-    └── SiteSidebar.astro
+    ├── SiteFooter.astro     # footer shell around the four SiteFooter* parts below
+    ├── SiteFooterColophon.astro
+    ├── SiteFooterLegal.astro
+    ├── SiteFooterSocial.astro
+    ├── SiteFooterSocials.astro
+    ├── SiteHeader.astro     # page title block: breadcrumbs, h1, description, header slot
+    ├── SiteSidebar.astro    # maps the navigation onto the sidebar parts
+    └── sidebar/             # compound: Sidebar, Trigger, Nav, Menu, MenuItem, MenuLink, MenuSub, MenuSubLink, Toc, Actions (+ alpine.ts)
 ```
 
 The variable fonts and the SVGL logos are static assets, so they live in `src/assets/fonts/` and `src/assets/icons/logos/` instead of a layer (see [`styling.md`](../styling.md) and [`shared.md`](./shared.md)).
 
 ## `ui/Site.astro`
 
-The shell every page uses: `Root` > a body row (`data-slot="site-body"`) with `SiteSidebar` and the content column, then `SiteFooter` as a separate full-width row. From `rail` the body row is a centered grid of three tracks (`14rem minmax(0,1fr) 14rem`, `max-w-7xl`, `max-w-384` while `<html>` has `data-wide`): the sidebar is the first track, the content the second, and the empty third track balances the first, so the content is centered on the screen. The sidebar sits beside the content, not on the screen edge, and its rail is sticky inside a cell that ends where the footer starts. It has the site name, the navigation, a `toc` slot in the middle and the actions at the bottom: a `tools` slot for page-specific buttons (the writing toolbar), then the `ScrollToTop` button (from `rail` only), the `ThemeToggle` and, last, the `SoundToggle`. The actions are a three column grid (`data-slot="site-actions"`, `grid-cols-[repeat(3,auto)]` with `justify-start` and no gap): the columns are as wide as their buttons, which are all 36px icon buttons, so the actions sit shoulder to shoulder from the left, with the first column lining up with the links above. A fixed `grid-cols-3` would stretch the columns over the 14rem rail and spread the buttons about 70px apart. The same grid serves the top bar below `rail`, where the menu button sits right after the last action. Every action is a direct child of the grid, which is why `Site` does not wrap them in `div`s, and each one sits in a `Tooltip` that says what it is for. Below `rail` the same component becomes a sticky top bar with a menu button that opens the links. The content column is an `@container` (`data-slot="site-content"`, so `cqw` inside it is the column width) holding `<main>` (`max-w-2xl`, `max-w-4xl` while `<html>` has `data-wide`). `<body>` is an `@container` as well, and the body row captures its width as `--page-width` (`[--page-width:100cqw]`) for the full-width carousel; see [`styling.md`](../styling.md).
+The shell every page uses: `Root` > a body row (`data-slot="site-body"`) with `SiteSidebar` and the content column, then `SiteFooter` as a separate full-width row. From `rail` the body row is a centered grid of three tracks (`14rem minmax(0,1fr) 14rem`, `max-w-7xl`, `max-w-384` while `<html>` has `data-wide`): the sidebar is the first track, the content the second, and the empty third track balances the first, so the content is centered on the screen. The sidebar sits beside the content, not on the screen edge, and its rail is sticky inside a cell that ends where the footer starts. It has the site name, the navigation, a `toc` slot in the middle and the actions at the bottom: a `tools` slot for page-specific buttons (the writing toolbar), then the `ScrollToTop` button (from `rail` only), the `ThemeToggle` and, last, the `SoundToggle`. The actions are a three column grid (`data-slot="sidebar-actions"`, `grid-cols-[repeat(3,auto)]` with `justify-start` and no gap): the columns are as wide as their buttons, which are all 36px icon buttons, so the actions sit shoulder to shoulder from the left, with the first column lining up with the links above. A fixed `grid-cols-3` would stretch the columns over the 14rem rail and spread the buttons about 70px apart. The same grid serves the top bar below `rail`, where the menu button sits right after the last action. Every action is a direct child of the grid, which is why `Site` does not wrap them in `div`s, and each one sits in a `Tooltip` that says what it is for. Below `rail` the same component becomes a sticky top bar with a menu button that opens the links. The content column is an `@container` (`data-slot="site-content"`, so `cqw` inside it is the column width) holding `<main>` (`max-w-2xl`, `max-w-4xl` while `<html>` has `data-wide`). `<body>` is an `@container` as well, and the body row captures its width as `--page-width` (`[--page-width:100cqw]`) for the full-width carousel; see [`styling.md`](../styling.md).
 
-When `title` is set, `Site` renders a `<header>` with the breadcrumbs (when `crumbs` is passed), the page `<h1>` and the muted description, then the `header` slot. The `toc` and `tools` slots are forwarded to the sidebar, and the `sidenotes` slot is the last child of the body row, which is `relative` so the footnote rail can hang from it. It lives here rather than in `shared` because it fetches the navigation (`getNavItems`, passed to the sidebar) and the profile (the footer gets its `name` and `socials` via `getSocialLinks`), and `shared` cannot import from `entities`. Pages import it through the public API: `import { Site } from "@/app/ui"`.
+When `title` is set, `Site` renders a `SiteHeader` with the breadcrumbs (when `crumbs` is passed), the page `<h1>` and the muted description, then the `header` slot. The `toc` and `tools` slots are forwarded to the sidebar, and the `sidenotes` slot is the last child of the body row, which is `relative` so the footnote rail can hang from it. It lives here rather than in `shared` because it fetches the navigation (`getNavItems`, passed to the sidebar) and the profile (the footer gets its `name` and `socials` via `getSocialLinks`), and `shared` cannot import from `entities`. Pages import it through the public API: `import { Site } from "@/app/ui"`.
 
 Props: `title?`, `description?`, `crumbs?` (a `TypeCrumb[]` trail, shown above the title and nested under its nav link in the sidebar), `image?` and `imageAlt?` (the social preview image, an `ImageMetadata`) and `type?` (`website` or `article`, for `og:type`). `image` is resized to 1200px wide with `getImage` and turned into an absolute URL against `Astro.site`, so `og:image` is emitted only when `site` is set. [`astro.config.mjs`](../../astro.config.mjs) sets it from `VERCEL_PROJECT_PRODUCTION_URL`; locally and on a deployment without that variable the tag is omitted. The image keeps the format of the source file, so use a PNG or JPEG cover (social networks do not render SVG). See [`pages.md`](./pages.md).
 
@@ -40,13 +46,28 @@ The outermost wrapper for every page, rendered by `Site`: renders `<html>`/`<hea
 
 ## Shell parts
 
-`Site` composes three parts that are used nowhere else, so they stay private to `ui` and are not exported from `index.ts`:
+`Site` composes a few parts that are used nowhere else, so they stay private to `ui` and are not exported from `index.ts`:
 
 | Component         | Notes                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 | ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `SiteSidebar`     | Navigation. From `rail` a 14rem rail beside the content (sticky, the height of the screen, no border) with the site name, the links, a `toc` slot and the actions (`tools` and `actions` slots) at the bottom; below `rail` a sticky top bar with a menu button (`x-show` with `x-cloak`). The active link gets `aria-current="page"`; with `crumbs`, the steps after the first nest under the link the trail starts from. Props `items`, `owner`, `avatar?`, `crumbs?`.                                                                      |
+| `SiteHeader`      | The page title block: the breadcrumbs (when `crumbs` is passed), the `h1`, the muted description and the `header` slot. Props `title`, `description?`, `crumbs?`.                                                                                                                                                                                                                                                                                                                                                                             |
 | `SiteBreadcrumbs` | Renders a `TypeCrumb[]` with the breadcrumb parts from `shared/ui/breadcrumb`. A crumb with an `href` is a link, the one without is the current page. Prop `crumbs`.                                                                                                                                                                                                                                                                                                                                                                          |
 | `SiteFooter`      | "Let's be friends" heading and a grid of socials (`grid-fluid`, columns of at least 9.5rem: two on a phone, three in the text column), each with the platform, an arrow and the handle. The email cell shows the address with a `CopyButton`. Below it, the copyright and "Made with a heart by" the owner's first name on one row, a faint colophon paragraph on the tech stack and the choices behind it (edit the text in the component), and TMDB's required attribution notice for the film and series posters. Props `name`, `socials`. |
+
+## `ui/sidebar`
+
+`SiteSidebar` is the one place that knows the navigation. It maps `items` and `crumbs` onto the generic parts in `sidebar/`, in the order of the DOM, modeled on [shadcn/ui's Sidebar](https://ui.shadcn.com/docs/components/sidebar) (`Sidebar`, `SidebarTrigger`, `SidebarContent`, `SidebarMenu`, `SidebarMenuItem`, `SidebarMenuButton`, ...):
+
+- `Sidebar` is the root `<header>`: the sticky top bar below `rail`, the rail beside the content from `rail`. It owns the state (`Alpine.data("sidebar")` in `sidebar/alpine.ts`: `open` and `toggle()`) and the id of the nav (`x-id`), and takes `data-focus-hide` so focus mode hides it.
+- `SidebarTrigger` is the menu button, shown below `rail`. It calls `toggle()`, follows `open` for `aria-expanded` and the menu or close icon, and points `aria-controls` at the nav.
+- `SidebarNav` is what the trigger opens: a `<nav aria-label="Primary">` that drops from the top bar while `open` (below `rail` only) and is the plain list from `rail`.
+- `SidebarMenu` (`ul`), `SidebarMenuItem` (`li`) and `SidebarMenuLink` (`a`, styled for `aria-current`) are the links. `SidebarMenuSub` nests the steps of the page trail under a link, and each step is a `SidebarMenuSubLink`, which renders a link, or the current page as text when it has no `href`.
+- `SidebarToc` is the middle of the rail (hidden below `rail`); the header takes `rail:z-50` while its child is hovered or focused, which is what lifts the table of contents over the content. `SidebarActions` is the three column grid at the bottom, where `tools` and `actions` land.
+
+The parts take `class` and spread the rest onto their element, and none of them imports from `entities`, so they can be tried without the navigation.
+
+Where it differs from shadcn: the links are `SidebarMenuLink` and `SidebarMenuSubLink` instead of `SidebarMenuButton` and `SidebarMenuSubButton` (they are always anchors), nested links reuse `SidebarMenuItem` instead of a `SidebarMenuSubItem`, and there is no `SidebarProvider`, header, footer, group or collapsed desktop state, because the rail never collapses. `SidebarNav`, `SidebarToc` and `SidebarActions` are this site's own.
 
 ## `config/site.ts`
 
@@ -65,6 +86,7 @@ export default (Alpine: Alpine) => {
   Alpine.plugin(anchor);
   Alpine.plugin(intersect);
   registerUi(Alpine);
+  registerSidebar(Alpine);
   registerScrollToTop(Alpine);
   registerSoundToggle(Alpine);
   registerThemeToggle(Alpine);
@@ -72,7 +94,7 @@ export default (Alpine: Alpine) => {
 };
 ```
 
-It registers `@alpinejs/anchor` (popover and dropdown positioning), `@alpinejs/intersect` (registered, but no component uses `x-intersect` at the moment), every shared component's behavior through `registerUi` from `shared/ui/alpine.ts`, the scroll-to-top button through `registerScrollToTop` from `@/features/scroll-to-top/client`, the sound toggle through `registerSoundToggle` from `@/features/sound-toggle/client`, the theme toggle through `registerThemeToggle` from `@/features/theme-toggle/client`, and the writing reader store, carousel and kind filter store through `registerWriting` from `@/features/writing/client`. Features expose their browser code from `client.ts`, separate from the `.astro` exports in `index.ts` (see [`features.md`](./features.md)). Add further `Alpine.plugin(...)` calls here for new Alpine plugins, and add the corresponding `window.Alpine` typing in [`src/env.d.ts`](../../src/env.d.ts) if needed.
+It registers `@alpinejs/anchor` (popover and dropdown positioning), `@alpinejs/intersect` (registered, but no component uses `x-intersect` at the moment), every shared component's behavior through `registerUi` from `shared/ui/alpine.ts`, the sidebar menu through `registerSidebar` from `ui/sidebar/alpine.ts`, the scroll-to-top button through `registerScrollToTop` from `@/features/scroll-to-top/client`, the sound toggle through `registerSoundToggle` from `@/features/sound-toggle/client`, the theme toggle through `registerThemeToggle` from `@/features/theme-toggle/client`, and the writing reader store, carousel and kind filter store through `registerWriting` from `@/features/writing/client`. Features expose their browser code from `client.ts`, separate from the `.astro` exports in `index.ts` (see [`features.md`](./features.md)). Add further `Alpine.plugin(...)` calls here for new Alpine plugins, and add the corresponding `window.Alpine` typing in [`src/env.d.ts`](../../src/env.d.ts) if needed.
 
 ## `styles/global.css`
 

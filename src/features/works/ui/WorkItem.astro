@@ -1,0 +1,21 @@
+---
+import { AccordionItem } from "@/shared/ui/accordion";
+import type { CollectionEntry } from "astro:content";
+
+import WorkDetails from "./WorkDetails.astro";
+import WorkSummary from "./WorkSummary.astro";
+
+interface Props {
+  work: CollectionEntry<"works">;
+}
+
+const { work } = Astro.props;
+---
+
+<AccordionItem
+  class="py-m first:pt-0 last:pb-0"
+  value={work.id}
+>
+  <WorkSummary work={work} />
+  <WorkDetails work={work} />
+</AccordionItem>

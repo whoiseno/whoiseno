@@ -1,0 +1,27 @@
+---
+import { Button } from "@/shared/ui/button";
+import { Icon } from "@/shared/ui/icon";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/ui/tooltip";
+
+interface Props {
+  size?: "icon-sm" | "icon-md";
+}
+
+const { size = "icon-sm" } = Astro.props;
+---
+
+<Tooltip>
+  <TooltipTrigger>
+    <Button
+      aria-label="Enter focus mode"
+      color="neutral"
+      size={size}
+      type="button"
+      variant="ghost"
+      x-on:click="$store.writingReader.setFocus(true)"
+    >
+      <Icon name="reicon:Eye" />
+    </Button>
+  </TooltipTrigger>
+  <TooltipContent>Hide everything except the text, to read without distraction</TooltipContent>
+</Tooltip>

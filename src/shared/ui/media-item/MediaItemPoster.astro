@@ -1,0 +1,86 @@
+---
+import { getPlaceholder } from "@/shared/api/placeholders";
+import { aspectRatioCatalog, type TypeAspectRatioName } from "@/shared/config/aspect-ratio";
+import { cn } from "@/shared/lib/tailwind";
+import { textVariants } from "@/shared/ui/text";
+import type { ImageMetadata } from "astro";
+import { Image } from "astro:assets";
+
+interface Props {
+  /** The work's title: the letter on the tile when there is no image, and the name of the link. */
+  title: string;
+  /** An imported image, or the URL of a remote cover. */
+  src?: ImageMetadata | string | null;
+  /** The shape the poster is cropped to. */
+  ratio?: TypeAspectRatioName;
+  /** The size the poster is shown at in CSS pixels, which the image is requested at. */
+  width?: number;
+  /** Makes the poster a link to the work. */
+  href?: string;
+  class?: string;
+}
+
+const { title, src, ratio = "2/3", width = 200, href, class: className } = Astro.props;
+const shape = aspectRatioCatalog[ratio].ratio;
+// A remote cover has no metadata to read a size from, so "Original" falls back to the usual cover shape for it.
+const remoteShape = shape ?? 2 / 3;
+// `densities` adds the 2x and 3x files for sharper screens.
+const image = { alt: "", densities: [1, 2, 3], quality: 85, width };
+// A blurred preview sits behind the poster, which fades in once it has loaded. Without JavaScript it shows at once.
+const placeholder = typeof src === "string" ? await getPlaceholder(src) : null;
+const imageClass = placeholder
+  ? "relative w-full object-cover opacity-0 transition-opacity duration-500 data-loaded:opacity-100 [@media(scripting:none)]:opacity-100"
+  : "w-full object-cover";
+const onLoad = placeholder ? "this.dataset.loaded = ''" : undefined;
+const Poster = href ? "a" : "div";
+const link = href ? { href, "target": "_blank", "rel": "noopener noreferrer", "aria-label": title } : {};
+---
+
+<Poster
+  data-slot="media-item-poster"
+  class={cn(
+    "block w-full rounded-lg group-data-[layout=row]/media-item:w-[calc(var(--spacing-3xl)*7/6)] group-data-[layout=row]/media-item:shrink-0",
+    className,
+  )}
+  {...link}
+>
+  {src ? (
+    <div class="relative overflow-hidden rounded-lg border bg-muted">
+      {placeholder && (
+        <div
+          class="absolute inset-0 scale-110 bg-cover bg-center blur-xl"
+          style={{ backgroundImage: `url(${placeholder})` }}
+          aria-hidden="true"
+        />
+      )}
+      {typeof src === "string" ? (
+        <Image
+          {...image}
+          class={imageClass}
+          height={Math.round(width / remoteShape)}
+          onload={onLoad}
+          src={src}
+          style={{ aspectRatio: remoteShape }}
+        />
+      ) : (
+        <Image
+          {...image}
+          class={imageClass}
+          height={shape ? Math.round(width / shape) : undefined}
+          src={src}
+          style={{ aspectRatio: shape ?? undefined }}
+        />
+      )}
+    </div>
+  ) : (
+    <div
+      class:list={[
+        "flex aspect-2/3 w-full items-center justify-center rounded-lg border bg-muted",
+        textVariants({ variant: "display", tone: "muted" }),
+      ]}
+      aria-hidden="true"
+    >
+      {title[0]?.toUpperCase()}
+    </div>
+  )}
+</Poster>

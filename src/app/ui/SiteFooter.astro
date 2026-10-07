@@ -1,8 +1,9 @@
 ---
 import type { TypeSocialLink } from "@/entities/profile";
-import { CopyButton } from "@/shared/ui/copy-button";
-import { Icon } from "@/shared/ui/icon";
-import { Text } from "@/shared/ui/text";
+
+import SiteFooterColophon from "./SiteFooterColophon.astro";
+import SiteFooterLegal from "./SiteFooterLegal.astro";
+import SiteFooterSocials from "./SiteFooterSocials.astro";
 
 interface Props {
   name: string;
@@ -10,8 +11,6 @@ interface Props {
 }
 
 const { name, socials } = Astro.props;
-const year = new Date().getFullYear();
-const [firstName] = name.split(" ");
 ---
 
 <footer
@@ -20,134 +19,10 @@ const [firstName] = name.split(" ");
   class="border-t bg-muted/30 py-xl-2xl"
 >
   <div class="mx-auto max-w-2xl space-y-xl px-s-l">
-    {socials.length > 0 && (
-      <div class="space-y-s-m">
-        <Text
-          class="font-normal"
-          variant="heading"
-        >
-          Let's be friends{" "}
-          <span
-            class="text-success"
-            aria-hidden="true"
-          >
-            ✦
-          </span>
-        </Text>
-        <ul class="grid-fluid gap-m [--grid-min:9.5rem]">
-          {socials.map((social) => (
-            <li class="min-w-0 space-y-3xs">
-              {social.email ? (
-                <>
-                  <Text
-                    as="span"
-                    class="flex items-center gap-2xs"
-                    variant="label"
-                  >
-                    {social.label}
-                    <CopyButton
-                      label="Copy email address"
-                      value={social.email}
-                    />
-                  </Text>
-                  <a
-                    class="block truncate text-muted-foreground transition-colors hover:text-foreground"
-                    href={social.href}
-                  >
-                    {social.email}
-                  </a>
-                </>
-              ) : (
-                <a
-                  class="group block"
-                  href={social.href}
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  <Text
-                    as="span"
-                    class="flex items-center gap-3xs"
-                    variant="label"
-                  >
-                    {social.label}
-                    <Icon
-                      class="size-3.5 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                      name="reicon:ArrowUpRight"
-                    />
-                  </Text>
-                  <Text
-                    as="span"
-                    class="block truncate"
-                    tone="muted"
-                  >
-                    {social.handle}
-                  </Text>
-                </a>
-              )}
-            </li>
-          ))}
-        </ul>
-      </div>
-    )}
+    <SiteFooterSocials socials={socials} />
     <div class="space-y-xs">
-      <Text
-        as="div"
-        class="flex flex-wrap items-center justify-between gap-x-m gap-y-3xs"
-        tone="muted"
-        variant="small"
-      >
-        <p>
-          &copy; {year} {name}
-        </p>
-        <p class="flex items-center gap-3xs">
-          Made with
-          <Icon
-            class="size-3.5 text-error"
-            name="reicon:Heart"
-            weight="Filled"
-          />
-          <span class="sr-only">love</span>
-          by {firstName}
-        </p>
-      </Text>
-      <Text
-        class="leading-relaxed"
-        tone="faint"
-        variant="small"
-      >
-        Built with Astro and Tailwind CSS, with Alpine.js for the small interactive parts. Pages are prerendered and
-        deployed on Vercel, apart from the books page, which is rendered on demand from my Hardcover library and cached
-        for a few minutes. Posts and movies are files in the repository, edited through Keystatic. I chose static output
-        and a little JavaScript over a client framework, and plain files in git over a database, so the site stays fast
-        and easy to move. Covers and posters are resized by Astro for each screen density and fade in over a blurred
-        preview. Code blocks use Expressive Code, math uses KaTeX, the code is organised with Feature-Sliced Design, and
-        the type is Supreme, General Sans and Geist Mono.
-      </Text>
-      <Text
-        class="leading-relaxed"
-        tone="faint"
-        variant="small"
-      >
-        Book data and covers come from
-        <a
-          class="underline underline-offset-4 transition-colors hover:text-foreground"
-          href="https://hardcover.app"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          Hardcover
-        </a>
-        , and film and series posters from
-        <a
-          class="underline underline-offset-4 transition-colors hover:text-foreground"
-          href="https://www.themoviedb.org"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          TMDB
-        </a>
-        . This product uses the TMDB API but is not endorsed or certified by TMDB.
-      </Text>
+      <SiteFooterLegal name={name} />
+      <SiteFooterColophon />
     </div>
   </div>
 </footer>

@@ -1,0 +1,71 @@
+---
+import { resolveMediaLink } from "@/shared/config/media-sources";
+import { formatDate, formatMonthYear } from "@/shared/lib/date";
+import { Badge } from "@/shared/ui/badge";
+import {
+  MediaItem,
+  MediaItemByline,
+  MediaItemContent,
+  MediaItemDescription,
+  MediaItemHeader,
+  MediaItemLink,
+  MediaItemLinks,
+  MediaItemMeta,
+  MediaItemPoster,
+  MediaItemTimeline,
+  MediaItemTitle,
+} from "@/shared/ui/media-item";
+import { Rating } from "@/shared/ui/rating";
+import type { ImageMetadata } from "astro";
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  data: CollectionEntry<"movies">["data"];
+  /** The uploaded poster, or the URL `resolvePoster` found. */
+  poster?: ImageMetadata | string | null;
+  /** `row` puts the poster beside the text, `card` stacks it on top. */
+  layout?: "row" | "card";
+}
+
+const kinds = { movie: "Movie", series: "Series", show: "Show", anime: "Anime" } as const;
+
+const { data, poster, layout = "card" } = Astro.props;
+const links = data.links.map(({ source, id }) => resolveMediaLink(source, id));
+
+function timeline({ status, startedDate, watchedDate }: Props["data"]) {
+  if (status === "planned") return "Planned";
+  if (status === "watching") return startedDate ? `Started ${formatMonthYear(startedDate)}` : "Watching";
+  return watchedDate ? `Watched ${formatMonthYear(watchedDate)}` : undefined;
+}
+
+const when = timeline(data);
+---
+
+<MediaItem layout={layout}>
+  <MediaItemPoster
+    ratio={data.posterRatio}
+    src={poster}
+    title={data.title}
+    width={layout === "row" ? 112 : undefined}
+  />
+  <MediaItemContent>
+    <MediaItemHeader>
+      <MediaItemTitle>{data.title}</MediaItemTitle>
+      {data.creator && <MediaItemByline>{data.creator}</MediaItemByline>}
+    </MediaItemHeader>
+    <MediaItemMeta>
+      <Badge>{kinds[data.kind]}</Badge>
+      {data.releaseDate && <time datetime={data.releaseDate.toISOString()}>{formatDate(data.releaseDate)}</time>}
+    </MediaItemMeta>
+    {data.rating && <Rating value={data.rating} />}
+    {when && <MediaItemTimeline>{when}</MediaItemTimeline>}
+    {data.description && <MediaItemDescription>{data.description}</MediaItemDescription>}
+    {links.length > 0 && (
+      <MediaItemLinks>
+        {links.map((link) => (
+          <MediaItemLink href={link.href}>{link.name}</MediaItemLink>
+        ))}
+      </MediaItemLinks>
+    )}
+  </MediaItemContent>
+</MediaItem>

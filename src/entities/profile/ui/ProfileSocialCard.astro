@@ -1,0 +1,67 @@
+---
+import { Avatar } from "@/shared/ui/avatar";
+import { Button } from "@/shared/ui/button";
+import { Icon } from "@/shared/ui/icon";
+import { Text } from "@/shared/ui/text";
+import { Image } from "astro:assets";
+
+import type { TypeSocialLink } from "../model/types";
+
+interface Props {
+  social: TypeSocialLink;
+}
+
+const { social } = Astro.props;
+---
+
+<div
+  data-slot="profile-social-banner"
+  class="h-20 bg-muted"
+>
+  {social.banner && (
+    <Image
+      class="size-full object-cover"
+      alt=""
+      height={160}
+      src={social.banner}
+      width={640}
+    />
+  )}
+</div>
+<div
+  data-slot="profile-social-body"
+  class="space-y-2xs px-s pb-s"
+>
+  <div class="-mt-8 flex items-end justify-between">
+    <Avatar
+      class="ring-4 ring-popover"
+      name={social.displayName}
+      src={social.avatar}
+    />
+    {social.actionLabel && (
+      <Button
+        class="rounded-full"
+        href={social.href}
+        size="sm"
+      >
+        {social.actionLabel}
+      </Button>
+    )}
+  </div>
+  <div>
+    <Text
+      class="flex items-center gap-3xs"
+      variant="label"
+    >
+      {social.displayName}
+      {social.verified && (
+        <Icon
+          class="size-4 text-info"
+          name="reicon:Verified"
+        />
+      )}
+    </Text>
+    <Text tone="muted">{social.handle}</Text>
+  </div>
+  {social.bio && <Text>{social.bio}</Text>}
+</div>

@@ -1,5 +1,7 @@
 ---
 import { aspectRatioCatalog, type TypeAspectRatioName } from "@/shared/config/aspect-ratio";
+import { cn } from "@/shared/lib/tailwind";
+import { CarouselItem } from "@/shared/ui/carousel";
 
 interface Props {
   ratio?: TypeAspectRatioName;
@@ -9,15 +11,12 @@ const { ratio = "original" } = Astro.props;
 const value = aspectRatioCatalog[ratio].ratio;
 ---
 
-<div
-  class:list={[
-    "w-4/5 shrink-0 snap-start space-y-2xs [&_[data-slot=figure-image]]:w-full [&_[data-slot=lightbox-trigger]]:w-full",
+<CarouselItem
+  class={cn(
+    "w-4/5 space-y-2xs [&_[data-slot=figure-image]]:w-full [&_[data-slot=lightbox-trigger]]:w-full",
     value && "[&_[data-slot=figure-image]]:aspect-(--ratio) [&_[data-slot=figure-image]]:object-cover",
-  ]}
-  data-slot="slide"
-  aria-roledescription="slide"
-  role="group"
+  )}
   style={{ "--ratio": value ?? undefined }}
 >
   <slot />
-</div>
+</CarouselItem>
