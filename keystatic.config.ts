@@ -204,7 +204,8 @@ function postContent(label: string, assets: string) {
 }
 
 export default config({
-  storage: import.meta.env.PROD ? { kind: "github", repo: "whoiseno/whoiseno" } : { kind: "local" },
+  storage: import.meta.env.PROD ? { kind: "cloud" } : { kind: "local" },
+  cloud: { project: "whoiseno-portfolio/whoiseno" },
 
   ui: {
     navigation: {

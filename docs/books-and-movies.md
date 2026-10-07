@@ -30,7 +30,7 @@ A visit to page 1 on a cold cache costs four requests (your ID, the count, Readi
 
 Open `/keystatic` locally (`pnpm dev`, or the "CMS" button in the sidebar) and pick **Hobbies**, then **Movies**. Saving writes a YAML file into `src/content/movies/`. Commit it like any other change.
 
-On the deployed site, open `/keystatic` there. Saving commits to the repository through the GitHub App and Vercel rebuilds the site. Posters are fetched during that build, so a new poster appears once the deployment finishes, not at save time. See [`content.md`](./content.md#admin-ui) for the GitHub setup.
+On the deployed site, open `/keystatic` there. Saving commits to the repository through Keystatic Cloud and Vercel rebuilds the site. Posters are fetched during that build, so a new poster appears once the deployment finishes, not at save time. See [`content.md`](./content.md#keystatic-cloud) for the Keystatic Cloud setup.
 
 The file name comes from the title (`Inception` becomes `inception.yaml`), so pick the final title before the first save.
 

@@ -1,5 +1,6 @@
 import { createHash } from "node:crypto";
 
+import keystaticPackage from "@keystatic/core/package.json";
 import type { APIRoute } from "astro";
 import { CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET, CLOUDINARY_CLOUD_NAME } from "astro:env/server";
 
@@ -16,26 +17,23 @@ function json(body: unknown, status = 200) {
 }
 
 /**
- * The same gate as the CMS: a signed-in GitHub user with write access to the content repository. Local storage only
- * exists under `pnpm dev`, where there is no sign-in to check.
+ * The same gate as the CMS: a person signed in to Keystatic Cloud as a member of the team that owns this site. The
+ * admin keeps its Cloud token in the browser, so the field sends it in the `Authorization` header and Keystatic Cloud
+ * says whose it is. A valid token is not enough, because any Keystatic Cloud account can get one for a project of its
+ * own: the team has to be this site's. Local storage only exists under `pnpm dev`, where there is no sign-in to check.
  */
 async function canWrite(token: string | undefined) {
-  const { storage } = keystaticConfig;
+  const { cloud, storage } = keystaticConfig;
   if (storage.kind === "local") return true;
-  if (storage.kind !== "github" || !token) return false;
+  if (storage.kind !== "cloud" || !cloud?.project || !token) return false;
 
-  const repo = typeof storage.repo === "string" ? storage.repo : `${storage.repo.owner}/${storage.repo.name}`;
-  const response = await fetch(`https://api.github.com/repos/${repo}`, {
-    headers: {
-      "accept": "application/vnd.github+json",
-      "authorization": `Bearer ${token}`,
-      "user-agent": "whoiseno-site",
-    },
+  const response = await fetch("https://api.keystatic.cloud/v1/info", {
+    headers: { "authorization": `Bearer ${token}`, "x-keystatic-version": keystaticPackage.version },
     signal: AbortSignal.timeout(10_000),
   });
   if (!response.ok) return false;
-  const { permissions } = (await response.json()) as { permissions?: { push?: boolean } };
-  return permissions?.push === true;
+  const { team } = (await response.json()) as { team?: { slug?: string } };
+  return team?.slug?.toLowerCase() === cloud.project.split("/")[0].toLowerCase();
 }
 
 /**
@@ -43,15 +41,16 @@ async function canWrite(token: string | undefined) {
  * never passes through this function (Vercel limits a request body to 4.5 MB) and the API secret never leaves the
  * server.
  */
-export const POST: APIRoute = async ({ cookies, request }) => {
+export const POST: APIRoute = async ({ request }) => {
   if (!CLOUDINARY_CLOUD_NAME || !CLOUDINARY_API_KEY || !CLOUDINARY_API_SECRET) {
     return json(
       { error: "Cloudinary is not set up: add CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY and CLOUDINARY_API_SECRET." },
       500,
     );
   }
-  if (!(await canWrite(cookies.get("keystatic-gh-access-token")?.value))) {
-    return json({ error: "Sign in to the CMS with a GitHub account that can write to the repository." }, 403);
+  const token = request.headers.get("authorization")?.replace(/^Bearer /i, "");
+  if (!(await canWrite(token))) {
+    return json({ error: "Sign in to the CMS with a Keystatic Cloud account that is in this site's team." }, 403);
   }
 
   const body = (await request.json().catch(() => null)) as { folder?: unknown } | null;

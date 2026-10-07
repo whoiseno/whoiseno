@@ -105,7 +105,7 @@ cover:
 ```
 
 - **Field:** `cloudAssetField` in [`src/shared/ui/cloud-asset-field/CloudAssetField.tsx`](../src/shared/ui/cloud-asset-field/CloudAssetField.tsx) replaces `fields.image` and `fields.file`. Its `kind` is `image`, `video` or `audio` (it sets the file picker and checks what Cloudinary received) and its `folder` is where the file goes, below `whoiseno/` in the Cloudinary library. An image is stored as `{ url, width, height }`, so a page can reserve its space; a video or audio file as `{ url }`.
-- **Upload:** the field asks `POST /api/cloud-assets/sign` ([`src/pages/api/cloud-assets/sign.ts`](../src/pages/api/cloud-assets/sign.ts)) for a signed upload, and the browser then sends the file straight to Cloudinary. The file never passes through the site, which matters because Vercel limits a request body to 4.5 MB, and the API secret never leaves the server. The route follows the CMS's own sign-in: under `pnpm dev` (local storage) it signs for anyone who can reach the dev server, and in production only for a GitHub account with write access to the repository (it reads the `keystatic-gh-access-token` cookie and asks GitHub, as the CMS does).
+- **Upload:** the field asks `POST /api/cloud-assets/sign` ([`src/pages/api/cloud-assets/sign.ts`](../src/pages/api/cloud-assets/sign.ts)) for a signed upload, and the browser then sends the file straight to Cloudinary. The file never passes through the site, which matters because Vercel limits a request body to 4.5 MB, and the API secret never leaves the server. The route follows the CMS's own sign-in: under `pnpm dev` (local storage) it signs for anyone who can reach the dev server, and in production only for a Keystatic Cloud account in this site's team. The admin keeps its Cloud token in the browser (`localStorage`, `keystatic-cloud-access-token`), so the field sends it in an `Authorization` header, and the route asks Keystatic Cloud whose it is (`GET https://api.keystatic.cloud/v1/info`, the call the admin makes itself) and checks that the team's slug is the first half of `cloud.project`. The token alone is not enough, because any Keystatic Cloud account can get one for a project of its own. Keystatic does not document that endpoint, so an update to Keystatic that changes it would make uploads fail with 403 until the route is adjusted.
 - **Delivery:** nothing is downloaded or processed at build time. [`cloudImageUrl`](../src/shared/lib/cloud-asset.ts) adds `f_auto,q_auto,c_limit,w_<width>` to a Cloudinary URL, so Cloudinary resizes when a browser asks and caches the result in the best format the browser takes, and [`AssetImage`](./layers/shared.md#uiasset-image) turns that into `src` and `srcset`. A social preview asks for a JPEG, since networks cannot read WebP. SVG and files on any other host are served as they are. Video and audio are served as uploaded.
 - **Environment:** `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY` and `CLOUDINARY_API_SECRET` (see [`setup.md`](./setup.md#environment-variables)). Without them an upload fails with "Cloudinary is not set up".
 - **Limits** on the free plan: 10 MB for an image (25 megapixels), 100 MB for a video, 10 MB for any other file, and 25 credits a month shared by storage, bandwidth and transformations (a credit is 1 GB of storage, 1 GB of bandwidth or 1,000 transformations). Cloudinary refuses a larger file and the field shows its message.
@@ -126,29 +126,23 @@ Keystatic's integration injects `/keystatic` (the admin UI) and `/api/keystatic/
 Storage is switched on `import.meta.env.PROD` in `keystatic.config.ts`:
 
 - **Development:** `kind: "local"`. Run `pnpm dev`, open `/keystatic`, and edits are written straight to files in `src/content/`. Commit them like any other change. No environment variables are needed.
-- **Production:** `kind: "github"` against `whoiseno/whoiseno`. Edits made at `/keystatic` on the deployed site are committed to the repository through a GitHub App.
+- **Production:** `kind: "cloud"`, with `cloud.project` set to `whoiseno-portfolio/whoiseno`, the team and project on [Keystatic Cloud](https://keystatic.com/docs/cloud). An editor signs in to Keystatic Cloud at `/keystatic` on the deployed site, and Keystatic Cloud saves each edit as a commit to the GitHub repository connected to that project. Vercel builds every commit, so a change is live once that build finishes.
 
-### GitHub mode environment variables
+### Keystatic Cloud
 
-Set these in the Vercel project:
+Cloud mode needs no environment variables and no GitHub App of your own: Keystatic Cloud handles the sign-in and the connection to GitHub, and the site's `/api/keystatic/*` answers 404 because nothing uses it. The free plan allows three users in a team. Images are not stored there: files go to Cloudinary (see [Media on Cloudinary](#media-on-cloudinary)), so Keystatic's own cloud image field is not used.
 
-| Variable                           | Purpose                                        |
-| ---------------------------------- | ---------------------------------------------- |
-| `KEYSTATIC_GITHUB_CLIENT_ID`       | GitHub App client ID                           |
-| `KEYSTATIC_GITHUB_CLIENT_SECRET`   | GitHub App client secret                       |
-| `KEYSTATIC_SECRET`                 | Random string used to sign sessions            |
-| `PUBLIC_KEYSTATIC_GITHUB_APP_SLUG` | GitHub App slug (public, read by the admin UI) |
+Setting it up, once:
 
-Per the Keystatic [GitHub mode guide](https://keystatic.com/docs/github-mode), the GitHub App is created from the `/keystatic` route while the project runs locally. This repo uses `local` storage in development, so the steps are:
+1. In Keystatic Cloud, create the team and the project, and connect the project to the `whoiseno/whoiseno` repository. The project's settings page shows the `storage` and `cloud` snippet that `keystatic.config.ts` uses. If you rename the team or the project, change `cloud.project` to match.
+2. Deploy the site to Vercel.
+3. Open `https://<your site>/keystatic` and sign in with your Keystatic Cloud account. Make a change and save it, and check that the commit appears in the repository.
 
-1. Deploy the site to Vercel once, to know its address (for example `https://whoiseno.vercel.app`).
-2. In `keystatic.config.ts`, point `storage` at `{ kind: "github", repo: "whoiseno/whoiseno" }` for the moment, run `pnpm dev` and open `http://127.0.0.1:4321/keystatic`.
-3. Choose **Log in with GitHub**, then **Create GitHub App**. Enter the deployed address when asked, so that GitHub accepts it as a callback URL, and name the app. Install it on `whoiseno/whoiseno` only.
-4. Keystatic writes the four variables above to `.env`. Put the original `storage` line back, and copy the values into Vercel (Project Settings, Environment Variables, Production).
-5. Redeploy. `PUBLIC_KEYSTATIC_GITHUB_APP_SLUG` is read when the site is built, so a deployment made before it was set does not have it.
-6. Open `https://<your site>/keystatic` and log in with GitHub. Anyone with write access to the repository can. Each save is a commit to the branch open in the CMS (`main` by default), which Vercel builds, so a change is live once that build finishes.
+Editing needs a Keystatic Cloud account in the team, not a GitHub one.
 
-If GitHub reports a `redirect_uri` error, add `https://<your site>/api/keystatic/github/oauth/callback` as a callback URL in the app's settings (`https://github.com/settings/installations`, then the app's settings). Only an address you registered can sign in, so a Vercel preview URL cannot use the CMS. These steps have not been run on this repo yet.
+If an upload fails with "Sign in to the CMS with a Keystatic Cloud account that is in this site's team" while you can edit and save, the route and Keystatic Cloud disagree about the team. Open the browser's network panel, find the request to `https://api.keystatic.cloud/v1/info`, and compare `team.slug` in its response with the first half of `cloud.project`. The two must be the same.
+
+A production build (`pnpm build:node` and `pnpm preview`, see [`setup.md`](./setup.md#building-and-previewing)) uses Cloud storage too and asks you to sign in to Keystatic Cloud. Whether Keystatic Cloud accepts the `http://127.0.0.1:4321` address of a local preview as a place to sign in has not been tried.
 
 ## Dashboard grouping
 

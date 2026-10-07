@@ -33,11 +33,22 @@ function write(value: TypeCloudAssetValue): FormFieldStoredValue {
   return stored;
 }
 
+/** The token the Keystatic admin keeps in the browser after a Cloud sign-in. There is none under local storage. */
+function cloudToken() {
+  try {
+    const stored = JSON.parse(localStorage.getItem("keystatic-cloud-access-token") ?? "null");
+    return typeof stored?.token === "string" ? stored.token : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
 /** Asks the site to sign the upload, then sends the file straight to Cloudinary. */
 async function upload(file: File, folder: string, kind: TypeCloudAssetKind): Promise<TypeCloudAsset> {
+  const token = cloudToken();
   const signed = await fetch("/api/cloud-assets/sign", {
     method: "POST",
-    headers: { "content-type": "application/json" },
+    headers: { "content-type": "application/json", ...(token ? { authorization: `Bearer ${token}` } : {}) },
     body: JSON.stringify({ folder }),
   });
   const signature = await signed.json().catch(() => null);
