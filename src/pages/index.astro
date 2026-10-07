@@ -3,7 +3,7 @@ import { Site } from "@/app/ui";
 import { ProfileHero } from "@/entities/profile";
 import { ProjectList } from "@/features/projects";
 import { WorkList } from "@/features/works";
-import { WritingList } from "@/features/writing";
+import { WritingLatest } from "@/features/writing";
 import { Section } from "@/shared/ui/section";
 ---
 
@@ -28,9 +28,6 @@ import { Section } from "@/shared/ui/section";
     href="/writing"
     title="Writing"
   >
-    <WritingList
-      filterable={false}
-      limit={4}
-    />
+    <WritingLatest limit={4} />
   </Section>
 </Site>

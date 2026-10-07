@@ -15,6 +15,7 @@ export { default as Table } from "./ui/Table.astro";
 export { default as VideoClip } from "./ui/VideoClip.astro";
 export { default as WritingBackLink } from "./ui/WritingBackLink.astro";
 export { default as WritingFilters } from "./ui/WritingFilters.astro";
+export { default as WritingLatest } from "./ui/WritingLatest.astro";
 export { default as WritingList } from "./ui/WritingList.astro";
 export { default as WritingPager } from "./ui/WritingPager.astro";
 export { default as WritingReader } from "./ui/WritingReader.astro";

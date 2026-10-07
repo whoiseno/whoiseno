@@ -10,18 +10,13 @@ import { getReadingMinutes } from "../model/reading-time";
 
 interface Props {
   tag?: string;
-  /** Shows only the latest entries. */
-  limit?: number;
-  /** Follows the kind filter of the writing page. Turn off where there is no filter, such as the home page. */
-  filterable?: boolean;
 }
 
-const { tag, limit, filterable = true } = Astro.props;
+const { tag } = Astro.props;
 
 const entries = (await getCollection("writing"))
   .filter(({ data }) => !tag || data.tags.some((label) => slugify(label) === tag))
-  .sort((a, b) => b.data.publishedDate.getTime() - a.data.publishedDate.getTime())
-  .slice(0, limit);
+  .sort((a, b) => b.data.publishedDate.getTime() - a.data.publishedDate.getTime());
 
 const years = new Map<number, typeof entries>();
 for (const entry of entries) {
@@ -39,7 +34,7 @@ for (const { data } of entries) counts[data.kind] = (counts[data.kind] ?? 0) + 1
   <div
     class="group/writing space-y-xl"
     data-slot="writing-list"
-    x-data={filterable ? `{ counts: ${JSON.stringify(counts)} }` : undefined}
+    x-data={`{ counts: ${JSON.stringify(counts)} }`}
   >
     {[...years].map(([year, items]) => (
       <section class="space-y-2xs [&:not(:has(li:not([hidden])))]:hidden">
@@ -52,7 +47,7 @@ for (const { data } of entries) counts[data.kind] = (counts[data.kind] ?? 0) + 1
         </Text>
         <ul class="[&>li:not([hidden])~li:not([hidden])]:border-t">
           {items.map(({ id, data, body }) => (
-            <li x-bind:hidden={filterable ? `!$store.writingFilter.shows('${data.kind}')` : undefined}>
+            <li x-bind:hidden={`!$store.writingFilter.shows('${data.kind}')`}>
               <a
                 class="flex flex-wrap items-baseline justify-between gap-x-s gap-y-3xs py-s transition-[filter,opacity] duration-200 [@media(hover:hover)]:group-has-[a:hover]/writing:not-hover:opacity-60 [@media(hover:hover)]:group-has-[a:hover]/writing:not-hover:blur-[1.5px]"
                 href={`/writing/${id}`}
@@ -90,14 +85,12 @@ for (const { data } of entries) counts[data.kind] = (counts[data.kind] ?? 0) + 1
         </ul>
       </section>
     ))}
-    {filterable && (
-      <Text
-        tone="muted"
-        x-cloak
-        x-show="$store.writingFilter.kind !== 'all' && !counts[$store.writingFilter.kind]"
-      >
-        Nothing of this kind yet.
-      </Text>
-    )}
+    <Text
+      tone="muted"
+      x-cloak
+      x-show="$store.writingFilter.kind !== 'all' && !counts[$store.writingFilter.kind]"
+    >
+      Nothing of this kind yet.
+    </Text>
   </div>
 )}
