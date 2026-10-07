@@ -83,9 +83,6 @@
   :root {
     --radius: 0.45rem;
 
-    /* How far a table reaches past the text column on each side: 10% of the column, never wider than the space left in the content column (`site-content` is the query container) minus the page gutter */
-    --breakout: min(10%, max(0px, calc((100cqw - 100%) / 2 - var(--spacing-s-l))));
-
     --font-heading: var(--font-general-sans-variable);
     --font-content: var(--font-supreme-variable);
     --font-code: var(--font-geist-mono);
@@ -315,9 +312,6 @@
       @apply border-t px-xs py-2xs align-top;
     }
 
-    & > article > [data-slot="table"] {
-      margin-inline: calc(var(--breakout) * -1);
-    }
     & > article > [data-slot="figure"] [data-slot="lightbox-trigger"] {
       width: 100%;
 

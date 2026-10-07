@@ -75,7 +75,7 @@ It registers `@alpinejs/anchor` (popover and dropdown positioning), `@alpinejs/i
 
 ## `styles/global.css`
 
-The single global stylesheet, imported once from `Root.astro` ([`src/app/ui/Root.astro`](../../src/app/ui/Root.astro)). Pulls in Tailwind (`@import "tailwindcss"`) and `utopia.css` (the fluid type and space tokens), and defines the `@theme` block (the one `rail` breakpoint, the `max-width` aliases, fonts, color and radius mapping), the `grid-fluid` utility, the light tokens in `:root`, the dark tokens in `.dark`, `[data-slot="prose"]` styles (including the table breakout), the registered `--page-width` property, the thin scrollbars, the lightbox scroll lock, the page-fade `@view-transition`, the theme wipe, and `x-cloak`. Full breakdown in [`styling.md`](../styling.md).
+The single global stylesheet, imported once from `Root.astro` ([`src/app/ui/Root.astro`](../../src/app/ui/Root.astro)). Pulls in Tailwind (`@import "tailwindcss"`) and `utopia.css` (the fluid type and space tokens), and defines the `@theme` block (the one `rail` breakpoint, the `max-width` aliases, fonts, color and radius mapping), the `grid-fluid` utility, the light tokens in `:root`, the dark tokens in `.dark`, `[data-slot="prose"]` styles, the registered `--page-width` property, the thin scrollbars, the lightbox scroll lock, the page-fade `@view-transition`, the theme wipe, and `x-cloak`. Full breakdown in [`styling.md`](../styling.md).
 
 ## Conventions
 
