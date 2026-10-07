@@ -73,7 +73,7 @@ Configured in [`astro.config.mjs`](../astro.config.mjs):
 - **`@keystatic/astro`** and **`@astrojs/react`** — the Keystatic CMS admin at `/keystatic`; React is a dependency of the admin only.
 - **`keystaticBackLink`** — a small inline integration in `astro.config.mjs`, active only under `astro dev`, that adds a "Back to site" link to the admin page. See [`layers/app.md`](./layers/app.md).
 - **`astro-icon`** with `@iconify-json/ph` — Phosphor icons, plus the local SVGL tech logos in `src/assets/icons/logos/` (the plugin's `iconDir` is `src/assets/icons`). Together with `reicon-astro` (a component package, not an integration) it sits behind one `Icon` component in `shared/ui/icon`; see [`layers/shared.md`](./layers/shared.md).
-- **`@astrojs/vercel`** (adapter) — required for the on-demand Keystatic routes; the rest of the site stays static.
+- **`@astrojs/vercel`** and **`@astrojs/node`** (adapters) — a server adapter is required for the on-demand routes (the Keystatic admin and its API, the upload signing route and the books page); the rest of the site stays static. `astro.config.mjs` uses the Vercel adapter unless the command carries `--node` (`pnpm build:node` and `pnpm preview`), because `astro preview` cannot serve a Vercel build. See [`setup.md`](./setup.md#building-and-previewing).
 - **`@tailwindcss/vite`** — Tailwind v4's Vite plugin (no `tailwind.config.js`; theme lives in CSS, see [`styling.md`](./styling.md)).
 - **Fonts** — two local variable fonts (Supreme, General Sans, in `src/assets/fonts/`) served via `fontProviders.local()`, plus Geist Mono and Caveat (the handwriting face, weight 500) via `fontProviders.fontsource()` (Astro's built-in Fontsource integration, fetched at build time).
 

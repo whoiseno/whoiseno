@@ -21,7 +21,7 @@ Start here, then jump into the file that covers the part you're touching.
 
 ## Quick facts
 
-- **Framework:** [Astro](https://astro.build) 7, statically prerendered with the Vercel adapter for the CMS routes and the on-demand books page. Site components are `.astro` plus a light dusting of [Alpine.js](https://alpinejs.dev); React is present only for the Keystatic admin.
+- **Framework:** [Astro](https://astro.build) 7, statically prerendered, with a server adapter (Vercel in production, Node for a local `pnpm preview`) for the CMS routes and the on-demand books page. Site components are `.astro` plus a light dusting of [Alpine.js](https://alpinejs.dev); React is present only for the Keystatic admin.
 - **Styling:** Tailwind CSS v4 via `@tailwindcss/vite`, configured through CSS `@theme` rather than a JS config file.
 - **Architecture pattern:** [Feature-Sliced Design](https://feature-sliced.design/) (`app` → `pages` → `features` → `entities` → `shared`), enforced only by convention and TS path aliases.
 - **Content:** Managed through [Keystatic](https://keystatic.com) (`keystatic.config.ts`), writing Markdoc and YAML files into Astro content collections under `src/content`.
@@ -33,5 +33,5 @@ Start here, then jump into the file that covers the part you're touching.
 - [`CLAUDE.md`](../CLAUDE.md) / [`AGENTS.md`](../AGENTS.md) — instructions for AI coding agents working in this repo (dev server usage, doc links).
 - [`keystatic.config.ts`](../keystatic.config.ts) — Keystatic CMS schema and storage mode.
 - [`src/content.config.ts`](../src/content.config.ts) — Astro content collection definitions (Zod schemas).
-- [`astro.config.mjs`](../astro.config.mjs) — integrations (Alpine, Partytown, Markdoc, React, Keystatic, icons, Tailwind), the Vercel adapter, and font definitions.
+- [`astro.config.mjs`](../astro.config.mjs) — integrations (Alpine, Partytown, Markdoc, React, Keystatic, icons, Tailwind), the Vercel and Node adapters, and font definitions.
 - [`tsconfig.json`](../tsconfig.json) — strict TS config and the `@/*` path aliases that mirror the FSD layers.

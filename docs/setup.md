@@ -17,19 +17,31 @@ pnpm install
 
 Defined in [`package.json`](../package.json):
 
-| Script         | Command                        | Purpose                                                                                                                                                                        |
-| -------------- | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `pnpm dev`     | `astro dev`                    | Start the local dev server. In an AI-agent session, prefer `astro dev --background` (see [`CLAUDE.md`](../CLAUDE.md)) and manage it with `astro dev stop` / `status` / `logs`. |
-| `pnpm build`   | `astro build`                  | Production build with the Vercel adapter (output in `.vercel/output`). On Windows the function-bundling step needs permission to create symlinks (see below).                  |
-| `pnpm preview` | `astro preview`                | Serve the production build locally.                                                                                                                                            |
-| `pnpm astro`   | `astro`                        | Raw Astro CLI passthrough (e.g. `pnpm astro check`).                                                                                                                           |
-| `pnpm format`  | `prettier . --write`           | Format the whole repo.                                                                                                                                                         |
-| `pnpm lint`    | `eslint "src/**/*.{ts,astro}"` | Lint TS and Astro files under `src/`.                                                                                                                                          |
-| `pnpm prepare` | `husky`                        | Installs git hooks (runs automatically after install).                                                                                                                         |
+| Script            | Command                                                   | Purpose                                                                                                                                                                        |
+| ----------------- | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `pnpm dev`        | `astro dev`                                               | Start the local dev server. In an AI-agent session, prefer `astro dev --background` (see [`CLAUDE.md`](../CLAUDE.md)) and manage it with `astro dev stop` / `status` / `logs`. |
+| `pnpm build`      | `astro build`                                             | Production build with the Vercel adapter (output in `.vercel/output`), the command Vercel runs. Astro cannot preview it: see below.                                            |
+| `pnpm build:node` | `astro build --node`                                      | Production build with the Node adapter (output in `dist/`), for `pnpm preview`.                                                                                                |
+| `pnpm preview`    | `node --env-file-if-exists=.env ... astro preview --node` | Serves the build in `dist/` locally, with `.env` loaded. Run `pnpm build:node` first.                                                                                          |
+| `pnpm astro`      | `astro`                                                   | Raw Astro CLI passthrough (e.g. `pnpm astro check`).                                                                                                                           |
+| `pnpm format`     | `prettier . --write`                                      | Format the whole repo.                                                                                                                                                         |
+| `pnpm lint`       | `eslint "src/**/*.{ts,astro}"`                            | Lint TS and Astro files under `src/`.                                                                                                                                          |
+| `pnpm prepare`    | `husky`                                                   | Installs git hooks (runs automatically after install).                                                                                                                         |
 
-### Building on Windows
+### Building and previewing
 
-`pnpm build` compiles and prerenders every static page (`/hobbies/books` is rendered on demand instead), then `@astrojs/vercel` bundles the server function by creating symlinks into `.vercel/output`. Windows blocks symlink creation for normal users, so that last step fails with `EPERM: operation not permitted, symlink` unless Developer Mode is enabled (or the shell is elevated). The failure is environmental, not a code error; Vercel builds on Linux. Everything before it (including the static routes) completes.
+`pnpm build` compiles and prerenders every static page (`/hobbies/books`, the CMS routes and `/api/cloud-assets/sign` are rendered on demand instead), then the Vercel adapter packages the server. It is the command Vercel runs. `astro preview` cannot serve that output: it stops with "The @astrojs/vercel adapter does not support the preview command". Only the Node adapter can be previewed, so `astro.config.mjs` uses it when the command line carries `--node`, and uses the Vercel adapter otherwise. `pnpm build:node` and `pnpm preview` add the flag for you.
+
+To check the production site locally:
+
+```bash
+pnpm build:node
+pnpm preview
+```
+
+Then open the address it prints (`http://127.0.0.1:4321`). Both commands need the flag, so `pnpm preview` after a plain `pnpm build` fails with the error above: build with `pnpm build:node` again. `pnpm preview` loads `.env` with Node's `--env-file-if-exists`, because a built server reads only the real environment, so the books page and the Cloudinary and Keystatic secrets work. A build is production, so the CMS uses GitHub storage and needs the `KEYSTATIC_GITHUB_*` variables (see [`content.md`](./content.md#github-mode-environment-variables)); without them `/api/keystatic/*` answers 500 and the admin cannot load its entries. To edit content locally, use `pnpm dev`, which is unaffected.
+
+On Windows, `pnpm build` bundles the server function by creating symlinks into `.vercel/output`, which Windows blocks for normal users, so it ends with `EPERM: operation not permitted, symlink` unless Developer Mode is enabled (or the shell is elevated). The failure is environmental, not a code error; Vercel builds on Linux. Everything before it (including the static routes) completes, and `pnpm build:node` has no such step.
 
 ## Environment variables
 

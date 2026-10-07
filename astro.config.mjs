@@ -1,6 +1,7 @@
 // @ts-check
 import alpinejs from "@astrojs/alpinejs";
 import markdoc from "@astrojs/markdoc";
+import node from "@astrojs/node";
 import partytown from "@astrojs/partytown";
 import react from "@astrojs/react";
 import vercel from "@astrojs/vercel";
@@ -46,7 +47,9 @@ export default defineConfig({
     keystaticBackLink,
   ],
 
-  adapter: vercel(),
+  // `astro preview` cannot serve a Vercel build, so `pnpm build:node` and `pnpm preview` pass `--node` to use the Node
+  // adapter. Every other command, including the `pnpm build` that Vercel runs, uses the Vercel adapter.
+  adapter: process.argv.includes("--node") ? node({ mode: "standalone" }) : vercel(),
 
   // Movie posters (see src/shared/api/posters) and Hardcover book covers (see src/features/books).
   image: {

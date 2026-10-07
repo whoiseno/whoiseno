@@ -121,7 +121,7 @@ cover:
 
 ## Admin UI
 
-Keystatic's integration injects `/keystatic` (the admin UI) and `/api/keystatic/*`. Those routes are server-rendered (`prerender: false`) while every other page stays static, apart from `/hobbies/books` (see [`books-and-movies.md`](./books-and-movies.md#books)), which is why the project uses the Vercel adapter and why `@astrojs/react` is installed. React is used only by the Keystatic admin; site pages do not use it.
+Keystatic's integration injects `/keystatic` (the admin UI) and `/api/keystatic/*`. Those routes are server-rendered (`prerender: false`) while every other page stays static, apart from `/hobbies/books` (see [`books-and-movies.md`](./books-and-movies.md#books)), which is why the project uses a server adapter (Vercel in production, Node for a local preview) and why `@astrojs/react` is installed. React is used only by the Keystatic admin; site pages do not use it.
 
 Storage is switched on `import.meta.env.PROD` in `keystatic.config.ts`:
 
