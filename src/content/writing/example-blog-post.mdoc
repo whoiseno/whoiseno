@@ -44,7 +44,7 @@ An ordered list for steps:
 
 ## Quotes and rules
 
-> A blockquote keeps its text on the column while the tinted box flows a little past it, so the words line up with the paragraphs around it.
+> A blockquote stays on the text column, with a tint and a rule on its left edge, so it lines up with the paragraphs around it.
 
 A horizontal rule separates two thoughts without a new heading.
 
@@ -60,7 +60,7 @@ Images, columns and carousels all keep their aspect ratio.
 
 ![A placeholder illustration](../../assets/writing/example-wide.svg "Click the image to open it full size. This caption stays on the text column.")
 
-Images flow 10% past the text column on each side when there is room, and fall back to the column width when there is not. Pressing Enter or Space on a focused image opens the same dialog; Escape closes it and puts focus back where it was.
+Images fill the text column. Pressing Enter or Space on a focused image opens the same dialog; Escape closes it and puts focus back where it was.
 
 ## Two columns
 
@@ -125,24 +125,22 @@ pnpm dev
 
 {% table %}
 - Element
-- Flows out
-- Text stays on the column
+- Width
 ---
 - Code block
-- Yes
-- No
+- Text column
 ---
 - Image
-- Yes
-- Caption only
----
-- Table
-- Yes
-- No
+- Text column
 ---
 - Blockquote
-- Yes
-- Yes
+- Text column
+---
+- Table
+- A little past the text column
+---
+- Carousel
+- Full page width
 {% /table %}
 
 ## Math

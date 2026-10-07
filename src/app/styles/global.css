@@ -82,7 +82,7 @@
   :root {
     --radius: 0.45rem;
 
-    /* 10% of the text column on each side, never wider than the space left in the content column (`site-content` is the query container) minus the page gutter */
+    /* How far a table reaches past the text column on each side: 10% of the column, never wider than the space left in the content column (`site-content` is the query container) minus the page gutter */
     --breakout: min(10%, max(0px, calc((100cqw - 100%) / 2 - var(--spacing-s-l))));
 
     --font-heading: var(--font-general-sans-variable);
@@ -313,17 +313,11 @@
       @apply border-t px-xs py-2xs align-top;
     }
 
-    & > article > .expressive-code,
-    & > article > blockquote,
     & > article > [data-slot="table"] {
       margin-inline: calc(var(--breakout) * -1);
     }
-    & > article > blockquote {
-      padding-inline: max(var(--spacing-s), var(--breakout));
-    }
     & > article > [data-slot="figure"] [data-slot="lightbox-trigger"] {
-      width: calc(100% + var(--breakout) * 2);
-      margin-inline: calc(var(--breakout) * -1);
+      width: 100%;
 
       & > img {
         width: 100%;

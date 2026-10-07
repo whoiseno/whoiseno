@@ -41,10 +41,11 @@ export const textVariants = tv({
 
 export type TypeTextVariants = VariantProps<typeof textVariants>;
 
+export type TypeTextVariant = NonNullable<TypeTextVariants["variant"]>;
+
 export type TypeTextTag = "h1" | "h2" | "h3" | "h4" | "p" | "span" | "div" | "time" | "figcaption";
 
-/** The element each variant renders unless `as` says otherwise. */
-export const textTags = {
+const textTags = {
   display: "p",
   title: "h1",
   heading: "h2",
@@ -55,4 +56,13 @@ export const textTags = {
   small: "p",
   overline: "p",
   mono: "span",
-} as const satisfies Record<NonNullable<TypeTextVariants["variant"]>, TypeTextTag>;
+} as const satisfies Record<TypeTextVariant, TypeTextTag>;
+
+/**
+ * The element a variant renders unless `as` says otherwise. The lookup lives here, where `variant` is typed, because in
+ * some editor setups `Text.astro` sees the props of the generic `Polymorphic` type as `any`, and an `any` key cannot
+ * index `textTags` (TS7053).
+ */
+export function getTextTag(variant: TypeTextVariant): TypeTextTag {
+  return textTags[variant];
+}
