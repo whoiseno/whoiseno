@@ -1,12 +1,12 @@
 ---
 import { aspectRatioCatalog, type TypeAspectRatioName } from "@/shared/config/aspect-ratio";
-import type { ImageMetadata } from "astro";
-import { Image } from "astro:assets";
+import type { TypeImageSource } from "@/shared/lib/cloud-asset";
+import { AssetImage } from "@/shared/ui/asset-image";
 
 interface Props {
   /** The item the photos show, for the accessible names. */
   name: string;
-  photos: { image: ImageMetadata; alt?: string; ratio: TypeAspectRatioName }[];
+  photos: { image: TypeImageSource; alt?: string; ratio: TypeAspectRatioName }[];
 }
 
 const { name, photos } = Astro.props;
@@ -23,7 +23,7 @@ const { name, photos } = Astro.props;
     const value = aspectRatioCatalog[ratio].ratio;
     return (
       <li class="shrink-0 snap-start">
-        <Image
+        <AssetImage
           class="h-40 w-auto rounded-[10px] bg-muted object-cover"
           alt={alt ?? name}
           height={320}

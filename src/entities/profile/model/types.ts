@@ -1,5 +1,5 @@
+import type { TypeImageSource } from "@/shared/lib/cloud-asset";
 import type { Icon } from "@/shared/ui/icon";
-import type { ImageMetadata } from "astro";
 import type { ComponentProps } from "astro/types";
 
 export interface TypeSocialLink {
@@ -13,7 +13,7 @@ export interface TypeSocialLink {
   actionLabel?: string;
   displayName: string;
   bio?: string;
-  avatar?: ImageMetadata | null;
-  banner?: ImageMetadata | null;
+  avatar?: TypeImageSource | null;
+  banner?: TypeImageSource | null;
   verified: boolean;
 }

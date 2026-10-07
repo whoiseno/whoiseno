@@ -55,7 +55,7 @@ Prettier's import-sort plugin ([`.prettierrc`](../.prettierrc)) is configured to
 
 ## Rendering & routing flow
 
-1. A request for a route (e.g. `/works`) matches a file under `src/pages` ([routing docs](https://docs.astro.build/en/guides/routing/)). Site routes are prerendered, except `/hobbies/books`, which reads Hardcover on demand; `/keystatic` and `/api/keystatic/*` are also rendered on demand.
+1. A request for a route (e.g. `/works`) matches a file under `src/pages` ([routing docs](https://docs.astro.build/en/guides/routing/)). Site routes are prerendered, except `/hobbies/books`, which reads Hardcover on demand; `/keystatic`, `/api/keystatic/*` and `/api/cloud-assets/sign` (which signs CMS uploads to Cloudinary) are also rendered on demand.
 2. The page wraps its content in `app/ui/Site.astro`, which composes `Root`, `SiteSidebar`, `SiteHeader` (with `SiteBreadcrumbs`), `SiteFooter` and the `ThemeToggle` feature, then fills the main area with feature slices (`WorkList`, `ProjectList`, ...) and entities (`ProfileHero`). See [`layers/pages.md`](./layers/pages.md).
 3. `Root.astro` sets up the HTML document shell: meta tags, favicon, `<title>`, a blocking inline script that applies the saved theme before first paint, and the four fonts declared in `astro.config.mjs` via Astro's `<Font />` component.
 4. Global Tailwind styles (`src/app/styles/global.css`) are imported once, inside `Root.astro`.

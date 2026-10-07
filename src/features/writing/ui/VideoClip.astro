@@ -1,16 +1,17 @@
 ---
+import { isCloudAsset, type TypeCloudAsset } from "@/shared/lib/cloud-asset";
 import { Text } from "@/shared/ui/text";
 
 interface Props {
-  /** A file uploaded in the CMS, as a path under `public/`. */
-  file?: string;
+  /** A file uploaded in the CMS to Cloudinary, or a path under `public/` for one saved there earlier. */
+  file?: TypeCloudAsset | string;
   /** A direct link to a video file. Used when there is no uploaded `file`. */
   url?: string;
   caption?: string;
 }
 
 const { file, url, caption } = Astro.props;
-const src = file || url;
+const src = (isCloudAsset(file) ? file.url : file) || url;
 if (!src) throw new Error("A video needs a file or a url.");
 ---
 

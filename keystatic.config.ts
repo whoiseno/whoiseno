@@ -5,6 +5,7 @@ import { calloutMeta, calloutTypes } from "./src/features/writing/config/callout
 import { aspectRatioCatalog, aspectRatioNames, type TypeAspectRatioName } from "./src/shared/config/aspect-ratio";
 import { logoCatalog, logoNames } from "./src/shared/config/logos";
 import { mediaSourceCatalog, mediaSourceNames, type TypeMediaKind } from "./src/shared/config/media-sources";
+import { cloudAssetField, cloudImagePreview } from "./src/shared/ui/cloud-asset-field";
 
 function aspectRatioField(defaultValue: TypeAspectRatioName) {
   return fields.select({
@@ -28,11 +29,11 @@ function footnoteIdField() {
 
 function mediaFields(kind: "video" | "audio") {
   return {
-    file: fields.file({
+    file: cloudAssetField({
       label: `${kind === "video" ? "Video" : "Audio"} file`,
       description: "Upload a clip, or leave empty and give a link below",
-      directory: "public/writing",
-      publicPath: "/writing/",
+      kind,
+      folder: "media",
     }),
     url: fields.url({
       label: "Link",
@@ -45,12 +46,7 @@ function mediaFields(kind: "video" | "audio") {
 function usesFields(kind: "software" | "hardware") {
   return {
     name: fields.slug({ name: { label: "Name" } }),
-    logo: fields.image({
-      label: "Logo",
-      description: "Square works best",
-      directory: `src/assets/uses/${kind}`,
-      publicPath: `../../assets/uses/${kind}/`,
-    }),
+    logo: cloudAssetField({ label: "Logo", description: "Square works best", kind: "image", folder: `uses/${kind}` }),
     description: fields.text({ label: "Description", description: "What the product is", multiline: true }),
     usage: fields.text({ label: "How I use it", multiline: true }),
     link: fields.url({ label: "Link" }),
@@ -58,11 +54,11 @@ function usesFields(kind: "software" | "hardware") {
 }
 
 function posterField(kind: "movies") {
-  return fields.image({
+  return cloudAssetField({
     label: "Poster",
     description: "Cover or poster, portrait works best",
-    directory: `src/assets/${kind}`,
-    publicPath: `../../assets/${kind}/`,
+    kind: "image",
+    folder: kind,
   });
 }
 
@@ -88,12 +84,13 @@ function mediaLinksField(kind: TypeMediaKind) {
   );
 }
 
-/** The body of a post, shared by writing and projects: the same components, with images stored under `src/assets/<assets>`. */
+/** The body of a post, shared by writing and projects: the same components, with images uploaded to the `<assets>` folder on Cloudinary. */
 function postContent(label: string, assets: string) {
   return fields.markdoc({
     label,
     options: {
-      image: { directory: `src/assets/${assets}`, publicPath: `../../assets/${assets}/` },
+      // The built-in image button saves the file into the repository. The "Image" component below uploads it instead.
+      image: false,
       codeBlock: {
         schema: {
           mark: fields.text({ label: "Highlight lines", description: "For example 1,3-5" }),
@@ -104,6 +101,16 @@ function postContent(label: string, assets: string) {
       },
     },
     components: {
+      figure: block({
+        label: "Image",
+        description: "A picture uploaded to Cloudinary. Readers can click it to open it full size.",
+        schema: {
+          src: cloudAssetField({ label: "Image", kind: "image", folder: assets }),
+          alt: fields.text({ label: "Alt text", description: "Describes the image for screen readers" }),
+          title: fields.text({ label: "Caption", description: "Optional, shown under the image" }),
+        },
+        ContentView: ({ value }) => cloudImagePreview(value.src, value.title || value.alt || "Image"),
+      }),
       callout: wrapper({
         label: "Callout",
         description: "A highlighted note. It can be folded away, and can hold other callouts.",
@@ -246,11 +253,7 @@ export default config({
           label: "Status badge",
           description: 'Shown as a green badge next to the role, e.g. "Working". Leave empty to hide.',
         }),
-        avatar: fields.image({
-          label: "Avatar",
-          directory: "src/assets/profile",
-          publicPath: "../../assets/profile/",
-        }),
+        avatar: cloudAssetField({ label: "Avatar", kind: "image", folder: "profile" }),
         socials: fields.array(
           fields.object({
             platform: fields.select({
@@ -279,17 +282,13 @@ export default config({
               description: "Defaults to your profile name",
             }),
             bio: fields.text({ label: "Hover card bio", multiline: true }),
-            avatar: fields.image({
+            avatar: cloudAssetField({
               label: "Hover card avatar",
               description: "Defaults to your profile avatar",
-              directory: "src/assets/profile/socials",
-              publicPath: "../../assets/profile/socials/",
+              kind: "image",
+              folder: "profile/socials",
             }),
-            banner: fields.image({
-              label: "Hover card banner",
-              directory: "src/assets/profile/socials",
-              publicPath: "../../assets/profile/socials/",
-            }),
+            banner: cloudAssetField({ label: "Hover card banner", kind: "image", folder: "profile/socials" }),
             verified: fields.checkbox({ label: "Verified", defaultValue: false }),
           }),
           { label: "Socials", itemLabel: (props) => props.fields.platform.value },
@@ -342,11 +341,11 @@ export default config({
         title: fields.slug({ name: { label: "Title" } }),
         featured: fields.checkbox({ label: "Featured", description: "Show on the home page", defaultValue: false }),
         description: fields.text({ label: "Short description", multiline: true, validation: { isRequired: true } }),
-        logo: fields.image({
+        logo: cloudAssetField({
           label: "Logo",
           description: "Shown centered on the project card. A transparent PNG or SVG works best",
-          directory: "src/assets/projects",
-          publicPath: "../../assets/projects/",
+          kind: "image",
+          folder: "projects",
         }),
         startDate: fields.date({ label: "Start date", validation: { isRequired: true } }),
         endDate: fields.date({ label: "End date", description: "Leave empty if ongoing" }),
@@ -380,11 +379,11 @@ export default config({
         }),
         publishedDate: fields.date({ label: "Published on", validation: { isRequired: true } }),
         description: fields.text({ label: "Short description", multiline: true }),
-        cover: fields.image({
+        cover: cloudAssetField({
           label: "Cover image",
           description: "Optional. Shown under the title and used as the social preview image. Not shown in the list",
-          directory: "src/assets/writing",
-          publicPath: "../../assets/writing/",
+          kind: "image",
+          folder: "writing",
         }),
         coverAlt: fields.text({ label: "Cover image description", description: "Alt text for screen readers" }),
         tags: fields.array(fields.text({ label: "Tag" }), {
@@ -413,11 +412,7 @@ export default config({
         ...usesFields("hardware"),
         photos: fields.array(
           fields.object({
-            image: fields.image({
-              label: "Photo",
-              directory: "src/assets/uses/hardware",
-              publicPath: "../../assets/uses/hardware/",
-            }),
+            image: cloudAssetField({ label: "Photo", kind: "image", folder: "uses/hardware" }),
             alt: fields.text({
               label: "Alt text",
               description: "Describes the photo for screen readers. Defaults to the product name.",

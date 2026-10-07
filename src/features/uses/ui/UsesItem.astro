@@ -1,12 +1,12 @@
 ---
+import type { TypeImageSource } from "@/shared/lib/cloud-asset";
+import { AssetImage } from "@/shared/ui/asset-image";
 import { Icon } from "@/shared/ui/icon";
 import { Text, textVariants } from "@/shared/ui/text";
-import type { ImageMetadata } from "astro";
-import { Image } from "astro:assets";
 
 interface Props {
   name: string;
-  logo?: ImageMetadata | null;
+  logo?: TypeImageSource | null;
   description?: string;
   usage?: string;
   link?: string | null;
@@ -23,7 +23,7 @@ const linkProps = link ? { href: link, target: "_blank", rel: "noopener noreferr
   {...linkProps}
 >
   {logo ? (
-    <Image
+    <AssetImage
       class="size-10 shrink-0 rounded-xl bg-muted object-cover"
       alt=""
       height={80}

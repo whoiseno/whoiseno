@@ -83,13 +83,19 @@ export default defineMarkdocConfig({
         );
       },
     },
+    // `file` is an upload on Cloudinary (an object with a `url`), or a path under `public/` from before uploads moved there.
     video: {
       render: component("./src/features/writing/index.ts", "VideoClip"),
-      attributes: { file: { type: String }, url: { type: String }, caption: { type: String } },
+      attributes: { file: { type: [String, Object] }, url: { type: String }, caption: { type: String } },
     },
     audio: {
       render: component("./src/features/writing/index.ts", "AudioClip"),
-      attributes: { file: { type: String }, url: { type: String }, caption: { type: String } },
+      attributes: { file: { type: [String, Object] }, url: { type: String }, caption: { type: String } },
+    },
+    // The "Image" component of the editor: an upload on Cloudinary. A `![]()` image from before is still the `image` node.
+    figure: {
+      render: component("./src/features/writing/index.ts", "Figure"),
+      attributes: { src: { type: Object, required: true }, alt: { type: String }, title: { type: String } },
     },
     handwriting: { render: component("./src/features/writing/index.ts", "Handwriting") },
     columns: { render: component("./src/features/writing/index.ts", "Columns") },

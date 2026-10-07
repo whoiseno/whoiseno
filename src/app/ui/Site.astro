@@ -4,10 +4,10 @@ import { getProfile, getSocialLinks } from "@/entities/profile";
 import { ScrollToTop } from "@/features/scroll-to-top";
 import { SoundToggle } from "@/features/sound-toggle";
 import { ThemeToggle } from "@/features/theme-toggle";
+import { cloudImageUrl, isCloudAsset, type TypeImageSource } from "@/shared/lib/cloud-asset";
 import { Button } from "@/shared/ui/button";
 import { Icon } from "@/shared/ui/icon";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/ui/tooltip";
-import type { ImageMetadata } from "astro";
 import { getImage } from "astro:assets";
 
 import type { TypeCrumb } from "../model/types";
@@ -22,7 +22,7 @@ interface Props {
   /** Trail shown above the title and nested under its nav link in the sidebar. */
   crumbs?: TypeCrumb[];
   /** Social preview image. Needs `site` in the Astro config to be emitted. */
-  image?: ImageMetadata | null;
+  image?: TypeImageSource | null;
   imageAlt?: string;
   type?: "website" | "article";
 }
@@ -30,8 +30,14 @@ interface Props {
 const { title, description, crumbs, image, imageAlt, type } = Astro.props;
 const profile = await getProfile();
 const navItems = await getNavItems();
-const previewImage =
-  image && Astro.site ? new URL((await getImage({ src: image, width: 1200 })).src, Astro.site).href : undefined;
+// Social networks cannot read WebP or AVIF, so an upload is asked for as JPEG instead of the browser's best format.
+const previewImage = !image
+  ? undefined
+  : isCloudAsset(image)
+    ? cloudImageUrl(image.url, { width: 1200, format: "jpg" })
+    : Astro.site
+      ? new URL((await getImage({ src: image, width: 1200 })).src, Astro.site).href
+      : undefined;
 ---
 
 <Root
@@ -62,6 +68,7 @@ const previewImage =
       <Fragment slot="actions">
         <ScrollToTop class="max-rail:hidden" />
         <ThemeToggle />
+        <SoundToggle />
         {import.meta.env.DEV && (
           <Tooltip>
             <TooltipTrigger>
@@ -81,7 +88,6 @@ const previewImage =
             <TooltipContent>Open the content editor (development only)</TooltipContent>
           </Tooltip>
         )}
-        <SoundToggle />
       </Fragment>
     </SiteSidebar>
     <div

@@ -1,4 +1,6 @@
 ---
+import { cloudImageUrl, isCloudAsset, type TypeImageSource } from "@/shared/lib/cloud-asset";
+import { AssetImage } from "@/shared/ui/asset-image";
 import {
   Lightbox,
   LightboxCaption,
@@ -8,11 +10,10 @@ import {
   LightboxTrigger,
 } from "@/shared/ui/lightbox";
 import { Text } from "@/shared/ui/text";
-import type { ImageMetadata } from "astro";
-import { getImage, Image } from "astro:assets";
+import { getImage } from "astro:assets";
 
 interface Props {
-  src: ImageMetadata | string;
+  src: TypeImageSource | string;
   alt?: string;
   title?: string;
   /** Load eagerly with high fetch priority, for an image visible on first paint. */
@@ -21,7 +22,16 @@ interface Props {
 
 const { src, alt = "", title, priority = false } = Astro.props;
 // Optimised variant, capped so a large original is never sent to the dialog.
-const full = typeof src === "string" ? src : (await getImage({ src, width: Math.min(src.width, 2000) })).src;
+const full =
+  typeof src === "string"
+    ? src
+    : isCloudAsset(src)
+      ? cloudImageUrl(src.url, { width: Math.min(src.width ?? 2000, 2000) })
+      : (await getImage({ src, width: Math.min(src.width, 2000) })).src;
+// The browser picks a file by the width of the text column. An upload is resized by Cloudinary, an import is not.
+const responsive = isCloudAsset(src)
+  ? { widths: [640, 960, 1280, 1600], sizes: "(min-width: 80rem) 52rem, 100vw" }
+  : {};
 ---
 
 <figure
@@ -40,7 +50,8 @@ const full = typeof src === "string" ? src : (await getImage({ src, width: Math.
           src={src}
         />
       ) : (
-        <Image
+        <AssetImage
+          {...responsive}
           class="rounded-lg border"
           alt={alt}
           data-slot="figure-image"

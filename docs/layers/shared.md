@@ -21,6 +21,7 @@ src/shared/
 │   ├── logos.ts           # catalogue of the SVGL tech-stack logos (logoCatalog, logoNames)
 │   └── media-sources.ts   # catalogue of free/open databases that movies link back to
 ├── lib/
+│   ├── cloud-asset.ts     # TypeCloudAsset, cloudImageUrl, cloudImageSrcset: Cloudinary URLs sized when requested
 │   ├── date.ts            # formatDate, formatMonthYear, formatDateRange (UTC-based)
 │   ├── motion.ts          # anime.js scope helper
 │   ├── slug.ts            # slugify
@@ -29,12 +30,14 @@ src/shared/
 └── ui/
     ├── alpine.ts                   # registerUi(): registers every component's Alpine.data
     ├── accordion/                  # compound: Accordion, Item, Trigger, Content (+ alpine.ts)
+    ├── asset-image/                # AssetImage.astro, index.ts
     ├── avatar/                     # Avatar.astro, index.ts
     ├── badge/                      # Badge.astro, variants.ts, index.ts
     ├── breadcrumb/                 # compound: Breadcrumb, List, Item, Link, Page, Separator
     ├── button/                     # Button.astro, variants.ts, index.ts
     ├── card/                       # compound: Card, Header, Title, Description, Action, Content, Footer
     ├── carousel/                   # compound: Carousel, Content, Item, Previous, Next (+ alpine.ts)
+    ├── cloud-asset-field/          # CloudAssetField.tsx (Keystatic admin only), index.ts
     ├── copy-button/                # CopyButton.astro (+ alpine.ts)
     ├── dropdown-menu/              # compound: DropdownMenu, Trigger, Content, Item, Label, Separator
     ├── icon/                       # Icon.astro, reicons.ts, index.ts
@@ -185,8 +188,22 @@ There is no `orientation`, no `opts` and no API object. The writing `Carousel` a
 One book, movie, series or anime. shadcn/ui has no media object of its own; its closest is [`Item`](https://ui.shadcn.com/docs/components/item) (`Item`, `ItemMedia`, `ItemContent`, `ItemTitle`, `ItemDescription`), so the parts follow it, with a poster as the media. Callers compose them (`MovieItem` in `features/movies` and `BookItem` in `features/books`) and decide which to leave out.
 
 - `MediaItem` is the root `<article>`. Its `layout` is `card` (poster on top, the default) or `row` (poster beside the text) and is exposed as `data-layout`; `MediaItemPoster` reads it with `group-data-[layout=row]/media-item:`.
-- `MediaItemPoster` takes `title` (the letter on the tile and the link's accessible name), `src` (an imported image, or the URL of a remote cover; a tile with the first letter without one), `ratio` (an `aspectRatioCatalog` key, default `2/3`; a remote cover has no size of its own, so `original` falls back to `2/3` for it), `width` (the size in CSS pixels the image is requested at, default 200; `densities` adds the 2x and 3x files, and the callers pass 112 in a `row`) and `href` (makes the poster a link that opens in a new tab). A remote cover fades in over a blurred inline preview (see [`api/placeholders`](#apiplaceholders)). Posters do not scale on hover.
+- `MediaItemPoster` takes `title` (the letter on the tile and the link's accessible name), `src` (an imported or uploaded image, or the URL of a remote cover; a tile with the first letter without one), `ratio` (an `aspectRatioCatalog` key, default `2/3`; a remote cover has no size of its own, so `original` falls back to `2/3` for it), `width` (the size in CSS pixels the image is requested at, default 200; `densities` adds the 2x and 3x files, and the callers pass 112 in a `row`) and `href` (makes the poster a link that opens in a new tab). A remote cover fades in over a blurred inline preview (see [`api/placeholders`](#apiplaceholders)). Posters do not scale on hover.
 - `MediaItemContent` is the text column. `MediaItemHeader` holds `MediaItemTitle` (an `h3`) and `MediaItemByline` (author, director or creator). `MediaItemMeta` is the row for a `Badge` and the release date as a `<time>`; the `Rating` goes in the column as it is. `MediaItemTimeline` is where the owner is with it ("Finished Jun 2025"), `MediaItemDescription` is the owner's own words, faint and in quotation marks (the part adds the marks), and `MediaItemLinks` holds a `MediaItemLink` per attribution link (external, with an arrow).
+
+## `ui/asset-image`
+
+`AssetImage` draws any image that comes from a content field, whether it is an upload on Cloudinary or a file imported from `src/assets`. Use it instead of `Image` from `astro:assets`, which cannot take an upload (the exception is a remote cover URL, which `MediaItemPoster` still gives to `Image` because Astro downloads those).
+
+- `src` is a `TypeImageSource`. An imported image goes to Astro's `Image` with the props given, so it is processed at build time as before. An upload becomes a plain `<img>` whose URLs Cloudinary resizes when the browser asks: nothing is downloaded or processed at build time.
+- `width` is the width to request in CSS pixels. Left out, it is worked out from `height` and the original's shape, and failing that it is the original's width up to 1600 px. `height` is the `height` attribute (worked out from the shape when left out), so the page reserves the space.
+- `densities` adds files for sharper screens as multiples of `width` (`[1, 2, 3]` gives a `1x`, `2x` and `3x` file). `widths` with `sizes` gives a `srcset` by width, which `Figure` uses so the browser picks a file by the width of the text column. Cloudinary never enlarges a file, so a width above the original's is capped at it.
+- Every other attribute (`class`, `alt`, `loading`, `fetchpriority`, `style`, `data-slot`) goes onto the `<img>`. `loading` is `lazy` unless the caller says otherwise.
+- The shape comes from the CSS (`object-cover` with `aspect-ratio`), as it does for imported images, so an upload is not cropped by Cloudinary.
+
+## `ui/cloud-asset-field`
+
+Not a site component: a React file that only the Keystatic admin loads. `CloudAssetField.tsx` exports `cloudAssetField({ label, description, kind, folder })`, a custom Keystatic field that uploads the file to Cloudinary and stores a `TypeCloudAsset` (or, for a file saved before uploads moved, the path as a string, which it keeps unchanged), and `cloudImagePreview(asset, label)`, the thumbnail the editor shows for an **Image** block. How it fits together, including the signing route, is in [`content.md`](../content.md#media-on-cloudinary). `@keystar/ui` is a direct dependency for this file: it is the admin's own component library, and pnpm does not let the project import a package it does not declare. Its relative imports (`../../lib/cloud-asset`) are deliberate, since `keystatic.config.ts` loads it and imports everything by relative path.
 
 ## `ui/page/*`
 
@@ -194,6 +211,7 @@ The earlier slot-based layout primitives (`Page`, `PageContainer`, `PageHeader`,
 
 ## `lib/`
 
+- `cloud-asset.ts`: `TypeCloudAsset` (`{ url, width?, height? }`, what the CMS stores for an upload), `TypeImageSource` (an imported image or an upload), `isCloudAsset(value)`, `cloudImageUrl(url, { width, format })` and `cloudImageSrcset(asset, widths)`. `cloudImageUrl` inserts `f_auto,q_auto,c_limit,w_<width>` into a `res.cloudinary.com/.../image/upload/` URL, so Cloudinary does the resizing when a browser asks; SVG and every other host pass through unchanged. It has no Astro runtime imports, so `keystatic.config.ts` and `content.config.ts` can use it.
 - `date.ts`: `formatDate(date)` (`"3 Apr 2026"`), `formatMonthYear(date, style?)` and `formatDateRange(start, end?, style?)` (`"Jan 2024 - Present"`), formatted with `Intl.DateTimeFormat` in UTC so a date never shifts by timezone.
 - `slug.ts`: `slugify(text)` turns a tag label into its URL slug (used by `getWritingTags` and `WritingList`).
 - `tailwind.ts`: `cn` and `tv`, `tailwind-variants` set up with the names of the Utopia tokens (`text-step-*` and the space steps) so that tailwind-merge resolves them. Import them from here, never from `tailwind-variants`. Its name lists have to match `src/app/styles/utopia.css`.

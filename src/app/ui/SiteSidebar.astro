@@ -1,7 +1,7 @@
 ---
 import type { TypeNavItem } from "@/entities/navigation";
+import type { TypeImageSource } from "@/shared/lib/cloud-asset";
 import { Avatar } from "@/shared/ui/avatar";
-import type { ImageMetadata } from "astro";
 
 import type { TypeCrumb } from "../model/types";
 import {
@@ -20,7 +20,7 @@ import {
 interface Props {
   items: TypeNavItem[];
   owner: string;
-  avatar?: ImageMetadata | null;
+  avatar?: TypeImageSource | null;
   /** Trail of the current page. Steps after the first nest under the nav link the trail starts from. */
   crumbs?: TypeCrumb[];
 }

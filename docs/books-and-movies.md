@@ -45,7 +45,7 @@ The file name comes from the title (`Inception` becomes `inception.yaml`), so pi
 
 The poster comes from the first of these that applies:
 
-1. The **Poster** you uploaded. It always wins, and the upload is stored in `src/assets/movies/`.
+1. The **Poster** you uploaded. It always wins, and the upload goes to Cloudinary.
 2. The first **Attribution link**, in the order listed, whose source can supply a poster. Put the link you want the poster from first.
 3. A tile with the title's first letter.
 

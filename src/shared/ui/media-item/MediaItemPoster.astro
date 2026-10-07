@@ -1,16 +1,17 @@
 ---
 import { getPlaceholder } from "@/shared/api/placeholders";
 import { aspectRatioCatalog, type TypeAspectRatioName } from "@/shared/config/aspect-ratio";
+import type { TypeImageSource } from "@/shared/lib/cloud-asset";
 import { cn } from "@/shared/lib/tailwind";
+import { AssetImage } from "@/shared/ui/asset-image";
 import { textVariants } from "@/shared/ui/text";
-import type { ImageMetadata } from "astro";
 import { Image } from "astro:assets";
 
 interface Props {
   /** The work's title: the letter on the tile when there is no image, and the name of the link. */
   title: string;
-  /** An imported image, or the URL of a remote cover. */
-  src?: ImageMetadata | string | null;
+  /** An imported or uploaded image, or the URL of a remote cover. */
+  src?: TypeImageSource | string | null;
   /** The shape the poster is cropped to. */
   ratio?: TypeAspectRatioName;
   /** The size the poster is shown at in CSS pixels, which the image is requested at. */
@@ -63,7 +64,7 @@ const link = href ? { href, "target": "_blank", "rel": "noopener noreferrer", "a
           style={{ aspectRatio: remoteShape }}
         />
       ) : (
-        <Image
+        <AssetImage
           {...image}
           class={imageClass}
           height={shape ? Math.round(width / shape) : undefined}

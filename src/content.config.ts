@@ -9,6 +9,9 @@ import { mediaSourceNames, type TypeMediaKind } from "./shared/config/media-sour
 const date = z.coerce.date();
 const url = z.url().nullish();
 const skills = z.array(z.string()).default([]);
+const cloudAsset = z.object({ url: z.url(), width: z.number().optional(), height: z.number().optional() });
+/** An image uploaded to Cloudinary, or one imported from `src/assets`, which is how the CMS saved images before. */
+const media = (image: SchemaContext["image"]) => z.union([image(), cloudAsset]);
 
 const profile = defineCollection({
   loader: glob({ pattern: "**/*.mdoc", base: "./src/content/profile" }),
@@ -18,7 +21,7 @@ const profile = defineCollection({
       role: z.string().optional(),
       location: z.string().optional(),
       status: z.string().optional(),
-      avatar: image().nullish(),
+      avatar: media(image).nullish(),
       socials: z
         .array(
           z.object({
@@ -27,8 +30,8 @@ const profile = defineCollection({
             handle: z.string().optional(),
             displayName: z.string().optional(),
             bio: z.string().optional(),
-            avatar: image().nullish(),
-            banner: image().nullish(),
+            avatar: media(image).nullish(),
+            banner: media(image).nullish(),
             verified: z.boolean().default(false),
           }),
         )
@@ -57,7 +60,7 @@ const projects = defineCollection({
       title: z.string(),
       featured: z.boolean().default(false),
       description: z.string(),
-      logo: image().nullish(),
+      logo: media(image).nullish(),
       startDate: date,
       endDate: date.nullish(),
       skills,
@@ -74,7 +77,7 @@ const writing = defineCollection({
       kind: z.enum(["blog", "tutorial", "journal", "note"]).default("blog"),
       description: z.string().optional(),
       publishedDate: date,
-      cover: image().nullish(),
+      cover: media(image).nullish(),
       coverAlt: z.string().optional(),
       tags: z.array(z.string()).default([]),
     }),
@@ -83,7 +86,7 @@ const writing = defineCollection({
 const uses = ({ image }: SchemaContext) =>
   z.object({
     name: z.string(),
-    logo: image().nullish(),
+    logo: media(image).nullish(),
     description: z.string().optional(),
     usage: z.string().optional(),
     link: url,
@@ -101,7 +104,7 @@ const hardware = defineCollection({
       photos: z
         .array(
           z.object({
-            image: context.image(),
+            image: media(context.image),
             alt: z.string().optional(),
             ratio: z.enum(aspectRatioNames).default("1/1"),
           }),
@@ -121,7 +124,7 @@ const movies = defineCollection({
       kind: z.enum(["movie", "series", "show", "anime"]),
       creator: z.string().optional(),
       status: z.enum(["watching", "watched", "planned"]),
-      poster: image().nullish(),
+      poster: media(image).nullish(),
       posterRatio: z.enum(aspectRatioNames).default("2/3"),
       releaseDate: date.nullish(),
       startedDate: date.nullish(),

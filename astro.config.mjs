@@ -57,6 +57,9 @@ export default defineConfig({
     schema: {
       TMDB_TOKEN: envField.string({ context: "server", access: "secret", optional: true }),
       HARDCOVER_API_KEY: envField.string({ context: "server", access: "secret", optional: true }),
+      CLOUDINARY_CLOUD_NAME: envField.string({ context: "server", access: "secret", optional: true }),
+      CLOUDINARY_API_KEY: envField.string({ context: "server", access: "secret", optional: true }),
+      CLOUDINARY_API_SECRET: envField.string({ context: "server", access: "secret", optional: true }),
     },
   },
 

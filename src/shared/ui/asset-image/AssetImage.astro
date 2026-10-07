@@ -1,0 +1,56 @@
+---
+import { cloudImageSrcset, cloudImageUrl, isCloudAsset, type TypeImageSource } from "@/shared/lib/cloud-asset";
+import { Image } from "astro:assets";
+import type { ComponentProps, HTMLAttributes } from "astro/types";
+
+interface Props extends Omit<HTMLAttributes<"img">, "src" | "srcset" | "width" | "height"> {
+  /** An imported image, or an upload on Cloudinary. */
+  src: TypeImageSource;
+  alt: string;
+  /** The width to request, in CSS pixels. Worked out from `height` and the original's shape when left out. */
+  width?: number;
+  height?: number;
+  /** Extra files for sharper screens, as multiples of `width`. */
+  densities?: number[];
+  /** Files at these widths for the browser to pick from, which needs `sizes`. */
+  widths?: number[];
+  quality?: number;
+}
+
+/** The widest file requested for an upload when the caller gives no size, so a camera original is never sent whole. */
+const widest = 1600;
+
+const { src, width, height, densities, widths, quality, ...rest } = Astro.props;
+const { loading, ...attributes } = rest;
+
+// An upload is resized by Cloudinary when the browser asks for it, so the build neither downloads nor processes it.
+const asset = isCloudAsset(src) ? src : undefined;
+const image = isCloudAsset(src)
+  ? undefined
+  : ({ ...rest, src, densities, height, quality, widths, width } as ComponentProps<typeof Image>);
+const ratio = asset?.width && asset.height ? asset.height / asset.width : undefined;
+const requested = width ?? (height && ratio ? Math.round(height / ratio) : Math.min(asset?.width ?? widest, widest));
+const srcset = !asset
+  ? undefined
+  : widths
+    ? cloudImageSrcset(asset, widths)
+    : densities && densities.length > 1
+      ? densities
+          .map((density) => `${cloudImageUrl(asset.url, { width: Math.round(requested * density) })} ${density}x`)
+          .join(", ")
+      : undefined;
+---
+
+{image ? (
+  <Image {...image} />
+) : asset ? (
+  <img
+    {...attributes}
+    decoding="async"
+    height={height ?? (ratio ? Math.round(requested * ratio) : undefined)}
+    loading={loading ?? "lazy"}
+    src={cloudImageUrl(asset.url, { width: requested })}
+    srcset={srcset}
+    width={requested}
+  />
+) : null}

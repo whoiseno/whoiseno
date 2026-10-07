@@ -1,5 +1,6 @@
 ---
 import { resolveMediaLink } from "@/shared/config/media-sources";
+import type { TypeImageSource } from "@/shared/lib/cloud-asset";
 import { formatDate, formatMonthYear } from "@/shared/lib/date";
 import { Badge } from "@/shared/ui/badge";
 import {
@@ -16,13 +17,12 @@ import {
   MediaItemTitle,
 } from "@/shared/ui/media-item";
 import { Rating } from "@/shared/ui/rating";
-import type { ImageMetadata } from "astro";
 import type { CollectionEntry } from "astro:content";
 
 interface Props {
   data: CollectionEntry<"movies">["data"];
   /** The uploaded poster, or the URL `resolvePoster` found. */
-  poster?: ImageMetadata | string | null;
+  poster?: TypeImageSource | string | null;
   /** `row` puts the poster beside the text, `card` stacks it on top. */
   layout?: "row" | "card";
 }

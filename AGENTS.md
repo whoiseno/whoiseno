@@ -168,6 +168,7 @@ Prefer single-file or single-test runs during iteration. Full suites are for the
 
 - Naming: Pascal case for type & interfaces with a prefix `Type*`, and camel Case for variables and functions.
 - Import style: ESM Module imports, types must have the `type` keyword in the import.
+- Images and files from the CMS: declare them with `cloudAssetField` in `keystatic.config.ts` and `media(image)` in `content.config.ts`, and draw an image from a content field with `AssetImage`, never `fields.image` or `Image` from `astro:assets`. See `docs/content.md#media-on-cloudinary`.
 - Error handling pattern: `TODO`
 - Testing pattern and framework: `TODO`
 
@@ -183,6 +184,7 @@ Prefer single-file or single-test runs during iteration. Full suites are for the
 
 When the user corrects your approach, append a one-line rule here before ending the session. Write it concretely ("Always use X for Y"), never abstractly ("be careful with Y"). If an existing line already covers the correction, tighten it instead of adding a new one. Remove lines when the underlying issue goes away (model upgrades, refactors, process changes).
 
+- Never add a segment to an FSD layer: `shared` has only `ui`, `lib`, `config` and `api`, so put new code in the closest of those (a Keystatic field is a component, so it lives in `shared/ui/<name>/`). Only a directory the framework requires, such as `src/pages/api` for an Astro route, may fall outside the layout.
 - A `HEAD` that follows redirects does not prove Astro can load a remote image: every redirect hop must match `image.domains` or `image.remotePatterns`, and `**.host` does not match the bare `host`.
 - Import `cn` and `tv` from `@/shared/lib/tailwind`, never from `tailwind-variants`: only the wrapper teaches tailwind-merge the Utopia token names, and without it `cn("text-step-0", "text-muted-foreground")` drops the size.
 - Type is `Text` (or `text-step-*` on a container) and gaps, padding and margins are the Utopia space tokens (`p-s`, `gap-xs-s`); there is no `sm:`, `md:` or `lg:`, and `rail:` is the only breakpoint. A `max-w-*` name that is also a space token (`3xs` to `3xl`) needs its `--max-width-*` alias in `global.css`, or it resolves to a few rem.

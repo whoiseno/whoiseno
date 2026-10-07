@@ -1,7 +1,7 @@
 ---
+import { AssetImage } from "@/shared/ui/asset-image";
 import { Card, CardDescription, CardTitle } from "@/shared/ui/card";
 import { Text } from "@/shared/ui/text";
-import { Image } from "astro:assets";
 import type { CollectionEntry } from "astro:content";
 
 interface Props {
@@ -17,7 +17,7 @@ const { id, data } = Astro.props.project;
 >
   <div class="flex aspect-video items-center justify-center overflow-hidden rounded-md border bg-muted">
     {data.logo ? (
-      <Image
+      <AssetImage
         class="h-12 w-auto max-w-3/5 object-contain transition-transform duration-300 group-hover:scale-105 motion-reduce:transition-none"
         alt=""
         src={data.logo}
