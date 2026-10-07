@@ -1,6 +1,6 @@
 ---
+import { cn } from "@/shared/lib/tailwind";
 import type { HTMLAttributes } from "astro/types";
-import { cn } from "tailwind-variants";
 
 interface Props extends HTMLAttributes<"div"> {}
 
@@ -18,7 +18,7 @@ const { class: className, ...rest } = Astro.props;
 >
   <div class="overflow-hidden">
     <div
-      class={cn("pt-3", className)}
+      class={cn("pt-s", className)}
       {...rest}
     >
       <slot />

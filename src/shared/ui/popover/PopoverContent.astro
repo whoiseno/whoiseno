@@ -1,6 +1,6 @@
 ---
+import { cn } from "@/shared/lib/tailwind";
 import type { HTMLAttributes } from "astro/types";
-import { cn } from "tailwind-variants";
 
 interface Props extends HTMLAttributes<"div"> {
   side?: "top" | "right" | "bottom" | "left";
@@ -16,7 +16,7 @@ const anchor = { [`x-anchor.${placement}.offset.${sideOffset}`]: "$refs.trigger"
 <div
   data-slot="popover-content"
   role="dialog"
-  class={cn("z-50 w-72 rounded-xl border bg-popover p-3 text-popover-foreground shadow-lg outline-none", className)}
+  class={cn("z-50 w-72 rounded-xl border bg-popover p-xs text-popover-foreground shadow-lg outline-none", className)}
   style="display: none"
   x-show="open"
   x-transition.opacity.scale.95.duration.150ms

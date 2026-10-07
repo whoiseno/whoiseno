@@ -5,6 +5,7 @@ import { formatDate } from "@/shared/lib/date";
 import { Badge } from "@/shared/ui/badge";
 import { Icon } from "@/shared/ui/icon";
 import { Rating } from "@/shared/ui/rating";
+import { Text, textVariants } from "@/shared/ui/text";
 import type { ImageMetadata } from "astro";
 import { Image } from "astro:assets";
 
@@ -66,10 +67,10 @@ const posterLink = href ? { href, "target": "_blank", "rel": "noopener noreferre
 <article
   data-slot="media-item"
   data-layout={layout}
-  class:list={["flex gap-3", row ? "items-start gap-4" : "flex-col"]}
+  class:list={["flex", row ? "items-start gap-s" : "flex-col gap-xs"]}
 >
   <Poster
-    class={row ? "block w-24 shrink-0 rounded-lg sm:w-28" : "block w-full rounded-lg"}
+    class={row ? "block w-[calc(var(--spacing-3xl)*7/6)] shrink-0 rounded-lg" : "block w-full rounded-lg"}
     {...posterLink}
   >
     {poster ? (
@@ -102,33 +103,53 @@ const posterLink = href ? { href, "target": "_blank", "rel": "noopener noreferre
       </div>
     ) : (
       <div
-        class="flex aspect-2/3 w-full items-center justify-center rounded-lg border bg-muted font-serif text-3xl font-semibold text-muted-foreground"
+        class:list={[
+          "flex aspect-2/3 w-full items-center justify-center rounded-lg border bg-muted",
+          textVariants({ variant: "display", tone: "muted" }),
+        ]}
         aria-hidden="true"
       >
         {title[0]?.toUpperCase()}
       </div>
     )}
   </Poster>
-  <div class="min-w-0 flex-1 space-y-1.5">
-    <div class="space-y-0.5">
-      <h3 class="font-medium">{title}</h3>
-      {byline && <p class="text-muted-foreground">{byline}</p>}
+  <div class="min-w-0 flex-1 space-y-2xs">
+    <div class="space-y-3xs">
+      <Text
+        as="h3"
+        variant="label"
+      >
+        {title}
+      </Text>
+      {byline && <Text tone="muted">{byline}</Text>}
     </div>
     {(badge || published) && (
-      <div class="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted-foreground">
+      <Text
+        as="div"
+        class="flex flex-wrap items-center gap-x-2xs gap-y-3xs"
+        tone="muted"
+        variant="small"
+      >
         {badge && <Badge>{badge}</Badge>}
         {published && <time datetime={published.toISOString()}>{formatDate(published)}</time>}
-      </div>
+      </Text>
     )}
     {rating && <Rating value={rating} />}
-    {timeline && <p class="text-xs text-muted-foreground">{timeline}</p>}
-    {description && <p class="text-muted-foreground/70">“{description}”</p>}
+    {timeline && (
+      <Text
+        tone="muted"
+        variant="small"
+      >
+        {timeline}
+      </Text>
+    )}
+    {description && <Text tone="faint">“{description}”</Text>}
     {links.length > 0 && (
-      <ul class="flex flex-wrap gap-x-3 gap-y-1 text-xs">
+      <ul class="flex flex-wrap gap-x-xs gap-y-3xs text-step--1">
         {links.map((link) => (
           <li>
             <a
-              class="inline-flex items-center gap-0.5 text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
+              class="inline-flex items-center gap-3xs text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
               href={link.href}
               rel="noopener noreferrer"
               target="_blank"

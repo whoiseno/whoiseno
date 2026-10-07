@@ -1,6 +1,6 @@
 ---
+import { cn } from "@/shared/lib/tailwind";
 import type { HTMLAttributes } from "astro/types";
-import { cn } from "tailwind-variants";
 
 interface Props extends HTMLAttributes<"ol"> {}
 
@@ -9,7 +9,7 @@ const { class: className, ...rest } = Astro.props;
 
 <ol
   data-slot="breadcrumb-list"
-  class={cn("flex flex-wrap items-center gap-1.5 text-xs text-muted-foreground", className)}
+  class={cn("flex flex-wrap items-center gap-2xs text-step--1 text-muted-foreground", className)}
   {...rest}
 >
   <slot />

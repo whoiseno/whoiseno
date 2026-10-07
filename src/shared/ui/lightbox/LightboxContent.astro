@@ -1,6 +1,6 @@
 ---
+import { cn } from "@/shared/lib/tailwind";
 import type { HTMLAttributes } from "astro/types";
-import { cn } from "tailwind-variants";
 
 interface Props extends HTMLAttributes<"dialog"> {
   /** Accessible name of the dialog. */
@@ -14,7 +14,7 @@ const { label = "Image preview", class: className, ...rest } = Astro.props;
   data-slot="lightbox-content"
   aria-label={label}
   class={cn(
-    "fixed inset-0 m-0 h-full max-h-none w-full max-w-none gap-3 bg-transparent p-4 text-white backdrop:bg-black/85 open:flex open:flex-col open:items-center open:justify-center sm:p-8 open:motion-safe:animate-in open:motion-safe:duration-200 open:motion-safe:fade-in backdrop:motion-safe:animate-in backdrop:motion-safe:duration-200 backdrop:motion-safe:fade-in",
+    "fixed inset-0 m-0 h-full max-h-none w-full max-w-none gap-xs bg-transparent p-s-l text-white backdrop:bg-black/85 open:flex open:flex-col open:items-center open:justify-center open:motion-safe:animate-in open:motion-safe:duration-200 open:motion-safe:fade-in backdrop:motion-safe:animate-in backdrop:motion-safe:duration-200 backdrop:motion-safe:fade-in",
     className,
   )}
   x-ref="dialog"

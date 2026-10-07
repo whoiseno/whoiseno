@@ -1,4 +1,5 @@
 ---
+import { Text } from "@/shared/ui/text";
 import { getCollection } from "astro:content";
 
 import UsesItem from "./UsesItem.astro";
@@ -7,9 +8,9 @@ const software = (await getCollection("software")).sort((a, b) => a.data.name.lo
 ---
 
 {software.length === 0 ? (
-  <p class="text-muted-foreground">Nothing here yet.</p>
+  <Text tone="muted">Nothing here yet.</Text>
 ) : (
-  <ul class="flex flex-col gap-2">
+  <ul class="flex flex-col gap-2xs">
     {software.map(({ data }) => (
       <li>
         <UsesItem {...data} />

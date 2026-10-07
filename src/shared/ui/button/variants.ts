@@ -1,7 +1,7 @@
-import { tv, type VariantProps } from "tailwind-variants";
+import { tv, type VariantProps } from "@/shared/lib/tailwind";
 
 export const buttonVariants = tv({
-  base: "inline-flex shrink-0 items-center justify-center gap-2 rounded-lg font-medium whitespace-nowrap transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 has-[>svg:only-child]:aspect-square has-[>svg:only-child]:px-0",
+  base: "inline-flex shrink-0 items-center justify-center gap-2xs rounded-lg font-medium whitespace-nowrap transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 has-[>svg:only-child]:aspect-square has-[>svg:only-child]:px-0",
   variants: {
     variant: {
       solid: "",
@@ -16,13 +16,13 @@ export const buttonVariants = tv({
       neutral: "",
     },
     size: {
-      "xxs": "h-6 px-2 text-xs",
-      "xs": "h-7 px-2.5 text-xs",
-      "sm": "h-8 px-3 text-sm",
-      "md": "h-9 px-4 text-sm",
-      "lg": "h-10 px-5 text-sm",
-      "xl": "h-11 px-6 text-base",
-      "xxl": "h-12 px-8 text-base",
+      "xxs": "h-6 px-2xs text-step--1",
+      "xs": "h-7 px-2xs-xs text-step--1",
+      "sm": "h-8 px-xs text-step-0",
+      "md": "h-9 px-s text-step-0",
+      "lg": "h-10 px-s-m text-step-0",
+      "xl": "h-11 px-m text-step-1",
+      "xxl": "h-12 px-l text-step-1",
       "icon-xxs": "h-6 w-6",
       "icon-xs": "h-7 w-7",
       "icon-sm": "h-8 w-8",

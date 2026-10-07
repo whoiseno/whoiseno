@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "./utopia.css";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -15,13 +16,21 @@
   --font-sans: var(--font-content);
   --font-mono: var(--font-code);
 
+  /* The only breakpoint: the sidebar rail beside the content, or a top bar with a menu above it. */
   --breakpoint-*: initial;
-  --breakpoint-xs: 0px;
-  --breakpoint-sm: 600px;
-  --breakpoint-md: 960px;
-  --breakpoint-lg: 1280px;
-  --breakpoint-xl: 1920px;
-  --breakpoint-xxl: 2560px;
+  --breakpoint-rail: 80rem;
+
+  /*
+    `max-w-*` looks in `--spacing` before `--container`, and the Utopia space names (3xs to 3xl) overlap the container
+    names, so `max-w-2xl` would be 4rem. `--max-width` is looked up first. `w-*` and `min-w-*` have no such alias, so
+    for a container width there, write the variable: `w-(--container-xl)`.
+  */
+  --max-width-3xs: var(--container-3xs);
+  --max-width-2xs: var(--container-2xs);
+  --max-width-xs: var(--container-xs);
+  --max-width-xl: var(--container-xl);
+  --max-width-2xl: var(--container-2xl);
+  --max-width-3xl: var(--container-3xl);
 
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -73,8 +82,8 @@
   :root {
     --radius: 0.45rem;
 
-    /* 10% of the text column on each side, never wider than the space left in the content column (`site-content` is the query container) */
-    --breakout: min(10%, max(0px, calc((100cqw - 100%) / 2 - 1rem)));
+    /* 10% of the text column on each side, never wider than the space left in the content column (`site-content` is the query container) minus the page gutter */
+    --breakout: min(10%, max(0px, calc((100cqw - 100%) / 2 - var(--spacing-s-l))));
 
     --font-heading: var(--font-general-sans-variable);
     --font-content: var(--font-supreme-variable);
@@ -253,45 +262,55 @@
   }
 }
 
+/*
+  A grid with as many columns as fit, none narrower than `--grid-min`, so no breakpoint decides the count. Set
+  `--grid-fill: auto-fit` to let a lone item span the whole row.
+*/
+@utility grid-fluid {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-fill, auto-fill), minmax(min(100%, var(--grid-min, 16rem)), 1fr));
+}
+
 @layer components {
   [data-slot="prose"] {
-    @apply text-sm leading-relaxed;
+    @apply text-step-0 leading-relaxed;
 
     & > article {
-      @apply space-y-3;
+      @apply space-y-s;
     }
+    /* Headings repeat the title, heading and subheading variants of the `Text` component. */
     h1 {
-      @apply scroll-mt-20 pt-6 font-serif text-xl font-bold lg:scroll-mt-8;
+      @apply scroll-mt-20 pt-m-l font-serif text-step-3 font-bold rail:scroll-mt-8;
     }
     h2 {
-      @apply scroll-mt-20 pt-4 font-serif text-lg font-semibold lg:scroll-mt-8;
+      @apply scroll-mt-20 pt-m font-serif text-step-2 font-semibold rail:scroll-mt-8;
     }
     h3 {
-      @apply scroll-mt-20 pt-2 font-serif text-base font-semibold lg:scroll-mt-8;
+      @apply scroll-mt-20 pt-s font-serif text-step-1 font-semibold rail:scroll-mt-8;
     }
     a {
       @apply underline underline-offset-4 hover:text-muted-foreground;
     }
     ul {
-      @apply list-disc space-y-1 pl-5;
+      @apply list-disc space-y-3xs pl-m;
     }
     ol {
-      @apply list-decimal space-y-1 pl-5;
+      @apply list-decimal space-y-3xs pl-m;
     }
     :not(pre) > code {
-      @apply rounded-sm bg-muted px-1 py-0.5 font-mono text-xs;
+      @apply rounded-sm bg-muted px-3xs py-0.5 font-mono text-step--1;
     }
     blockquote {
-      @apply rounded-r-lg border-l-2 bg-muted/40 px-4 py-2 text-muted-foreground;
+      @apply rounded-r-lg border-l-2 bg-muted/40 px-s py-xs text-muted-foreground;
     }
     table {
       @apply w-full text-left;
     }
     th {
-      @apply bg-muted px-3 py-2 font-medium;
+      @apply bg-muted px-xs py-2xs font-medium;
     }
     td {
-      @apply border-t px-3 py-2 align-top;
+      @apply border-t px-xs py-2xs align-top;
     }
 
     & > article > .expressive-code,
@@ -300,7 +319,7 @@
       margin-inline: calc(var(--breakout) * -1);
     }
     & > article > blockquote {
-      padding-inline: max(1rem, var(--breakout));
+      padding-inline: max(var(--spacing-s), var(--breakout));
     }
     & > article > [data-slot="figure"] [data-slot="lightbox-trigger"] {
       width: calc(100% + var(--breakout) * 2);

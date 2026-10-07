@@ -17,8 +17,8 @@ None. `PageHeader` takes no props — it's slot-only.
 ## Behavior
 
 - Renders `<div data-slot="page-header">`.
-- Flex column, left-aligned (`items-start`), with large top padding (`pt-12 md:pt-36`) — this is what pushes the hero content down from the top of the viewport on the homepage.
-- Includes conditional bottom-padding utilities (`[.border-b]:pb-6 md:[.border-b]:pb-10`) that add extra spacing when a `border-b` divider class is present, for headers that end in a visible rule rather than just whitespace.
+- Flex column, left-aligned (`items-start`), with large top padding (`pt-2xl-3xl`) — this is what pushes the hero content down from the top of the viewport on the homepage.
+- Includes conditional bottom-padding utilities (`[.border-b]:pb-m-l`) that add extra spacing when a `border-b` divider class is present, for headers that end in a visible rule rather than just whitespace.
 
 ## Usage
 

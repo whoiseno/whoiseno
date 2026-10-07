@@ -2,6 +2,7 @@
 import { Avatar } from "@/shared/ui/avatar";
 import { Badge } from "@/shared/ui/badge";
 import { Prose } from "@/shared/ui/prose";
+import { Text } from "@/shared/ui/text";
 import { render } from "astro:content";
 
 import { getProfile } from "../api/getProfile";
@@ -15,21 +16,26 @@ const { Content } = await render(profile);
 
 <section
   data-slot="profile-hero"
-  class="space-y-4"
+  class="space-y-m"
 >
-  <div class="flex items-center gap-4">
+  <div class="flex items-center gap-s">
     <Avatar
       name={name}
       src={avatar}
     />
-    <div class="space-y-1">
-      <h1 class="font-serif text-2xl font-bold">{name}</h1>
-      {role && <p class="text-muted-foreground">{role}</p>}
+    <div class="space-y-3xs">
+      <Text variant="title">{name}</Text>
+      {role && <Text tone="muted">{role}</Text>}
       {(status || location) && (
-        <div class="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+        <Text
+          as="div"
+          class="flex flex-wrap items-center gap-2xs"
+          tone="muted"
+          variant="small"
+        >
           {status && <Badge variant="success">{status}</Badge>}
           {location && <span>{location}</span>}
-        </div>
+        </Text>
       )}
     </div>
   </div>

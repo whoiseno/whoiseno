@@ -1,6 +1,7 @@
 ---
 import { Site } from "@/app/ui";
 import { BookList, getBooks, type TypeBookPage } from "@/features/books";
+import { Text } from "@/shared/ui/text";
 
 // Rendered on demand so the library is read from Hardcover instead of baked in at build time. The CDN and the cache in
 // `getBooks` keep that from spending the API quota on every visit.
@@ -37,6 +38,6 @@ if (data) {
   {data ? (
     <BookList data={data} />
   ) : (
-    <p class="text-muted-foreground">My books are unavailable right now. Try again in a few minutes.</p>
+    <Text tone="muted">My books are unavailable right now. Try again in a few minutes.</Text>
   )}
 </Site>

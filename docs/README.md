@@ -16,7 +16,7 @@ Start here, then jump into the file that covers the part you're touching.
 | [components/](./components/README.md)        | Detailed docs + usage examples for every `shared/ui/page` component                   |
 | [content.md](./content.md)                   | Content collections and the Keystatic CMS integration                                 |
 | [books-and-movies.md](./books-and-movies.md) | Books from Hardcover (caching and quota), and adding movies in the CMS admin          |
-| [styling.md](./styling.md)                   | Tailwind v4 theme, fonts, design tokens                                               |
+| [styling.md](./styling.md)                   | Tailwind v4 theme, Utopia fluid type and space, fonts, design tokens                  |
 | [animations.md](./animations.md)             | anime.js setup and usage patterns                                                     |
 
 ## Quick facts

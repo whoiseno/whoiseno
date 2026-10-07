@@ -17,7 +17,7 @@ None. `PageContainer` takes no props — it's slot-only.
 ## Behavior
 
 - Renders `<div data-slot="page-container">`.
-- Flex column (`flex flex-col flex-1`), full-width children (`*:w-full`), capped at `max-w-5xl` and horizontally centered on medium screens and up (`md:mx-auto`).
+- Flex column (`flex flex-col flex-1`), full-width children (`*:w-full`), capped at `max-w-5xl` and horizontally centered (`mx-auto`).
 - Provides the vertical rhythm (`gap-6`) between its direct children (e.g. the gap between a header and a footer).
 
 ## Usage

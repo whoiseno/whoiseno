@@ -1,6 +1,6 @@
 ---
+import { cn } from "@/shared/lib/tailwind";
 import type { HTMLAttributes } from "astro/types";
-import { cn } from "tailwind-variants";
 
 interface Props extends HTMLAttributes<"div"> {}
 
@@ -9,7 +9,7 @@ const { class: className, ...rest } = Astro.props;
 
 <div
   data-slot="dropdown-menu-label"
-  class={cn("px-2 py-1.5 text-xs font-medium text-muted-foreground", className)}
+  class={cn("px-2xs py-3xs text-step--1 font-medium text-muted-foreground", className)}
   {...rest}
 >
   <slot />

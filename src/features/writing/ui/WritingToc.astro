@@ -36,7 +36,7 @@ const titleIndent = { 1: "pl-2", 2: "pl-4", 3: "pl-7" } as Record<number, string
       ))}
     </ul>
     <div class="pointer-events-none absolute top-1/2 left-0 z-50 -translate-y-1/2 pl-9 opacity-0 transition-opacity group-focus-within/toc:pointer-events-auto group-focus-within/toc:opacity-100 group-hover/toc:pointer-events-auto group-hover/toc:opacity-100 motion-reduce:transition-none">
-      <ol class="max-h-[70svh] w-64 overflow-y-auto rounded-lg border bg-popover p-1.5 text-xs shadow-lg">
+      <ol class="max-h-[70svh] w-64 overflow-y-auto rounded-lg border bg-popover p-1.5 text-step--1 shadow-lg">
         {items.map((item) => (
           <li>
             <a

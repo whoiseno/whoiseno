@@ -7,6 +7,7 @@ import {
   LightboxImage,
   LightboxTrigger,
 } from "@/shared/ui/lightbox";
+import { Text } from "@/shared/ui/text";
 import type { ImageMetadata } from "astro";
 import { getImage, Image } from "astro:assets";
 
@@ -24,7 +25,7 @@ const full = typeof src === "string" ? src : (await getImage({ src, width: Math.
 ---
 
 <figure
-  class="space-y-2"
+  class="space-y-2xs"
   data-slot="figure"
 >
   <Lightbox>
@@ -58,5 +59,13 @@ const full = typeof src === "string" ? src : (await getImage({ src, width: Math.
       <LightboxClose />
     </LightboxContent>
   </Lightbox>
-  {title && <figcaption class="text-xs text-muted-foreground">{title}</figcaption>}
+  {title && (
+    <Text
+      as="figcaption"
+      tone="muted"
+      variant="small"
+    >
+      {title}
+    </Text>
+  )}
 </figure>

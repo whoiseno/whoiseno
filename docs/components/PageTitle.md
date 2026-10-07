@@ -17,7 +17,7 @@ None. `PageTitle` takes no props — it's slot-only.
 ## Behavior
 
 - Renders `<h1 data-slot="page-title">`.
-- Uses the serif font family (`font-serif`, mapped to the General Sans variable font — see [`styling.md`](../styling.md)), semibold weight, responsive size (`text-3xl` → `md:text-4xl` → `lg:text-5xl`).
+- Uses the serif font family (`font-serif`, mapped to the General Sans variable font — see [`styling.md`](../styling.md)), semibold weight, fluid size (`text-step-5`).
 
 ## Usage
 

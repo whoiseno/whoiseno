@@ -1,6 +1,7 @@
 ---
 import { Card } from "@/shared/ui/card";
 import { Icon } from "@/shared/ui/icon";
+import { Text } from "@/shared/ui/text";
 
 interface TypePagerEntry {
   id: string;
@@ -19,35 +20,57 @@ const { previous, next } = Astro.props;
 
 {(previous || next) && (
   <nav
-    class="grid gap-3 sm:grid-cols-2"
+    class="grid-fluid gap-xs [--grid-fill:auto-fit] [--grid-min:16rem]"
     aria-label="Previous and next posts"
     data-slot="writing-pager"
   >
     {previous && (
       <Card href={`/writing/${previous.id}`}>
-        <span class="flex items-center gap-1 text-xs text-muted-foreground">
+        <Text
+          as="span"
+          class="flex items-center gap-3xs"
+          tone="muted"
+          variant="small"
+        >
           <Icon
             class="size-3.5"
             name="reicon:ArrowLeft"
           />
           Previous
-        </span>
-        <span class="mt-0.5 block truncate font-medium">{previous.title}</span>
+        </Text>
+        <Text
+          as="span"
+          class="mt-3xs block truncate"
+          variant="label"
+        >
+          {previous.title}
+        </Text>
       </Card>
     )}
     {next && (
       <Card
-        class="text-right sm:col-start-2"
+        class="text-right"
         href={`/writing/${next.id}`}
       >
-        <span class="flex items-center justify-end gap-1 text-xs text-muted-foreground">
+        <Text
+          as="span"
+          class="flex items-center justify-end gap-3xs"
+          tone="muted"
+          variant="small"
+        >
           Next
           <Icon
             class="size-3.5"
             name="reicon:ArrowRight"
           />
-        </span>
-        <span class="mt-0.5 block truncate font-medium">{next.title}</span>
+        </Text>
+        <Text
+          as="span"
+          class="mt-3xs block truncate"
+          variant="label"
+        >
+          {next.title}
+        </Text>
       </Card>
     )}
   </nav>

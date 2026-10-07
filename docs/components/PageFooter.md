@@ -20,7 +20,7 @@ The bottom section of a page (e.g. copyright, links). The only component in `sha
 
 - Renders `<div data-slot="page-footer">`.
 - `items-start`, pushed to the bottom via `mt-auto` (so it sticks to the bottom of a flex-column `Page` even with little content above it), with a small bottom padding (`pb-2`).
-- Includes conditional top-padding utilities (`[.border-t]:pt-6 md:[.border-t]:pt-10`) that activate when you pass `class="border-t"` — giving the footer extra breathing room above a visible divider line, instead of having to remember the right padding value every time.
+- Includes conditional top-padding utilities (`[.border-t]:pt-m-l`) that activate when you pass `class="border-t"` — giving the footer extra breathing room above a visible divider line, instead of having to remember the right padding value every time.
 
 ## Usage
 

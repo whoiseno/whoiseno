@@ -17,7 +17,7 @@ None. `PageDescription` takes no props — it's slot-only.
 ## Behavior
 
 - Renders `<div data-slot="page-description">`.
-- Base text size, medium weight (`text-base font-medium`) — deliberately understated relative to `PageTitle`, since it's meant to carry secondary styling from its own content (as in the usage example below, where the inner `<h2>` supplies the larger, muted styling).
+- Lead text size (`text-step-1`), medium weight (`font-medium`) — deliberately understated relative to `PageTitle`, since it's meant to carry secondary styling from its own content (as in the usage example below, where the inner `<h2>` supplies the larger, muted styling).
 
 ## Usage
 

@@ -49,14 +49,14 @@ The body of a writing entry supports more than plain text. All of it is editable
 - **Carousel** is `{% carousel caption="..." %}` with two or more `{% slide %}` children. Each slide holds an image and optional text, and takes an optional `ratio` (see [Aspect ratios](#aspect-ratios)). The optional `caption` is shown above the track, at the start of the row, with the previous and next buttons at its end; both line up with the text column, and the buttons move one slide at a time. The track spans the full width of the page, so it passes over the sidebar (and its table of contents) where they meet, and the first slide lines up with the text column.
 - **Tables** are standard Markdoc tables (the editor's table button, or pipe syntax in the file). They render inside a bordered wrapper that scrolls sideways when the table is wider than the space available.
 - **Breakout:** the text keeps the column width, while code blocks, images, tables and blockquotes extend 10% of the column past it on each side, as far as the viewport allows (not at all on phones). Captions and blockquote text stay on the column. The carousel does not use the breakout; its track runs the full width of the page. See [`styling.md`](./styling.md).
-- **Columns** is `{% columns %}` with exactly two `{% column %}` children, side by side from `sm` and stacked below it.
+- **Columns** is `{% columns %}` with exactly two `{% column %}` children, side by side while each column can be 16rem wide, and stacked when it cannot.
 - **Math** is LaTeX, rendered with [KaTeX](https://katex.org) at build time. `{% math expression="..." /%}` is a block on its own line and `{% inlineMath expression="..." /%}` sits inside a sentence. In the editor they are the "Math block" and "Inline math" components; they show the raw LaTeX, not a rendered preview. A malformed expression renders as its source in red instead of failing the build.
 
 The tags are declared in two places that must stay in sync: the `components` option of the `content` field in `keystatic.config.ts` (editor UI) and the `tags` map in `markdoc.config.mjs` (rendering, with `component("./src/features/writing/index.ts", "<ExportName>")`). After adding `markdoc.config.mjs` or changing it, restart `pnpm dev`; Astro does not pick up a new Markdoc config on the fly.
 
 When writing a math tag by hand in the `.mdoc` file, double every backslash inside the attribute (`expression="\\frac{1}{3}"`): Markdoc treats a single backslash in a string as an escape and rejects it. The Keystatic editor writes the doubled form itself, so this matters only when editing the file directly.
 
-`/writing/[slug]` renders headings with ids, and the table of contents in the sidebar (from `lg`) has one tick for each `h1`, `h2` and `h3` heading, so a post with more headings gets more ticks. A `#` heading in the body is a second `<h1>` on the page, because the title already is one; use `##` for sections unless you want that level in the contents.
+`/writing/[slug]` renders headings with ids, and the table of contents in the sidebar (from `rail`) has one tick for each `h1`, `h2` and `h3` heading, so a post with more headings gets more ticks. A `#` heading in the body is a second `<h1>` on the page, because the title already is one; use `##` for sections unless you want that level in the contents.
 
 ## Aspect ratios
 

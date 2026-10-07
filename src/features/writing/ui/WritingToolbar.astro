@@ -1,7 +1,7 @@
 ---
+import { cn } from "@/shared/lib/tailwind";
 import { Button } from "@/shared/ui/button";
 import { Icon } from "@/shared/ui/icon";
-import { cn } from "tailwind-variants";
 
 interface Props {
   size?: "icon-sm" | "icon-md";
@@ -12,11 +12,11 @@ const { size = "icon-sm", class: className } = Astro.props;
 ---
 
 <div
-  class={cn("flex items-center gap-1", className)}
+  class={cn("flex items-center gap-3xs", className)}
   data-slot="writing-toolbar"
 >
   <Button
-    class="hidden md:inline-flex"
+    class="hidden rail:inline-flex"
     aria-label="Toggle wider layout"
     color="neutral"
     size={size}

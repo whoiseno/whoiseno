@@ -4,6 +4,7 @@ import { Button } from "@/shared/ui/button";
 import { CopyButton } from "@/shared/ui/copy-button";
 import { Icon } from "@/shared/ui/icon";
 import { Popover, PopoverContent, PopoverTrigger } from "@/shared/ui/popover";
+import { Text } from "@/shared/ui/text";
 import { Image } from "astro:assets";
 
 import type { TypeSocialLink } from "../model/types";
@@ -20,18 +21,18 @@ const links = socials.filter((social) => !social.email);
 {socials.length > 0 && (
   <div
     data-slot="profile-contacts"
-    class="flex flex-wrap items-center gap-2"
+    class="flex flex-wrap items-center gap-2xs"
   >
     {email?.email && (
       <div class="inline-flex h-9 items-center rounded-lg border bg-card">
         <a
-          class="px-3 transition-colors hover:text-muted-foreground"
+          class="px-xs transition-colors hover:text-muted-foreground"
           href={email.href}
         >
           {email.email}
         </a>
         <CopyButton
-          class="h-full rounded-r-lg border-l px-2.5 hover:bg-muted"
+          class="h-full rounded-r-lg border-l px-2xs-xs hover:bg-muted"
           label="Copy email address"
           value={email.email}
         />
@@ -66,7 +67,7 @@ const links = socials.filter((social) => !social.email);
               />
             )}
           </div>
-          <div class="space-y-2 px-4 pb-4">
+          <div class="space-y-2xs px-s pb-s">
             <div class="-mt-8 flex items-end justify-between">
               <Avatar
                 class="ring-4 ring-popover"
@@ -84,7 +85,10 @@ const links = socials.filter((social) => !social.email);
               )}
             </div>
             <div>
-              <p class="flex items-center gap-1 font-medium">
+              <Text
+                class="flex items-center gap-3xs"
+                variant="label"
+              >
                 {social.displayName}
                 {social.verified && (
                   <Icon
@@ -92,10 +96,10 @@ const links = socials.filter((social) => !social.email);
                     name="reicon:Verified"
                   />
                 )}
-              </p>
-              <p class="text-muted-foreground">{social.handle}</p>
+              </Text>
+              <Text tone="muted">{social.handle}</Text>
             </div>
-            {social.bio && <p class="text-sm">{social.bio}</p>}
+            {social.bio && <Text>{social.bio}</Text>}
           </div>
         </PopoverContent>
       </Popover>

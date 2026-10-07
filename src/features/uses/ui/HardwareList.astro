@@ -1,5 +1,6 @@
 ---
 import { aspectRatioCatalog } from "@/shared/config/aspect-ratio";
+import { Text } from "@/shared/ui/text";
 import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 
@@ -9,14 +10,14 @@ const hardware = (await getCollection("hardware")).sort((a, b) => a.data.name.lo
 ---
 
 {hardware.length === 0 ? (
-  <p class="text-muted-foreground">Nothing here yet.</p>
+  <Text tone="muted">Nothing here yet.</Text>
 ) : (
-  <ul class="flex flex-col gap-8">
+  <ul class="flex flex-col gap-l">
     {hardware.map(({ data: { photos, ...item } }) => (
-      <li class="space-y-3">
+      <li class="space-y-xs">
         {photos.length > 0 && (
           <ul
-            class="-mx-4 flex scroll-pl-4 snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-1 [scrollbar-width:none] sm:mx-0 sm:scroll-pl-0 sm:px-0 [&::-webkit-scrollbar]:hidden"
+            class="-mx-s-l flex scroll-pl-s-l snap-x snap-mandatory gap-xs overflow-x-auto px-s-l pb-3xs [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
             aria-label={`Photos of ${item.name}`}
             data-slot="uses-photos"
             role="region"

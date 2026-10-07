@@ -1,0 +1,57 @@
+/*
+  Utopia fluid design tokens (https://utopia.fyi).
+
+  Viewport 360px to 1240px. Body text 14px to 16px, type scale 1.2 (minor third) to 1.25 (major third). The body size is
+  the old `text-sm`, so the page keeps its density on a phone and gains room on a wide screen. Space steps are multiples
+  of the body size: 3xs 0.25, 2xs 0.5, xs 0.75, s 1, m 1.5, l 2, xl 3, 2xl 4, 3xl 6.
+
+  Type:  https://utopia.fyi/type/calculator?c=360,14,1.2,1240,16,1.25,5,1,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l&g=s,l,xl,12
+  Space: https://utopia.fyi/space/calculator?c=360,14,1.2,1240,16,1.25,5,1,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l&g=s,l,xl,12
+
+  To change the system, open a link, edit the numbers, and paste its CSS back here with two renames: `--step-n` becomes
+  `--text-step-n` (class `text-step-n`) and `--space-x` becomes `--spacing-x` (classes `p-x`, `gap-x`, `space-y-x`, and
+  so on). Then update the name lists in `src/shared/lib/tailwind.ts`, which tailwind-merge needs to resolve conflicts.
+*/
+/* `static` always emits the variables, because Expressive Code reads some of them outside Tailwind's sight. */
+@theme static {
+  /* The stock sizes (`text-sm`, `text-xl`, ...) go. The reset has to come before the steps it would otherwise clear. */
+  --text-*: initial;
+
+  --text-step--1: clamp(0.7292rem, 0.7002rem + 0.1288vw, 0.8rem);
+  --text-step--1--line-height: 1.5;
+  --text-step-0: clamp(0.875rem, 0.8239rem + 0.2273vw, 1rem);
+  --text-step-0--line-height: 1.5;
+  --text-step-1: clamp(1.05rem, 0.9682rem + 0.3636vw, 1.25rem);
+  --text-step-1--line-height: 1.4;
+  --text-step-2: clamp(1.26rem, 1.1363rem + 0.55vw, 1.5625rem);
+  --text-step-2--line-height: 1.3;
+  --text-step-3: clamp(1.512rem, 1.3315rem + 0.802vw, 1.9531rem);
+  --text-step-3--line-height: 1.2;
+  --text-step-4: clamp(1.8144rem, 1.5579rem + 1.14vw, 2.4414rem);
+  --text-step-4--line-height: 1.15;
+  --text-step-5: clamp(2.1773rem, 1.8195rem + 1.59vw, 3.0518rem);
+  --text-step-5--line-height: 1.1;
+
+  --spacing-3xs: clamp(0.25rem, 0.25rem + 0vw, 0.25rem);
+  --spacing-2xs: clamp(0.4375rem, 0.4119rem + 0.1136vw, 0.5rem);
+  --spacing-xs: clamp(0.6875rem, 0.6619rem + 0.1136vw, 0.75rem);
+  --spacing-s: clamp(0.875rem, 0.8239rem + 0.2273vw, 1rem);
+  --spacing-m: clamp(1.3125rem, 1.2358rem + 0.3409vw, 1.5rem);
+  --spacing-l: clamp(1.75rem, 1.6477rem + 0.4545vw, 2rem);
+  --spacing-xl: clamp(2.625rem, 2.4716rem + 0.6818vw, 3rem);
+  --spacing-2xl: clamp(3.5rem, 3.2955rem + 0.9091vw, 4rem);
+  --spacing-3xl: clamp(5.25rem, 4.9432rem + 1.3636vw, 6rem);
+
+  /* One-up pairs */
+  --spacing-3xs-2xs: clamp(0.25rem, 0.1477rem + 0.4545vw, 0.5rem);
+  --spacing-2xs-xs: clamp(0.4375rem, 0.3097rem + 0.5682vw, 0.75rem);
+  --spacing-xs-s: clamp(0.6875rem, 0.5597rem + 0.5682vw, 1rem);
+  --spacing-s-m: clamp(0.875rem, 0.6193rem + 1.1364vw, 1.5rem);
+  --spacing-m-l: clamp(1.3125rem, 1.0313rem + 1.25vw, 2rem);
+  --spacing-l-xl: clamp(1.75rem, 1.2386rem + 2.2727vw, 3rem);
+  --spacing-xl-2xl: clamp(2.625rem, 2.0625rem + 2.5vw, 4rem);
+  --spacing-2xl-3xl: clamp(3.5rem, 2.4773rem + 4.5455vw, 6rem);
+
+  /* Custom pairs */
+  --spacing-s-l: clamp(0.875rem, 0.4148rem + 2.0455vw, 2rem);
+}

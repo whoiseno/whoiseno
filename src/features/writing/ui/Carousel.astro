@@ -1,6 +1,7 @@
 ---
 import { Button } from "@/shared/ui/button";
 import { Icon } from "@/shared/ui/icon";
+import { Text } from "@/shared/ui/text";
 
 interface Props {
   caption?: string;
@@ -16,9 +17,18 @@ const { caption } = Astro.props;
   x-data="carousel"
   x-on:resize.window="update()"
 >
-  <div class="mb-3 flex items-center gap-3">
-    {caption && <figcaption class="min-w-0 text-xs text-muted-foreground">{caption}</figcaption>}
-    <div class="ml-auto flex shrink-0 gap-2">
+  <div class="mb-xs flex items-center gap-xs">
+    {caption && (
+      <Text
+        as="figcaption"
+        class="min-w-0"
+        tone="muted"
+        variant="small"
+      >
+        {caption}
+      </Text>
+    )}
+    <div class="ml-auto flex shrink-0 gap-2xs">
       <Button
         class="rounded-full"
         aria-label="Previous slide"
@@ -53,7 +63,7 @@ const { caption } = Astro.props;
     </div>
   </div>
   <div
-    class="-ml-[calc((var(--page-width)-100cqw)/2)] flex w-(--page-width) scroll-pl-[calc((var(--page-width)-100cqw)/2)] snap-x snap-mandatory items-start gap-3 overflow-x-auto px-[calc((var(--page-width)-100cqw)/2)] scrollbar-none [&::-webkit-scrollbar]:hidden"
+    class="-ml-[calc((var(--page-width)-100cqw)/2)] flex w-(--page-width) scroll-pl-[calc((var(--page-width)-100cqw)/2)] snap-x snap-mandatory items-start gap-xs overflow-x-auto px-[calc((var(--page-width)-100cqw)/2)] scrollbar-none [&::-webkit-scrollbar]:hidden"
     data-slot="carousel-track"
     aria-label="Slides"
     role="region"

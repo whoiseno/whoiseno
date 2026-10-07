@@ -2,6 +2,7 @@
 import { formatDate } from "@/shared/lib/date";
 import { slugify } from "@/shared/lib/slug";
 import { Badge } from "@/shared/ui/badge";
+import { Text } from "@/shared/ui/text";
 import { getCollection } from "astro:content";
 
 import { writingKindLabels } from "../config/kinds";
@@ -28,35 +29,55 @@ for (const { data } of entries) counts[data.kind] = (counts[data.kind] ?? 0) + 1
 ---
 
 {entries.length === 0 ? (
-  <p class="text-muted-foreground">Nothing here yet.</p>
+  <Text tone="muted">Nothing here yet.</Text>
 ) : (
   <div
-    class="group/writing space-y-10"
+    class="group/writing space-y-xl"
     data-slot="writing-list"
     x-data={`{ counts: ${JSON.stringify(counts)} }`}
   >
     {[...years].map(([year, items]) => (
-      <section class="space-y-2 [&:not(:has(li:not([hidden])))]:hidden">
-        <h2 class="font-mono text-xs text-muted-foreground">{year}</h2>
+      <section class="space-y-2xs [&:not(:has(li:not([hidden])))]:hidden">
+        <Text
+          as="h2"
+          tone="muted"
+          variant="mono"
+        >
+          {year}
+        </Text>
         <ul class="[&>li:not([hidden])~li:not([hidden])]:border-t">
           {items.map(({ id, data, body }) => (
             <li x-bind:hidden={`!$store.writingFilter.shows('${data.kind}')`}>
               <a
-                class="flex items-center justify-between gap-4 py-3 transition-[filter,opacity] duration-200 [@media(hover:hover)]:group-has-[a:hover]/writing:not-hover:opacity-60 [@media(hover:hover)]:group-has-[a:hover]/writing:not-hover:blur-[1.5px]"
+                class="flex flex-wrap items-baseline justify-between gap-x-s gap-y-3xs py-s transition-[filter,opacity] duration-200 [@media(hover:hover)]:group-has-[a:hover]/writing:not-hover:opacity-60 [@media(hover:hover)]:group-has-[a:hover]/writing:not-hover:blur-[1.5px]"
                 href={`/writing/${id}`}
               >
-                <span class="min-w-0 truncate font-medium">{data.title}</span>
-                <span class="flex shrink-0 items-center gap-2">
+                <Text
+                  as="span"
+                  class="min-w-0 flex-[1_1_12rem] truncate"
+                  variant="label"
+                >
+                  {data.title}
+                </Text>
+                <span class="flex shrink-0 items-center gap-2xs">
                   <Badge>{writingKindLabels[data.kind]}</Badge>
-                  <span class="hidden font-mono text-xs text-muted-foreground uppercase sm:inline">
+                  <Text
+                    as="span"
+                    class="uppercase"
+                    tone="muted"
+                    variant="mono"
+                  >
                     {getReadingMinutes(body)} min read
-                  </span>
-                  <time
-                    class="font-mono text-xs text-muted-foreground uppercase"
+                  </Text>
+                  <Text
+                    as="time"
+                    class="uppercase"
                     datetime={data.publishedDate.toISOString()}
+                    tone="muted"
+                    variant="mono"
                   >
                     {formatDate(data.publishedDate)}
-                  </time>
+                  </Text>
                 </span>
               </a>
             </li>
@@ -64,12 +85,12 @@ for (const { data } of entries) counts[data.kind] = (counts[data.kind] ?? 0) + 1
         </ul>
       </section>
     ))}
-    <p
-      class="text-muted-foreground"
+    <Text
+      tone="muted"
       x-cloak
       x-show="$store.writingFilter.kind !== 'all' && !counts[$store.writingFilter.kind]"
     >
       Nothing of this kind yet.
-    </p>
+    </Text>
   </div>
 )}

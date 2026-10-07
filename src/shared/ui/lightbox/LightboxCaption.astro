@@ -1,6 +1,6 @@
 ---
+import { cn } from "@/shared/lib/tailwind";
 import type { HTMLAttributes } from "astro/types";
-import { cn } from "tailwind-variants";
 
 interface Props extends HTMLAttributes<"p"> {}
 
@@ -9,7 +9,7 @@ const { class: className, ...rest } = Astro.props;
 
 <p
   data-slot="lightbox-caption"
-  class={cn("max-w-prose text-center text-sm text-white/80", className)}
+  class={cn("max-w-prose text-center text-step-0 text-white/80", className)}
   {...rest}
 >
   <slot />

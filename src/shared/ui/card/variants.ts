@@ -1,14 +1,14 @@
-import { tv } from "tailwind-variants";
+import { tv } from "@/shared/lib/tailwind";
 
 export const cardVariants = tv({
   slots: {
-    root: "block rounded-xl border bg-card px-3 py-2.5 text-card-foreground",
-    header: "flex items-start justify-between gap-3",
+    root: "block rounded-xl border bg-card px-s py-xs text-card-foreground",
+    header: "flex items-start justify-between gap-xs",
     title: "font-medium",
     description: "text-muted-foreground",
     action: "shrink-0",
     content: "",
-    footer: "flex items-center gap-2",
+    footer: "flex items-center gap-2xs",
   },
   variants: {
     interactive: {

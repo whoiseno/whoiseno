@@ -13,6 +13,7 @@ import { Badge } from "@/shared/ui/badge";
 import { Button } from "@/shared/ui/button";
 import { Icon } from "@/shared/ui/icon";
 import { Prose } from "@/shared/ui/prose";
+import { Text } from "@/shared/ui/text";
 import type { InferGetStaticPropsType } from "astro";
 import { getCollection, render } from "astro:content";
 
@@ -48,13 +49,13 @@ const { Content, headings } = await render(entry);
   />
   <WritingToolbar
     slot="tools"
-    class="max-lg:hidden"
+    class="max-rail:hidden"
     size="icon-md"
   />
   {cover && (
     <div
       slot="header"
-      class="pt-3"
+      class="pt-xs"
     >
       <Figure
         alt={coverAlt}
@@ -64,7 +65,7 @@ const { Content, headings } = await render(entry);
     </div>
   )}
   <div
-    class="space-y-10"
+    class="space-y-xl"
     x-data
     x-on:keydown.escape.window="$store.writingReader.setFocus(false)"
   >
@@ -84,23 +85,28 @@ const { Content, headings } = await render(entry);
       <Icon name="reicon:X" />
     </Button>
     <div
-      class="flex items-center justify-between gap-3"
+      class="flex items-center justify-between gap-xs"
       data-focus-hide
     >
-      <div class="flex items-center gap-3 text-xs text-muted-foreground">
+      <Text
+        as="div"
+        class="flex items-center gap-xs"
+        tone="muted"
+        variant="small"
+      >
         <Badge>{writingKindLabels[kind]}</Badge>
         <time datetime={publishedDate.toISOString()}>{formatDate(publishedDate)}</time>
-      </div>
-      <WritingToolbar class="lg:hidden" />
+      </Text>
+      <WritingToolbar class="rail:hidden" />
     </div>
     <Prose>
       <Content />
     </Prose>
     <div
-      class="space-y-4"
+      class="space-y-s-m"
       data-focus-hide
     >
-      <WritingBackLink class="lg:hidden" />
+      <WritingBackLink class="rail:hidden" />
       <WritingPager
         next={next}
         previous={previous}

@@ -2,6 +2,7 @@
 import type { TypeSocialLink } from "@/entities/profile";
 import { CopyButton } from "@/shared/ui/copy-button";
 import { Icon } from "@/shared/ui/icon";
+import { Text } from "@/shared/ui/text";
 
 interface Props {
   name: string;
@@ -16,12 +17,15 @@ const [firstName] = name.split(" ");
 <footer
   data-slot="site-footer"
   data-focus-hide
-  class="border-t bg-muted/30 py-12"
+  class="border-t bg-muted/30 py-xl-2xl"
 >
-  <div class="mx-auto max-w-2xl space-y-10 px-4">
+  <div class="mx-auto max-w-2xl space-y-xl px-s-l">
     {socials.length > 0 && (
-      <div class="space-y-6">
-        <h2 class="font-serif text-2xl">
+      <div class="space-y-s-m">
+        <Text
+          class="font-normal"
+          variant="heading"
+        >
           Let's be friends{" "}
           <span
             class="text-success"
@@ -29,19 +33,23 @@ const [firstName] = name.split(" ");
           >
             ✦
           </span>
-        </h2>
-        <ul class="grid grid-cols-2 gap-x-6 gap-y-6 sm:grid-cols-3">
+        </Text>
+        <ul class="grid-fluid gap-m [--grid-min:9.5rem]">
           {socials.map((social) => (
-            <li class="min-w-0 space-y-0.5">
+            <li class="min-w-0 space-y-3xs">
               {social.email ? (
                 <>
-                  <span class="flex items-center gap-1.5 font-medium">
+                  <Text
+                    as="span"
+                    class="flex items-center gap-2xs"
+                    variant="label"
+                  >
                     {social.label}
                     <CopyButton
                       label="Copy email address"
                       value={social.email}
                     />
-                  </span>
+                  </Text>
                   <a
                     class="block truncate text-muted-foreground transition-colors hover:text-foreground"
                     href={social.href}
@@ -56,14 +64,24 @@ const [firstName] = name.split(" ");
                   rel="noopener noreferrer"
                   target="_blank"
                 >
-                  <span class="flex items-center gap-1 font-medium">
+                  <Text
+                    as="span"
+                    class="flex items-center gap-3xs"
+                    variant="label"
+                  >
                     {social.label}
                     <Icon
                       class="size-3.5 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
                       name="reicon:ArrowUpRight"
                     />
-                  </span>
-                  <span class="block truncate text-muted-foreground">{social.handle}</span>
+                  </Text>
+                  <Text
+                    as="span"
+                    class="block truncate"
+                    tone="muted"
+                  >
+                    {social.handle}
+                  </Text>
                 </a>
               )}
             </li>
@@ -71,12 +89,17 @@ const [firstName] = name.split(" ");
         </ul>
       </div>
     )}
-    <div class="space-y-3">
-      <div class="flex flex-wrap items-center justify-between gap-x-6 gap-y-1 text-xs text-muted-foreground">
+    <div class="space-y-xs">
+      <Text
+        as="div"
+        class="flex flex-wrap items-center justify-between gap-x-m gap-y-3xs"
+        tone="muted"
+        variant="small"
+      >
         <p>
           &copy; {year} {name}
         </p>
-        <p class="flex items-center gap-1">
+        <p class="flex items-center gap-3xs">
           Made with
           <Icon
             class="size-3.5 text-error"
@@ -86,8 +109,12 @@ const [firstName] = name.split(" ");
           <span class="sr-only">love</span>
           by {firstName}
         </p>
-      </div>
-      <p class="text-xs/relaxed text-muted-foreground/70">
+      </Text>
+      <Text
+        class="leading-relaxed"
+        tone="faint"
+        variant="small"
+      >
         Built with Astro and Tailwind CSS, with Alpine.js for the small interactive parts. Pages are prerendered and
         deployed on Vercel, apart from the books page, which is rendered on demand from my Hardcover library and cached
         for a few minutes. Posts and movies are files in the repository, edited through Keystatic. I chose static output
@@ -95,8 +122,12 @@ const [firstName] = name.split(" ");
         and easy to move. Covers and posters are resized by Astro for each screen density and fade in over a blurred
         preview. Code blocks use Expressive Code, math uses KaTeX, the code is organised with Feature-Sliced Design, and
         the type is Supreme, General Sans and Geist Mono.
-      </p>
-      <p class="text-xs/relaxed text-muted-foreground/70">
+      </Text>
+      <Text
+        class="leading-relaxed"
+        tone="faint"
+        variant="small"
+      >
         Book data and covers come from
         <a
           class="underline underline-offset-4 transition-colors hover:text-foreground"
@@ -116,7 +147,7 @@ const [firstName] = name.split(" ");
           TMDB
         </a>
         . This product uses the TMDB API but is not endorsed or certified by TMDB.
-      </p>
+      </Text>
     </div>
   </div>
 </footer>

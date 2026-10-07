@@ -25,42 +25,42 @@ const isActive = (href: string) =>
 <header
   data-slot="site-sidebar"
   data-focus-hide
-  class="sticky top-0 z-40 border-b bg-background/60 backdrop-blur lg:static lg:z-auto lg:border-b-0 lg:bg-transparent lg:backdrop-blur-none lg:has-[[data-slot=site-toc]>*:is(:hover,:focus-within)]:z-50"
+  class="sticky top-0 z-40 border-b bg-background/60 backdrop-blur rail:static rail:z-auto rail:border-b-0 rail:bg-transparent rail:backdrop-blur-none rail:has-[[data-slot=site-toc]>*:is(:hover,:focus-within)]:z-50"
   x-data="{ open: false }"
 >
-  <div class="flex h-14 items-center gap-1 px-4 lg:sticky lg:top-0 lg:h-full lg:max-h-svh lg:flex-col lg:items-stretch lg:gap-0 lg:px-0 lg:py-6">
+  <div class="flex h-14 items-center gap-3xs px-s-l rail:sticky rail:top-0 rail:h-full rail:max-h-svh rail:flex-col rail:items-stretch rail:gap-0 rail:px-0 rail:py-m">
     <nav
       id="site-nav"
-      class="absolute inset-x-0 top-full border-b bg-background px-4 py-2 max-lg:not-data-open:hidden lg:static lg:border-0 lg:bg-transparent lg:p-0"
+      class="absolute inset-x-0 top-full border-b bg-background px-s-l py-2xs max-rail:not-data-open:hidden rail:static rail:border-0 rail:bg-transparent rail:p-0"
       aria-label="Primary"
       x-bind:data-open="open"
     >
-      <ul class="flex flex-col lg:gap-0.5">
+      <ul class="flex flex-col rail:gap-3xs">
         {items.map((item) => {
           const nested = crumbs[0]?.href === item.href ? crumbs.slice(1) : [];
           return (
             <li>
               <a
-                class="block rounded-md py-2 text-muted-foreground transition-colors hover:text-foreground aria-[current]:font-medium aria-[current]:text-foreground lg:px-2.5 lg:py-1.5"
+                class="block rounded-md py-xs text-muted-foreground transition-colors hover:text-foreground aria-[current]:font-medium aria-[current]:text-foreground rail:px-xs rail:py-2xs"
                 aria-current={nested.length > 0 ? "true" : isActive(item.href) ? "page" : undefined}
                 href={item.href}
               >
                 {item.label}
               </a>
               {nested.length > 0 && (
-                <ul class="mb-1 ml-3 space-y-0.5 border-l pl-3 text-xs">
+                <ul class="mb-3xs ml-xs space-y-3xs border-l pl-xs text-step--1">
                   {nested.map((crumb) => (
                     <li>
                       {crumb.href ? (
                         <a
-                          class="block truncate py-1 text-muted-foreground transition-colors hover:text-foreground"
+                          class="block truncate py-3xs text-muted-foreground transition-colors hover:text-foreground"
                           href={crumb.href}
                         >
                           {crumb.label}
                         </a>
                       ) : (
                         <span
-                          class="block truncate py-1 font-medium text-foreground"
+                          class="block truncate py-3xs font-medium text-foreground"
                           aria-current="page"
                         >
                           {crumb.label}
@@ -76,20 +76,20 @@ const isActive = (href: string) =>
       </ul>
     </nav>
     <div
-      class="hidden min-h-0 flex-1 items-center pb-24 lg:flex"
+      class="hidden min-h-0 flex-1 items-center pb-3xl rail:flex"
       data-slot="site-toc"
     >
       <slot name="toc" />
     </div>
     <div
-      class="flex items-center gap-1 lg:flex-col lg:items-start lg:px-1"
+      class="flex items-center gap-3xs rail:flex-col rail:items-start rail:px-3xs"
       data-slot="site-actions"
     >
       <slot name="tools" />
       <slot name="actions" />
     </div>
     <Button
-      class="lg:hidden"
+      class="rail:hidden"
       aria-controls="site-nav"
       aria-label="Toggle menu"
       color="neutral"

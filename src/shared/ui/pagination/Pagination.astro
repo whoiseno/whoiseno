@@ -1,6 +1,7 @@
 ---
 import { Button } from "@/shared/ui/button";
 import { Icon } from "@/shared/ui/icon";
+import { Text } from "@/shared/ui/text";
 
 interface Props {
   page: number;
@@ -14,7 +15,7 @@ const { page, pageCount, href } = Astro.props;
 
 {pageCount > 1 && (
   <nav
-    class="flex items-center justify-between gap-3"
+    class="flex items-center justify-between gap-xs"
     aria-label="Pagination"
     data-slot="pagination"
   >
@@ -31,9 +32,12 @@ const { page, pageCount, href } = Astro.props;
       />
       Previous
     </Button>
-    <p class="text-xs text-muted-foreground">
+    <Text
+      tone="muted"
+      variant="small"
+    >
       Page {page} of {pageCount}
-    </p>
+    </Text>
     <Button
       color="neutral"
       disabled={page >= pageCount}

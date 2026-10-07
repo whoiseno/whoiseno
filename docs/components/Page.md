@@ -17,7 +17,7 @@ None. `Page` takes no props — it's slot-only.
 ## Behavior
 
 - Renders `<main data-slot="page">`.
-- Fills the viewport height (`min-h-svh h-svh max-h-svh`) and lays out children in a column with responsive gap/padding (`py-6 md:py-12 px-4 md:px-8`, `gap-6 md:gap-10`).
+- Fills the viewport height (`min-h-svh h-svh max-h-svh`) and lays out children in a column with fluid gap and padding (`py-l-xl px-s-l`, `gap-m-l`).
 - **Adapts its own padding based on its children**, via Tailwind's `has-*` variant: if a descendant carries `data-slot="page-footer"`, bottom padding collapses to `0` (the footer manages its own bottom spacing instead); if a descendant carries `data-slot="page-header"`, top padding collapses to `0` (the header manages its own top spacing). This means you don't need to manually remove padding when a page has a `PageHeader`/`PageFooter` — it happens automatically.
 
 ## Usage

@@ -1,0 +1,19 @@
+---
+import type { Polymorphic } from "astro/types";
+
+import { textTags, textVariants, type TypeTextTag, type TypeTextVariants } from "./variants";
+
+type Props<Tag extends TypeTextTag> = Polymorphic<{ as: Tag } & TypeTextVariants>;
+
+const { as, variant = "body", tone, class: className, ...rest } = Astro.props;
+const Tag = as ?? textTags[variant];
+---
+
+<Tag
+  data-slot="text"
+  data-variant={variant}
+  class={textVariants({ variant, tone, class: className })}
+  {...rest}
+>
+  <slot />
+</Tag>
