@@ -1,5 +1,6 @@
 export { writingKindLabels } from "./config/kinds";
 export { default as AudioClip } from "./ui/AudioClip.astro";
+export { default as Callout } from "./ui/Callout.astro";
 export { default as Carousel } from "./ui/Carousel.astro";
 export { default as CodeBlock } from "./ui/CodeBlock.astro";
 export { default as Column } from "./ui/Column.astro";
@@ -16,6 +17,7 @@ export { default as WritingBackLink } from "./ui/WritingBackLink.astro";
 export { default as WritingFilters } from "./ui/WritingFilters.astro";
 export { default as WritingList } from "./ui/WritingList.astro";
 export { default as WritingPager } from "./ui/WritingPager.astro";
+export { default as WritingReader } from "./ui/WritingReader.astro";
 export { default as WritingSidenotes } from "./ui/WritingSidenotes.astro";
 export { default as WritingToc } from "./ui/WritingToc.astro";
 export { default as WritingToolbar } from "./ui/WritingToolbar.astro";

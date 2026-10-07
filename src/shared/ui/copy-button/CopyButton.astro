@@ -14,6 +14,8 @@ const { value, label = "Copy to clipboard", class: className, ...rest } = Astro.
 
 <button
   data-slot="copy-button"
+  data-cuelume-tap
+  data-cuelume-hover
   class={cn(
     "inline-flex items-center justify-center text-muted-foreground transition-colors outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring",
     className,

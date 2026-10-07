@@ -5,14 +5,13 @@ import {
   WritingBackLink,
   writingKindLabels,
   WritingPager,
+  WritingReader,
   WritingSidenotes,
   WritingToc,
   WritingToolbar,
 } from "@/features/writing";
 import { formatDate } from "@/shared/lib/date";
 import { Badge } from "@/shared/ui/badge";
-import { Button } from "@/shared/ui/button";
-import { Icon } from "@/shared/ui/icon";
 import { Prose } from "@/shared/ui/prose";
 import { Text } from "@/shared/ui/text";
 import type { InferGetStaticPropsType } from "astro";
@@ -22,7 +21,8 @@ export async function getStaticPaths() {
   const entries = (await getCollection("writing")).sort(
     (a, b) => a.data.publishedDate.getTime() - b.data.publishedDate.getTime(),
   );
-  const toLink = (entry?: (typeof entries)[number]) => (entry ? { id: entry.id, title: entry.data.title } : null);
+  const toLink = (entry?: (typeof entries)[number]) =>
+    entry ? { href: `/writing/${entry.id}`, title: entry.data.title } : null;
   return entries.map((entry, index) => ({
     params: { slug: entry.id },
     props: { entry, previous: toLink(entries[index - 1]), next: toLink(entries[index + 1]) },
@@ -66,26 +66,7 @@ const { Content, headings } = await render(entry);
       />
     </div>
   )}
-  <div
-    class="space-y-xl"
-    x-data
-    x-on:keydown.escape.window="$store.writingReader.setFocus(false)"
-  >
-    <Button
-      class="fixed top-4 right-4 z-50 opacity-50 hover:opacity-100 focus-visible:opacity-100"
-      aria-label="Exit focus mode"
-      color="neutral"
-      size="sm"
-      type="button"
-      variant="ghost"
-      x-cloak
-      x-on:click="$store.writingReader.setFocus(false)"
-      x-show="$store.writingReader.focus"
-      x-transition:enter="animate-in duration-300 fade-in"
-      x-transition:leave="animate-out duration-300 fade-out"
-    >
-      <Icon name="reicon:X" />
-    </Button>
+  <WritingReader>
     <div
       class="flex items-center justify-between gap-xs"
       data-focus-hide
@@ -114,5 +95,5 @@ const { Content, headings } = await render(entry);
         previous={previous}
       />
     </div>
-  </div>
+  </WritingReader>
 </Site>

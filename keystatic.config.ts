@@ -1,6 +1,7 @@
 import { collection, config, fields, singleton } from "@keystatic/core";
 import { block, inline, repeating, wrapper } from "@keystatic/core/content-components";
 
+import { calloutMeta, calloutTypes } from "./src/features/writing/config/callouts";
 import { aspectRatioCatalog, aspectRatioNames, type TypeAspectRatioName } from "./src/shared/config/aspect-ratio";
 import { logoCatalog, logoNames } from "./src/shared/config/logos";
 import { mediaSourceCatalog, mediaSourceNames, type TypeMediaKind } from "./src/shared/config/media-sources";
@@ -87,12 +88,120 @@ function mediaLinksField(kind: TypeMediaKind) {
   );
 }
 
+/** The body of a post, shared by writing and projects: the same components, with images stored under `src/assets/<assets>`. */
+function postContent(label: string, assets: string) {
+  return fields.markdoc({
+    label,
+    options: {
+      image: { directory: `src/assets/${assets}`, publicPath: `../../assets/${assets}/` },
+      codeBlock: {
+        schema: {
+          mark: fields.text({ label: "Highlight lines", description: "For example 1,3-5" }),
+          ins: fields.text({ label: "Added lines", description: "Lines to show as inserted, for example 2" }),
+          del: fields.text({ label: "Removed lines", description: "Lines to show as deleted, for example 3" }),
+          wrap: fields.checkbox({ label: "Wrap long lines", description: "Readers can still toggle this" }),
+        },
+      },
+    },
+    components: {
+      callout: wrapper({
+        label: "Callout",
+        description: "A highlighted note. It can be folded away, and can hold other callouts.",
+        schema: {
+          type: fields.select({
+            label: "Type",
+            options: calloutTypes.map((value) => ({ label: calloutMeta[value].label, value })),
+            defaultValue: "info",
+          }),
+          title: fields.text({
+            label: "Title",
+            description: "Optional. A collapsible callout shows its type when this is empty.",
+          }),
+          collapsible: fields.checkbox({
+            label: "Collapsible",
+            description: "Readers can fold it away",
+            defaultValue: false,
+          }),
+          open: fields.checkbox({
+            label: "Start open",
+            description: "Only for a collapsible callout, which otherwise starts folded",
+            defaultValue: false,
+          }),
+        },
+      }),
+      carousel: repeating({
+        label: "Carousel",
+        description: "Swipeable row of slides, each holding an image or text",
+        schema: { caption: fields.text({ label: "Caption", description: "Optional, shown under the slides" }) },
+        children: ["slide"],
+        validation: { children: { min: 2 } },
+      }),
+      slide: wrapper({
+        label: "Slide",
+        schema: { ratio: aspectRatioField("original") },
+        forSpecificLocations: true,
+      }),
+      columns: repeating({
+        label: "Two columns",
+        description: "Side-by-side layout, stacked on small screens",
+        schema: {},
+        children: ["column"],
+        validation: { children: { min: 2, max: 2 } },
+      }),
+      column: wrapper({ label: "Column", schema: {}, forSpecificLocations: true }),
+      math: block({
+        label: "Math block",
+        description: "LaTeX equation on its own line",
+        schema: {
+          expression: fields.text({ label: "LaTeX", multiline: true, validation: { isRequired: true } }),
+        },
+        ContentView: ({ value }) => value.expression,
+      }),
+      inlineMath: inline({
+        label: "Inline math",
+        description: "LaTeX equation inside a sentence",
+        schema: { expression: fields.text({ label: "LaTeX", validation: { isRequired: true } }) },
+        ContentView: ({ value }) => value.expression,
+      }),
+      footnoteRef: inline({
+        label: "Footnote reference",
+        description: "Marks where a footnote belongs in the text. Write the footnote itself with the same ID.",
+        schema: { id: footnoteIdField() },
+        ContentView: ({ value }) => `[${value.id}]`,
+      }),
+      footnote: wrapper({
+        label: "Footnote",
+        description:
+          "Sits in the margin beside its reference on a wide screen, and in the text otherwise. Holds text, images, video, audio and handwriting.",
+        schema: { id: footnoteIdField() },
+      }),
+      video: block({
+        label: "Video",
+        description: "A video with the browser's own controls. Works in a footnote or on its own.",
+        schema: mediaFields("video"),
+        ContentView: ({ value }) => value.caption || "Video",
+      }),
+      audio: block({
+        label: "Audio",
+        description: "An audio clip with the browser's own controls. Works in a footnote or on its own.",
+        schema: mediaFields("audio"),
+        ContentView: ({ value }) => value.caption || "Audio",
+      }),
+      handwriting: wrapper({
+        label: "Handwriting",
+        description: "Text in a handwriting font, for a note that should look jotted down.",
+        schema: {},
+      }),
+    },
+  });
+}
+
 export default config({
   storage: import.meta.env.PROD ? { kind: "github", repo: "whoiseno/whoiseno" } : { kind: "local" },
 
   ui: {
     navigation: {
-      Site: ["navigation", "profile"],
+      Site: ["navigation", "profile", "signature"],
       Work: ["works", "projects"],
       Writing: ["writing"],
       Uses: ["software", "hardware"],
@@ -122,6 +231,21 @@ export default config({
             itemLabel: (props) => `${props.fields.label.value}${props.fields.visible.value ? "" : " (hidden)"}`,
           },
         ),
+      },
+    }),
+
+    signature: singleton({
+      label: "Signature",
+      path: "src/content/signature/",
+      format: { data: "yaml" },
+      schema: {
+        file: fields.file({
+          label: "Signature (SVG)",
+          description:
+            "An SVG whose paths are strokes, so the site can write it out in the footer. It is drawn in the text color, so it suits light and dark.",
+          directory: "src/assets/signature",
+          publicPath: "../../assets/signature/",
+        }),
       },
     }),
 
@@ -247,7 +371,7 @@ export default config({
         }),
         demoLink: fields.url({ label: "Demo link" }),
         sourceLink: fields.url({ label: "Source link" }),
-        content: fields.markdoc({ label: "Details" }),
+        content: postContent("Details", "projects"),
       },
     }),
 
@@ -283,85 +407,7 @@ export default config({
           description: "Each tag links to a page listing every post that uses it",
           itemLabel: (props) => props.value,
         }),
-        content: fields.markdoc({
-          label: "Content",
-          options: {
-            image: { directory: "src/assets/writing", publicPath: "../../assets/writing/" },
-            codeBlock: {
-              schema: {
-                mark: fields.text({ label: "Highlight lines", description: "For example 1,3-5" }),
-                ins: fields.text({ label: "Added lines", description: "Lines to show as inserted, for example 2" }),
-                del: fields.text({ label: "Removed lines", description: "Lines to show as deleted, for example 3" }),
-                wrap: fields.checkbox({ label: "Wrap long lines", description: "Readers can still toggle this" }),
-              },
-            },
-          },
-          components: {
-            carousel: repeating({
-              label: "Carousel",
-              description: "Swipeable row of slides, each holding an image or text",
-              schema: { caption: fields.text({ label: "Caption", description: "Optional, shown under the slides" }) },
-              children: ["slide"],
-              validation: { children: { min: 2 } },
-            }),
-            slide: wrapper({
-              label: "Slide",
-              schema: { ratio: aspectRatioField("original") },
-              forSpecificLocations: true,
-            }),
-            columns: repeating({
-              label: "Two columns",
-              description: "Side-by-side layout, stacked on small screens",
-              schema: {},
-              children: ["column"],
-              validation: { children: { min: 2, max: 2 } },
-            }),
-            column: wrapper({ label: "Column", schema: {}, forSpecificLocations: true }),
-            math: block({
-              label: "Math block",
-              description: "LaTeX equation on its own line",
-              schema: {
-                expression: fields.text({ label: "LaTeX", multiline: true, validation: { isRequired: true } }),
-              },
-              ContentView: ({ value }) => value.expression,
-            }),
-            inlineMath: inline({
-              label: "Inline math",
-              description: "LaTeX equation inside a sentence",
-              schema: { expression: fields.text({ label: "LaTeX", validation: { isRequired: true } }) },
-              ContentView: ({ value }) => value.expression,
-            }),
-            footnoteRef: inline({
-              label: "Footnote reference",
-              description: "Marks where a footnote belongs in the text. Write the footnote itself with the same ID.",
-              schema: { id: footnoteIdField() },
-              ContentView: ({ value }) => `[${value.id}]`,
-            }),
-            footnote: wrapper({
-              label: "Footnote",
-              description:
-                "Sits in the margin beside its reference on a wide screen, and in the text otherwise. Holds text, images, video, audio and handwriting.",
-              schema: { id: footnoteIdField() },
-            }),
-            video: block({
-              label: "Video",
-              description: "A video with the browser's own controls. Works in a footnote or on its own.",
-              schema: mediaFields("video"),
-              ContentView: ({ value }) => value.caption || "Video",
-            }),
-            audio: block({
-              label: "Audio",
-              description: "An audio clip with the browser's own controls. Works in a footnote or on its own.",
-              schema: mediaFields("audio"),
-              ContentView: ({ value }) => value.caption || "Audio",
-            }),
-            handwriting: wrapper({
-              label: "Handwriting",
-              description: "Text in a handwriting font, for a note that should look jotted down.",
-              schema: {},
-            }),
-          },
-        }),
+        content: postContent("Content", "writing"),
       },
     }),
 

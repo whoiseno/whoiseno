@@ -4,28 +4,30 @@ import { Icon } from "@/shared/ui/icon";
 import { Text } from "@/shared/ui/text";
 
 interface TypePagerEntry {
-  id: string;
+  href: string;
   title: string;
 }
 
 interface Props {
-  /** The post published just before this one. */
+  /** The entry just before this one. */
   previous?: TypePagerEntry | null;
-  /** The post published just after this one. */
+  /** The entry just after this one. */
   next?: TypePagerEntry | null;
+  /** Names the navigation for screen readers. */
+  label?: string;
 }
 
-const { previous, next } = Astro.props;
+const { previous, next, label = "Previous and next posts" } = Astro.props;
 ---
 
 {(previous || next) && (
   <nav
     class="grid-fluid gap-xs [--grid-fill:auto-fit] [--grid-min:16rem]"
-    aria-label="Previous and next posts"
+    aria-label={label}
     data-slot="writing-pager"
   >
     {previous && (
-      <Card href={`/writing/${previous.id}`}>
+      <Card href={previous.href}>
         <Text
           as="span"
           class="flex items-center gap-3xs"
@@ -50,7 +52,7 @@ const { previous, next } = Astro.props;
     {next && (
       <Card
         class="text-right"
-        href={`/writing/${next.id}`}
+        href={next.href}
       >
         <Text
           as="span"

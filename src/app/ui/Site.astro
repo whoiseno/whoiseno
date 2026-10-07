@@ -1,6 +1,7 @@
 ---
 import { getNavItems } from "@/entities/navigation";
 import { getProfile, getSocialLinks } from "@/entities/profile";
+import { getSignature } from "@/entities/signature";
 import { ScrollToTop } from "@/features/scroll-to-top";
 import { ThemeToggle } from "@/features/theme-toggle";
 import { Button } from "@/shared/ui/button";
@@ -28,6 +29,7 @@ interface Props {
 const { title, description, crumbs, image, imageAlt, type } = Astro.props;
 const profile = await getProfile();
 const navItems = await getNavItems();
+const signature = await getSignature();
 const previewImage =
   image && Astro.site ? new URL((await getImage({ src: image, width: 1200 })).src, Astro.site).href : undefined;
 ---
@@ -106,6 +108,7 @@ const previewImage =
   </div>
   <SiteFooter
     name={profile.data.name}
+    signature={signature}
     socials={getSocialLinks(profile.data)}
   />
 </Root>

@@ -73,6 +73,7 @@
   --color-error: var(--error);
   --color-error-foreground: var(--error-foreground);
   --color-rating: var(--rating);
+  --color-code: var(--code);
   --color-ring: var(--ring);
   --color-border: var(--border);
   --color-border-soft: var(--border-soft);
@@ -176,6 +177,9 @@
     /* Rating star color. A true yellow, where the warning color is amber */
     --rating: oklch(0.795 0.184 86.047);
 
+    /* Inline code text. A muted purple, readable on the muted code background */
+    --code: oklch(0.5 0.12 300);
+
     /* Ring color. Focus states and outlines */
     --ring: oklch(0.7161 0.0091 56.26);
 
@@ -238,6 +242,8 @@
 
     --rating: oklch(0.852 0.199 91.936);
 
+    --code: oklch(0.8 0.1 300);
+
     --ring: oklch(0.5555 0 0);
 
     --border: oklch(1 0 0 / 10%);
@@ -297,7 +303,7 @@
       @apply list-decimal space-y-3xs pl-m;
     }
     :not(pre) > code {
-      @apply rounded-sm bg-muted px-3xs py-0.5 font-mono text-step--1;
+      @apply rounded-sm bg-muted px-3xs py-0.5 font-mono text-step--1 text-code;
     }
     blockquote {
       @apply rounded-r-lg border-l-2 bg-muted/40 px-s py-xs text-muted-foreground;
@@ -369,7 +375,7 @@
         @apply list-decimal space-y-3xs pl-m;
       }
       code {
-        @apply rounded-sm bg-muted px-3xs py-0.5 font-mono;
+        @apply rounded-sm bg-muted px-3xs py-0.5 font-mono text-code;
       }
       :is(img, video, audio, [data-slot="lightbox-trigger"]) {
         @apply w-full;
@@ -459,6 +465,12 @@
           color var(--fade);
       }
     }
+  }
+
+  /* An uploaded signature may carry its own colors, even in inline styles, so these have to win. */
+  [data-slot="signature"] :is(path, line, polyline, polygon, circle, ellipse, rect) {
+    fill: none !important;
+    stroke: currentColor !important;
   }
 
   html:has([data-slot="lightbox-content"][open]) {

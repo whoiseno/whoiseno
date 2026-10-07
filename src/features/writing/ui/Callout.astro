@@ -1,0 +1,65 @@
+---
+import { Icon } from "@/shared/ui/icon";
+
+import { calloutMeta, type TypeCalloutType } from "../config/callouts";
+import { calloutVariants } from "./callout-variants";
+
+interface Props {
+  type?: TypeCalloutType;
+  /** Shown beside the icon. A collapsible callout falls back to the name of its type. */
+  title?: string;
+  /** Renders a `<details>` that the reader can fold. */
+  collapsible?: boolean;
+  /** Only for a collapsible callout: starts unfolded. */
+  open?: boolean;
+}
+
+const { type = "info", title, collapsible = false, open = false } = Astro.props;
+const { label, icon: iconName } = calloutMeta[type];
+const { root, icon } = calloutVariants({ type });
+---
+
+{collapsible ? (
+  <details
+    class={root({ class: "group" })}
+    data-slot="callout"
+    data-type={type}
+    open={open}
+  >
+    <summary class="flex cursor-pointer list-none items-start gap-xs rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-ring [&::-webkit-details-marker]:hidden">
+      <Icon
+        class={icon()}
+        aria-hidden="true"
+        name={iconName}
+        weight="Filled"
+      />
+      <span class="min-w-0 flex-1 font-semibold">{title ?? label}</span>
+      <Icon
+        class="mt-[0.2em] size-[1.1em] shrink-0 text-muted-foreground transition-transform duration-200 group-open:rotate-90 motion-reduce:transition-none"
+        aria-hidden="true"
+        name="reicon:ChevronRight"
+      />
+    </summary>
+    <div class="mt-xs space-y-xs ps-[calc(1.1em+var(--spacing-xs))]">
+      <slot />
+    </div>
+  </details>
+) : (
+  <div
+    class={root({ class: "flex items-start gap-xs" })}
+    data-slot="callout"
+    data-type={type}
+    role="note"
+  >
+    <Icon
+      class={icon()}
+      aria-hidden="true"
+      name={iconName}
+      weight="Filled"
+    />
+    <div class="min-w-0 flex-1 space-y-xs">
+      {title ? <p class="font-semibold">{title}</p> : <p class="sr-only">{label}</p>}
+      <slot />
+    </div>
+  </div>
+)}

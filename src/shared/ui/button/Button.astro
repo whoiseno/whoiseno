@@ -18,6 +18,8 @@ const classes = buttonVariants({ variant, color, size, class: className });
 {href ? (
   <a
     data-slot="button"
+    data-cuelume-navigate
+    data-cuelume-hover
     data-variant={variant ?? "solid"}
     data-color={color ?? "primary"}
     data-size={size ?? "md"}
@@ -32,6 +34,8 @@ const classes = buttonVariants({ variant, color, size, class: className });
 ) : (
   <button
     data-slot="button"
+    data-cuelume-tap
+    data-cuelume-hover
     data-variant={variant ?? "solid"}
     data-color={color ?? "primary"}
     data-size={size ?? "md"}

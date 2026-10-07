@@ -1,0 +1,74 @@
+---
+import { cn } from "@/shared/lib/tailwind";
+
+interface Props {
+  /** The markup of an SVG whose paths are strokes. */
+  svg: string;
+  /** Read aloud in place of the drawing. */
+  label?: string;
+  class?: string;
+}
+
+const { svg, label = "Signature", class: className } = Astro.props;
+---
+
+{/* eslint-disable astro/no-set-html-directive -- the markup is a file the site owner uploaded and committed, read at build time */}
+<div
+  data-slot="signature"
+  class={cn("text-foreground [&>svg]:block [&>svg]:h-auto [&>svg]:w-full", className)}
+  role="img"
+  aria-label={label}
+  set:html={svg}
+/>
+{/* eslint-enable astro/no-set-html-directive */}
+
+<script>
+  import { createMotionScope } from "@/shared/lib/motion";
+  import { animate, svg, utils } from "animejs";
+
+  const SHAPES = "path, line, polyline, polygon, circle, ellipse, rect";
+  const WRITE_MS = 2400;
+
+  /** Hides the strokes and returns the function that writes them out. */
+  function prepare(root: HTMLElement) {
+    const shapes = [...root.querySelectorAll<SVGGeometryElement>(SHAPES)].filter(
+      (shape) => !shape.closest("defs, clipPath, mask"),
+    );
+    const lengths = shapes.map((shape) => shape.getTotalLength());
+    const total = lengths.reduce((sum, length) => sum + length, 0);
+    if (total === 0) return null;
+
+    // Each stroke starts when the one before it ends and takes time in proportion to its length, so the pen keeps one pace.
+    const starts = lengths.map((_, index) => lengths.slice(0, index).reduce((sum, length) => sum + length, 0));
+    const drawables = svg.createDrawable(shapes);
+    utils.set(drawables, { draw: "0 0" });
+
+    return () =>
+      animate(drawables, {
+        draw: ["0 0", "0 1"],
+        duration: (_: unknown, index = 0) => (WRITE_MS * lengths[index]) / total,
+        delay: (_: unknown, index = 0) => (WRITE_MS * starts[index]) / total,
+        ease: "inOutSine",
+      });
+  }
+
+  // With reduced motion the signature stays as drawn.
+  createMotionScope().add((scope) => {
+    if (!scope || scope.matches.reduceMotion) return;
+
+    for (const root of document.querySelectorAll<HTMLElement>('[data-slot="signature"]')) {
+      const write = prepare(root);
+      if (!write) continue;
+
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (!entry.isIntersecting) return;
+          observer.disconnect();
+          write();
+        },
+        { threshold: 0.6 },
+      );
+      observer.observe(root);
+    }
+  });
+</script>

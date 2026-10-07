@@ -1,0 +1,27 @@
+---
+import { Button } from "@/shared/ui/button";
+import { Icon } from "@/shared/ui/icon";
+---
+
+<div
+  class="space-y-xl"
+  x-data
+  x-on:keydown.escape.window="$store.writingReader.setFocus(false)"
+>
+  <Button
+    class="fixed top-4 right-4 z-50 opacity-50 hover:opacity-100 focus-visible:opacity-100"
+    aria-label="Exit focus mode"
+    color="neutral"
+    size="sm"
+    type="button"
+    variant="ghost"
+    x-cloak
+    x-on:click="$store.writingReader.setFocus(false)"
+    x-show="$store.writingReader.focus"
+    x-transition:enter="animate-in duration-300 fade-in"
+    x-transition:leave="animate-out duration-300 fade-out"
+  >
+    <Icon name="reicon:X" />
+  </Button>
+  <slot />
+</div>

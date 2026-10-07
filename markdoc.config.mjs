@@ -41,6 +41,17 @@ export default defineMarkdocConfig({
     },
   },
   tags: {
+    // Nested callouts need no extra work: Markdoc nests tags, and `Callout` renders its children in a slot.
+    callout: {
+      render: component("./src/features/writing/index.ts", "Callout"),
+      attributes: {
+        // Keep the names in step with `calloutTypes` in `src/features/writing/config/callouts.ts`.
+        type: { type: String, matches: ["info", "warning", "success", "danger", "good-to-know"], default: "info" },
+        title: { type: String },
+        collapsible: { type: Boolean },
+        open: { type: Boolean },
+      },
+    },
     carousel: {
       render: component("./src/features/writing/index.ts", "Carousel"),
       attributes: { caption: { type: String } },

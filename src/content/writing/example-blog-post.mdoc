@@ -52,6 +52,63 @@ A horizontal rule separates two thoughts without a new heading.
 
 Like that.
 
+## Callouts
+
+A callout sets a note apart from the text. There are five types, each with its own icon and a faint tint of its color:
+
+{% callout type="info" %}
+Info is for background that helps the reader follow along.
+{% /callout %}
+
+{% callout type="warning" %}
+Warning is for something that may go wrong if it is missed.
+{% /callout %}
+
+{% callout type="success" %}
+Success confirms that a step worked, or that an approach is the right one.
+{% /callout %}
+
+{% callout type="danger" %}
+Danger is for what can lose data or break the build. Run `rm -rf` only on a path you have checked.
+{% /callout %}
+
+{% callout type="good-to-know" %}
+Good to know holds the side facts that are worth a sentence but not a section.
+{% /callout %}
+
+A title replaces the empty space beside the icon, and the body can hold more than a sentence:
+
+{% callout type="info" title="Where posts live" %}
+Every post is a Markdoc file in `src/content/writing`.
+
+- Edit it in Keystatic, or in any editor
+- Commit it like code
+{% /callout %}
+
+A callout marked collapsible folds away. It starts closed unless it is marked open, and it shows its type when it has no title:
+
+{% callout type="good-to-know" title="Why the site is static" collapsible=true %}
+Static pages need no server to render, so they load fast and cost almost nothing to host.
+{% /callout %}
+
+{% callout type="warning" collapsible=true open=true %}
+This one starts open, and can still be folded.
+{% /callout %}
+
+Callouts nest, to any depth:
+
+{% callout type="info" title="Outer callout" %}
+The outer callout holds a paragraph and another callout.
+
+{% callout type="success" title="Inner callout" %}
+The inner callout has its own type, so the two read as separate notes.
+
+{% callout type="danger" title="Innermost callout" collapsible=true open=true %}
+Nesting works with collapsible callouts too.
+{% /callout %}
+{% /callout %}
+{% /callout %}
+
 # Part two: media
 
 Images, columns and carousels all keep their aspect ratio.

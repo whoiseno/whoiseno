@@ -3,9 +3,11 @@ import { Icon } from "@/shared/ui/icon";
 
 interface Props {
   class?: string;
+  href?: string;
+  label?: string;
 }
 
-const { class: className } = Astro.props;
+const { class: className, href = "/writing", label = "All writing" } = Astro.props;
 ---
 
 <a
@@ -14,11 +16,11 @@ const { class: className } = Astro.props;
     className,
   ]}
   data-slot="writing-back-link"
-  href="/writing"
+  href={href}
 >
   <Icon
     class="size-3.5"
     name="reicon:ArrowLeft"
   />
-  All writing
+  {label}
 </a>

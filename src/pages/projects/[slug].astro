@@ -1,5 +1,13 @@
 ---
 import { Site } from "@/app/ui";
+import {
+  WritingBackLink,
+  WritingPager,
+  WritingReader,
+  WritingSidenotes,
+  WritingToc,
+  WritingToolbar,
+} from "@/features/writing";
 import { formatDateRange } from "@/shared/lib/date";
 import { Badge } from "@/shared/ui/badge";
 import { Icon } from "@/shared/ui/icon";
@@ -9,15 +17,22 @@ import type { InferGetStaticPropsType } from "astro";
 import { getCollection, render } from "astro:content";
 
 export async function getStaticPaths() {
-  const projects = await getCollection("projects");
-  return projects.map((project) => ({ params: { slug: project.id }, props: { project } }));
+  const projects = (await getCollection("projects")).sort(
+    (a, b) => a.data.startDate.getTime() - b.data.startDate.getTime(),
+  );
+  const toLink = (project?: (typeof projects)[number]) =>
+    project ? { href: `/projects/${project.id}`, title: project.data.title } : null;
+  return projects.map((project, index) => ({
+    params: { slug: project.id },
+    props: { project, previous: toLink(projects[index - 1]), next: toLink(projects[index + 1]) },
+  }));
 }
 
 type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 
-const { project } = Astro.props;
+const { project, previous, next } = Astro.props;
 const { title, description, startDate, endDate, skills, demoLink, sourceLink } = project.data;
-const { Content } = await render(project);
+const { Content, headings } = await render(project);
 const links = [
   { label: "Live demo", href: demoLink },
   { label: "Source", href: sourceLink },
@@ -28,51 +43,75 @@ const links = [
   crumbs={[{ label: "Projects", href: "/projects" }, { label: title }]}
   description={description}
   title={title}
+  type="article"
 >
-  <div class="space-y-xs">
-    <Text
-      as="div"
-      class="flex flex-wrap items-center gap-x-s gap-y-2xs"
-      tone="muted"
-      variant="small"
+  <WritingToc
+    slot="toc"
+    headings={headings}
+  />
+  <WritingSidenotes slot="sidenotes" />
+  <WritingToolbar
+    slot="tools"
+    class="max-rail:hidden"
+    size="icon-md"
+  />
+  <WritingReader>
+    <div
+      class="flex items-start justify-between gap-xs"
+      data-focus-hide
     >
-      <p>{formatDateRange(startDate, endDate)}</p>
-      {links.map((link) => (
-        <a
-          class="inline-flex items-center gap-3xs transition-colors hover:text-foreground"
-          href={link.href}
-          rel="noopener noreferrer"
-          target="_blank"
+      <div class="space-y-xs">
+        <Text
+          as="div"
+          class="flex flex-wrap items-center gap-x-s gap-y-2xs"
+          tone="muted"
+          variant="small"
         >
-          {link.label}
-          <Icon
-            class="size-3.5"
-            name="reicon:ArrowUpRight"
-          />
-        </a>
-      ))}
-    </Text>
-    {skills.length > 0 && (
-      <ul class="flex flex-wrap gap-2xs">
-        {skills.map((skill) => (
-          <li>
-            <Badge>{skill}</Badge>
-          </li>
-        ))}
-      </ul>
-    )}
-  </div>
-  <Prose>
-    <Content />
-  </Prose>
-  <a
-    class="inline-flex items-center gap-3xs text-muted-foreground transition-colors hover:text-foreground"
-    href="/projects"
-  >
-    <Icon
-      class="size-3.5"
-      name="reicon:ArrowLeft"
-    />
-    All projects
-  </a>
+          <p>{formatDateRange(startDate, endDate)}</p>
+          {links.map((link) => (
+            <a
+              class="inline-flex items-center gap-3xs transition-colors hover:text-foreground"
+              href={link.href}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              {link.label}
+              <Icon
+                class="size-3.5"
+                name="reicon:ArrowUpRight"
+              />
+            </a>
+          ))}
+        </Text>
+        {skills.length > 0 && (
+          <ul class="flex flex-wrap gap-2xs">
+            {skills.map((skill) => (
+              <li>
+                <Badge>{skill}</Badge>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+      <WritingToolbar class="rail:hidden" />
+    </div>
+    <Prose>
+      <Content />
+    </Prose>
+    <div
+      class="space-y-s-m"
+      data-focus-hide
+    >
+      <WritingBackLink
+        class="rail:hidden"
+        href="/projects"
+        label="All projects"
+      />
+      <WritingPager
+        label="Previous and next projects"
+        next={next}
+        previous={previous}
+      />
+    </div>
+  </WritingReader>
 </Site>

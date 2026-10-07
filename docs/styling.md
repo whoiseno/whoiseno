@@ -127,7 +127,7 @@ Each is registered with a `cssVariable` (e.g. `--font-general-sans-variable`) in
 
 ## Color tokens
 
-Tailwind's default palette is removed (`--color-*: initial`), so classes like `text-gray-950` do not exist. Colors come only from semantic tokens: `background`, `foreground`, `dimmed`, `surface`, `card`, `popover`, `input`, `accent`, `muted`, `brand`, `primary`, `secondary`, `neutral`, `info`, `warning`, `success`, `error`, `rating` (the yellow of the star rating), `ring` and `border` (plus `-foreground` pairs, and `border-soft`/`border-hard`), along with `black`, `white` and `scrim`. Use them as `bg-card`, `text-muted-foreground`, `border`, and so on.
+Tailwind's default palette is removed (`--color-*: initial`), so classes like `text-gray-950` do not exist. Colors come only from semantic tokens: `background`, `foreground`, `dimmed`, `surface`, `card`, `popover`, `input`, `accent`, `muted`, `brand`, `primary`, `secondary`, `neutral`, `info`, `warning`, `success`, `error`, `rating` (the yellow of the star rating), `code` (the muted purple of inline code), `ring` and `border` (plus `-foreground` pairs, and `border-soft`/`border-hard`), along with `black`, `white` and `scrim`. Use them as `bg-card`, `text-muted-foreground`, `border`, and so on.
 
 Each token is a CSS variable set in `:root` (light) and redefined in `.dark`. `--toned` is declared in both blocks but has no `--color-toned` mapping, so there is no `text-toned` utility yet.
 
@@ -173,6 +173,9 @@ Every scroll container is thin: `scrollbar-width: thin` and a `--border-hard` th
 - **Wide mode:** the `data-wide` attribute on `<html>`, toggled by the width button, widens `<main>` in `Site.astro` to `max-w-4xl` and the body container to `max-w-384` with the `in-data-wide:` variant and a `transition-[max-width]`. The side tracks stay 14rem, so the content stays centered; the footer keeps its width. The button lives in `WritingToolbar`, shown from `rail` only (in the sidebar there), and drives the `writingReader` store. Below `rail` the toolbar in the post's header row holds the focus button alone.
 - **Focus mode:** `html[data-focus]` rules in `global.css`; see [`animations.md`](./animations.md).
 - **Anchored headings:** `h1` to `h3` inside `Prose` have `scroll-mt-20` below `rail`, so a jump does not hide the heading under the sticky top bar, and `scroll-mt-8` from `rail`, where the navigation is a side rail and nothing covers the top.
+- **Inline code:** `:not(pre) > code` in `[data-slot="prose"]`, and `code` in a footnote body, get `text-code` on the muted background. `--code` is `oklch(0.5 0.12 300)` in light and `oklch(0.8 0.1 300)` in dark. Code blocks are Expressive Code's and do not use it.
+- **Callout colors:** `callout-variants.ts` ([`features/writing/ui`](../src/features/writing/ui/callout-variants.ts)) gives each type a border at 30% and a background at 10% of its semantic token (`info`, `warning`, `success`, and `error` for `danger`), and colors the icon with the full token. The text stays `foreground`, because amber and yellow on a light background are too pale to read as text. Good to know uses `neutral` (background at 40%, border from `neutral-foreground` at 15%) with a `muted-foreground` icon. All of it follows the dark tokens, so no `dark:` variants are needed.
+- **Signature color:** `global.css` forces `fill: none` and `stroke: currentColor` (both `!important`, so an inline `style` in the uploaded file cannot win) on the shapes inside `[data-slot="signature"]`, so the signature takes the text color in both themes.
 
 ## Component variants
 
