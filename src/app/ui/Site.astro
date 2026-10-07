@@ -2,6 +2,7 @@
 import { getNavItems } from "@/entities/navigation";
 import { getProfile, getSocialLinks } from "@/entities/profile";
 import { ScrollToTop } from "@/features/scroll-to-top";
+import { SoundToggle } from "@/features/sound-toggle";
 import { ThemeToggle } from "@/features/theme-toggle";
 import { Button } from "@/shared/ui/button";
 import { Text } from "@/shared/ui/text";
@@ -74,6 +75,7 @@ const previewImage =
             </Button>
           )}
         </div>
+        <SoundToggle />
       </Fragment>
     </SiteSidebar>
     <div

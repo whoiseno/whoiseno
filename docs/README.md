@@ -10,7 +10,7 @@ Start here, then jump into the file that covers the part you're touching.
 | [setup.md](./setup.md)                       | Local dev environment, scripts, tooling (lint/format/hooks)                           |
 | [layers/app.md](./layers/app.md)             | `src/app` — document and site shell, Alpine setup, global styles                      |
 | [layers/pages.md](./layers/pages.md)         | `src/pages` — file-based routing                                                      |
-| [layers/features.md](./layers/features.md)   | `src/features` — one slice per portfolio section, plus the theme toggle               |
+| [layers/features.md](./layers/features.md)   | `src/features` — one slice per portfolio section, plus the theme and sound toggles    |
 | [layers/entities.md](./layers/entities.md)   | `src/entities` — the profile, navigation and writing tag entities                     |
 | [layers/shared.md](./layers/shared.md)       | `src/shared` — reusable UI primitives and config                                      |
 | [components/](./components/README.md)        | Detailed docs + usage examples for every `shared/ui/page` component                   |

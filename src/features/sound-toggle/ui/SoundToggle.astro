@@ -1,0 +1,28 @@
+---
+import { Button } from "@/shared/ui/button";
+import { Icon } from "@/shared/ui/icon";
+---
+
+<Button
+  aria-label="Toggle sound"
+  color="neutral"
+  size="icon-md"
+  type="button"
+  variant="ghost"
+  x-bind:aria-pressed="on"
+  x-data="soundToggle"
+  x-on:click="toggle()"
+>
+  <Icon
+    class="size-4"
+    name="reicon:VolumeUp"
+    x-cloak
+    x-show="on"
+  />
+  <Icon
+    class="size-4"
+    name="reicon:VolumeX"
+    x-cloak
+    x-show="!on"
+  />
+</Button>

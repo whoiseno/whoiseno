@@ -332,7 +332,7 @@
     one into the rail beside its number (`data-placed`) and sets `visible`, `lit`, `expanded` and `clipped` on it.
   */
   [data-slot="prose"] a[data-slot="footnote-ref"] {
-    @apply -mx-[0.2em] scroll-mt-20 rounded-sm px-[0.2em] text-muted-foreground no-underline transition-colors hover:bg-muted hover:text-foreground rail:scroll-mt-8;
+    @apply mx-[-0.2em] scroll-mt-20 rounded-sm px-[0.2em] text-muted-foreground no-underline transition-colors hover:bg-muted hover:text-foreground rail:scroll-mt-8;
   }
 
   :root[data-sidenotes] [data-slot="footnote-ref"] {

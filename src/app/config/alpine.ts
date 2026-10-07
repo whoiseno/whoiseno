@@ -1,4 +1,5 @@
 import { registerScrollToTop } from "@/features/scroll-to-top/client";
+import { registerSoundToggle } from "@/features/sound-toggle/client";
 import { registerThemeToggle } from "@/features/theme-toggle/client";
 import { registerWriting } from "@/features/writing/client";
 import { registerUi } from "@/shared/ui/alpine";
@@ -11,6 +12,7 @@ export default (Alpine: Alpine) => {
   Alpine.plugin(intersect);
   registerUi(Alpine);
   registerScrollToTop(Alpine);
+  registerSoundToggle(Alpine);
   registerThemeToggle(Alpine);
   registerWriting(Alpine);
 };

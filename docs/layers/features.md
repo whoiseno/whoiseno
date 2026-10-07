@@ -69,6 +69,11 @@ src/features/
 │   ├── client.ts               # browser entry: registerScrollToTop
 │   ├── model/scroll-to-top.ts  # Alpine.data("scrollToTop")
 │   └── ui/ScrollToTop.astro    # scroll-to-top button
+├── sound-toggle/
+│   ├── index.ts                # public API: SoundToggle
+│   ├── client.ts               # browser entry: registerSoundToggle
+│   ├── model/sound-toggle.ts   # Alpine.data("soundToggle")
+│   └── ui/SoundToggle.astro    # sound on/off button
 └── theme-toggle/
     ├── index.ts                # public API: ThemeToggle
     ├── client.ts               # browser entry: registerThemeToggle
@@ -111,6 +116,10 @@ Each list except `BookList` reads its own content collection with `getCollection
 ## `scroll-to-top`
 
 A ghost icon `Button` bound to the Alpine `scrollToTop` component from `model/scroll-to-top.ts`. `scrolled` turns true once `window.scrollY` passes 200px (checked on init and on window scroll), and the button is `disabled` (dimmed) until then. `top()` calls `window.scrollTo({ top: 0 })`, which animates because `<html>` has `scroll-smooth`. `Site` places it in the sidebar's actions from `rail` only (`max-rail:hidden`), on every page.
+
+## `sound-toggle`
+
+A ghost icon `Button` bound to the Alpine `soundToggle` component from `model/sound-toggle.ts`, the last item in the sidebar actions (below the theme toggle from `rail`, after it in the top bar below `rail`). `on` starts from `isSoundOn()` (the saved choice in `localStorage.sound`) in `init()`, and `toggle()` flips it and calls `setSoundOn()`, both from [`shared/lib/sound.ts`](./shared.md#sound), which also saves the choice (the write is wrapped in `try/catch`). The button is a toggle: `aria-label="Toggle sound"` with `aria-pressed` following `on`, and the speaker icon swaps for a slashed one (both icons are `x-cloak`, so neither flashes before Alpine starts). Muting plays the usual click cue, because the click lands before sound is switched off; switching sound back on plays a short `toggle` cue so the visitor hears that it worked, since the click that did it was silent. The choice is per browser and applies to every page.
 
 ## `theme-toggle`
 

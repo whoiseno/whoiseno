@@ -21,6 +21,8 @@ import Moon from "reicon-astro/icons/Moon.astro";
 import Star from "reicon-astro/icons/Star.astro";
 import Sun from "reicon-astro/icons/Sun.astro";
 import Verified from "reicon-astro/icons/Verified.astro";
+import VolumeUp from "reicon-astro/icons/VolumeUp.astro";
+import VolumeX from "reicon-astro/icons/VolumeX.astro";
 import X from "reicon-astro/icons/X.astro";
 
 /**
@@ -51,6 +53,8 @@ export const reicons = {
   Star,
   Sun,
   Verified,
+  VolumeUp,
+  VolumeX,
   X,
 };
 

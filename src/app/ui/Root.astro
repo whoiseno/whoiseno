@@ -96,10 +96,10 @@ const { title, description, image, imageAlt, type = "website" } = Astro.props;
   <body class="@container flex flex-col min-h-svh w-full overflow-x-clip *:w-full font-sans antialiased text-step-0 bg-background text-foreground">
     <slot />
     <script>
-      import { bind } from "cuelume";
+      import { initSound } from "@/shared/lib/sound";
 
-      // Cuelume plays the sounds that `Button` and the other buttons ask for with `data-cuelume-*` attributes.
-      bind();
+      // Plays the sounds that `Button` and the other buttons ask for with `data-cuelume-*` attributes.
+      initSound();
     </script>
   </body>
 </html>
