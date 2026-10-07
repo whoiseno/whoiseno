@@ -16,9 +16,6 @@ src/entities/
 │   └── ui/
 │       ├── ProfileContacts.astro # email address with a copy button, and a hover-card icon per other social
 │       └── ProfileHero.astro     # avatar, name, role, status badge, location, Markdoc bio, contacts
-├── signature/
-│   ├── index.ts                  # public API: getSignature
-│   └── api/getSignature.ts       # reads the signature singleton and the SVG it points to, as text
 └── writing/
     ├── index.ts                  # public API: getWritingTags, TypeWritingTag
     ├── api/getWritingTags.ts     # getWritingTags(): TypeWritingTag[] from the writing collection
@@ -26,8 +23,6 @@ src/entities/
 ```
 
 The profile is reused across layers: the home hero (`pages/index.astro`) and the footer (`app/ui/Site.astro`) both read it. The writing tags are reused by the writing feature (`WritingTags`, rendered inside `WritingFilters`) and by `pages/writing/tags/[tag].astro`, which needs them in `getStaticPaths`.
-
-`getSignature()` reads the `signature` singleton (`getEntry("signature", "index")`) and returns the markup of the SVG its `file` names, or `null` while no file is set. The SVGs are loaded with `import.meta.glob("/src/assets/signature/*.svg", { query: "?raw" })`, because the `Signature` component animates the paths and so needs the markup, not an image URL. A `file` that is not one of those throws, naming it. `Site.astro` calls it and passes the result to `SiteFooter`. Authoring is in [`content.md`](../content.md).
 
 `getNavItems()` reads the `navigation` singleton, drops links whose `visible` is `false` and returns the rest as `{ label, href }`. `Site.astro` passes the result to `SiteSidebar`, so editing the links in Keystatic is all it takes to change the navigation. It throws a helpful error when the singleton file is missing. Works, projects, books, movies and the writing list are rendered by feature slices instead (see [`features.md`](./features.md)), since each is only shown by its own section.
 

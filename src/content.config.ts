@@ -36,11 +36,6 @@ const profile = defineCollection({
     }),
 });
 
-const signature = defineCollection({
-  loader: glob({ pattern: "**/*.yaml", base: "./src/content/signature" }),
-  schema: z.object({ file: z.string().nullish() }),
-});
-
 const works = defineCollection({
   loader: glob({ pattern: "**/*.mdoc", base: "./src/content/works" }),
   schema: z.object({
@@ -144,4 +139,4 @@ const navigation = defineCollection({
   }),
 });
 
-export const collections = { profile, navigation, signature, works, projects, writing, software, hardware, movies };
+export const collections = { profile, navigation, works, projects, writing, software, hardware, movies };

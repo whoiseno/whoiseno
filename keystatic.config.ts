@@ -201,7 +201,7 @@ export default config({
 
   ui: {
     navigation: {
-      Site: ["navigation", "profile", "signature"],
+      Site: ["navigation", "profile"],
       Work: ["works", "projects"],
       Writing: ["writing"],
       Uses: ["software", "hardware"],
@@ -231,21 +231,6 @@ export default config({
             itemLabel: (props) => `${props.fields.label.value}${props.fields.visible.value ? "" : " (hidden)"}`,
           },
         ),
-      },
-    }),
-
-    signature: singleton({
-      label: "Signature",
-      path: "src/content/signature/",
-      format: { data: "yaml" },
-      schema: {
-        file: fields.file({
-          label: "Signature (SVG)",
-          description:
-            "An SVG whose paths are strokes, so the site can write it out in the footer. It is drawn in the text color, so it suits light and dark.",
-          directory: "src/assets/signature",
-          publicPath: "../../assets/signature/",
-        }),
       },
     }),
 

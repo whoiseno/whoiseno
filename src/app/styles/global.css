@@ -467,12 +467,6 @@
     }
   }
 
-  /* An uploaded signature may carry its own colors, even in inline styles, so these have to win. */
-  [data-slot="signature"] :is(path, line, polyline, polygon, circle, ellipse, rect) {
-    fill: none !important;
-    stroke: currentColor !important;
-  }
-
   html:has([data-slot="lightbox-content"][open]) {
     overflow: hidden;
     scrollbar-gutter: stable;

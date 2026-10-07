@@ -44,7 +44,6 @@ src/shared/
     ├── prose/                      # Prose.astro, index.ts
     ├── rating/                     # Rating.astro, index.ts
     ├── section/                    # Section.astro, index.ts
-    ├── signature/                  # Signature.astro (writes an SVG out when it scrolls into view), index.ts
     └── text/                       # Text.astro, variants.ts, index.ts
 ```
 
@@ -96,10 +95,6 @@ The interactive components follow the [shadcn/ui](https://ui.shadcn.com) compoun
 - **Add a Reicon:** import it by path in `reicons.ts` (`reicon-astro/icons/<Name>.astro`) and add it to the `reicons` object. Do not import from the package barrel: it pulls in about 2,700 components and slows the dev server.
 - **Add a logo:** drop the SVG from [svgl.app](https://svgl.app) into `src/assets/icons/logos/` (as `<slug>.svg`, or `<slug>-light.svg` and `<slug>-dark.svg` for themed logos) and add an entry to `logoCatalog` in `src/shared/config/logos.ts`. `astro.config.mjs` passes `iconDir: "src/assets/icons"` to `astro-icon`, which is why the files sit under `assets/icons/` and are named `logos/<slug>` internally. `logos.ts` imports no `.astro` files, so `content.config.ts` and `keystatic.config.ts` can import `logoNames` from it for the works `technologies` field.
 - Logos are trademarks of their owners. Alpine.js and Keystatic have no SVGL logo, so none is included.
-
-## `ui/signature`
-
-`Signature` takes the `svg` markup of a drawing made of strokes, plus an optional `label` (read aloud in place of the drawing) and `class`, and renders it inline in a `<div role="img" data-slot="signature">`. Its `<script>` hides every stroke (`createDrawable` from anime.js, `draw: "0 0"`) and, when the element is 60% in view, writes them out one after another in 2.4 seconds, each taking time in proportion to its length so the pen keeps one pace. With reduced motion (`createMotionScope`) the script does nothing and the signature stays drawn, and without scripts it is drawn as well. The shapes inside the element are `fill: none` and `stroke: currentColor` from `global.css`, so it follows the text color. It does not know where the markup comes from: `getSignature` in [`entities/signature`](./entities.md) reads the uploaded file, and `Site` passes it to `SiteFooter`. The markup goes in with `set:html` (with an `eslint-disable` and the reason), because it is a file the site's owner committed, read at build time.
 
 ## Sound
 

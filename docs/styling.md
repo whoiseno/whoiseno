@@ -175,7 +175,6 @@ Every scroll container is thin: `scrollbar-width: thin` and a `--border-hard` th
 - **Anchored headings:** `h1` to `h3` inside `Prose` have `scroll-mt-20` below `rail`, so a jump does not hide the heading under the sticky top bar, and `scroll-mt-8` from `rail`, where the navigation is a side rail and nothing covers the top.
 - **Inline code:** `:not(pre) > code` in `[data-slot="prose"]`, and `code` in a footnote body, get `text-code` on the muted background. `--code` is `oklch(0.5 0.12 300)` in light and `oklch(0.8 0.1 300)` in dark. Code blocks are Expressive Code's and do not use it.
 - **Callout colors:** `callout-variants.ts` ([`features/writing/ui`](../src/features/writing/ui/callout-variants.ts)) gives each type a border at 30% and a background at 10% of its semantic token (`info`, `warning`, `success`, and `error` for `danger`), and colors the icon with the full token. The text stays `foreground`, because amber and yellow on a light background are too pale to read as text. Good to know uses `neutral` (background at 40%, border from `neutral-foreground` at 15%) with a `muted-foreground` icon. All of it follows the dark tokens, so no `dark:` variants are needed.
-- **Signature color:** `global.css` forces `fill: none` and `stroke: currentColor` (both `!important`, so an inline `style` in the uploaded file cannot win) on the shapes inside `[data-slot="signature"]`, so the signature takes the text color in both themes.
 
 ## Component variants
 

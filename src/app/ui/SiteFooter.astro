@@ -2,17 +2,14 @@
 import type { TypeSocialLink } from "@/entities/profile";
 import { CopyButton } from "@/shared/ui/copy-button";
 import { Icon } from "@/shared/ui/icon";
-import { Signature } from "@/shared/ui/signature";
 import { Text } from "@/shared/ui/text";
 
 interface Props {
   name: string;
-  /** Markup of the signature SVG, when one is uploaded. */
-  signature?: string | null;
   socials: TypeSocialLink[];
 }
 
-const { name, signature, socials } = Astro.props;
+const { name, socials } = Astro.props;
 const year = new Date().getFullYear();
 const [firstName] = name.split(" ");
 ---
@@ -91,13 +88,6 @@ const [firstName] = name.split(" ");
           ))}
         </ul>
       </div>
-    )}
-    {signature && (
-      <Signature
-        class="w-40"
-        label={`${name}'s signature`}
-        svg={signature}
-      />
     )}
     <div class="space-y-xs">
       <Text
