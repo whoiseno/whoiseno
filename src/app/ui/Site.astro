@@ -5,7 +5,9 @@ import { ScrollToTop } from "@/features/scroll-to-top";
 import { SoundToggle } from "@/features/sound-toggle";
 import { ThemeToggle } from "@/features/theme-toggle";
 import { Button } from "@/shared/ui/button";
+import { Icon } from "@/shared/ui/icon";
 import { Text } from "@/shared/ui/text";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/ui/tooltip";
 import type { ImageMetadata } from "astro";
 import { getImage } from "astro:assets";
 
@@ -59,22 +61,27 @@ const previewImage =
         slot="tools"
       />
       <Fragment slot="actions">
-        <div class="max-rail:hidden">
-          <ScrollToTop />
-        </div>
-        <div class="flex items-center gap-3xs">
-          <ThemeToggle />
-          {import.meta.env.DEV && (
-            <Button
-              color="neutral"
-              href="/keystatic"
-              size="sm"
-              variant="outline"
-            >
-              CMS
-            </Button>
-          )}
-        </div>
+        <ScrollToTop class="max-rail:hidden" />
+        <ThemeToggle />
+        {import.meta.env.DEV && (
+          <Tooltip>
+            <TooltipTrigger>
+              <Button
+                aria-label="Open the content editor"
+                color="neutral"
+                href="/keystatic"
+                size="icon-md"
+                variant="outline"
+              >
+                <Icon
+                  class="size-4"
+                  name="logo:keystatic"
+                />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>Open the content editor (development only)</TooltipContent>
+          </Tooltip>
+        )}
         <SoundToggle />
       </Fragment>
     </SiteSidebar>

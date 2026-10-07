@@ -45,7 +45,8 @@ src/shared/
     ├── prose/                      # Prose.astro, index.ts
     ├── rating/                     # Rating.astro, index.ts
     ├── section/                    # Section.astro, index.ts
-    └── text/                       # Text.astro, variants.ts, index.ts
+    ├── text/                       # Text.astro, variants.ts, index.ts
+    └── tooltip/                    # compound: Tooltip, Trigger, Content (+ alpine.ts)
 ```
 
 The document shell (`Root`) and the site chrome (`Site`, `SiteSidebar`, `SiteBreadcrumbs`, `SiteFooter`) are not here. They know about the navigation and the profile, so they live in [`app/ui`](./app.md). The SVG sources for the tech-stack logos are static assets and live in `src/assets/icons/logos/`.
@@ -76,8 +77,20 @@ The interactive components follow the [shadcn/ui](https://ui.shadcn.com) compoun
 | `Pagination`                                                                                                | Previous and Next buttons around "Page 2 of 5". Props `page`, `pageCount` and `href(page)`, which builds the URL of a page. Renders nothing when there is only one page, and disables the button at either end. The pages are plain links, so it works without JavaScript.                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | `Section`                                                                                                   | Props `title`, `href?`, `hrefLabel="View all"`. A titled block with an optional "View all" link.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 | `Text`, `textVariants`                                                                                      | Every typographic role on the site. Props `variant` (default `body`), `tone` (`default`, `muted`, `faint`) and `as` (`h1` to `h4`, `p`, `span`, `div`, `time`, `figcaption`; each variant has a default element). Sizes are the fluid Utopia steps. `textVariants({ variant, tone })` gives the same classes as a string. See [`ui/text`](#uitext).                                                                                                                                                                                                                                                                                                                                                                                     |
+| `Tooltip`, `TooltipTrigger`, `TooltipContent`                                                               | `Tooltip` takes `delayDuration`; `TooltipContent` takes `side`, `align` and `sideOffset`. A small label on hover or keyboard focus; see [`ui/tooltip`](#uitooltip).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | `Breadcrumb`, `BreadcrumbList`, `BreadcrumbItem`, `BreadcrumbLink`, `BreadcrumbPage`, `BreadcrumbSeparator` | A `<nav aria-label="Breadcrumb">` with an `<ol>`. `BreadcrumbPage` is the current page (`aria-current="page"`, no link); `BreadcrumbSeparator` is a hidden `<li>` with a chevron, or whatever its slot holds. Purely static markup, no Alpine.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 | `Lightbox`, `LightboxTrigger`, `LightboxContent`, `LightboxImage`, `LightboxCaption`, `LightboxClose`       | Opens an image in a native `<dialog>`, so the focus trap, Escape to close and focus return to the trigger come from the browser. `LightboxTrigger` is a `<button>` (Enter and Space work), `LightboxContent` takes `label` for the dialog's accessible name, and clicking the backdrop closes it. For performance, `LightboxImage` takes the full-size `src` as `data-src` and sets the real `src` only on the first focus, hover or open, so a page never downloads images nobody opens. `html` scroll is locked with `html:has([data-slot="lightbox-content"][open])` in `global.css`.                                                                                                                                                |
+
+## Building a compound component
+
+Follow these steps for every new component with more than one moving part, and when you rework one that is a single big file.
+
+1. **Look it up in [shadcn/ui](https://ui.shadcn.com/docs/components) first.** Take its part names, nesting and prop names (Tooltip is `Tooltip`, `TooltipTrigger` and `TooltipContent`, with `side`, `sideOffset`, `align` and `delayDuration`). Where shadcn leans on React (`asChild`, providers, portals), port the idea to Astro and Alpine, and write the difference down in the component's section, as [`ui/tooltip`](#uitooltip) does.
+2. **Split by responsibility, one part per file.** The root holds the scope (`x-data`, `x-id`) and the layout wrapper. The trigger is what the visitor interacts with: it owns the events and the ARIA wiring for the control. The content is what appears: its role, placement and transition. A component that both reacts to the visitor and renders what appears is a god component, so split it.
+3. **Break out the items.** A component that holds a list of things (accordion items, menu items, breadcrumb items, a toolbar's actions) gets an item part, instead of taking an array prop or writing each item inline. Callers compose the items in markup. This applies to `features` and `entities` components too: `WritingToolbar`, `WritingList` and the links in `SiteSidebar` still write their items inline, and are the first to change when they are next touched.
+4. **Keep state in the root.** Behavior is one typed `Alpine.data(...)` in the component's `alpine.ts`, set on the root part, and it holds state and the methods that change it only. Parts read the inherited scope and refs (`x-ref="trigger"`, `$refs.trigger`), and each event handler lives on the part that receives the event.
+5. **Follow the conventions above:** `data-slot` on every part, `class` and the remaining props spread onto the part's element, variants in `variants.ts` when there are any, and `cn` and `tv` from `@/shared/lib/tailwind`.
+6. **Wire it in:** export the parts from the folder's `index.ts`, call the registration from `ui/alpine.ts`, and add a row for the parts to the table above. Give the component its own section only when it has behavior that needs explaining, and keep table rows short: Prettier pads every row of a table to its longest cell, so one long cell turns the whole table into a diff.
 
 ## `ui/icon`
 
@@ -95,7 +108,7 @@ The interactive components follow the [shadcn/ui](https://ui.shadcn.com) compoun
 - The tech-stack logos come from SVGL. The social logos `instagram`, `linkedin`, `x` (themed) and `youtube` are hand-drawn approximations; replace them with the official files under the same names in `src/assets/icons/logos/`. Every entry in `logoCatalog` is also selectable as a technology on a work in Keystatic, social logos included.
 - **Add a Reicon:** import it by path in `reicons.ts` (`reicon-astro/icons/<Name>.astro`) and add it to the `reicons` object. Do not import from the package barrel: it pulls in about 2,700 components and slows the dev server.
 - **Add a logo:** drop the SVG from [svgl.app](https://svgl.app) into `src/assets/icons/logos/` (as `<slug>.svg`, or `<slug>-light.svg` and `<slug>-dark.svg` for themed logos) and add an entry to `logoCatalog` in `src/shared/config/logos.ts`. `astro.config.mjs` passes `iconDir: "src/assets/icons"` to `astro-icon`, which is why the files sit under `assets/icons/` and are named `logos/<slug>` internally. `logos.ts` imports no `.astro` files, so `content.config.ts` and `keystatic.config.ts` can import `logoNames` from it for the works `technologies` field.
-- Logos are trademarks of their owners. Alpine.js and Keystatic have no SVGL logo, so none is included.
+- Logos are trademarks of their owners. Alpine.js has no SVGL logo, so none is included. The Keystatic logo is the brand mark from the Keystatic admin (`@keystatic/core`), saved as `keystatic.svg` and drawn in `currentColor` so it follows the text color; it is the icon of the dev-only CMS button.
 
 ## Sound
 
@@ -128,6 +141,30 @@ The master volume is `VOLUME` in `lib/sound.ts` (0.4, so a cue is 40% as loud as
 - `textVariants({ variant, tone })` returns the same classes as a string, for an element that holds more than text (the initials tile of an `Avatar`, the empty cover of a `MediaItem`).
 - Use a bare `text-step-*` class only on a container that hands its size to its children, such as a `ul`.
 - `title`, `heading` and `subheading` are repeated as the `h1` to `h3` of `Prose` in `global.css`, because Markdoc renders those headings. Change them together.
+
+## `ui/tooltip`
+
+Modeled on [shadcn/ui's Tooltip](https://ui.shadcn.com/docs/components/tooltip) (`Tooltip`, `TooltipTrigger`, `TooltipContent`), with the same prop names. Each part has one job:
+
+- `Tooltip` is the root. It owns the state (`Alpine.data("tooltip")` in `alpine.ts`: `shown`, `enter()` and `leave()`) and the ids (`x-id`), and renders an inline-flex `span`. Its `delayDuration` (milliseconds, default 350) is how long the pointer or focus has to stay before the content shows. `class` goes here, because this `span` is the layout item when a tooltip sits in a grid, so a class that hides the control has to be passed to `Tooltip` and not to the control.
+- `TooltipTrigger` wraps the one control the tooltip is about and decides when to show it. A mouse pointer entering calls `enter()`; leaving, blur and a click call `leave()`. A touch pointer never opens it, and keyboard focus counts only when it is `:focus-visible`, so a click that leaves focus on a button does not pin the tooltip open. It also sets `aria-describedby` on the control, pointing at the content, so a screen reader reads the tooltip after the control's name (the control keeps its own `aria-label`). It is the `x-ref="trigger"` the content is placed against.
+- `TooltipContent` is the label (the slot). It renders `role="tooltip"` in `bg-foreground text-background`, is `pointer-events-none`, wraps at 14rem, fades in with `x-show="shown"` and closes on Escape. `side` (`top`, `right`, `bottom` or `left`, default `top`), `align` and `sideOffset` (default 6) work as in shadcn and in `PopoverContent`.
+
+```astro
+<Tooltip>
+  <TooltipTrigger>
+    <Button
+      aria-label="Toggle theme"
+      ...
+    />
+  </TooltipTrigger>
+  <TooltipContent>Switch between the light and dark theme</TooltipContent>
+</Tooltip>
+```
+
+The Alpine `anchor` plugin places the content, flipping it to the opposite side when there is no room (a tooltip above a button at the top of the screen opens below it) and shifting it along the edge to stay inside the viewport.
+
+Where it differs from shadcn: there is no `TooltipProvider`, so the delay is set on each `Tooltip` and moving between two tooltips does not skip it; and there is no `asChild`, so `TooltipTrigger` wraps its child in a `span` instead of merging its props into it.
 
 ## `ui/page/*`
 

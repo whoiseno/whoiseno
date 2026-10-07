@@ -1,0 +1,33 @@
+---
+import { cn } from "@/shared/lib/tailwind";
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"span"> {
+  /** Where it sits. The anchor plugin flips it to the opposite side when there is no room. */
+  side?: "top" | "right" | "bottom" | "left";
+  align?: "start" | "center" | "end";
+  sideOffset?: number;
+}
+
+const { side = "top", align = "center", sideOffset = 6, class: className, ...rest } = Astro.props;
+const placement = align === "center" ? side : `${side}-${align}`;
+const anchor = { [`x-anchor.${placement}.offset.${sideOffset}`]: "$refs.trigger" };
+---
+
+<span
+  data-slot="tooltip-content"
+  class={cn(
+    "pointer-events-none z-50 w-max max-w-56 rounded-md bg-foreground px-2xs py-3xs text-step--1 leading-snug text-background shadow-md",
+    className,
+  )}
+  role="tooltip"
+  style="display: none"
+  x-bind:id="$id('tooltip')"
+  x-on:keydown.escape.window="leave()"
+  x-show="shown"
+  x-transition.opacity.duration.150ms
+  {...anchor}
+  {...rest}
+>
+  <slot />
+</span>

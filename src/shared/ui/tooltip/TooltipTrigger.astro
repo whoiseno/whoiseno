@@ -1,0 +1,25 @@
+---
+import { cn } from "@/shared/lib/tailwind";
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"span"> {}
+
+// Wraps the one control the tooltip is about. Focus only counts when it is `:focus-visible`, so a click that leaves focus
+// on a button does not pin the tooltip open, and a touch pointer never opens it.
+const { class: className, ...rest } = Astro.props;
+---
+
+<span
+  data-slot="tooltip-trigger"
+  class={cn("inline-flex", className)}
+  x-init="$el.firstElementChild?.setAttribute('aria-describedby', $id('tooltip'))"
+  x-on:click="leave()"
+  x-on:focusin="if ($event.target.matches(':focus-visible')) enter()"
+  x-on:focusout="leave()"
+  x-on:pointerenter="if ($event.pointerType === 'mouse') enter()"
+  x-on:pointerleave="leave()"
+  x-ref="trigger"
+  {...rest}
+>
+  <slot />
+</span>

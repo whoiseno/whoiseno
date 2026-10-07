@@ -1,23 +1,29 @@
 ---
 import { Button } from "@/shared/ui/button";
 import { Icon } from "@/shared/ui/icon";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/ui/tooltip";
 ---
 
-<Button
-  aria-label="Toggle theme"
-  color="neutral"
-  size="icon-md"
-  type="button"
-  variant="ghost"
-  x-data="themeToggle"
-  x-on:click="toggle()"
->
-  <Icon
-    class="hidden size-4 dark:block"
-    name="reicon:Sun"
-  />
-  <Icon
-    class="size-4 dark:hidden"
-    name="reicon:Moon"
-  />
-</Button>
+<Tooltip>
+  <TooltipTrigger>
+    <Button
+      aria-label="Toggle theme"
+      color="neutral"
+      size="icon-md"
+      type="button"
+      variant="ghost"
+      x-data="themeToggle"
+      x-on:click="toggle()"
+    >
+      <Icon
+        class="hidden size-4 dark:block"
+        name="reicon:Sun"
+      />
+      <Icon
+        class="size-4 dark:hidden"
+        name="reicon:Moon"
+      />
+    </Button>
+  </TooltipTrigger>
+  <TooltipContent>Switch between the light and dark theme</TooltipContent>
+</Tooltip>

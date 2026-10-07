@@ -2,6 +2,7 @@
 import { cn } from "@/shared/lib/tailwind";
 import { Button } from "@/shared/ui/button";
 import { Icon } from "@/shared/ui/icon";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/ui/tooltip";
 
 interface Props {
   size?: "icon-sm" | "icon-md";
@@ -15,34 +16,43 @@ const { size = "icon-sm", class: className } = Astro.props;
   class={cn("flex items-center gap-3xs", className)}
   data-slot="writing-toolbar"
 >
-  <Button
-    class="hidden rail:inline-flex"
-    aria-label="Toggle wider layout"
-    color="neutral"
-    size={size}
-    type="button"
-    variant="ghost"
-    x-bind:aria-pressed="$store.writingReader.wide"
-    x-on:click="$store.writingReader.toggleWide()"
-  >
-    <Icon
-      name="reicon:Expand"
-      x-show="!$store.writingReader.wide"
-    />
-    <Icon
-      name="reicon:Compress"
-      x-cloak
-      x-show="$store.writingReader.wide"
-    />
-  </Button>
-  <Button
-    aria-label="Enter focus mode"
-    color="neutral"
-    size={size}
-    type="button"
-    variant="ghost"
-    x-on:click="$store.writingReader.setFocus(true)"
-  >
-    <Icon name="reicon:Eye" />
-  </Button>
+  <Tooltip class="hidden rail:inline-flex">
+    <TooltipTrigger>
+      <Button
+        aria-label="Toggle wider layout"
+        color="neutral"
+        size={size}
+        type="button"
+        variant="ghost"
+        x-bind:aria-pressed="$store.writingReader.wide"
+        x-on:click="$store.writingReader.toggleWide()"
+      >
+        <Icon
+          name="reicon:Expand"
+          x-show="!$store.writingReader.wide"
+        />
+        <Icon
+          name="reicon:Compress"
+          x-cloak
+          x-show="$store.writingReader.wide"
+        />
+      </Button>
+    </TooltipTrigger>
+    <TooltipContent>Switch between the standard and a wider layout</TooltipContent>
+  </Tooltip>
+  <Tooltip>
+    <TooltipTrigger>
+      <Button
+        aria-label="Enter focus mode"
+        color="neutral"
+        size={size}
+        type="button"
+        variant="ghost"
+        x-on:click="$store.writingReader.setFocus(true)"
+      >
+        <Icon name="reicon:Eye" />
+      </Button>
+    </TooltipTrigger>
+    <TooltipContent>Hide everything except the text, to read without distraction</TooltipContent>
+  </Tooltip>
 </div>

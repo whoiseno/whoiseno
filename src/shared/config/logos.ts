@@ -6,7 +6,8 @@ interface TypeLogoEntry {
 
 /**
  * Tech-stack and social logos, stored in `src/assets/icons/logos/`. Most come from SVGL; `instagram`, `linkedin`,
- * `x` and `youtube` are hand-drawn approximations, replace them with the official files under the same names.
+ * `x` and `youtube` are hand-drawn approximations, replace them with the official files under the same names. `keystatic`
+ * is the mark from the Keystatic admin (`@keystatic/core`), drawn in `currentColor` so it follows the text color.
  * Trademarks belong to their owners.
  */
 export const logoCatalog = {
@@ -30,6 +31,7 @@ export const logoCatalog = {
   "html5": { label: "HTML5", themed: false },
   "instagram": { label: "Instagram", themed: false },
   "javascript": { label: "JavaScript", themed: false },
+  "keystatic": { label: "Keystatic", themed: false },
   "linkedin": { label: "LinkedIn", themed: false },
   "linux": { label: "Linux", themed: false },
   "markdown": { label: "Markdown", themed: true },

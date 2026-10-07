@@ -1,28 +1,34 @@
 ---
 import { Button } from "@/shared/ui/button";
 import { Icon } from "@/shared/ui/icon";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/ui/tooltip";
 ---
 
-<Button
-  aria-label="Toggle sound"
-  color="neutral"
-  size="icon-md"
-  type="button"
-  variant="ghost"
-  x-bind:aria-pressed="on"
-  x-data="soundToggle"
-  x-on:click="toggle()"
->
-  <Icon
-    class="size-4"
-    name="reicon:VolumeUp"
-    x-cloak
-    x-show="on"
-  />
-  <Icon
-    class="size-4"
-    name="reicon:VolumeX"
-    x-cloak
-    x-show="!on"
-  />
-</Button>
+<Tooltip>
+  <TooltipTrigger>
+    <Button
+      aria-label="Toggle sound"
+      color="neutral"
+      size="icon-md"
+      type="button"
+      variant="ghost"
+      x-bind:aria-pressed="on"
+      x-data="soundToggle"
+      x-on:click="toggle()"
+    >
+      <Icon
+        class="size-4"
+        name="reicon:VolumeUp"
+        x-cloak
+        x-show="on"
+      />
+      <Icon
+        class="size-4"
+        name="reicon:VolumeX"
+        x-cloak
+        x-show="!on"
+      />
+    </Button>
+  </TooltipTrigger>
+  <TooltipContent>Turn the button sounds on or off</TooltipContent>
+</Tooltip>
