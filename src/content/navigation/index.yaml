@@ -13,7 +13,7 @@ links:
     visible: true
   - label: Uses
     href: /uses
-    visible: true
+    visible: false
   - label: Hobbies
     href: /hobbies
     visible: true
